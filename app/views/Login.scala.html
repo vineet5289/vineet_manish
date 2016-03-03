@@ -1,0 +1,9 @@
+@(page: String, isLoggedIn: Boolean, userInfo: UserInfo, loginForm: Form[views.forms.LoginForm])
+
+@import bootstrap3._
+
+@Main(page, isLoggedIn, userInfo) {
+   <div class="container">
+     @loginform(routes.SRPController.preLogin(), loginForm("username"), loginForm("password"))
+   </div>
+}
