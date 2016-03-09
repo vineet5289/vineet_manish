@@ -32,8 +32,8 @@ public class SRPController extends CustomController {
 //		return ok("");
 //	}
 
-	public static Result preLogin() {
-		Form<LoginForm> formData = Form.form(LoginForm.class).bindFromRequest();
-	    return ok(Login.render("Login", false, false, formData));
-	  }
+//	public static Result preLogin() {
+//		Form<LoginForm> formData = Form.form(LoginForm.class).bindFromRequest();
+//	    return ok(Login.render("Login", false, false, formData));
+//	  }
 }
