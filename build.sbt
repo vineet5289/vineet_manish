@@ -10,9 +10,10 @@ libraryDependencies ++= Seq(
   javaJdbc,
   cache,
   javaWs,
+  javaJpa.exclude("org.hibernate.javax.persistence", "hibernate-jpa-2.0-api"),
   "org.projectlombok" % "lombok" % "1.16.6",
   "joda-time" % "joda-time" % "2.9.1",
-  "mysql" % "mysql-connector-java" % "5.1.38",
+  "mysql" % "mysql-connector-java" % "5.1.20",
    "org.mindrot" % "jbcrypt" % "0.3m"
 )
 
@@ -20,5 +21,4 @@ libraryDependencies ++= Seq(
 // other, legacy style, accesses its actions statically.
 routesGenerator := InjectedRoutesGenerator
 
-
-fork in run := true
+//fork in run := true
