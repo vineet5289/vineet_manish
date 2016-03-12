@@ -9,7 +9,7 @@ import views.html.registerIndex;
 public class RegistrationRequest extends CustomController {
 
 	public Result registrationRequest() {
-		Form<RegisterSchool> registerSchoolForm = Form.form(RegisterSchool.class).bindFromRequest();
+		Form<RegisterSchool> registerSchoolForm = Form.form(RegisterSchool.class);
 		return ok(registerIndex.render(registerSchoolForm));
 	}
 

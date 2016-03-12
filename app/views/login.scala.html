@@ -9,7 +9,7 @@
   </div>
 
    <!-- Login Id -->
-  @text(loginForm("username"),
+  @text(loginForm("userName"),
         label = "User Name",
         placeholder = "User Name",
         help = "Please enter Login Id. (required)")
@@ -26,7 +26,7 @@
     <div class="col-sm-offset-2 col-sm-10">
       <button id="submit" type="submit" value="Submit" class="btn btn-primary">Login</button>
       <button id="cancel" class="btn cancel">Forget Password</button>
-      <button id="register" type="submit" value="Register" class="btn btn-primary">Register</button>
+      <button id="register" type="submit" value="Register" class="btn btn-primary" > <a href="@routes.RegistrationRequest.registrationRequest">Register</a> </button>
     </div>
   </div>
 </login>
