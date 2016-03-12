@@ -1,0 +1,32 @@
+@(loginForm: Form[views.formdata.LoginForm])
+
+@import views.html.bootstrap3._
+
+<login>
+  <!-- Header -->
+  <div id="legend">
+    <legend>Login </legend>
+  </div>
+
+   <!-- Login Id -->
+  @text(loginForm("username"),
+        label = "User Name",
+        placeholder = "User Name",
+        help = "Please enter Login Id. (required)")
+        
+        
+  <!-- Password For School Login -->
+  @password(loginForm("password"),
+            label = "Password",
+            placeholder = "",
+            help = "Enter your valid Password. (required)")
+
+   
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <button id="submit" type="submit" value="Submit" class="btn btn-primary">Login</button>
+      <button id="cancel" class="btn cancel">Forget Password</button>
+      <button id="register" type="submit" value="Register" class="btn btn-primary">Register</button>
+    </div>
+  </div>
+</login>
