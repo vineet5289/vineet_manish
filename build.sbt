@@ -14,7 +14,8 @@ libraryDependencies ++= Seq(
   "org.projectlombok" % "lombok" % "1.16.6",
   "joda-time" % "joda-time" % "2.9.1",
   "mysql" % "mysql-connector-java" % "5.1.20",
-   "org.mindrot" % "jbcrypt" % "0.3m"
+   "org.mindrot" % "jbcrypt" % "0.3m",
+   evolutions
 )
 
 // Play provides two styles of routers, one expects its actions to be injected, the
