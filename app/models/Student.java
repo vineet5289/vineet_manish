@@ -3,7 +3,7 @@ package models;
 import java.util.ArrayList;
 import java.util.List;
 
-import views.formdata.SchoolFormData;
+import views.forms.SchoolFormData;
 
 /**
  * Simple model class to represent students.
