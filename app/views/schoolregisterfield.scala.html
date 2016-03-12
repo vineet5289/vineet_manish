@@ -1,0 +1,71 @@
+@(schoolRegister:Form[views.formdata.RegisterSchool])
+
+@import views.html.bootstrap3._
+
+<schoolregisterfield>
+  <!-- Header -->
+  <div id="legend">
+    <legend>School Data</legend>
+  </div>
+
+   <!-- Name -->
+  @text(schoolRegister("schoolName"),
+        label = "School Name",
+        placeholder = "School Name",
+        help = "Please enter your Registerd School name. (required)")
+   <!-- Principal Name -->
+  @text(schoolRegister("PrincipalName"),
+        label = "Principal Name",
+        placeholder = "Principal Name",
+        help = "Please enter your first  name. (required)")
+
+
+  <!-- School registration Id -->
+  @text(schoolRegister("schoolRegId"),
+        label="School Registration Id",
+        placeholder="School Registration Id",
+        help="Please enter your Unique School Id issued by Govt. (optional)")
+        
+        
+        <!-- School registration Id -->
+  @text(schoolRegister("email"),
+        label="Email",
+        placeholder="Email",
+        help="Please enter your Email Id  (optional)")
+        
+        
+        
+   
+        
+  <!--Address -->
+  @text(schoolRegister("address"),
+       label="Address",
+       placeholder="Address",
+       help="Enter your School Address. (required)")
+      
+  
+   <!-- Contact no. -->
+   @text(schoolRegister("contact"),
+        label="Contact No." ,
+        placeholder="Contact No.",
+        help="Enter your phone number. ")
+        
+        
+   <!-- Question/Query. -->
+   @text(schoolRegister("question"),
+        label="Question",
+        placeholder="Question",
+        help="Enter your query (if Intrested)")
+        
+        
+
+
+          
+
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <button id="submit" type="submit" value="Submit" class="btn btn-primary">Submit</button>
+      <button id="cancel" class="btn cancel">Cancel</button>
+    </div>
+  </div>
+</schoolregisterfield >
