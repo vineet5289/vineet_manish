@@ -171,3 +171,17 @@ CREATE TABLE IF NOT EXISTS student (
 
 
 CREATE UNIQUE INDEX login_user_name_index ON login (user_name);
+
+# --- !Downs
+
+drop table student;
+drop table class;
+drop table guardian;
+drop table employee;
+drop table school;
+drop table login;
+drop table board;
+drop table school_category;
+
+
+
