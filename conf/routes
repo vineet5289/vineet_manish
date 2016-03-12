@@ -10,7 +10,7 @@ POST    /login                         controllers.SRPController.postLogin()
 POST     /registration                 controllers.RegistrationHandler.registor()
 
 GET     /registrationRequest          controllers.RegistrationRequest.registrationRequest()
-GET     /registrationRequest          controllers.RegistrationRequest.postRegistrationRequest()
+POST     /registrationRequest          controllers.RegistrationRequest.postRegistrationRequest()
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
