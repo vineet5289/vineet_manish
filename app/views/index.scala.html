@@ -1,0 +1,29 @@
+@(loginForm: Form[views.forms.LoginForm], schoolRegister: Form[views.forms.RegisterSchool]
+  )
+
+@import helper._
+
+@main("index") {
+	<div class="container">
+	  <div class="well">
+	    @form(routes.SRPController.postLogin(), 'class -> "form-horizontal") {
+    		@login(loginForm)
+    	}
+  	 </div>
+    
+	@if(flash.containsKey("success")) {
+		<div class="well">
+			<div id="success-message" class="text-success">
+		  		@flash.get("success")
+			</div>
+  		</div>
+    }
+	@if(flash.containsKey("error")) {
+		<div class="well">
+			<div id="error-message" class="text-danger">
+				@flash.get("error")
+			</div>
+    	</div>
+	}
+</div>
+}

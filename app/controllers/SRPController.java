@@ -4,12 +4,16 @@ import play.data.Form;
 import play.mvc.Result;
 import play.mvc.Security;
 import security.ActionAuthenticator;
-import views.forms.LoginForm;
+import views.forms.*;
+import views.html.*;
 
 public class SRPController extends CustomController {
 
 	public Result index() {
-		return ok("welcome to main page");
+		System.out.println("**************");
+		Form<LoginForm> loginForm = Form.form(LoginForm.class);
+		Form<RegisterSchool> registerForm = Form.form(RegisterSchool.class).bindFromRequest();
+		return ok(index.render(loginForm, registerForm));
 	}
 
 	@Security.Authenticated(ActionAuthenticator.class)
@@ -39,8 +43,10 @@ public class SRPController extends CustomController {
 	  }
 
 	public Result postLogin() {
-//		Form<LoginForm> formData = Form.form(LoginForm.class).bindFromRequest();
+		System.out.println("===============");
+		Form<LoginForm> formData = Form.form(LoginForm.class).bindFromRequest();
+		System.out.println(formData.get() + " ======");
 //	    return ok(Login.render("Login", false, false, formData));
-	    return ok("post login");
+	    return ok("*****post login***");
 	  }
 }

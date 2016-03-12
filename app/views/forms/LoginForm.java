@@ -18,6 +18,7 @@ public class LoginForm {
 	public List<ValidationError> validate() {
 		List<ValidationError> errors = new ArrayList<>();
 		if (!isValidString(userName)) {
+			System.out.println("=====" + userName);
 			errors.add(new ValidationError("user", "user name format is invalid"));
 		}
 

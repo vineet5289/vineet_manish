@@ -6,20 +6,22 @@ import java.security.SecureRandom;
 
 import org.mindrot.jbcrypt.BCrypt;
 
-public class PasswordEncryptionAndDecryption {
-	private SecureRandom random = new SecureRandom();
-
-	public String nextSessionId() {
-		return new BigInteger(350, random).toString(32);
+public class RandomGenerator {
+	public String nextSessionId(int length, SecureRandom random) {
+		return new BigInteger(length, random).toString(32);
 	}
 
-	public String getSalt() {
-		return new BigInteger(150, random).toString(32);
+	public String getSalt(int length, SecureRandom random) {
+		return new BigInteger(length, random).toString(32);
 	}
 
 	public String getBCryptPassword(String password) {
 		String cryptPassword = BCrypt.hashpw(password, BCrypt.gensalt(10, new SecureRandom()));
 		return cryptPassword;
+	}
+
+	public String getReferenceNumber(int length, SecureRandom random) {
+		return new BigInteger(length, random).toString(32);
 	}
 
 	public boolean checkPasswordMatch(String dbPassword, String hashPassword) throws NoSuchAlgorithmException {

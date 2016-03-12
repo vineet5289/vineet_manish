@@ -9,12 +9,14 @@ CREATE TABLE IF NOT EXISTS school_registration_request (
   contact varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   school_registration_id varchar(20) COLLATE utf8_unicode_ci,
   query varchar(20) COLLATE utf8_unicode_ci,
-  requested_at datetime DEFAULT CURRENT_TIMESTAMP,
-  status enum('REQUESTED', 'VERIFIED', 'REJECTED', 'APPROVED', 'REGISTERED'),
-  status_updated_at datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  requested_at timestamp DEFAULT CURRENT_TIMESTAMP,
+  status enum('REQUESTED', 'REJECTED', 'APPROVED', 'REGISTERED'),
+  status_updated_at timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   auth_token varchar(255) COLLATE utf8_unicode_ci,
-  auth_token_genereated_at datetime,
+  auth_token_genereated_at timestamp NULL,
+  request_number varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (id),
+  UNIQUE KEY(request_number)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 

@@ -31,4 +31,12 @@ public class RegistrationHandler extends CustomController {
 		parser.parseBody(actualRequest);
 		return ok("it's ok man " + requestBody);
 	}
+
+	public Result preRegistor(String regCat) throws JsonParseException, JsonMappingException, IOException {
+		if(regCat == null || !regCat.isEmpty()) {
+
+		}
+
+		return ok();
+	}
 }

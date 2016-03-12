@@ -5,3 +5,6 @@ target/
 .sbtserver/
 project/project/
 target/.*
+.DS_Store
+app/.DS_Store
+.classpath

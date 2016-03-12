@@ -1,4 +1,4 @@
-package views.formdata;
+package views.forms;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,7 +75,4 @@ public class RegisterSchool {
 
 		  return null;
 		}
-	
-	
-
 }
