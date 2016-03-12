@@ -1,4 +1,4 @@
-package views.formdata;
+package views.forms;
 import models.GradeLevel;
 import models.GradePointAverage;
 import models.Hobby;

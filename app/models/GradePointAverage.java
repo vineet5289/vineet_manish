@@ -5,7 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import views.formdata.SchoolFormData;
+
+import views.forms.SchoolFormData;
 
 /**
  * Represent a Grade Point Average. 
