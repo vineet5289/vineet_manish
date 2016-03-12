@@ -4,3 +4,4 @@ bin/
 target/
 .sbtserver/
 project/project/
+target/.*
