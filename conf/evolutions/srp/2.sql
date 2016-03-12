@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS school_registration_request (
   status enum('REQUESTED', 'REJECTED', 'APPROVED', 'REGISTERED'),
   status_updated_at timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   auth_token varchar(255) COLLATE utf8_unicode_ci,
-  auth_token_genereated_at timestamp,
+  auth_token_genereated_at timestamp NULL,
   request_number varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (id),
   UNIQUE KEY(request_number)

@@ -1,4 +1,4 @@
-@(schoolForm: Form[views.formdata.SchoolFormData],
+@(schoolForm: Form[views.forms.SchoolFormData],
   hobbies:     Map[String,Boolean],
   levels:      List[String],
   gpa:         Map[String,Boolean],
@@ -9,12 +9,12 @@
 
 @import helper._
 
-@Main("Index") {
+@main("Index") {
 <div class="container">
   <div class="well">
 
-    @form(routes.Application.postIndex(), 'class -> "form-horizontal") {
-      @schoolfieldset(schoolForm, hobbies, levels, gpa, majors,state,schoolboard,schooltype)
+    @form(routes.SRPController.index(), 'class -> "form-horizontal") {
+      @schoolFieldSet(schoolForm, hobbies, levels, gpa, majors,state,schoolboard,schooltype)
     }
   </div>
 

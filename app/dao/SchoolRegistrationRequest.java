@@ -95,6 +95,6 @@ public class SchoolRegistrationRequest {
 			if(connection != null)
 				connection.close();
 		}
-		return referenceNumber; 
+		return ""; 
 	}
 }

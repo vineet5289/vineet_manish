@@ -4,12 +4,14 @@ import play.data.Form;
 import play.mvc.Result;
 import play.mvc.Security;
 import security.ActionAuthenticator;
-import views.forms.LoginForm;
+import views.forms.*;
+import views.html.*;
 
 public class SRPController extends CustomController {
 
 	public Result index() {
-		return ok("welcome to main page");
+		Form<LoginForm> loginForm = Form.form(LoginForm.class).bindFromRequest();
+		return ok(loginIndex.render(loginForm));
 	}
 
 	@Security.Authenticated(ActionAuthenticator.class)

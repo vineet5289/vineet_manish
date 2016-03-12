@@ -1,13 +1,13 @@
-@(schoolRegister: Form[views.formdata.RegisterSchool])
+@(schoolRegister: Form[views.forms.RegisterSchool])
 
 @import helper._
 
-@Main("registerIndex") {
+@main("registerIndex") {
 <div class="container">
   <div class="well">
 
-    @form(routes.Application.postschoolIndex(), 'class -> "form-horizontal") {
-      @schoolregisterfield(schoolRegister)
+    @form(routes.RegistrationRequest.postRegistrationRequest(), 'class -> "form-horizontal") {
+      @schoolRegisterField(schoolRegister)
     }
   </div>
 
@@ -28,35 +28,3 @@
 </div>
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

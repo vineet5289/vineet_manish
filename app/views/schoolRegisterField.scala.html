@@ -1,8 +1,8 @@
-@(schoolRegister:Form[views.formdata.RegisterSchool])
+@(schoolRegister:Form[views.forms.RegisterSchool])
 
 @import views.html.bootstrap3._
 
-<schoolregisterfield>
+<schoolRegisterField>
   <!-- Header -->
   <div id="legend">
     <legend>School Data</legend>
@@ -26,23 +26,17 @@
         placeholder="School Registration Id",
         help="Please enter your Unique School Id issued by Govt. (optional)")
         
-        
         <!-- School registration Id -->
   @text(schoolRegister("email"),
         label="Email",
         placeholder="Email",
         help="Please enter your Email Id  (optional)")
         
-        
-        
-   
-        
   <!--Address -->
   @text(schoolRegister("address"),
        label="Address",
        placeholder="Address",
        help="Enter your School Address. (required)")
-      
   
    <!-- Contact no. -->
    @text(schoolRegister("contact"),
@@ -50,22 +44,16 @@
         placeholder="Contact No.",
         help="Enter your phone number. ")
         
-        
    <!-- Question/Query. -->
    @text(schoolRegister("question"),
         label="Question",
         placeholder="Question",
         help="Enter your query (if Intrested)")
-        
-        
-
-
-          
-
+    
   <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
       <button id="submit" type="submit" value="Submit" class="btn btn-primary">Submit</button>
       <button id="cancel" class="btn cancel">Cancel</button>
     </div>
   </div>
-</schoolregisterfield >
+</schoolRegisterField >

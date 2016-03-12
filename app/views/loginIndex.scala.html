@@ -3,11 +3,11 @@
 
 @import helper._
 
-@Main("LoginIndex") {
+@main("LoginIndex") {
 <div class="container">
   <div class="well">
 
-    @form(routes.Application.Hi(), 'class -> "form-horizontal") {
+    @form(routes.SRPController.postLogin(), 'class -> "form-horizontal") {
       @login(loginForm)
     }
   </div>
