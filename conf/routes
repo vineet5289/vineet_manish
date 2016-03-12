@@ -5,8 +5,8 @@
 # Home page
 GET     /                             controllers.SRPController.index()
 GET     /home                         controllers.SRPController.home()
-GET     /login                        controllers.SRPController.preLogin()
-POST    /login                        controllers.SRPController.postLogin()
+#GET     /login                        controllers.SRPController.preLogin()
+#POST    /login                        controllers.SRPController.postLogin()
 #POST     /registration                controllers.RegistrationHandler.registor()
 
 # Map static resources from the /public folder to the /assets URL path
