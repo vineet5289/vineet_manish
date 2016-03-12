@@ -1,0 +1,136 @@
+@(schoolForm: Form[views.formdata.SchoolFormData],
+  hobbies:     Map[String,Boolean],
+  levels:      List[String],
+  gpa:         Map[String,Boolean],
+  majors:      Map[String,Boolean],
+  state:       Map[String,Boolean],
+  schoolboard: Map[String,Boolean],
+  schooltype:  Map[String,Boolean])
+
+@import views.html.bootstrap3._
+
+<fieldset>
+  <!-- Header -->
+  <div id="legend">
+    <legend>School Data</legend>
+  </div>
+
+   <!-- Name -->
+  @text(schoolForm("schoolname"),
+        label = "School Name",
+        placeholder = "School Name",
+        help = "Please enter your Registerd Schoo name. (required)")
+   <!-- Principal Name -->
+  @text(schoolForm("Principalname"),
+        label = "Principal Name",
+        placeholder = "Principal Name",
+        help = "Please enter your first and last name. (required)")
+
+  <!-- Password For School Login -->
+  @password(schoolForm("password"),
+            label = "Password",
+            placeholder = "",
+            help = "Password must be five or more characters. (required)")
+            
+  <!-- School registration Id -->
+  @text(schoolForm("schoolregistrationid"),
+        label="School Registration Id",
+        placeholder="School Registration Id",
+        help="Please enter your Unique School Id issued by Govt. (required)")
+        
+        
+        
+   
+        
+  <!--Address -->
+  @text(schoolForm("address"),
+       label="Address",
+       placeholder="Address",
+       help="Enter your School Address. (required)")
+      
+   <!--City -->
+   @text(schoolForm("city"),
+       label="City",
+       placeholder="City",
+       help="Please enter city where school is located")
+       
+  
+           
+   <!-- Pincode -->
+   @text(schoolForm("pincode"),
+         label="PinCode",
+         placeholder="PinCode",
+         help="Enter Pincode of Your City")
+         
+   <!-- Contact no. -->
+   @text(schoolForm("contact"),
+        label="Contact No." ,
+        placeholder="Contact No.",
+        help="Enter school office number. ")
+        
+        
+           <!-- State -->
+   @select(schoolForm("state"),
+           label="State",
+           optionMap=state,
+           isMultiple=false,
+           help="select state to which school belongs.")
+
+
+ <!-- School Type (Govt / Private) -->
+     @select(schoolForm("schooltype"),
+            label="School Type",
+            optionMap=schooltype,
+            isMultiple=false,
+            help="Select Your School is Private or Govt ")
+            
+            
+   <!-- School Type (Govt / Private) -->
+     @select(schoolForm("schoolboard"),
+            label="School Board",
+            optionMap=schoolboard,
+            isMultiple=false,
+            help="Select to which board school belongs ")
+       
+   
+  
+           
+    
+
+   <!-- Hobbies -->
+  @checkboxes(schoolForm("hobbies"),
+              label = "Residential Status",
+              checkboxMap = hobbies,
+              help = "hostel School or Dayscholar. (optional)")
+              
+  
+
+  <!-- Grade Level -->
+  @radiobuttons(schoolForm("level"),
+                label = "Level",
+                buttonNameList = levels,
+                help = "Select your grade level. (required)")
+
+  <!-- GPA -->
+  @select(schoolForm("gpa"),
+          label = "GPA",
+          optionMap = gpa,
+          isMultiple = false,
+          help = "Select your GPA. (required)")
+
+  <!-- Majors -->
+  @select(schoolForm("majors"),
+          label = "Majors",
+          optionMap = majors,
+          isMultiple = true,
+          help = "Select zero or more majors. (optional)")
+          
+          
+
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <button id="submit" type="submit" value="Submit" class="btn btn-primary">Submit</button>
+      <button id="cancel" class="btn cancel">Cancel</button>
+    </div>
+  </div>
+</fieldset>
