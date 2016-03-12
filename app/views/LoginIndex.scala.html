@@ -1,0 +1,63 @@
+@(loginForm: Form[views.formdata.LoginForm]
+  )
+
+@import helper._
+
+@Main("LoginIndex") {
+<div class="container">
+  <div class="well">
+
+    @form(routes.Application.Hi(), 'class -> "form-horizontal") {
+      @login(loginForm)
+    }
+  </div>
+
+  @if(flash.containsKey("success")) {
+  <div class="well">
+    <div id="success-message" class="text-success">
+      @flash.get("success")
+    </div>
+  </div>
+  }
+  @if(flash.containsKey("error")) {
+  <div class="well">
+    <div id="error-message" class="text-danger">
+      @flash.get("error")
+  </div>
+    </div>
+  }
+</div>
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
