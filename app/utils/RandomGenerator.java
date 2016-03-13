@@ -24,7 +24,7 @@ public class RandomGenerator {
 		return new BigInteger(length, random).toString(32);
 	}
 
-	public boolean checkPasswordMatch(String dbPassword, String hashPassword) throws NoSuchAlgorithmException {
+	public static boolean checkPasswordMatch(String dbPassword, String hashPassword) throws NoSuchAlgorithmException {
 		boolean isPasswordMatch = BCrypt.checkpw(hashPassword, dbPassword);
 		return isPasswordMatch;
 	}
