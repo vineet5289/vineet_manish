@@ -15,6 +15,7 @@ libraryDependencies ++= Seq(
   "joda-time" % "joda-time" % "2.9.1",
   "mysql" % "mysql-connector-java" % "5.1.20",
    "org.mindrot" % "jbcrypt" % "0.3m",
+   "com.typesafe.play" %% "play-mailer" % "3.0.1",
    evolutions
 )
 
