@@ -1,5 +1,10 @@
 package controllers;
 
+import java.util.Map;
+
+import models.LoginDetails;
+import dao.UserLoginDAO;
+import enum_package.SessionKey;
 import play.data.Form;
 import play.mvc.Result;
 import play.mvc.Security;
@@ -18,35 +23,60 @@ public class SRPController extends CustomController {
 
 	@Security.Authenticated(ActionAuthenticator.class)
 	public Result home() {
+		
 		return ok("welcome to home page");
 	}
 
-//	public Result postLogin() {
-//		Form<LoginForm> formData = Form.form(LoginForm.class).bindFromRequest();
-//		if (formData.hasErrors()) {
-//			flash("error", "Login credentials not valid.");
-//			return badRequest(Login.render("Login", Secured.isLoggedIn(ctx()), Secured.getUserInfo(ctx()), formData));
-//		}
-//		else {
-//			// email/password OK, so now we set the session variable and only go to authenticated pages.
-//			session().clear();
-//			session("email", formData.get().email);
-//			return redirect(routes.Application.profile());
-//		}
-//		return ok("");
-//	}
+	public Result postLogin() {
+		Form<LoginForm> loginForm = Form.form(LoginForm.class).bindFromRequest();
+		Form<RegisterSchool> registerForm = Form.form(RegisterSchool.class);
+		if (loginForm== null || loginForm.hasErrors()) {
+			flash("error", "Login credentials not valid.");
+			return redirect(routes.SRPController.index());
+			//			return badRequest(index.render(loginForm, registerForm));
+		}
+		else {
+			session().clear();
+			Map<String, String> userDetails = loginForm.data();
+			UserLoginDAO userLoginDAO = new UserLoginDAO();
+			String userName = userDetails.get("userName");
+			String password = userDetails.get("password");
+
+			try {
+				LoginDetails loginDetails = userLoginDAO.isValidUserCredentials(userName, password);
+				if(!loginDetails.getError().isEmpty()) {
+					flash("error", loginDetails.getError());
+					return redirect(routes.SRPController.index());
+				}
+				session("SRP-USER-NAME", userName);
+				session("SRP-USER-ROLE", loginDetails.getRole().name());
+				session("SRP-TOKEN", loginDetails.getAuthToken());
+			} catch (Exception exception){
+				flash("error", "Server problem occur. Please try after some time");
+				return redirect(routes.SRPController.index());
+			}
+
+			return redirect(routes.SRPController.home());
+		}
+	}
 
 	public Result preLogin() {
-//		Form<LoginForm> formData = Form.form(LoginForm.class).bindFromRequest();
-//	    return ok(Login.render("Login", false, false, formData));
-	    return ok("pre login");
-	  }
+		Form<LoginForm> loginForm = Form.form(LoginForm.class);
+		Form<RegisterSchool> registerForm = Form.form(RegisterSchool.class).bindFromRequest();
+		return ok(index.render(loginForm, registerForm));
+	}
 
-	public Result postLogin() {
-		System.out.println("===============");
-		Form<LoginForm> formData = Form.form(LoginForm.class).bindFromRequest();
-		System.out.println(formData.get() + " ======");
-//	    return ok(Login.render("Login", false, false, formData));
-	    return ok("*****post login***");
-	  }
+	public Result logout() {
+		String authToken = session().get(SessionKey.AUTH_TOKEN);
+		String userName = session().get(SessionKey.USER_NAME);
+		UserLoginDAO userLoginDAO = new UserLoginDAO();
+		try{
+			userLoginDAO.logout(userName);
+		} catch (Exception exception){
+			exception.printStackTrace();
+		}
+		session().clear();
+		flash("success", "You've been logged out");
+		return redirect(routes.SRPController.index());
+	}
 }

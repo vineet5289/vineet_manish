@@ -12,6 +12,8 @@ GET     /registration/:reg_cat              controllers.RegistrationHandler.preR
 POST    /registration                		controllers.RegistrationHandler.registor()
 GET     /registrationRequest                controllers.RegistrationRequest.registrationRequest()
 POST     /registrationRequest               controllers.RegistrationRequest.postRegistrationRequest()
+GET     /logout                       		controllers.SRPController.logout()
+GET     /sendmail                           controllers.Application.sendMailTest()
 
 # Map static resources from the /public folder to the /assets URL path
 #GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
