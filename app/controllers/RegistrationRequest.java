@@ -25,6 +25,6 @@ public class RegistrationRequest extends CustomController {
 		System.out.println("*********newUser ");
 		Form<RegisterSchool> registerSchoolForm = Form.form(RegisterSchool.class);
 		Form<SchoolFormData> schoolForm = Form.form(SchoolFormData.class);
-		return ok(newUser.render(schoolForm, registerSchoolForm));
+		return ok(newuser.render(schoolForm, registerSchoolForm));
 	}
 }
