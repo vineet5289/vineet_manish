@@ -3,10 +3,12 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>School Registration form</title>
+    <title>@title</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="@routes.Assets.at("stylesheets/simple-sidebar.css")">
+    
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-
+     
       <!--  Load site-specific customizations after bootstrap. -->
     <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
     <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
@@ -19,19 +21,8 @@
         <![endif]-->
   </head>
   <body>
-  <div class="navbar navbar-inverse" role="navigation">
-    <div class="container">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-          <!--  Display three horizontal lines when navbar collapsed. -->
-          <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" href="/">SCHOOL REGISTRATION FORM</a>
-      </div>
-    </div>
-  </div>
-
-    @content
+   @content
+    
     <script src="http://code.jquery.com/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 

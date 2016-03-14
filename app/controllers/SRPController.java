@@ -17,14 +17,14 @@ public class SRPController extends CustomController {
 	public Result index() {
 		System.out.println("**************");
 		Form<LoginForm> loginForm = Form.form(LoginForm.class);
-		Form<RegisterSchool> registerForm = Form.form(RegisterSchool.class).bindFromRequest();
+		Form<RegisterSchool> registerForm = Form.form(RegisterSchool.class);
 		return ok(index.render(loginForm, registerForm));
 	}
 
 	@Security.Authenticated(ActionAuthenticator.class)
 	public Result home() {
 		
-		return ok("welcome to home page");
+		return ok(dashboard4.render());
 	}
 
 	public Result postLogin() {

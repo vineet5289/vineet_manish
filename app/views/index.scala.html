@@ -8,8 +8,16 @@
 	  <div class="well">
 	    @form(routes.SRPController.postLogin(), 'class -> "form-horizontal") {
     		@login(loginForm)
+    		
     	}
   	 </div>
+  	 
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+  	    <ul class="nav navbar-nav navbar-right">
+           <li><a href="@routes.RegistrationRequest.registrationRequest">Register</a></li>
+        </ul>
+    </div>
+  	 
     
 	@if(flash.containsKey("success")) {
 		<div class="well">
