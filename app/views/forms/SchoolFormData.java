@@ -1,8 +1,5 @@
 package views.forms;
-import models.GradeLevel;
-import models.GradePointAverage;
-import models.Hobby;
-import models.Major;
+
 import play.data.validation.ValidationError;
 
 import java.util.ArrayList;
@@ -35,13 +32,12 @@ public class SchoolFormData {
 	  public String state="";
 	  public String pincode="";
 	  public String schooltype = "";
-	  public List<String> hobbies = new ArrayList<>(); 
+	 
 	  public String contact="";
-	  public String level = "";
-	  public String gpa = "";
+
 	  public String schoolboard="";
 	 
-	  public List<String> majors = new ArrayList<>(); 
+	  
 	 
 
 
@@ -63,7 +59,7 @@ public class SchoolFormData {
  * @param majors The majors. 
  * @param schoolType Type of school Govt or Private. 
  */
-  public SchoolFormData(String schoolname , String principalname , String password , String schoolregistrationid ,String address, String city , State state , String pincode ,List<Hobby> hobbies,String contact ,SchoolBoard schoolboard,GradeLevel level, GradePointAverage gpa,List<Major> majors , SchoolType schooltype) {
+  public SchoolFormData(String schoolname , String principalname , String password , String schoolregistrationid ,String address, String city , State state , String pincode,String contact ,SchoolBoard schoolboard , SchoolType schooltype) {
   this.schoolname = schoolname;
   this.schoolregistrationid=schoolregistrationid;
   this.principalname=principalname;
@@ -72,19 +68,9 @@ public class SchoolFormData {
   this.pincode=pincode;
   this.contact=contact;
   this.password = password;
-  this.level = level.getName();
-  this.gpa = gpa.getName();
   this.state=state.getname();
   this.schooltype=schooltype.getname();
   this.schoolboard=schoolboard.getname();
-
-  for(Hobby hobby : hobbies) {
-    this.hobbies.add(hobby.getName());
-  }
-  for(Major major : majors) {
-    this.majors.add(major.getName());
-  }
- 
   
 }
 
@@ -140,38 +126,7 @@ public List<ValidationError> validate() {
 	    errors.add(new ValidationError("", "Invalid State: " + state + "."));
 	  }
 
-  // Hobbies are optional, but if supplied must exist in database.
-  if (hobbies.size() > 0) {
-    for (String hobby : hobbies) {
-      if (Hobby.findHobby(hobby) == null) {
-        errors.add(new ValidationError("hobbies", "Unknown hobby: " + hobby + "."));
-      }
-    }
-  }
-
-  // Grade Level is required and must exist in database.
-  if (level == null || level.length() == 0) {
-    errors.add(new ValidationError("level", "No grade level was given."));
-  } else if (GradeLevel.findLevel(level) == null) {
-    errors.add(new ValidationError("level", "Invalid grade level: " + level + "."));
-  }
-
-  // GPA is required and must exist in database.
-  if (gpa == null || gpa.length() == 0) {
-    errors.add(new ValidationError("gpa", "No gpa was given."));
-  } else if (GradePointAverage.findGPA(gpa) == null) {
-    errors.add(new ValidationError("gpa", "Invalid GPA: " + gpa + "."));
-  }
-
-  // Majors are optional, but if supplied must exist in database.
-  if (majors.size() > 0) {
-    for (String major : majors) {
-      if (Major.findMajor(major) == null) {
-        errors.add(new ValidationError("majors", "Unknown Major: " + major + "."));
-      }
-    }
-  }
-
+ 
   if(errors.size() > 0)
     return errors;
 

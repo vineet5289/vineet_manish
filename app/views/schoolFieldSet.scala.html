@@ -1,8 +1,4 @@
 @(schoolForm: Form[views.forms.SchoolFormData],
-  hobbies:     Map[String,Boolean],
-  levels:      List[String],
-  gpa:         Map[String,Boolean],
-  majors:      Map[String,Boolean],
   state:       Map[String,Boolean],
   schoolboard: Map[String,Boolean],
   schooltype:  Map[String,Boolean])
@@ -91,41 +87,7 @@
             optionMap=schoolboard,
             isMultiple=false,
             help="Select to which board school belongs ")
-       
-   
-  
-           
-    
-
-   <!-- Hobbies -->
-  @checkboxes(schoolForm("hobbies"),
-              label = "Residential Status",
-              checkboxMap = hobbies,
-              help = "hostel School or Dayscholar. (optional)")
-              
-  
-
-  <!-- Grade Level -->
-  @radiobuttons(schoolForm("level"),
-                label = "Level",
-                buttonNameList = levels,
-                help = "Select your grade level. (required)")
-
-  <!-- GPA -->
-  @select(schoolForm("gpa"),
-          label = "GPA",
-          optionMap = gpa,
-          isMultiple = false,
-          help = "Select your GPA. (required)")
-
-  <!-- Majors -->
-  @select(schoolForm("majors"),
-          label = "Majors",
-          optionMap = majors,
-          isMultiple = true,
-          help = "Select zero or more majors. (optional)")
-          
-          
+                 
 
   <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
