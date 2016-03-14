@@ -1,5 +1,7 @@
 package controllers;
 
+import javax.inject.Inject;
+
 import mailer.MailerService;
 import play.data.Form;
 import play.mvc.Result;
@@ -8,8 +10,10 @@ import views.forms.*;
 import views.html.*;
 
 public class Application extends CustomController {
+
+	@Inject
+	private MailerService mailerService;
 	public Result sendMailTest() {
-		MailerService mailerService = new MailerService();
 		mailerService.sendEmail();
 		return ok("send ...");
 	}

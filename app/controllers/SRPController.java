@@ -23,11 +23,11 @@ public class SRPController extends CustomController {
 
 	@Security.Authenticated(ActionAuthenticator.class)
 	public Result home() {
-		
 		return ok(dashboard4.render());
 	}
 
 	public Result postLogin() {
+		System.out.println("postLogin*********");
 		Form<LoginForm> loginForm = Form.form(LoginForm.class).bindFromRequest();
 		Form<RegisterSchool> registerForm = Form.form(RegisterSchool.class);
 		if (loginForm== null || loginForm.hasErrors()) {
@@ -61,6 +61,7 @@ public class SRPController extends CustomController {
 	}
 
 	public Result preLogin() {
+		System.out.println("preLogin*********");
 		Form<LoginForm> loginForm = Form.form(LoginForm.class);
 		Form<RegisterSchool> registerForm = Form.form(RegisterSchool.class).bindFromRequest();
 		return ok(index.render(loginForm, registerForm));
