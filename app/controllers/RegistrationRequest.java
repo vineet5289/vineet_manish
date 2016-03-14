@@ -6,7 +6,7 @@ import views.forms.*;
 import views.forms.LoginForm;
 import views.forms.AddNewSchoolRequest;
 import views.forms.SchoolFormData;
-import views.html.registerIndex;
+import views.html.addNewSchoolRequestIndex;
 import views.html.*;
 
 public class RegistrationRequest extends CustomController {
@@ -23,13 +23,12 @@ public class RegistrationRequest extends CustomController {
 	public Result newUser() {
 		Form<AddNewSchoolRequest> registerSchoolForm = Form.form(AddNewSchoolRequest.class);
 		Form<SchoolFormData> schoolForm = Form.form(SchoolFormData.class);
-		return ok(newuser.render(schoolForm, registerSchoolForm));
+		return ok(newUser.render(schoolForm, registerSchoolForm));
 	}
 
 	public Result preAddNewSchoolRequest() {
 		Form<AddNewSchoolRequest> addNewSchoolRequest = Form.form(AddNewSchoolRequest.class);
-//		return ok(newuser.render(schoolForm, registerSchoolForm));
-		return ok("");
+		return ok(addNewSchoolRequestIndex.render(addNewSchoolRequest));
 	}
 
 	public Result postAddNewSchoolRequest() {
