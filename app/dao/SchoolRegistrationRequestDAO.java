@@ -10,7 +10,7 @@ import enum_package.RequestedStatus;
 import play.db.DB;
 import utils.RandomGenerator;
 
-public class SchoolRegistrationRequest {
+public class SchoolRegistrationRequestDAO {
 	private String table_name = "school_registration_request";
 	private String schoolName = "school_name";
 	private String principalName = "principal_name";

@@ -15,21 +15,24 @@ import views.html.*;
 public class SRPController extends CustomController {
 
 	public Result index() {
-		System.out.println("**************");
 		Form<LoginForm> loginForm = Form.form(LoginForm.class);
-		Form<RegisterSchool> registerForm = Form.form(RegisterSchool.class);
-		return ok(index.render(loginForm, registerForm));
+		return ok(index.render(loginForm));
 	}
 
 	@Security.Authenticated(ActionAuthenticator.class)
 	public Result home() {
-		return ok(dashboard4.render());
+		System.out.println("***********");
+		System.out.println(session().get("SRP-USER-NAME"));
+		System.out.println(session().get("SRP-USER-ROLE"));
+		System.out.println(session().get("SRP-TOKEN"));
+		System.out.println("***********");
+		return ok(profile.render(session("SRP-USER-NAME"), session("SRP-USER-ROLE")));
 	}
 
 	public Result postLogin() {
 		System.out.println("postLogin*********");
 		Form<LoginForm> loginForm = Form.form(LoginForm.class).bindFromRequest();
-		Form<RegisterSchool> registerForm = Form.form(RegisterSchool.class);
+		Form<AddNewSchoolRequest> registerForm = Form.form(AddNewSchoolRequest.class);
 		if (loginForm== null || loginForm.hasErrors()) {
 			flash("error", "Login credentials not valid.");
 			return redirect(routes.SRPController.index());
@@ -61,13 +64,16 @@ public class SRPController extends CustomController {
 	}
 
 	public Result preLogin() {
-		System.out.println("preLogin*********");
 		Form<LoginForm> loginForm = Form.form(LoginForm.class);
-		Form<RegisterSchool> registerForm = Form.form(RegisterSchool.class).bindFromRequest();
-		return ok(index.render(loginForm, registerForm));
+		Form<AddNewSchoolRequest> registerForm = Form.form(AddNewSchoolRequest.class).bindFromRequest();
+		return ok(index.render(loginForm));
 	}
 
 	public Result logout() {
+		System.out.println(session().get("SRP-USER-NAME"));
+		System.out.println(session().get("SRP-USER-ROLE"));
+		System.out.println(session().get("SRP-TOKEN"));
+
 		String authToken = session().get(SessionKey.AUTH_TOKEN);
 		String userName = session().get(SessionKey.USER_NAME);
 		UserLoginDAO userLoginDAO = new UserLoginDAO();
