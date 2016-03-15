@@ -16,7 +16,7 @@ GET     /sendmail                           controllers.Application.sendMailTest
 GET     /addnewschoolrequest                	controllers.RegistrationRequest.preAddNewSchoolRequest()
 GET     /registration/:reg_cat              	controllers.RegistrationHandler.preRegistor(reg_cat: String)
 GET     /newUser                            	controllers.RegistrationRequest.newUser()
-GET     /registrationRequest                	controllers.RegistrationRequest.registrationRequest()
+GET     /registrationRequest                	controllers.RegistrationRequest.preRegistrationRequest()
 POST     /registrationRequest               	controllers.RegistrationRequest.postRegistrationRequest()
 POST    /registration                			controllers.RegistrationHandler.registor()
 GET     /addnewschoolrequest                    controllers.RegistrationRequest.postAddNewSchoolRequest()
