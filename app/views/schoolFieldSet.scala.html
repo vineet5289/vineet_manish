@@ -1,7 +1,8 @@
 @(schoolForm: Form[views.forms.SchoolFormData],
-  state:       Map[String,Boolean],
-  schoolboard: Map[String,Boolean],
-  schooltype:  Map[String,Boolean])
+  state:       List[models.State],
+  schoolboard: List[models.SchoolBoard],
+  schooltype: List[enum_package.SchoolTypeEnum],
+  schoolcaterory:  List[enum_package.SchoolCateroryEnum])
 
 @import views.html.bootstrap3._
 
@@ -68,26 +69,8 @@
            <!-- State -->
    @select(schoolForm("state"),
            label="State",
-           optionMap=state,
-           isMultiple=false,
            help="select state to which school belongs.")
 
-
- <!-- School Type (Govt / Private) -->
-     @select(schoolForm("schooltype"),
-            label="School Type",
-            optionMap=schooltype,
-            isMultiple=false,
-            help="Select Your School is Private or Govt ")
-            
-            
-   <!-- School Type (Govt / Private) -->
-     @select(schoolForm("schoolboard"),
-            label="School Board",
-            optionMap=schoolboard,
-            isMultiple=false,
-            help="Select to which board school belongs ")
-                 
 
   <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">

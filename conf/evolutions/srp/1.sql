@@ -21,14 +21,13 @@ CREATE TABLE IF NOT EXISTS board (
     UNIQUE KEY (board_code)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-CREATE TABLE IF NOT EXISTS school_category (
-    id bigint(20) NOT NULL AUTO_INCREMENT,
-    school_category_type varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-    category_description varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-    created_at timestamp DEFAULT CURRENT_TIMESTAMP,
-    updated_at timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    PRIMARY KEY (id)
-  ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+CREATE TABLE IF NOT EXISTS state (
+  id bigint(20) NOT NULL AUTO_INCREMENT,
+  name varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  code varchar(255) COLLATE utf8_unicode_ci,
+  PRIMARY KEY (id),
+  UNIQUE KEY(name)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS school (
   id bigint(20) NOT NULL AUTO_INCREMENT,
@@ -173,6 +172,11 @@ CREATE TABLE IF NOT EXISTS student (
 
 CREATE UNIQUE INDEX login_user_name_index ON login (user_name);
 
+INSERT INTO board (board_code, board_name) VALUES ('CBSE', 'CBSE');
+INSERT INTO board (board_code, board_name) VALUES ('ICSE', 'ICSE');
+INSERT INTO board (board_code, board_name) VALUES ('UP BOARD', 'UP BOARD');
+INSERT INTO board (board_code, board_name) VALUES ('MP BOARD', 'MP BOARD');
+
 # --- !Downs
 
 drop table student;
@@ -182,7 +186,4 @@ drop table employee;
 drop table school;
 drop table login;
 drop table board;
-drop table school_category;
-
-
-
+drop table state;

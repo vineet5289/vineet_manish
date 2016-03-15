@@ -2,7 +2,7 @@ package views.forms;
 
 import lombok.Data;
 
-import enum_package.SchoolType;
+import enum_package.SchoolTypeEnum;
 
 @Data
 public class SchoolRegistration {
@@ -20,5 +20,5 @@ public class SchoolRegistration {
 	private int noOfShift;
 	private Long schoolCategoryId;
 	private Long schoolBoardId;
-	private SchoolType schoolType;
+	private SchoolTypeEnum schoolType;
 }
