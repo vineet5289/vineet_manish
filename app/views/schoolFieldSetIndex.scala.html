@@ -1,0 +1,34 @@
+@(schoolForm: Form[views.forms.SchoolFormData],
+  state:       Map[String,Boolean],
+  schoolboard: Map[String,Boolean],
+  schooltype:  Map[String,Boolean])
+
+@import helper._
+
+@main("schoolRegistration") {
+<div class="container">
+  <div class="well">
+
+    @form(routes.RegistrationRequest.preRegistrationRequest(), 'class -> "form-horizontal") {
+      @schoolFieldSet(schoolForm,state,schoolboard,schooltype)
+    }
+  </div>
+
+  @if(flash.containsKey("success")) {
+  <div class="well">
+    <div id="success-message" class="text-success">
+      @flash.get("success")
+    </div>
+  </div>
+  }
+  @if(flash.containsKey("error")) {
+  <div class="well">
+    <div id="error-message" class="text-danger">
+      @flash.get("error")
+  </div>
+    </div>
+  }
+</div>
+
+}
+ 
