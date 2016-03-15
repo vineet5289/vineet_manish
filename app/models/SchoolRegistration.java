@@ -4,7 +4,7 @@ import lombok.Data;
 
 import org.joda.time.DateTime;
 
-import enum_package.SchoolType;
+import enum_package.SchoolTypeEnum;
 
 @Data
 public class SchoolRegistration {
@@ -24,7 +24,7 @@ public class SchoolRegistration {
 	private int noOfShift;
 	private Long schoolCategoryId;
 	private Long schoolBoardId;
-	private SchoolType schoolType;
+	private SchoolTypeEnum schoolType;
 	private DateTime createdAt;
 	private DateTime updatedAt;
 	private boolean isActive;

@@ -40,10 +40,11 @@ public class AddNewSchoolRequest {
 			errors.add(new ValidationError("mobile", "No contact was given."));
 		}
 
-		if(principalEmail == null || !validateEmailAddress(principalEmail)==false) {
+		if(principalEmail == null || validateEmailAddress(principalEmail)==false) {
+			System.out.println("*888 email");
 			errors.add(new ValidationError("Email","check your email"));
 		}
-
+System.out.println(errors + "=-----");
 		if(errors.size() > 0)
 			return errors;
 

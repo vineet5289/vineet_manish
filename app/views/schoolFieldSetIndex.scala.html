@@ -1,7 +1,5 @@
 @(schoolForm: Form[views.forms.SchoolFormData],
-  state:       Map[String,Boolean],
-  schoolboard: Map[String,Boolean],
-  schooltype:  Map[String,Boolean])
+  state:      Map[Long, String])
 
 @import helper._
 
@@ -9,8 +7,8 @@
 <div class="container">
   <div class="well">
 
-    @form(routes.RegistrationRequest.preRegistrationRequest(), 'class -> "form-horizontal") {
-      @schoolFieldSet(schoolForm,state,schoolboard,schooltype)
+    @form(routes.RegistrationRequest.postSchoolRegistrationRequest(), 'class -> "form-horizontal") {
+      @schoolFieldSet(schoolForm,state,schoolboard,schooltype, schoolcaterory)
     }
   </div>
 

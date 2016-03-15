@@ -1,13 +1,20 @@
 package models;
 
-import lombok.Data;
+import java.util.HashMap;
+import java.util.Map;
 
-import org.joda.time.DateTime;
+import enum_package.SchoolCateroryEnum;
 
-@Data
 public class SchoolCategory {
-	private String schoolCategoryType;
-	private String categoryDescription;
-	private DateTime createdAt;
-	private DateTime updatedAt;
+	private static Map<Long, String> schoolCaterorys = new HashMap<Long, String>();
+
+	static {
+		schoolCaterorys.put(1L, SchoolCateroryEnum.RESIDENCIAL.name());
+		schoolCaterorys.put(2L, SchoolCateroryEnum.NON_RESIDENCIAL.name());
+		schoolCaterorys.put(3L, SchoolCateroryEnum.BOTH.name());
+	}
+
+	public static Map<Long, String> getSchoolCategoryList() {
+		return schoolCaterorys;
+	}
 }

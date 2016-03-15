@@ -1,113 +1,58 @@
 package models;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
-import views.forms.SchoolFormData;
+import lombok.Getter;
+import lombok.Setter;
+import play.db.DB;
 
 
 public class State {
-	long id;
-	String name;
-	
-	public State(long id , String name)
-	{
-		this.id=id;
-		this.name=name;
-	}
-	
-	
-	public void setid(long id)
-	{
-		this.id=id;
-	}
-	public long getid()
-	{
-		return id;
-	}
-	
-	public void setname(String name)
-	{
-	  this.name=name;
-	}
-    
-	public String getname()
-	{
-		return name;
-	}
-	
-	public static Map<String,Boolean> makeStateMap(SchoolFormData school)
-	{
-		Map<String , Boolean> stateMap=new TreeMap<String,Boolean>();
-		for(State state:allStates)
-		{
-			stateMap.put(state.getname(), (school == null) ? false : (school.state !=null && school.state.equals(state.getname())));
-		}
-		return stateMap;
-	}
-	
-	
-	/**
-	   * @return A list of school board .
-	   */
-	
-	public static List<String> getSchoolboardList()
-	{
-		
-	String[] nameArray={"CBSE","ICSE","UP BOARD","MP BOARD"};
-	return Arrays.asList(nameArray);
-	
-	}
-	
-	
-	/**
-	   * Return the SchoolBoard instance in the database with name 'schoolboard' or null if not found.
-	   * @param schoolboard 
-	   * @return The SchoolBoard instance, or null.
-	   */
-	  public static State findState(String stateName) {
-	    for (State state : allStates) {
-	      if (stateName.equals(state.getname())) {
-	        return state;
-	      }
-	    }
-	    return null;
-	  }
-	
-	  /**
-	   * Define a default schoolboard name, used for form display.
-	   * @return The default Schoolboard.
-	   */
-	  public static State getDefaultstate() {
-	    return findState("Choose State");
-	  }
+	private static Map<Long, String> states =new HashMap<Long, String>();
 
-	  @Override
-	  public String toString() {
-	    return String.format("[State %s]", this.name);
-	  }
-	  
-	
-	private static List<State> allStates=new ArrayList<>();
-	static
-	{
-		allStates.add(new State(1L,"DELHI"));
-    	allStates.add(new State(2L,"UTTAR PRADESH"));
-    	allStates.add(new State(3L,"MADHYA PRADESH"));
-    	allStates.add(new State(4L,"GOA"));
-    	allStates.add(new State(5L,"RAJASTHAN"));
-    	allStates.add(new State(6L,"ORISSA"));
-    	allStates.add(new State(7L,"WEST BENGAL"));
-    	allStates.add(new State(8L,"GUJRAT"));
-    	allStates.add(new State(9L,"MAHARASTRA"));
-    	allStates.add(new State(10L,"UTTRAKHAND"));
-    	allStates.add(new State(11L,"SIKKIM"));
-    	allStates.add(new State(12L,"ASSAM"));
-    	
-    	
-    	
-		
+	@Getter @Setter
+	private long id;
+	@Getter @Setter
+	private String name;
+	@Getter @Setter
+	private String code;
+
+	public static Map<Long, String> getStateList() throws Exception {
+		if(states == null || states.isEmpty())
+			fetchStateList();
+		return states;
+	}
+
+	private static synchronized void fetchStateList() throws Exception {
+		if(states != null && !states.isEmpty())
+			return;
+
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		String query = "SELECT id, name, code FROM state;";
+		try {
+			connection = DB.getDataSource("srp").getConnection();
+			preparedStatement = connection.prepareStatement(query);
+			resultSet = preparedStatement.executeQuery();
+			while(resultSet.next()) {
+				states.put(resultSet.getLong("id"), resultSet.getString("name"));
+			}
+		} catch(Exception exception) {
+			exception.printStackTrace();
+			throw new Exception(exception);
+		} finally {
+			if(resultSet != null && !resultSet.isClosed())
+				resultSet.close();
+
+			if(preparedStatement != null && !preparedStatement.isClosed())
+				preparedStatement.close();
+
+			if(connection != null && !connection.isClosed())
+				connection.close();
+		}
 	}
 }
