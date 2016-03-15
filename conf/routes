@@ -14,13 +14,16 @@ GET     /sendmail                           controllers.Application.sendMailTest
 # RegistrationRequest
 
 GET     /addnewschoolrequest                	controllers.RegistrationRequest.preAddNewSchoolRequest()
-GET     /registration/:reg_cat              	controllers.RegistrationHandler.preRegistor(reg_cat: String)
 GET     /newUser                            	controllers.RegistrationRequest.newUser()
 GET     /registrationRequest                	controllers.RegistrationRequest.registrationRequest()
-POST     /registrationRequest               	controllers.RegistrationRequest.postRegistrationRequest()
-POST    /registration                			controllers.RegistrationHandler.registor()
-GET     /addnewschoolrequest                    controllers.RegistrationRequest.postAddNewSchoolRequest()
+POST    /registrationRequest               	controllers.RegistrationRequest.postRegistrationRequest()
+POST    /addnewschoolrequest                    controllers.RegistrationRequest.postAddNewSchoolRequest()
 
+GET     /registerschool                 controllers.RegistrationHandler.preRegistorSchool()
+POST     /registerschool            	controllers.RegistrationHandler.postRegistorSchool()
+
+GET     /registersemp                 controllers.RegistrationHandler.preRegistorSchool()
+POST     /registeremp            	controllers.RegistrationHandler.postRegistorSchool()
 
 # Map static resources from the /public folder to the /assets URL path
 #GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

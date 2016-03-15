@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.Timestamp;
 import java.util.Calendar;
+import java.util.Map;
 
 import enum_package.RequestedStatus;
 import play.db.DB;
@@ -25,33 +26,32 @@ public class SchoolRegistrationRequestDAO {
 	private String authToken = "auth_token";
 	private String authTokenGenereatedAt = "auth_token_genereated_at";
 	private String requestNumber = "request_number";
-	
+
 	private RandomGenerator randomGenerator = new RandomGenerator(); 
 	private SecureRandom secureRandom = new SecureRandom();
 
-	public String generateRequest() throws Exception {
+	public String generateRequest(Map<String, String> addNewSchoolRequestDetails) throws Exception {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
-		String referenceNumber = randomGenerator.getReferenceNumber(150, secureRandom);
-		String insertQuery = String.format("INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s"
-				+ ", %s) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);", table_name, schoolName, principalName,
-				principalEmail, schoolAddress, contact, schoolRegistrationId, query, status, authToken,
-				authTokenGenereatedAt, requestNumber);
+		String referenceNumber = randomGenerator.getReferenceNumber(30, secureRandom);
+		
+		String insertQuery = String.format("INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s, %s, %s) "
+				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);", table_name, schoolName, principalName,
+				principalEmail, schoolAddress, contact, schoolRegistrationId, query, status, requestNumber);
 		try {
-			connection = DB.getDataSource("school_management_system").getConnection();
+			connection = DB.getDataSource("srp").getConnection();
+			connection.setAutoCommit(false);
 			preparedStatement = connection.prepareStatement(insertQuery);
-			preparedStatement.setString(1, ""); //schoolName
-			preparedStatement.setString(2, ""); //principalName
-			preparedStatement.setString(3, ""); //principalEmail
-			preparedStatement.setString(4, ""); //schoolAddress
-			preparedStatement.setString(5, ""); //contact
-			preparedStatement.setString(6, ""); //schoolRegistrationId ====
-			preparedStatement.setString(7, ""); //query
-			preparedStatement.setString(8, RequestedStatus.REGISTERED.name());
-			preparedStatement.setString(9, null);//auth_toke
-			preparedStatement.setTimestamp(11, null);//date
-			//referenceNumber = "school_name" + referenceNumber; add school name here
-			preparedStatement.setString(12, referenceNumber);
+			preparedStatement.setString(1, addNewSchoolRequestDetails.get("schoolName"));
+			preparedStatement.setString(2, addNewSchoolRequestDetails.get("principalName"));
+			preparedStatement.setString(3, addNewSchoolRequestDetails.get("principalEmail"));
+			preparedStatement.setString(4, addNewSchoolRequestDetails.get("schoolAddress"));
+			preparedStatement.setString(5, addNewSchoolRequestDetails.get("contact"));
+			preparedStatement.setString(6, addNewSchoolRequestDetails.get("schoolRegistrationId"));
+			preparedStatement.setString(7, addNewSchoolRequestDetails.get("query")); //query
+			preparedStatement.setString(8, RequestedStatus.REQUESTED.name());
+			referenceNumber = addNewSchoolRequestDetails.get("schoolName") + referenceNumber;
+			preparedStatement.setString(9, referenceNumber);
 			preparedStatement.execute();
 			connection.commit();
 		} catch(Exception exception) {
@@ -96,5 +96,9 @@ public class SchoolRegistrationRequestDAO {
 				connection.close();
 		}
 		return ""; 
+	}
+
+	public String registerEmployee() {
+		return "";
 	}
 }
