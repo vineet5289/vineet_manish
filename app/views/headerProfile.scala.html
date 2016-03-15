@@ -1,0 +1,69 @@
+@(title: String,username:String,role:String)(content: Html)
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>@title</title>
+    <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="@routes.Assets.at("stylesheets/simple-sidebar.css")">
+    
+      <!--  Load site-specific customizations after bootstrap. -->
+      
+      <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bootstrap.min.css")">
+    <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
+    <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
+    <link rel="javascripts" media="screen" href="@routes.Assets.at("javascripts/bootstrap.min.js")">
+     <link rel="javascripts" media="screen" href="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    
+    
+    <nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">WebSiteName</a>
+    </div>
+    <div>
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#">Home</a></li>
+        <li><a href="#">Page 1</a></li>
+        <li><a href="#">Page 2</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">@username<span class="glyphicon glyphicon-log-in"></span></a>
+        
+    
+       <ul class="dropdown-menu">
+      <li><a href="#">Profile</a></li>
+      <li><a href="#">Settings</a></li>
+      <li class="divider"></li>
+      <li><a href="@routes.SRPController.logout()">logout</a></li>
+       
+       </li>
+    </ul>
+   </div>
+  </div>
+</nav>
+    
+      
+  </head>
+  <body>
+   @content
+    
+    <script src="http://code.jquery.com/jquery.min.js"></script>
+    <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bootstrap.min.css")">
+    <link rel="javascripts" media="screen" href="@routes.Assets.at("javascripts/bootstrap.min.js")">
+     <link rel="javascripts" media="screen" href="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")">
+
+    <!-- Enable tooltips. Used primarily to validate that JQuery + Bootstrap JS are loaded. Remove this script if you don't want tooltips. -->
+    <script type="text/javascript">
+    jQuery(function ($) {
+        $("[rel='tooltip']").tooltip()
+    });
+    </script>
+  </body>
+</html>
