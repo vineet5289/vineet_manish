@@ -8,24 +8,15 @@
 	  <div class="well">
 	    @form(routes.SRPController.postLogin(), 'class -> "form-horizontal") {
     		@login(loginForm)
-    		
-    	}
-  	 </div>
-  	 
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+       }
+       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1>
   	    <ul class="nav navbar-nav navbar-right">
-           <li><a href="@routes.RegistrationRequest.registrationRequest">Register</a></li>
+  	       <h4>Click Here For Registering Your School <a href="@routes.RegistrationRequest.preAddNewSchoolRequest">Register</a></h4>
+           <h4><b>If Already registered , click here to complete your registration</b> <a href="@routes.RegistrationRequest.preRegistrationRequest">Register</a></h4>
         </ul>
     </div>
-  	 
-    
-    <div class="form-group">
-    <div class="col-sm-offset-2 col-sm-10">
-      <button id="register" type="submit" value="Register" class="btn btn-primary" > <a href="@routes.RegistrationRequest.registrationRequest">Register</a> </button>
-      <button id="register" type="submit" value="Register" class="btn btn-primary" > <a href="@routes.RegistrationRequest.preAddNewSchoolRequest">Register</a> </button>
-    </div>
-    </div>
-	@if(flash.containsKey("success")) {
+
+    @if(flash.containsKey("success")) {
 		<div class="well">
 			<div id="success-message" class="text-success">
 		  		@flash.get("success")

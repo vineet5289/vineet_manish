@@ -1,8 +1,10 @@
 package controllers;
 
 import java.util.Map;
-
 import dao.SchoolRegistrationRequestDAO;
+import models.SchoolBoard;
+import models.SchoolType;
+import models.State;
 import play.data.Form;
 import play.mvc.Result;
 import views.forms.*;
@@ -15,8 +17,21 @@ public class RegistrationRequest extends CustomController {
 		return redirect(routes.RegistrationRequest.newUser());
 	}
 
+	public Result preRegistrationRequest() {
+		SchoolFormData studentData = new SchoolFormData();
+		Form<SchoolFormData> schoolForm = Form.form(SchoolFormData.class).fill(studentData);
+		return ok(schoolFieldSetIndex.render(schoolForm,
+				State.makeStateMap(studentData),
+			      SchoolBoard.makeSchoolBoardMap(studentData),
+			      SchoolType.makeSchoolTypeMap(studentData)
+				));
+		
+	}
+	
 	public Result postRegistrationRequest() {
-		return ok("done");
+		Form<SchoolFormData> schoolForm = Form.form(SchoolFormData.class).bindFromRequest();
+		return ok("school Registration completed");
+		
 	}
 	
 	public Result newUser() {

@@ -19,6 +19,11 @@ GET     /registrationRequest                	controllers.RegistrationRequest.reg
 POST    /registrationRequest               	controllers.RegistrationRequest.postRegistrationRequest()
 POST    /addnewschoolrequest                    controllers.RegistrationRequest.postAddNewSchoolRequest()
 
+GET     /registrationRequest                	controllers.RegistrationRequest.preRegistrationRequest()
+POST     /registrationRequest               	controllers.RegistrationRequest.postRegistrationRequest()
+POST    /registration                			controllers.RegistrationHandler.registor()
+GET     /addnewschoolrequest                    controllers.RegistrationRequest.postAddNewSchoolRequest()
+
 GET     /registerschool                 controllers.RegistrationHandler.preRegistorSchool()
 POST     /registerschool            	controllers.RegistrationHandler.postRegistorSchool()
 
