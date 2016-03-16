@@ -13,7 +13,6 @@ import views.forms.AddNewSchoolRequest;
 import views.forms.SchoolFormData;
 import dao.SchoolRegistrationRequestDAO;
 import views.html.addNewSchoolRequestIndex;
-import views.html.schoolFieldSetIndex;
 import enum_package.SchoolCateroryEnum;
 import enum_package.SchoolTypeEnum;
 
@@ -57,17 +56,18 @@ public class RegistrationRequest extends CustomController {
 
 		Form<SchoolFormData> schoolForm = Form.form(SchoolFormData.class);
 		
-		Map<Long, String> states = State.getStateList();
+//		Map<Long, String> states = State.getStateList();
 //		Map<Long, String> schoolBoards = SchoolBoard.getSchoolboardList();
 //		Map<Long, String> schoolTypes = SchoolType.getSchoolTypeList();
 //		Map<Long, String> schoolCategories = SchoolCategory.getSchoolCategoryList();
 
-		return ok(schoolFieldSetIndex.render(schoolForm,
-				states));
-//				schoolBoards,
-//				schoolTypes,
-//				schoolCategories
-//				));
+//		return ok(schoolFieldSetIndex.render(schoolForm,
+//				states));
+////				schoolBoards,
+////				schoolTypes,
+////				schoolCategories
+////				));
+		return ok("");
 	}
 
 	public Result postSchoolRegistrationRequest() {
@@ -84,7 +84,7 @@ public class RegistrationRequest extends CustomController {
 	public Result preEmployeeRegistrationRequest() {
 		SchoolFormData studentData = new SchoolFormData();
 		Form<SchoolFormData> schoolForm = Form.form(SchoolFormData.class).fill(studentData);
-		ok("");
+		return ok("");
 //		return ok(schoolFieldSetIndex.render(schoolForm,
 //				State.makeStateMap(studentData),
 //				SchoolBoard.makeSchoolBoardMap(studentData),
@@ -101,7 +101,7 @@ public class RegistrationRequest extends CustomController {
 	public Result preStudentRegistrationRequest() {
 		SchoolFormData studentData = new SchoolFormData();
 		Form<SchoolFormData> schoolForm = Form.form(SchoolFormData.class).fill(studentData);
-		ok("");
+		return ok("");
 //		return ok(schoolFieldSetIndex.render(schoolForm,
 //				State.makeStateMap(studentData),
 //				SchoolBoard.makeSchoolBoardMap(studentData),

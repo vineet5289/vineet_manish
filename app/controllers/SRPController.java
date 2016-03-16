@@ -10,7 +10,8 @@ import play.mvc.Result;
 import play.mvc.Security;
 import security.ActionAuthenticator;
 import views.forms.*;
-import views.html.*;
+import views.html.profile;
+import views.html.index;
 
 public class SRPController extends CustomController {
 
