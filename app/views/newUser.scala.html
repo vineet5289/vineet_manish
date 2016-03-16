@@ -1,20 +1,13 @@
-@(schoolForm: Form[views.forms.SchoolFormData], schoolRegister: Form[views.forms.AddNewSchoolRequest])
-@import views.html.bootstrap3._
-
-<abcd>
-  <!-- Header -->
-  <div id="legend">
-    <legend>NEW USER </legend>
-  </div>
-
-
-
-   
-  <div class="form-group">
-    <div class="col-sm-offset-2 col-sm-10">
-      <button id="newuser" type="submit" value="New Registration" class="btn btn-primary"><a href="">New User</button>
-      
-      <button id="register" type="submit" value="Already Requested Register" class="btn btn-primary"><a href="">Register</button>
-    </div>
-  </div>
-</abcd>
+  @main("Home"){
+   <div class="row">
+			<div class="col-md-offset-4 col-lg-offset-4 col-md-4 col-lg-4">
+			
+			     <h5>Request for Registering your School</h5>
+			     <a href="@routes.RegistrationRequest.preAddNewSchoolRequest()" class="btn btn-primary btn-lg" role="button">Register</a>
+			      <hr>
+			      <h5>If already Registerd. Enter School Details</h5>
+			      <a href="@routes.RegistrationRequest.preRegistrationRequest()" class="btn btn-primary btn-lg" role="button">Enter School Information</a>
+			
+			</div>	
+	</div>
+	}

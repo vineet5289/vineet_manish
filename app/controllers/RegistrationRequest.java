@@ -10,9 +10,9 @@ import views.html.*;
 
 public class RegistrationRequest extends CustomController {
 
-	public Result registrationRequest() {
-//		Form<RegisterSchool> registerSchoolForm = Form.form(RegisterSchool.class);
-		return redirect(routes.RegistrationRequest.newUser());
+	public Result otpLoginRequest() {
+		Form<OtpFormData> otpform = Form.form(OtpFormData.class);
+		return ok(otpEnter.render(otpform));
 	}
 
 	public Result preRegistrationRequest() {
@@ -32,10 +32,8 @@ public class RegistrationRequest extends CustomController {
 		
 	}
 	
-	public Result newUser() {
-		Form<AddNewSchoolRequest> registerSchoolForm = Form.form(AddNewSchoolRequest.class);
-		Form<SchoolFormData> schoolForm = Form.form(SchoolFormData.class);
-		return ok(newUser.render(schoolForm, registerSchoolForm));
+	public Result registerPage() {
+		return ok(newUser.render());
 	}
 
 	public Result preAddNewSchoolRequest() {

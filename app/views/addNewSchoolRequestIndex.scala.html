@@ -3,8 +3,8 @@
 @import helper._
 
 @main("registerIndex") {
-<div class="container">
-  <div class="well">
+<div class="row">
+<div class="col-md-offset-4 col-lg-offset-4 col-md-4 col-lg-4">
 
     @form(routes.RegistrationRequest.postRegistrationRequest(), 'class -> "form-horizontal") {
       @addNewSchoolRequest(schoolRegister)

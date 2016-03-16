@@ -15,9 +15,11 @@ import views.html.*;
 public class SRPController extends CustomController {
 
 	public Result index() {
-		Form<LoginForm> loginForm = Form.form(LoginForm.class);
-		return ok(index.render(loginForm));
+		//Form<LoginForm> loginForm = Form.form(LoginForm.class);
+		return ok(home.render());
 	}
+	
+
 
 	@Security.Authenticated(ActionAuthenticator.class)
 	public Result home() {
@@ -32,7 +34,7 @@ public class SRPController extends CustomController {
 	public Result postLogin() {
 		System.out.println("postLogin*********");
 		Form<LoginForm> loginForm = Form.form(LoginForm.class).bindFromRequest();
-		Form<AddNewSchoolRequest> registerForm = Form.form(AddNewSchoolRequest.class);
+		//Form<AddNewSchoolRequest> registerForm = Form.form(AddNewSchoolRequest.class);
 		if (loginForm== null || loginForm.hasErrors()) {
 			flash("error", "Login credentials not valid.");
 			return redirect(routes.SRPController.index());
@@ -65,7 +67,7 @@ public class SRPController extends CustomController {
 
 	public Result preLogin() {
 		Form<LoginForm> loginForm = Form.form(LoginForm.class);
-		Form<AddNewSchoolRequest> registerForm = Form.form(AddNewSchoolRequest.class).bindFromRequest();
+		//Form<AddNewSchoolRequest> registerForm = Form.form(AddNewSchoolRequest.class).bindFromRequest();
 		return ok(index.render(loginForm));
 	}
 

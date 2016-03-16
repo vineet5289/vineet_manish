@@ -3,36 +3,48 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>@title</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="@routes.Assets.at("stylesheets/simple-sidebar.css")">
-    
-    
-   
-     
-      <!--  Load site-specific customizations after bootstrap. -->
-      <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bootstrap.min.css")">
-    <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
-    <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
-    
-      <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-      <!--[if lt IE 9]>
-          <script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.js"></script>
-          <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-          <script src="http://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.js"></script>
-        <![endif]-->
-  </head>
-  <body>
-   @content
-    
-    <script src="http://code.jquery.com/jquery.min.js"></script>
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>Twitter Bootstrap Modal Login Popup - Social Login Popup </title>
+		<meta name="description" content="Twitter Bootstrap Modal Login Popup - Social Login Popup ">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Enable tooltips. Used primarily to validate that JQuery + Bootstrap JS are loaded. Remove this script if you don't want tooltips. -->
-    <script type="text/javascript">
-    jQuery(function ($) {
-        $("[rel='tooltip']").tooltip()
-    });
-    </script>
-  </body>
+		<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+		<link href='http://fonts.googleapis.com/css?family=Bree+Serif' rel='stylesheet' type='text/css'>
+		<link href='http://fonts.googleapis.com/css?family=Philosopher' rel='stylesheet' type='text/css'>
+		
+		<!--  Load site-specific customizations after bootstrap. -->
+
+        <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
+		<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bootstrap.min.css")">
+		<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/font-awesome.min.css")">
+		<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/style.css")">
+		
+		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+	
+		<script src="="@routes.Assets.at("javascripts/modernizr-2.6.2.min.js")"></script>
+		<script src="="@routes.Assets.at("javascripts/jquery-1.10.2.min.js")"></script>
+		<script src="="@routes.Assets.at("javascripts/bootstrap.min.js")"></script>
+		
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+		
+	</head>
+ 
+     <body>
+    
+     <!-- Add your site or application content here -->
+    
+    <div class="container-fluid">
+		<div class="row">
+			<div class="col-md-offset-4 col-lg-offset-4 col-md-4 col-lg-4">
+			  <h2 class="text-center">Welcome to School Management System</h2></br></br>
+				
+			</div>	
+		</div>
+	</div>  
+    @content 
+     
+ 
+    </body>
 </html>

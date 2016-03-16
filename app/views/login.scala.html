@@ -1,7 +1,6 @@
 @(loginForm: Form[views.forms.LoginForm])
 
 @import views.html.bootstrap3._
-
 <login>
   <!-- Header -->
   <div id="legend">
@@ -11,7 +10,7 @@
    <!-- Login Id -->
   @text(loginForm("userName"),
         label = "User Name",
-        placeholder = "User Name",
+        placeholder = "UserName",
         help = "Please enter Login Id. (required)")
         
         
