@@ -7,7 +7,7 @@ import play.data.Form;
 import play.mvc.Result;
 
 import views.forms.*;
-import views.html.*;
+import views.html.dashBoard3;
 
 public class Application extends CustomController {
 
