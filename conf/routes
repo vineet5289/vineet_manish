@@ -4,30 +4,37 @@
 
 # Home page
 GET     /        	                        	   controllers.SRPController.index()
-GET     /home                        			   controllers.SRPController.home()
 GET     /login                       			   controllers.SRPController.preLogin()
 POST    /login                       			   controllers.SRPController.postLogin()
 GET     /logout                       			   controllers.SRPController.logout()
 
 # mailer
-GET      /sendmail                           	   controllers.Application.sendMailTest()
+#GET       /sendmail                           	   controllers.Application.sendMailTest()
+
+# Message Api
+GET			/sendMessage							   controllers.MessageController.sendMessage() 
 
 # add new schoole request
-GET      /addnewschoolrequest                	   controllers.RegistrationRequest.preAddNewSchoolRequest()
-POST     /addnewschoolrequest                      controllers.RegistrationRequest.postAddNewSchoolRequest()
+GET      	/addnewschoolrequest                	   controllers.RegistrationRequest.preAddNewSchoolRequest()
+POST     	/addnewschoolrequest                       controllers.RegistrationRequest.postAddNewSchoolRequest()
 
 # schoole registration request
-GET      /registerschool                           controllers.RegistrationRequest.preSchoolRegistrationRequest()
-POST     /registerschool            	           controllers.RegistrationRequest.postSchoolRegistrationRequest()
+POST      	/submitopt                            	   controllers.RegistrationRequest.submitOTP()
+POST     	/registerschool            	           	   controllers.RegistrationRequest.postSchoolRegistrationRequest()
 
 # employee registration request
-GET      /registersemp                             controllers.RegistrationRequest.preEmployeeRegistrationRequest()
-POST     /registeremp            	               controllers.RegistrationRequest.postEmployeeRegistrationRequest()
+GET      	/registersemp                              controllers.RegistrationRequest.preEmployeeRegistrationRequest()
+POST     	/registeremp            	               controllers.RegistrationRequest.postEmployeeRegistrationRequest()
 
 # students registration request
-GET      /registersstudent                 		   controllers.RegistrationRequest.preStudentRegistrationRequest()
-POST     /registerempstudent            	       controllers.RegistrationRequest.postStudentRegistrationRequest()
+GET      	/registersstudent                 		   controllers.RegistrationRequest.preStudentRegistrationRequest()
+POST     	/registerempstudent            	       	   controllers.RegistrationRequest.postStudentRegistrationRequest()
 
 # Map static resources from the /public folder to the /assets URL path
-#GET     /assets/*file                             controllers.Assets.versioned(path="/public", file: Asset)
-GET     /assets/*file                  			   controllers.Assets.at(path="/public", file: String)
+#GET     	/assets/*file                              controllers.Assets.versioned(path="/public", file: Asset)
+GET     	/assets/*file		                  	   controllers.Assets.at(path="/public", file: String)
+
+# approved school
+
+GET			/approvedschool							   controllers.RegistrationRequest.preApprovedNewSchoolRequest()
+POST		/approvedschool							   controllers.RegistrationRequest.postApproveNewSchooldRequest()

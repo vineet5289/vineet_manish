@@ -89,6 +89,37 @@ public class UserLoginDAO {
 		}
 	}
 
+	public boolean isUserPresent(String userName, String authKey) throws SQLException {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		String selectQuery = String.format("SELECT * FROM %s WHERE user_name=? AND auth_token=?;", tableName);
+		try {
+			connection = DB.getDataSource("srp").getConnection();
+			preparedStatement = connection.prepareStatement(selectQuery, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
+			preparedStatement.setString(1, userName);
+			preparedStatement.setString(2, authKey);
+			resultSet = preparedStatement.executeQuery();
+			if(resultSet.next()){
+				System.out.println("*****in if****");
+				return true;
+			}
+		} catch(Exception exception) {
+			System.out.println("******* in catch******");
+			exception.printStackTrace();
+			connection.rollback();
+		} finally {
+			System.out.println("finally executed");
+			if(resultSet != null)
+				resultSet.close();
+			if(preparedStatement != null)
+				preparedStatement.close();
+			if(connection != null)
+				connection.close();
+		}
+		System.out.println("afetr final");
+		return false;
+	}
 	private boolean isPasswordMatch(String enteredPassword, String dbPassword) throws NoSuchAlgorithmException {
 		return RandomGenerator.checkPasswordMatch(dbPassword, enteredPassword);
 	}

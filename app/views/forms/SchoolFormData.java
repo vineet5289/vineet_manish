@@ -23,14 +23,13 @@ public class SchoolFormData {
 	private String addressLine1;
 	private String addressLine2;
 	private String city;
-//	private State state;
-	private Long state;
+	private String state;
 	private String schoolCountry;
 	private String pincode;
 	private int noOfShift = 1;
-	private SchoolBoard schoolBoard;
-	private SchoolCateroryEnum schoolCategory;
-	private SchoolTypeEnum schoolType;
+	private String schoolBoard;
+	private String schoolCategory;
+	private String schoolType;
 
 	private String principleName;
 	private String principleEmail;

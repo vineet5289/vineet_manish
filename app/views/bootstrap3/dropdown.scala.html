@@ -1,4 +1,4 @@
-@(field: Field, label: String = "CHANGEME", optionMap: Map[String,Boolean], isMultiple: Boolean, help: String = "")
+@(field: Field, label: String = "CHANGEME", buttonNameList: List[String], isMultiple: Boolean, help: String = "")
 
   <div class="form-group @if(field.hasErrors) {has-error}">
     <label class="col-sm-2 control-label" for="@field.id">@label</label>
@@ -9,8 +9,8 @@
         name="@if(isMultiple) {@(field.name + "[]")} else {@field.name}"
         @if(isMultiple) {multiple="multiple"}>
         @if(!isMultiple) {<option class="blank" value="">Please select a value</option>}
-        @for((optionName, isSelected) <- optionMap) {
-          <option id="@optionName" value="@optionName" @if(isSelected) {selected}>@optionName</option>
+        @for(optionName <- buttonNameList) {
+          <option id="@optionName" value="@optionName" @if(optionName == field.value.getOrElse("")) {selected}>@optionName</option>
         }
       </select>
       <span class="help-block">@help</span>

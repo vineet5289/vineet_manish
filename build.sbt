@@ -17,6 +17,7 @@ libraryDependencies ++= Seq(
    "org.mindrot" % "jbcrypt" % "0.3m",
    "com.typesafe.play" %% "play-mailer" % "3.0.1",
    "org.apache.commons" % "commons-email" % "1.3.3",
+   "com.twilio.sdk" % "twilio-java-sdk" % "3.4.5",
    evolutions
 )
 
@@ -24,4 +25,7 @@ libraryDependencies ++= Seq(
 // other, legacy style, accesses its actions statically.
 routesGenerator := InjectedRoutesGenerator
 
+EclipseKeys.preTasks := Seq(compile in Compile)
+EclipseKeys.projectFlavor := EclipseProjectFlavor.Java           // Java project. Don't expect Scala IDE
+EclipseKeys.createSrc := EclipseCreateSrc.ValueSet(EclipseCreateSrc.ManagedClasses, EclipseCreateSrc.ManagedResources)  // Use .class files instead of generated .scala files for views and routes
 //fork in run := true

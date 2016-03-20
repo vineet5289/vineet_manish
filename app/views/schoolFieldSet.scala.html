@@ -1,8 +1,9 @@
 @(schoolForm: Form[views.forms.SchoolFormData],
-  state:       List[models.State],
-  schoolboard: List[models.SchoolBoard],
-  schooltype: List[enum_package.SchoolTypeEnum],
-  schoolcaterory:  List[enum_package.SchoolCateroryEnum])
+  schoolBoard:      List[String],
+  schoolCategory:    List[String],
+  schoolType:        List[String],
+  schoolCountry:         List[String],
+  state:      		 List[String])
 
 @import views.html.bootstrap3._
 
@@ -11,26 +12,63 @@
   <div id="legend">
     <legend>School Data</legend>
   </div>
+  
+  @dropdown(schoolForm("schoolBoard"),
+         label="School Board",
+         buttonNameList=schoolBoard,
+         isMultiple=false,
+         help="select Board")
+         
+          @dropdown(schoolForm("schoolCategory"),
+         label="School category",
+         buttonNameList=schoolCategory,
+         isMultiple=false,
+         help="select category")
+         
+         
+          @dropdown(schoolForm("schoolType"),
+         label="School Type",
+         buttonNameList=schoolType,
+         isMultiple=false,
+         help="select Type")
+         
+          @dropdown(schoolForm("schoolCountry"),
+         label="Country",
+         buttonNameList=schoolCountry,
+         isMultiple=false,
+         help="select country")
+         
+          @dropdown(schoolForm("state"),
+         label="State",
+         buttonNameList=state,
+         isMultiple=false,
+         help="select State")
 
    <!-- Name -->
-  @text(schoolForm("schoolname"),
+  @text(schoolForm("schoolName"),
         label = "School Name",
         placeholder = "School Name",
         help = "Please enter your Registerd Schoo name. (required)")
    <!-- Principal Name -->
-  @text(schoolForm("Principalname"),
+  @text(schoolForm("principleName"),
         label = "Principal Name",
         placeholder = "Principal Name",
         help = "Please enter your first and last name. (required)")
 
   <!-- Password For School Login -->
-  @password(schoolForm("password"),
-            label = "Password",
+  @password(schoolForm("schoolPassword"),
+            label = "School Password",
+            placeholder = "",
+            help = "Password must be five or more characters. (required)")
+
+    <!-- Password For School Login -->
+  @password(schoolForm("principlePassword"),
+            label = "Principle Password",
             placeholder = "",
             help = "Password must be five or more characters. (required)")
             
   <!-- School registration Id -->
-  @text(schoolForm("schoolregistrationid"),
+  @text(schoolForm("schoolRegistration"),
         label="School Registration Id",
         placeholder="School Registration Id",
         help="Please enter your Unique School Id issued by Govt. (required)")
@@ -40,7 +78,7 @@
    
         
   <!--Address -->
-  @text(schoolForm("address"),
+  @text(schoolForm("addressLine1"),
        label="Address",
        placeholder="Address",
        help="Enter your School Address. (required)")
@@ -60,17 +98,10 @@
          help="Enter Pincode of Your City")
          
    <!-- Contact no. -->
-   @text(schoolForm("contact"),
+   @text(schoolForm("schoolMobileNumber"),
         label="Contact No." ,
         placeholder="Contact No.",
         help="Enter school office number. ")
-        
-        
-           <!-- State -->
-   @select(schoolForm("state"),
-           label="State",
-           help="select state to which school belongs.")
-
 
   <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
