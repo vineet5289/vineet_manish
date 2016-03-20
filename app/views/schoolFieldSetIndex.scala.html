@@ -1,5 +1,9 @@
 @(schoolForm: Form[views.forms.SchoolFormData],
-  state:      Map[Long, String])
+  schoolBoard:      List[String],
+  schoolCategory:    List[String],
+  schoolType:        List[String],
+  schoolCountry:     List[String],
+  state:      		 List[String])
 
 @import helper._
 
@@ -8,7 +12,7 @@
   <div class="well">
 
     @form(routes.RegistrationRequest.postSchoolRegistrationRequest(), 'class -> "form-horizontal") {
-      @schoolFieldSet(schoolForm,state,schoolboard,schooltype, schoolcaterory)
+    	@schoolFieldSet(schoolForm, schoolBoard, schoolCategory, schoolType, schoolCountry, state)
     }
   </div>
 

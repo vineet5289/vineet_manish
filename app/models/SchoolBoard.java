@@ -2,7 +2,9 @@ package models;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import lombok.Getter;
@@ -10,7 +12,7 @@ import lombok.Setter;
 import play.db.DB;
 
 public class SchoolBoard {
-	private static Map<Long, String> schoolBoards = new HashMap<Long, String>();
+	private static List<String> schoolBoards = new ArrayList<String>();
 
 	@Getter @Setter
 	private long id;
@@ -21,7 +23,7 @@ public class SchoolBoard {
 	@Getter @Setter
 	private String boardCode;
 
-	public static Map<Long, String> getSchoolboardList() throws Exception {
+	public static List<String> getSchoolboardList() throws Exception {
 		if(schoolBoards == null || schoolBoards.isEmpty())
 			fetchBoardList();
 
@@ -35,13 +37,13 @@ public class SchoolBoard {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
-		String query = "SELECT id, name FROM board;";
+		String query = "SELECT id, board_name FROM board;";
 		try {
 			connection = DB.getDataSource("srp").getConnection();
 			preparedStatement = connection.prepareStatement(query);
 			resultSet = preparedStatement.executeQuery();
 			while(resultSet.next()) {
-				schoolBoards.put(resultSet.getLong("id"), resultSet.getString("board_name"));
+				schoolBoards.add(resultSet.getString("board_name"));
 			}
 		} catch(Exception exception) {
 			exception.printStackTrace();

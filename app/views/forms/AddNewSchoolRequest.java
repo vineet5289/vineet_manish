@@ -12,6 +12,7 @@ import lombok.Data;
 
 @Data
 public class AddNewSchoolRequest {
+	private String id;
 	private String schoolName="";
 	private String principalName="";
 	private String principalEmail="";
@@ -19,6 +20,7 @@ public class AddNewSchoolRequest {
 	private String contact="";
 	private String schoolRegistrationId="";
 	private String query="";
+	private String referenceNumber="";
 
 	private static Pattern emailNamePtrn = Pattern.compile("^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
 
@@ -41,13 +43,10 @@ public class AddNewSchoolRequest {
 		}
 
 		if(principalEmail == null || validateEmailAddress(principalEmail)==false) {
-			System.out.println("*888 email");
 			errors.add(new ValidationError("Email","check your email"));
 		}
-System.out.println(errors + "=-----");
 		if(errors.size() > 0)
 			return errors;
-
 		return null;
 	}
 

@@ -1,20 +1,22 @@
 package models;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import enum_package.SchoolCateroryEnum;
 
 public class SchoolCategory {
-	private static Map<Long, String> schoolCaterorys = new HashMap<Long, String>();
+	private static List<String> schoolCaterorys = new ArrayList<String>();
 
 	static {
-		schoolCaterorys.put(1L, SchoolCateroryEnum.RESIDENCIAL.name());
-		schoolCaterorys.put(2L, SchoolCateroryEnum.NON_RESIDENCIAL.name());
-		schoolCaterorys.put(3L, SchoolCateroryEnum.BOTH.name());
+		schoolCaterorys.add(SchoolCateroryEnum.RESIDENCIAL.name());
+		schoolCaterorys.add(SchoolCateroryEnum.NON_RESIDENCIAL.name());
+		schoolCaterorys.add(SchoolCateroryEnum.BOTH.name());
 	}
 
-	public static Map<Long, String> getSchoolCategoryList() {
+	public static List<String> getSchoolCategoryList() {
 		return schoolCaterorys;
 	}
 }

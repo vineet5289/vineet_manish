@@ -15,7 +15,7 @@ public class SecurityController extends Action.Simple{
 	@Override
 	public Promise<Result> call(Context ctx) throws Throwable {
 		SecurityHelper helper = new SecurityHelper();
-		Map<SessionKey, String> userHeaderCredential = helper.getAuthTokenFromRequest(ctx);
+		Map<String, String> userHeaderCredential = helper.getAuthTokenFromRequest(ctx);
 		//TODO:  same as ActionAuthenticator
 
 		Result unauthorized = Results.unauthorized("unauthorized user");

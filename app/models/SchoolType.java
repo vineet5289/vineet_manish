@@ -1,19 +1,19 @@
 package models;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import enum_package.SchoolTypeEnum;
 
 public class SchoolType {
 	
-	private static Map<Long, String> allSchoolTypes=new HashMap<Long, String>();
+	private static List<String> allSchoolTypes=new ArrayList<String>();
     static
     {
-    	allSchoolTypes.put(1L, SchoolTypeEnum.GOVERMENT.name());
-    	allSchoolTypes.put(2L, SchoolTypeEnum.PRIVATE.name());
+    	allSchoolTypes.add(SchoolTypeEnum.GOVERMENT.name());
+    	allSchoolTypes.add(SchoolTypeEnum.PRIVATE.name());
     }
 
-    public static Map<Long, String> getSchoolTypeList() {
+    public static List<String> getSchoolTypeList() {
     	return allSchoolTypes;
     }
 }
