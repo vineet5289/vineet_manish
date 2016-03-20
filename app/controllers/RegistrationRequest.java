@@ -13,6 +13,8 @@ import models.State;
 import play.data.Form;
 import play.libs.mailer.MailerClient;
 import play.mvc.Result;
+import play.mvc.Security;
+import security.SchoolRegisterRequestAuthenticator;
 import views.forms.AddNewSchoolRequest;
 import views.forms.NewSchoolApprovedRequest;
 import views.forms.OTPField;
@@ -26,6 +28,7 @@ import actors.SchoolRequestActorProtocol.ApprovedSchool;
 import actors.SchoolRequestActorProtocol.NewSchoolRequest;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
+import dao.SchoolRegistrationDAO;
 import dao.SchoolRegistrationRequestDAO;
 import enum_package.SessionKey;
 
@@ -99,17 +102,14 @@ public class RegistrationRequest extends CustomController {
 			flash("error", "Something parameter is missing or invalid in request. Please check and enter valid value");
 			return redirect(routes.SRPController.preLogin());
 		}
-System.out.println("otpValues" + otpValues);
+
 		String referenceKey = otpValues.get("referenceKey");
 		String otpValue = otpValues.get("otp");
 		SchoolRegistrationRequestDAO schoolRegistrationRequestDAO = new SchoolRegistrationRequestDAO();
-		System.out.println("referenceKey" + referenceKey);
-		System.out.println("otpValue" + otpValue);
 		try {
 			boolean isValidUser = schoolRegistrationRequestDAO.isValidUserByOtpAndReferenceKey(referenceKey, otpValue);
 			System.out.println("isValidUser" + isValidUser);
 			if(isValidUser) {
-				System.out.println("isValidUser in if");
 				session("REFERENCE-NUMBER", referenceKey);
 				session("AUTH-TOKEN", otpValue);
 				Form<SchoolFormData> schoolFormData = Form.form(SchoolFormData.class);
@@ -129,14 +129,30 @@ System.out.println("otpValues" + otpValues);
 		return redirect(routes.SRPController.preLogin());
 	}
 
+	@Security.Authenticated(SchoolRegisterRequestAuthenticator.class)
 	public Result postSchoolRegistrationRequest() {
-		System.out.println("************* 1");
 		Form<SchoolFormData> schoolForm = Form.form(SchoolFormData.class).bindFromRequest();
-		System.out.println("************* 2");
-		SchoolFormData schoolCategory = schoolForm.get();
-		System.out.println("************* 3");
-		System.out.println(schoolCategory.getSchoolCategory());
-		return ok("school Registration completed");
+		if(schoolForm == null || schoolForm.hasErrors()) {
+			flash("error", "Something parameter is missing or invalid in your registration request.");
+			return redirect(routes.RegistrationRequest.preAddNewSchoolRequest());
+		}
+
+		SchoolFormData schoolFormDetails = schoolForm.get();
+		if(schoolFormDetails == null) {
+			flash("error", "Something parameter is missing or invalid in your registration request.");
+			return redirect(routes.RegistrationRequest.preAddNewSchoolRequest());
+		}
+		
+		String referenceNumber = session().get("REFERENCE-NUMBER");
+		String authToken = session().get("AUTH-TOKEN");
+		SchoolRegistrationDAO schoolRegistrationDAO = new SchoolRegistrationDAO();
+		try {
+			boolean isSuccessfull = schoolRegistrationDAO.registerSchool(schoolFormDetails);
+		} catch(Exception exception) {
+			System.out.println("exception &&&&&&&&&");
+		}
+
+		return ok("school Registration completed. please login using your user name and password");
 
 	}
 

@@ -13,6 +13,7 @@ import java.util.Map;
 
 import play.db.DB;
 import utils.RandomGenerator;
+import views.forms.SchoolFormData;
 import actors.SchoolRequestActorProtocol.ApprovedSchool;
 import enum_package.RequestedStatus;
 
@@ -42,7 +43,7 @@ public class SchoolRegistrationRequestDAO {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		String referenceNumber = randomGenerator.getReferenceNumber(30, secureRandom);
-		
+
 		String insertQuery = String.format("INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s, %s, %s) "
 				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);", table_name, schoolName, principalName,
 				principalEmail, schoolAddress, contact, schoolRegistrationId, query, status, requestNumber);
@@ -97,7 +98,7 @@ public class SchoolRegistrationRequestDAO {
 			if(resultSet.next()) {
 				approvedSchool = new ApprovedSchool();
 				approvedSchool.setId(resultSet.getLong(id));
-				
+
 				String authTokeValue = randomGenerator.getReferenceNumber(30, secureRandom);
 				approvedSchool.setAuthToke(authTokeValue);
 				resultSet.updateString(authToken, authTokeValue);
