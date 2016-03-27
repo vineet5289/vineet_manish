@@ -84,50 +84,35 @@ public class ClassDAO {
 		return true;
 	}
 
-	public boolean addEditClass(List<ClassForm> classes, long schoolId, String userName) throws SQLException {
-		boolean isSuccessfull = false;
+	public boolean editClass(long schoolId, String userName, DisplayClassForm editClass) throws SQLException {
 		Connection connection = null;
-		PreparedStatement insertStatement = null;
-		String insertQuery = String.format("INSERT INTO class (%s, %s, %s, %s, %s, %s, %, %s) VALUES(?, ?, ?, ?, ?, ?, ?, ?);", 
-				className, schoolIdField, classStartTime, classEndTime, noOfPeriod, parentClass, isActive, userNameField);
+		PreparedStatement updateStatement = null;
+		int result = 0;
+		String updateQuery = String.format("UPDATE %s SET %s=?, %s=?, %s=?, %s=? WHERE %s=? AND %s=?;", 
+				tableName, classStartTime, classEndTime, noOfPeriod, userNameField, schoolId, className);
 		try {
 			connection = DB.getDataSource("srp").getConnection();
-			connection.setAutoCommit(false);
-
-
+			updateStatement = connection.prepareStatement(updateQuery);
+			updateStatement.setString(1, editClass.getClassStartTime());
+			updateStatement.setString(2, editClass.getClassEndTime());
+			updateStatement.setInt(3, editClass.getNoOfPeriod());
+			updateStatement.setString(4, userName);
+			updateStatement.setLong(5, schoolId);
+			updateStatement.setString(6, className);
+			result = updateStatement.executeUpdate();
 		} catch(Exception exception) {
+			result = 0;
+			exception.printStackTrace();
 			if(connection != null)
 				connection.rollback();
+			throw new SQLException(exception);
 		} finally {
-			if(insertStatement != null)
-				insertStatement.close();
+			if(updateStatement != null)
+				updateStatement.close();
 			if(connection != null)
 				connection.close();
 		}
-		return true;
-	}
-
-	public boolean addEditClassTime(List<ClassForm> classes, long schoolId, String userName) throws SQLException {
-		boolean isSuccessfull = false;
-		Connection connection = null;
-		PreparedStatement insertStatement = null;
-		String insertQuery = String.format("INSERT INTO class (%s, %s, %s, %s, %s, %s, %, %s) VALUES(?, ?, ?, ?, ?, ?, ?, ?);", 
-				className, schoolIdField, classStartTime, classEndTime, noOfPeriod, parentClass, isActive, userNameField);
-		try {
-			connection = DB.getDataSource("srp").getConnection();
-			connection.setAutoCommit(false);
-
-
-		} catch(Exception exception) {
-			if(connection != null)
-				connection.rollback();
-		} finally {
-			if(insertStatement != null)
-				insertStatement.close();
-			if(connection != null)
-				connection.close();
-		}
-		return true;
+		return (result == 1);
 	}
 
 	public Map<String, List<DisplayClassForm>> getClass(long schoolId) throws SQLException {
@@ -188,7 +173,6 @@ public class ClassDAO {
 		Connection connection = null;
 		PreparedStatement updateStatement = null;
 		int result = 0;
-		
 		String updateQuery = String.format("UPDATE %s SET %s=? WHERE %s=? AND %s=?;", tableName, isActive, schoolId, className);
 		try {
 			connection = DB.getDataSource("srp").getConnection();

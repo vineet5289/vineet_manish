@@ -71,14 +71,45 @@ public class ClassController extends CustomController {
 		return ok(classes+"");
 	}
 
-	public Result editClass() {
-		//		ClassDAO classDAO = new ClassDAO();
-		//		try {
-		//			classDAO.addClass(classes, schoolId, userName);
-		//		} catch (SQLException exception) {
-		//			redirect(routes.school.ClassController.preAddClass());
-		//		}
-		return ok("");
+	public Result editClass(String className) {
+		Form<DisplayClassForm> editClassForm = Form.form(DisplayClassForm.class).bindFromRequest();
+		String schoolIdFromSession = session().get(SessionKey.SCHOOL_ID.name());
+		String userName = session().get(SessionKey.USER_NAME.name());
+
+		if(editClassForm == null || editClassForm.hasErrors()
+				|| className == null || className.isEmpty()
+				|| schoolIdFromSession == null || schoolIdFromSession.isEmpty()) {
+			flash("error", "Some server exception happen");
+			return redirect(controllers.routes.SRPController.preLogin()); // check for correct redirection
+		}
+
+		long schoolId = -1l;
+		
+		try {
+			schoolId = Long.parseLong(schoolIdFromSession);
+		} catch(Exception exception) {
+			flash("error", "Some server exception happen");
+			return redirect(controllers.routes.SRPController.preLogin()); // check for correct redirection
+		}
+		ClassDAO classDAO = new ClassDAO();
+		DisplayClassForm editClass = editClassForm.get();
+		if(editClass == null) {
+			flash("error", "Some server exception happen");
+			return redirect(controllers.routes.SRPController.preLogin()); // check for correct redirection
+		}
+
+		boolean isSuccessful = false;
+		try {
+			isSuccessful = classDAO.editClass(schoolId, userName, editClass);
+		} catch (SQLException exception) {
+			exception.printStackTrace();
+			redirect(controllers.school.routes.ClassController.preAddClass());
+		}
+		if(!isSuccessful) {
+			flash("warn", "Some server exception happen during deletion. Please try after some time.");
+			//redirect to particular page
+		}
+		return ok("class updated successful"); //redirect to particular page
 	}
 
 	public Result deleteClass(String classsName) {
