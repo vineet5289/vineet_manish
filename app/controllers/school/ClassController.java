@@ -49,6 +49,7 @@ public class ClassController extends CustomController {
 
 	public Result viewAllClass() {
 		ClassDAO classDAO = new ClassDAO();
+		Map<String, List<DisplayClassForm>> classes = null; 
 		try {
 			String schoolIdFromSession = session().get(SessionKey.SCHOOL_ID.name());
 			long schoolId = -1l;
@@ -58,34 +59,35 @@ public class ClassController extends CustomController {
 				flash("error", "Some server exception happen");
 				return redirect(controllers.routes.SRPController.preLogin()); // check for correct redirection
 			}
-			Map<String, List<DisplayClassForm>> classes = classDAO.getClass(schoolId);
-			if(classes == null || classes.size() == 0) {
-				flash("warn", "There are no classes to display.");
-			}
-
-			return ok(classes+"");
+			classes = classDAO.getClass(schoolId);
 		} catch (SQLException exception) {
-			redirect(routes.school.ClassController.preAddClass());
+			redirect(controllers.school.routes.ClassController.preAddClass());
 		}
+
+		if(classes == null || classes.size() == 0) {
+			flash("warn", "There are no classes to display.");
+		}
+
+		return ok(classes+"");
 	}
 
 	public Result editClass() {
-//		ClassDAO classDAO = new ClassDAO();
-//		try {
-//			classDAO.addClass(classes, schoolId, userName);
-//		} catch (SQLException exception) {
-//			redirect(routes.school.ClassController.preAddClass());
-//		}
+		//		ClassDAO classDAO = new ClassDAO();
+		//		try {
+		//			classDAO.addClass(classes, schoolId, userName);
+		//		} catch (SQLException exception) {
+		//			redirect(routes.school.ClassController.preAddClass());
+		//		}
 		return ok("");
 	}
 
 	public Result deleteClass() {
-//		ClassDAO classDAO = new ClassDAO();
-//		try {
-//			classDAO.addClass(classes, schoolId, userName);
-//		} catch (SQLException exception) {
-//			redirect(routes.school.ClassController.preAddClass());
-//		}
+		//		ClassDAO classDAO = new ClassDAO();
+		//		try {
+		//			classDAO.addClass(classes, schoolId, userName);
+		//		} catch (SQLException exception) {
+		//			redirect(routes.school.ClassController.preAddClass());
+		//		}
 		return ok("");
 	}
 }
