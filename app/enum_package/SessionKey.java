@@ -3,5 +3,6 @@ package enum_package;
 public enum SessionKey {
 	AUTH_TOKEN,
 	USER_NAME,
-	USER_ROLE;
+	USER_ROLE,
+	SCHOOL_ID;
 }

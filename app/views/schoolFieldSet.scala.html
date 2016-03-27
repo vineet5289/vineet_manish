@@ -49,11 +49,12 @@
         label = "School Name",
         placeholder = "School Name",
         help = "Please enter your Registerd Schoo name. (required)")
-   <!-- Principal Name -->
-  @text(schoolForm("principleName"),
-        label = "Principal Name",
-        placeholder = "Principal Name",
-        help = "Please enter your first and last name. (required)")
+  <!-- schoolUserName -->
+  @text(schoolForm("schoolUserName"),
+        label = "schoolUserName",
+        placeholder = "School Name",
+        help = "Please enter your Registerd Schoo name. (required)")
+
 
   <!-- Password For School Login -->
   @password(schoolForm("schoolPassword"),
@@ -61,12 +62,30 @@
             placeholder = "",
             help = "Password must be five or more characters. (required)")
 
+   <!-- Principal Name -->
+  @text(schoolForm("principleName"),
+        label = "Principal Name",
+        placeholder = "Principal Name",
+        help = "Please enter your first and last name. (required)")
+
+ <!-- Principal Name -->
+  @text(schoolForm("principleUserName"),
+        label = "principleUserName ",
+        placeholder = "Principal Name",
+        help = "Please enter your first and last name. (required)")
+
     <!-- Password For School Login -->
   @password(schoolForm("principlePassword"),
             label = "Principle Password",
             placeholder = "",
             help = "Password must be five or more characters. (required)")
-            
+
+<!-- Password For School Login -->
+  @text(schoolForm("principleEmail"),
+            label = "principleEmail",
+            placeholder = "principleEmail",
+            help = "Password must be five or more characters. (required)")
+
   <!-- School registration Id -->
   @text(schoolForm("schoolRegistration"),
         label="School Registration Id",
@@ -102,6 +121,13 @@
         label="Contact No." ,
         placeholder="Contact No.",
         help="Enter school office number. ")
+        
+        
+        @text(schoolForm("principleMobileNumber"),
+        label="principleMobileNumber" ,
+        placeholder="principleMobileNumber",
+        help="Enter principal mobile number. ")
+        
 
   <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">

@@ -1,0 +1,44 @@
+@(classForm : Form[views.forms.school.ClassForm])
+<html>
+	<head>
+   		<script type="text/javascript">
+   		    var i = 0;
+            function addRows(){
+            var className = "classes[" + i + "].className";
+            var classStartTime = "classes[" + i + "].classStartTime";
+            var classEndTime = "classes[" + i + "].classEndTime";
+            var noOfPeriod = "classes[" + i + "].noOfPeriod";
+            var nameOfSection = "classes[" + i + "].nameOfSection";
+            
+            document.getElementById("myTable").insertRow(-1).innerHTML = '<td><input type="text" name=' + className + ' id=' + className + ' value=""/></td>' +
+            '<td><input type="text" name=' + classStartTime + ' id=' + classStartTime + ' value=""/></td>'+
+            '<td><input type="text" name=' + classEndTime + ' id=' + classEndTime + ' value=""/></td>'+
+            '<td><input type="text" name=' + noOfPeriod + ' id=' + noOfPeriod + ' value=""/></td>'+
+            '<td><input type="text" name=' + nameOfSection + ' id=' + nameOfSection + ' placeholder="insert comma seperated section Name"/></td>';
+        }
+       </script>
+	</head>
+  <body>
+  <Button id="addclass" onClick="addRows()">ADD CLASSES</button>
+  <form id="classform" method="POST" action="@school.routes.ClassController.postAddClass()">    
+      <table id="myTable" border="1">
+        <tr>
+           <td><b> Class Name</b> </td>
+           <td><b>start time</b></td>
+                <td><b> end time </b></td>
+                <td><b>No Of Periods</b> </td>
+                <td><b>section</b> </td>
+                
+            </tr>
+        </table>
+        </hr>
+        <button type="submit">SAVE</button>
+        </form>
+        <script>
+        
+         function myFunction() {
+    document.getElementById("classform").submit();
+    }
+        </script>
+  </body>
+  </html>
