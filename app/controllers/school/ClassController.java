@@ -46,12 +46,20 @@ public class ClassController extends CustomController {
 	}
 
 	public Result viewAllClass() {
-//		ClassDAO classDAO = new ClassDAO();
-//		try {
-//			classDAO.addClass(classes, schoolId, userName);
-//		} catch (SQLException exception) {
-//			redirect(routes.school.ClassController.preAddClass());
-//		}
+		ClassDAO classDAO = new ClassDAO();
+		try {
+			String schoolIdFromSession = session().get(SessionKey.SCHOOL_ID.name());
+			long schoolId = -1l;
+			try {
+				schoolId = Long.parseLong(schoolIdFromSession);
+			} catch(Exception exception) {
+				flash("error", "Some server exception happen");
+				return redirect(controllers.routes.SRPController.preLogin()); // check for correct redirection
+			}
+			classDAO.getClass(schoolId);
+		} catch (SQLException exception) {
+			redirect(routes.school.ClassController.preAddClass());
+		}
 		return ok("");
 	}
 

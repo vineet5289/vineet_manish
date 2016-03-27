@@ -9,6 +9,7 @@ import java.util.List;
 
 import play.db.DB;
 import views.forms.school.ClassForm;
+import views.forms.school.DisplayClassForm;
 
 public class ClassDAO {
 	private String tableName = "class";
@@ -124,8 +125,8 @@ public class ClassDAO {
 		return true;
 	}
 
-	public List<ClassForm> getClass(long schoolId) throws SQLException {
-		List<ClassForm> classes = new ArrayList<ClassForm>();
+	public List<DisplayClassForm> getClass(long schoolId) throws SQLException {
+		List<DisplayClassForm> classes = new ArrayList<DisplayClassForm>();
 		Connection connection = null;
 		PreparedStatement selectStatement = null;
 		ResultSet resultSet = null;
@@ -138,12 +139,12 @@ public class ClassDAO {
 			selectStatement.setLong(1, schoolId);
 			resultSet = selectStatement.executeQuery();
 			while(resultSet.next()) {
-				ClassForm addClass = new ClassForm();
-				//				addClass.setClassName(resultSet.getString(className));
-				//				addClass.setClassStartTime(resultSet.getString(classStartTime));
-				//				addClass.setClassEndTime(resultSet.getString(classEndTime));
-				//				addClass.setParentClassName(resultSet.getString(parentClass));
-				//				addClass.setUserName(resultSet.getString(userNameField));
+				DisplayClassForm addClass = new DisplayClassForm();
+				addClass.setClassName(resultSet.getString(className));
+				addClass.setClassStartTime(resultSet.getString(classStartTime));
+				addClass.setClassEndTime(resultSet.getString(classEndTime));
+				addClass.setParentClassName(resultSet.getString(parentClass));
+				addClass.setUserName(resultSet.getString(userNameField));
 			}
 
 		} catch(Exception exception) {
