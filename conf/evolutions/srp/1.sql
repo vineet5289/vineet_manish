@@ -119,14 +119,16 @@ CREATE TABLE IF NOT EXISTS school_principle (
 
 CREATE TABLE IF NOT EXISTS class (
   id bigint(11) NOT NULL AUTO_INCREMENT,
-  class_name varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  class_name varchar(120) COLLATE utf8_unicode_ci NOT NULL,
   school_id bigint(11) NOT NULL,
   class_start_time varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   class_end_time varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   no_of_period int(11) NOT NULL,
+  parent_class varchar(120) COLLATE utf8_unicode_ci NOT NULL,
   created_at timestamp DEFAULT CURRENT_TIMESTAMP,
   updated_at timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   is_active tinyint(1) DEFAULT 1,
+  user_name varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (id),
   KEY FK_class_school_id (school_id),
   CONSTRAINT FK_class_school_id FOREIGN KEY (school_id) REFERENCES school (id)
@@ -159,9 +161,7 @@ CREATE TABLE IF NOT EXISTS guardian (
   pin_code varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
   country varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   phone_number1 varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  phone_number2 varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
   occupation varchar(50) COLLATE utf8_unicode_ci NULL,
-  relation enum('FATHER', 'MOTHER', 'GAURDIAN', 'BROTHER', 'SISTER') NULL,
   created_at timestamp DEFAULT CURRENT_TIMESTAMP,
   updated_at timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   is_active tinyint(1) DEFAULT 1,
@@ -174,7 +174,6 @@ CREATE TABLE IF NOT EXISTS student (
   name varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   user_name varchar(225) COLLATE utf8_unicode_ci NOT NULL,
   school_id bigint(20) NOT NULL,
-  guardian_id bigint(20) NOT NULL,
   student_email varchar(225) COLLATE utf8_unicode_ci DEFAULT NULL,
   school_joining_date timestamp NULL,
   school_leaving_date timestamp NULL,
@@ -187,16 +186,27 @@ CREATE TABLE IF NOT EXISTS student (
   country varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   pin_code varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
   phone_number1 varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
-  phone_number2 varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
   created_at timestamp DEFAULT CURRENT_TIMESTAMP,
   updated_at timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   is_active tinyint(1) DEFAULT 1,
   PRIMARY KEY (id),
   KEY FK_student_school_id (school_id),
   CONSTRAINT FK_student_school_id FOREIGN KEY (school_id) REFERENCES school (id),
-  KEY FK_student_guardian_id (guardian_id),
-  CONSTRAINT FK_student_guardian_id FOREIGN KEY (guardian_id) REFERENCES guardian(id),
   UNIQUE KEY (user_name)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS student_guardian (
+  student_id bigint(20) NOT NULL,
+  guardian_id bigint(20) NOT NULL,
+  relation enum('FATHER', 'MOTHER', 'GAURDIAN') NOT NULL,
+  created_at timestamp DEFAULT CURRENT_TIMESTAMP,
+  updated_at timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  is_active tinyint(1) DEFAULT 1,
+  PRIMARY KEY (student_id, guardian_id),
+  KEY FK_student_guardian_student_id (student_id),
+  CONSTRAINT FK_student_guardian_student_id FOREIGN KEY (student_id) REFERENCES student (id),
+  KEY FK_student_guardian_guardian_id (guardian_id),
+  CONSTRAINT FK_student_guardian_guardian_id FOREIGN KEY (guardian_id) REFERENCES guardian (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS student_class (

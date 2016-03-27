@@ -38,3 +38,29 @@ GET     	/assets/*file		                  	   controllers.Assets.at(path="/publi
 
 GET			/approvedschool							   controllers.RegistrationRequest.preApprovedNewSchoolRequest()
 POST		/approvedschool							   controllers.RegistrationRequest.postApproveNewSchooldRequest()
+
+# students and guardian registration
+
+GET			/addnewstudents							   controllers.students_guardians.StudenstGuardian.preAddFressStudents()
+POST		/addnewstudents							   controllers.students_guardians.StudenstGuardian.postAddFressStudents()
+
+# class
+
+GET			/addClass							   controllers.school.ClassController.preAddClass()
+POST		/addClass							   controllers.school.ClassController.postAddClass()
+GET			/editClass							   controllers.school.ClassController.editClass()
+POST		/deleteClass						   controllers.school.ClassController.deleteClass()
+GET			/viewClass							   controllers.school.ClassController.viewAllClass()
+
+
+# subject
+
+GET			/addSubjects							   controllers.school.SubjectController.preAddSubjects()
+POST		/addSubjects							   controllers.school.SubjectController.postAddSubjects()
+GET			/viewSubjects							   controllers.school.SubjectController.viewsSubjects()
+POST		/editSubjects							   controllers.school.SubjectController.postAddSubjects()
+
+#test
+GET			/addTest							   controllers.CustomController.testRoute()
+POST		/addTest							   controllers.CustomController.postRoute()
+

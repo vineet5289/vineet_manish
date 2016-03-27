@@ -1,0 +1,28 @@
+@(subjects : Form[views.forms.school.SubjectForm])
+@import helper._
+<html>
+<body>
+<script>
+	function add(){
+	var j = "subjectsInfo[1].subjectName"
+	var k = "subjectsInfo[1].classId"
+	document.getElementById("myTable").insertRow(-1).innerHTML='<td> <input type="text" id='+j+' name='+j+' value=""> </td> <td> <input type="text" id='+k+' name='+k+' value=""> </td>';
+   }
+</script>
+
+	<form method="POST" action="@routes.CustomController.postRoute()">
+	
+	  <table id="myTable">
+	  <tr>
+	   <td> <input type="text" id='subjectsInfo[0].subjectName' name='subjectsInfo[0].subjectName' value=""> </td>
+        <td> <input type="text" id='subjectsInfo[0].classId' name='subjectsInfo[0].classId' value=""> </td>
+        </tr>
+    </table>
+    <input type="submit" value="Approved">
+    </form>
+    
+    
+    <button id="add_row" onClick="add()">ADD NEW</button>
+    
+</body>
+</html>
