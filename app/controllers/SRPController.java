@@ -59,10 +59,6 @@ public class SRPController extends CustomController {
 	}
 
 	public Result logout() {
-		System.out.println(session().get(SessionKey.USER_NAME.name()));
-		System.out.println(session().get(SessionKey.USER_ROLE.name()));
-		System.out.println(session().get(SessionKey.AUTH_TOKEN.name()));
-
 		String authToken = session().get(SessionKey.AUTH_TOKEN.name());
 		String userName = session().get(SessionKey.USER_NAME.name());
 		UserLoginDAO userLoginDAO = new UserLoginDAO();

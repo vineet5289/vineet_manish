@@ -135,14 +135,15 @@ public class ClassDAO {
 		Connection connection = null;
 		PreparedStatement selectStatement = null;
 		ResultSet resultSet = null;
-		String selectQuery = String.format("Select %s, %s, %s, %s, %s, %s, %s, %s FROM %s WHERE %=?;", 
+		String selectQuery = String.format("Select %s, %s, %s, %s, %s, %s, %s, %s FROM %s WHERE %s=? AND %s=?;", 
 				className, schoolIdField, classStartTime, classEndTime, noOfPeriod, parentClass, userNameField, updatedAt,
-				tableName, schoolIdField);
+				tableName, schoolIdField, isActive);
 		try {
 			Map<String, List<DisplayClassForm>> classes = new HashMap<String, List<DisplayClassForm>>();
 			connection = DB.getDataSource("srp").getConnection();
 			selectStatement = connection.prepareStatement(selectQuery);
 			selectStatement.setLong(1, schoolId);
+			selectStatement.setBoolean(2, true);
 			resultSet = selectStatement.executeQuery();
 			while(resultSet.next()) {
 				DisplayClassForm addClass = new DisplayClassForm();
@@ -181,5 +182,34 @@ public class ClassDAO {
 				connection.close();
 		}
 		return sortedClasses;
+	}
+
+	public boolean deleteClass(long schoolId, String classNameValue) throws SQLException {
+		Connection connection = null;
+		PreparedStatement updateStatement = null;
+		int result = 0;
+		
+		String updateQuery = String.format("UPDATE %s SET %s=? WHERE %s=? AND %s=?;", tableName, isActive, schoolId, className);
+		try {
+			connection = DB.getDataSource("srp").getConnection();
+			updateStatement = connection.prepareStatement(updateQuery);
+			updateStatement.setBoolean(1, false);
+			updateStatement.setLong(2, schoolId);
+			updateStatement.setString(3, classNameValue);
+			result = updateStatement.executeUpdate();
+		} catch(Exception exception) {
+			result = 0;
+			exception.printStackTrace();
+			if(connection != null)
+				connection.rollback();
+			throw new SQLException(exception);
+		} finally {
+			if(updateStatement != null)
+				updateStatement.close();
+
+			if(connection != null)
+				connection.close();
+		}
+		return (result == 1);
 	}
 }

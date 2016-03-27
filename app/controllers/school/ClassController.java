@@ -81,13 +81,39 @@ public class ClassController extends CustomController {
 		return ok("");
 	}
 
-	public Result deleteClass() {
-		//		ClassDAO classDAO = new ClassDAO();
-		//		try {
-		//			classDAO.addClass(classes, schoolId, userName);
-		//		} catch (SQLException exception) {
-		//			redirect(routes.school.ClassController.preAddClass());
-		//		}
-		return ok("");
+	public Result deleteClass(String classsName) {
+		String schoolIdFromSession = session().get(SessionKey.SCHOOL_ID.name());
+		long schoolId = -1l;
+		try {
+			schoolId = Long.parseLong(schoolIdFromSession);
+		} catch(Exception exception) {
+			flash("error", "Some server exception happen");
+			return redirect(controllers.routes.SRPController.preLogin()); // check for correct redirection
+		}
+		ClassDAO classDAO = new ClassDAO();
+		Map<String, List<DisplayClassForm>> classes = null;
+
+		boolean isSuccessfull = false;
+		if(classsName == null || classsName.isEmpty()) {
+			isSuccessfull = false;
+		} else {
+			try {
+				isSuccessfull = classDAO.deleteClass(schoolId, classsName);
+			} catch (SQLException exception) {
+				exception.printStackTrace();
+				redirect(controllers.school.routes.ClassController.preAddClass());
+			}
+		}
+		try {
+			classes = classDAO.getClass(schoolId);
+		} catch (SQLException exception) {
+			exception.printStackTrace();
+		}
+		if(!isSuccessfull)
+			flash("warn", "Some server exception happen during deletion. Please try after some time.");
+		if(classes == null || classes.size() == 0) {
+			flash("warn", "There are no classes to display.");
+		}
+		return ok(classes+"");
 	}
 }
