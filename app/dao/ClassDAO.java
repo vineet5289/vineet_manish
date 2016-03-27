@@ -5,7 +5,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import play.db.DB;
 import views.forms.school.ClassForm;
@@ -125,8 +130,8 @@ public class ClassDAO {
 		return true;
 	}
 
-	public List<DisplayClassForm> getClass(long schoolId) throws SQLException {
-		List<DisplayClassForm> classes = new ArrayList<DisplayClassForm>();
+	public Map<String, List<DisplayClassForm>> getClass(long schoolId) throws SQLException {
+		Map<String, List<DisplayClassForm>> sortedClasses = new HashMap<String, List<DisplayClassForm>>();
 		Connection connection = null;
 		PreparedStatement selectStatement = null;
 		ResultSet resultSet = null;
@@ -134,6 +139,7 @@ public class ClassDAO {
 				className, schoolIdField, classStartTime, classEndTime, noOfPeriod, parentClass, userNameField, updatedAt,
 				tableName, schoolIdField);
 		try {
+			Map<String, List<DisplayClassForm>> classes = new HashMap<String, List<DisplayClassForm>>();
 			connection = DB.getDataSource("srp").getConnection();
 			selectStatement = connection.prepareStatement(selectQuery);
 			selectStatement.setLong(1, schoolId);
@@ -143,12 +149,23 @@ public class ClassDAO {
 				addClass.setClassName(resultSet.getString(className));
 				addClass.setClassStartTime(resultSet.getString(classStartTime));
 				addClass.setClassEndTime(resultSet.getString(classEndTime));
-				addClass.setParentClassName(resultSet.getString(parentClass));
-				addClass.setUserName(resultSet.getString(userNameField));
+				String pClass = resultSet.getString(parentClass);
+				addClass.setParentClassName(pClass);
+				List<DisplayClassForm> classList = classes.get(pClass);
+				if(classList == null || classList.size() == 0)
+					classList = new ArrayList<DisplayClassForm>();
+				classList.add(addClass);
+				classes.put(pClass, classList);
 			}
 
+			for(Map.Entry<String, List<DisplayClassForm>> entry : classes.entrySet()) {
+				String pClass = entry.getKey();
+				List<DisplayClassForm> cClass = entry.getValue();
+				cClass.sort((c1, c2) -> c1.className.compareTo(c2.className));
+				sortedClasses.put(pClass, cClass);
+			}
 		} catch(Exception exception) {
-			classes = null;
+			sortedClasses = null;
 			exception.printStackTrace();
 			if(connection != null)
 				connection.rollback();
@@ -163,6 +180,6 @@ public class ClassDAO {
 			if(connection != null)
 				connection.close();
 		}
-		return classes;
+		return sortedClasses;
 	}
 }
