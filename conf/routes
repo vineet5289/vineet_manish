@@ -59,7 +59,8 @@ POST		/addSection/:className						controllers.school.ClassController.addSection(
 GET			/addSubjects							   controllers.school.SubjectController.preAddSubjects()
 POST		/addSubjects							   controllers.school.SubjectController.postAddSubjects()
 GET			/viewSubjects							   controllers.school.SubjectController.viewsSubjects()
-POST		/editSubjects							   controllers.school.SubjectController.postAddSubjects()
+POST		/editSubjects/:subjectId				   controllers.school.SubjectController.editSubject(subjectId: Long)
+POST		/editSubjects/:subjectId				   controllers.school.SubjectController.deleteSubjects(subjectId: Long)
 
 #test
 GET			/addTest							   controllers.CustomController.testRoute()
