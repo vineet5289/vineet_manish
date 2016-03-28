@@ -10,5 +10,5 @@ public class DisplayClassForm {
 	public String classStartTime;
 	public String classEndTime;
 	public int noOfPeriod;
-	public String parentClass;
+	public String parentClassName;
 }

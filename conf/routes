@@ -48,8 +48,8 @@ POST		/addnewstudents							   controllers.students_guardians.StudenstGuardian.p
 
 GET			/addClass							   controllers.school.ClassController.preAddClass()
 POST		/addClass							   controllers.school.ClassController.postAddClass()
-GET			/editClass							   controllers.school.ClassController.editClass()
-POST		/deleteClass						   controllers.school.ClassController.deleteClass()
+PUT			/editClass/:className				   controllers.school.ClassController.editClass(className: String)
+DELETE		/deleteClass/:className				   controllers.school.ClassController.deleteClass(className: String)
 GET			/viewClass							   controllers.school.ClassController.viewAllClass()
 
 
