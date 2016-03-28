@@ -1,4 +1,4 @@
-@(myItems:List[String] , myMap: Map[String, List[String]])
+@(myMap: Map[String, List[views.forms.school.DisplayClassForm]])
 
 <html>
 <body>
@@ -8,6 +8,7 @@
 <td><h4>Section</h4></td>
 <td><h4> Start Time</h4> </td>
 <td><h4> End Time </h4></td>
+<td><h4> No Of Period </h4></td>
 <td></td>
 <td></td>
 </tr>
@@ -19,18 +20,18 @@
       <td>Adding</td>
       <td>New Section Click</td>
       <td> <button>Add More Sections</button></td>
-       @if(value.isEmpty){
-      
-         @value.add(key)
-      }
+       
       @for((item,index)<-value.zipWithIndex){
       <tr>
       
-      <td> @item </td>
-      <td> @currentIndex </td>
-      <td> @index  </td>
+      <td> @item.className </td>
+      <td> @item.classStartTime </td>
+      <td> @item.classEndTime  </td>
+      <td> @item.noOfPeriod  </td>
       <td> <button>Edit</button> </td>
-      <td> <button>Delete</button> </td>
+      <td> <a href="@school.routes.ClassController.deleteClass(item.className)">delete</a> </td>
+      
+      <td> <input type="submit" value="delete" action="@school.routes.ClassController.deleteClass(item.className)"/> </td>
     </tr>
       
       

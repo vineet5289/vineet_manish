@@ -137,6 +137,7 @@ public class ClassDAO {
 				addClass.setClassEndTime(resultSet.getString(classEndTime));
 				String pClass = resultSet.getString(parentClass);
 				addClass.setParentClassName(pClass);
+				addClass.setNoOfPeriod(resultSet.getInt(noOfPeriod));
 				List<DisplayClassForm> classList = classes.get(pClass);
 				if(classList == null || classList.size() == 0)
 					classList = new ArrayList<DisplayClassForm>();
@@ -195,5 +196,68 @@ public class ClassDAO {
 				connection.close();
 		}
 		return (result == 1);
+	}
+
+	public boolean addSection(long schoolId, String parentClassValue, DisplayClassForm section, String userNameValue) throws SQLException {
+		boolean isSuccessful = false;
+		Connection connection = null;
+		PreparedStatement insertStatement = null;
+		PreparedStatement selectStatement = null;
+		ResultSet resultSet = null;
+		String insertQuery = String.format("INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s) VALUES(?, ?, ?, ?, ?, ?, ?);", 
+				tableName, className, schoolIdField, classStartTime, classEndTime, noOfPeriod, parentClass, userNameField);
+		String selectQuery = String.format("Select %s, %s, %s, %s, %s, %s, %s FROM %s WHERE %s=? AND %s=? AND %s=? AND %s=?;", 
+				className, classStartTime, classEndTime, noOfPeriod, parentClass, userNameField, isActive, tableName,
+				schoolIdField, parentClass, className, isActive);
+		try {
+			connection = DB.getDataSource("srp").getConnection();
+			connection.setAutoCommit(false);
+			selectStatement = connection.prepareStatement(selectQuery);
+			selectStatement.setLong(1, schoolId);
+			selectStatement.setString(2, parentClassValue);
+			selectStatement.setString(3, parentClassValue);
+			selectStatement.setBoolean(4, true);
+
+			resultSet = selectStatement.executeQuery();
+			if(resultSet != null && resultSet.next()) {
+				resultSet.updateString(className, section.getClassName());
+				resultSet.updateString(classStartTime, section.getClassStartTime());
+				resultSet.updateString(classEndTime, section.getClassEndTime());
+				resultSet.updateString(userNameField, userNameValue);
+				resultSet.updateInt(noOfPeriod, section.getNoOfPeriod());
+				resultSet.updateRow();
+			} else {
+				insertStatement = connection.prepareStatement(insertQuery);
+				insertStatement.setString(1, section.getClassName());
+				insertStatement.setLong(2, schoolId);
+				insertStatement.setString(3, section.getClassStartTime());
+				insertStatement.setString(4, section.getClassEndTime());
+				insertStatement.setInt(5, section.getNoOfPeriod());
+				insertStatement.setString(6, section.getParentClassName());
+				insertStatement.setString(7, userNameValue);
+				insertStatement.execute();
+			}
+
+			connection.commit();
+			isSuccessful = true;
+		} catch(Exception exception) {
+			exception.printStackTrace();
+			if(connection != null)
+				connection.rollback();
+			throw new SQLException(exception);
+		} finally {
+			if(resultSet != null)
+				resultSet.close();
+
+			if(insertStatement != null)
+				insertStatement.close();
+
+			if(selectStatement != null)
+				selectStatement.close();
+
+			if(connection != null)
+				connection.close();
+		}
+		return isSuccessful;
 	}
 }
