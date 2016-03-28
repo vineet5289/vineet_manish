@@ -46,11 +46,12 @@ POST		/addnewstudents							   controllers.students_guardians.StudenstGuardian.p
 
 # class
 
-GET			/addClass							   controllers.school.ClassController.preAddClass()
-POST		/addClass							   controllers.school.ClassController.postAddClass()
-PUT			/editClass/:className				   controllers.school.ClassController.editClass(className: String)
-DELETE		/deleteClass/:className				   controllers.school.ClassController.deleteClass(className: String)
-GET			/viewClass							   controllers.school.ClassController.viewAllClass()
+GET			/addClass							   		controllers.school.ClassController.preAddClass()
+POST		/addClass							   		controllers.school.ClassController.postAddClass()
+POST		/editClass/:className				   		controllers.school.ClassController.editClass(className: String)
+POST		/deleteClass/:className				   		controllers.school.ClassController.deleteClass(className: String)
+GET			/viewClass							   		controllers.school.ClassController.viewAllClass()
+POST		/addSection/:className						controllers.school.ClassController.addSection(className: String)
 
 
 # subject

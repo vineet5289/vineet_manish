@@ -12,6 +12,8 @@ import controllers.CustomController;
 import dao.ClassDAO;
 import enum_package.SessionKey;
 import views.html.addClass;
+import views.html.viewClass.viewclasses;
+
 
 public class ClassController extends CustomController {
 	public Result preAddClass() {
@@ -51,7 +53,7 @@ public class ClassController extends CustomController {
 		ClassDAO classDAO = new ClassDAO();
 		Map<String, List<DisplayClassForm>> classes = null; 
 		try {
-			String schoolIdFromSession = session().get(SessionKey.SCHOOL_ID.name());
+			String schoolIdFromSession = "1";//session().get(SessionKey.SCHOOL_ID.name());
 			long schoolId = -1l;
 			try {
 				schoolId = Long.parseLong(schoolIdFromSession);
@@ -68,13 +70,13 @@ public class ClassController extends CustomController {
 			flash("warn", "There are no classes to display.");
 		}
 
-		return ok(classes+"");
+		return ok(viewclasses.render(classes));
 	}
 
 	public Result editClass(String className) {
 		Form<DisplayClassForm> editClassForm = Form.form(DisplayClassForm.class).bindFromRequest();
-		String schoolIdFromSession = session().get(SessionKey.SCHOOL_ID.name());
-		String userName = session().get(SessionKey.USER_NAME.name());
+		String schoolIdFromSession = "1";//session().get(SessionKey.SCHOOL_ID.name());
+		String userName = "vineet";//session().get(SessionKey.USER_NAME.name());
 
 		if(editClassForm == null || editClassForm.hasErrors()
 				|| className == null || className.isEmpty()
@@ -113,7 +115,10 @@ public class ClassController extends CustomController {
 	}
 
 	public Result deleteClass(String classsName) {
-		String schoolIdFromSession = session().get(SessionKey.SCHOOL_ID.name());
+		System.out.println("++++++++++++++");
+		System.out.println(classsName);
+		System.out.println("++++++++++++++");
+		String schoolIdFromSession = "1";//session().get(SessionKey.SCHOOL_ID.name());
 		long schoolId = -1l;
 		try {
 			schoolId = Long.parseLong(schoolIdFromSession);
@@ -145,6 +150,58 @@ public class ClassController extends CustomController {
 		if(classes == null || classes.size() == 0) {
 			flash("warn", "There are no classes to display.");
 		}
-		return ok(classes+"");
+		return ok(viewclasses.render(classes));
+	}
+
+	public Result addSection(String classsName) {
+		System.out.println("++++++addSection++++++++");
+		System.out.println(classsName);
+		System.out.println("+++++addSection+++++++++");
+		String schoolIdFromSession = "1";//session().get(SessionKey.SCHOOL_ID.name());
+		String userName = "vineet";//session().get(SessionKey.USER_NAME.name());
+		long schoolId = -1l;
+		try {
+			schoolId = Long.parseLong(schoolIdFromSession);
+		} catch(Exception exception) {
+			flash("error", "Some server exception happen");
+			return redirect(controllers.routes.SRPController.preLogin()); // check for correct redirection
+		}
+
+		Form<DisplayClassForm> sectionFormDetails = Form.form(DisplayClassForm.class).bindFromRequest();
+		boolean isSuccessfull = true;
+		if(sectionFormDetails == null || sectionFormDetails.hasErrors()) {
+			flash("error", "Some server exception happen. Please try again.");
+			isSuccessfull = false;
+		}
+
+		DisplayClassForm sectionDetails = sectionFormDetails.get();
+		if(sectionFormDetails == null || sectionFormDetails.hasErrors()) {
+			flash("error", "Some server exception happen. Please try again.");
+			isSuccessfull = false;
+		}
+
+		ClassDAO classDAO = new ClassDAO();
+		Map<String, List<DisplayClassForm>> classes = null;
+		if(classsName == null || classsName.isEmpty()) {
+			isSuccessfull = false;
+		} else {
+			try {
+				isSuccessfull = classDAO.addSection(schoolId, classsName, sectionDetails, userName);
+			} catch (SQLException exception) {
+				exception.printStackTrace();
+				redirect(controllers.school.routes.ClassController.preAddClass());
+			}
+		}
+		try {
+			classes = classDAO.getClass(schoolId);
+		} catch (SQLException exception) {
+			exception.printStackTrace();
+		}
+		if(!isSuccessfull)
+			flash("warn", "Some server exception happen during deletion. Please try after some time.");
+		if(classes == null || classes.size() == 0) {
+			flash("warn", "There are no classes to display.");
+		}
+		return ok(viewclasses.render(classes));
 	}
 }
