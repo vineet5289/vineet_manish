@@ -1,0 +1,31 @@
+ <html>
+	<head>
+   		<script type="text/javascript">
+   		    var i = 0;
+            function addRows(){
+            var subjects = "classes[" + i + "].className";
+            
+            document.getElementById("myTable").insertRow(-1).innerHTML = '<td><input type="text" name=' + subjects + ' id=' + subjects + ' value=""/></td>';}
+       </script>
+	</head>
+ 
+ <body>
+  <Button id="addclass" onClick="addRows()">ADD CLASSES</button>
+  <form id="classform" method="POST" action="@school.routes.ClassController.postAddClass()">    
+      <table id="myTable" border="1">
+        <tr>
+           <td><b>Add Subjects</b> </td>
+                
+            </tr>
+        </table>
+        </hr>
+        <button type="submit">SAVE</button>
+        </form>
+        <script>
+        
+         function myFunction() {
+    document.getElementById("classform").submit();
+    }
+        </script>
+  </body>
+  </html>

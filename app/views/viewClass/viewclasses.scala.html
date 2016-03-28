@@ -1,0 +1,46 @@
+@(myItems:List[String] , myMap: Map[String, List[String]])
+
+<html>
+<body>
+  <table id="myTable" border='1'>
+<tr>
+<td><h4>Class</h4> </td>
+<td><h4>Section</h4></td>
+<td><h4> Start Time</h4> </td>
+<td><h4> End Time </h4></td>
+<td></td>
+<td></td>
+</tr>
+
+@for(((key, value), currentIndex) <- myMap.zipWithIndex) {
+     
+      <td><fieldset><label><b>@key</b></lable></fieldset></td>
+      <td>For</td>
+      <td>Adding</td>
+      <td>New Section Click</td>
+      <td> <button>Add More Sections</button></td>
+       @if(value.isEmpty){
+      
+         @value.add(key)
+      }
+      @for((item,index)<-value.zipWithIndex){
+      <tr>
+      
+      <td> @item </td>
+      <td> @currentIndex </td>
+      <td> @index  </td>
+      <td> <button>Edit</button> </td>
+      <td> <button>Delete</button> </td>
+    </tr>
+      
+      
+      }
+
+  
+    
+}
+
+
+</table>
+</html>
+</body>
