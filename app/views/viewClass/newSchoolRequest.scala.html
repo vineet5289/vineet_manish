@@ -1,0 +1,74 @@
+@(schoolRegister:Form[views.forms.AddNewSchoolRequest])
+@main2("Register"){
+<div class="ui container">
+        <div class="ui centered stackable grid">
+            <div class="six wide column">
+                <div class="ui segments" align="center">
+                    <div class="ui inverted blue padded segment">
+                        <span class="ui header">Register<span>
+                    </div>
+                    <div class="ui segment">
+                        <form class="ui form" id="form1" action="@routes.RegistrationRequest.postAddNewSchoolRequest" method="Post">
+						     <div class="field">
+                                 <div class="ui left icon input">
+                                    <input type="text" name="schoolName" placeholder="schoolName">
+                                    <i class="user icon"></i>
+                                 </div>
+                             </div>
+                             
+							 <div class="field">
+                                 <div class="ui left icon input">
+                                    <input type="text" name="schoolRegistrationId" placeholder="schoolRegistrationId">
+                                    <i class="user icon"></i>
+                                 </div>
+                             </div>
+							 
+							 <div class="field">
+                                 <div class="ui left icon input">
+                                    <input type="text" name="schoolAddress" placeholder="schoolAddress">
+                                    <i class="home icon"></i>
+                                 </div>
+                             </div>
+							 
+							 <div class="field">
+                                 <div class="ui left icon input">
+                                    <input type="text" name="principalName" placeholder="principalName">
+                                    <i class="user icon"></i>
+                                 </div>
+                             </div>
+                             
+							 <div class="field">
+                                 <div class="ui left icon input">
+                                    <input type="text" name="principalEmail" placeholder="principalEmail">
+                                    <i class="mail icon"></i>
+                                 </div>
+                             </div>
+                          
+							 
+							 
+                            <div class="field">
+                                <div class="ui left icon input">
+                                    <input type="text" name="contact" placeholder="contact">
+                                    <i class="phone square icon"></i>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="ui left icon input">
+                                    <input type="text" name="query" placeholder="query" help="Please Enter Your Query">
+                                    
+                                    <i class="comment icon"></i>
+                                </div>
+                            </div>
+                            
+                            <button class="ui big fluid blue icon button" type="submit">Send Request <i class="sign in icon"></i></button>
+                            <div class="ui error message"></div>
+                        </form>
+                    </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+    
+
+    
+  }

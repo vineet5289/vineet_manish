@@ -12,13 +12,15 @@ import security.ActionAuthenticator;
 import views.forms.*;
 import views.html.profile;
 import views.html.index;
+import views.html.viewClass.login;
+import views.html.viewClass.dashboard;
 
 public class SRPController extends CustomController {
 
 	@Security.Authenticated(ActionAuthenticator.class)
 	public Result index() {
 		response().setHeader("Cache-Control", "no-cache");
-		return ok(profile.render(session().get(SessionKey.USER_NAME.name()), session().get(SessionKey.USER_ROLE.name())));
+		return ok(dashboard.render(session().get(SessionKey.USER_NAME.name()), session().get(SessionKey.USER_ROLE.name())));
 	}
 
 	public Result postLogin() {
@@ -55,7 +57,7 @@ public class SRPController extends CustomController {
 
 	public Result preLogin() {
 		Form<LoginForm> loginForm = Form.form(LoginForm.class);
-		return ok(index.render(loginForm));
+		return ok(login.render(loginForm));
 	}
 
 	public Result logout() {

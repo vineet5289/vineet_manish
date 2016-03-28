@@ -22,6 +22,8 @@ import views.forms.SchoolFormData;
 import views.html.newSchoolApproved;
 import views.html.schoolFieldSetIndex;
 import views.html.addNewSchoolRequestIndex;
+import views.html.viewClass.newSchoolRequest;
+import views.html.viewClass.SchoolRegistration;
 import actors.MailerActor;
 import actors.MessageActor;
 import actors.SchoolRequestActorProtocol.ApprovedSchool;
@@ -43,7 +45,7 @@ public class RegistrationRequest extends CustomController {
 	
 	public Result preAddNewSchoolRequest() {
 		Form<AddNewSchoolRequest> addNewSchoolRequest = Form.form(AddNewSchoolRequest.class);
-		return ok(addNewSchoolRequestIndex.render(addNewSchoolRequest));
+		return ok(newSchoolRequest.render(addNewSchoolRequest));
 	}
 
 	public Result postAddNewSchoolRequest() {
@@ -119,7 +121,7 @@ public class RegistrationRequest extends CustomController {
 				List<String> countries = Country.getCountries();
 				List<String> states = State.getStates();
 				
-				return ok(schoolFieldSetIndex.render(schoolFormData, schoolBoards, schoolCategory, 
+				return ok(SchoolRegistration.render(schoolFormData, schoolBoards, schoolCategory, 
 						schoolType, countries, states));
 			}
 		} catch(Exception exception) {
