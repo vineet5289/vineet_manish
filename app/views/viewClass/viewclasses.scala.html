@@ -1,47 +1,102 @@
 @(myMap: Map[String, List[views.forms.school.DisplayClassForm]])
 
-<html>
-<body>
-  <table id="myTable" border='1'>
-<tr>
-<td><h4>Class</h4> </td>
-<td><h4>Section</h4></td>
-<td><h4> Start Time</h4> </td>
-<td><h4> End Time </h4></td>
-<td><h4> No Of Period </h4></td>
-<td></td>
-<td></td>
-</tr>
+@mainDashboard("View Classes"){
+<script type="text/javascript">
+function addSection(){
+$('.small.modal')
+  .modal('show')
+;
+}
 
-@for(((key, value), currentIndex) <- myMap.zipWithIndex) {
-     
-      <td><fieldset><label><b>@key</b></lable></fieldset></td>
-      <td>For</td>
-      <td>Adding</td>
-      <td>New Section Click</td>
-      <td> <button>Add More Sections</button></td>
-       
+</script>
+
+  <div class="sixteen wide column" id="content">
+                    <h2><i class="table icon"></i> All Classes Information</h2>
+                    <div class="ui divider"></div>
+
+  <div class="ui one column stackable grid ui form">
+                  <div class="column">
+                            <div class="ui segments">
+                                <div class="ui segment"><h3>Class Name</h3></div>
+                                <div class="ui segment">
+                                
+  
+ 
+  
+  @for(((key, value), currentIndex) <- myMap.zipWithIndex) {
+      
+      <div class="ui large olive label">
+       CLASS
+      <div class="detail">@key</div>
+           </div>
+            <div class="ui large left pointing blue label">
+      <a class="ui large blue edit button" onClick="addSection()" >Add More Sections</a>
+    </div>
+    
+      
+    <table class="ui selectable celled table">
+      <thead>
+    <tr>
+      
+      <th>Section</th>
+      <th>Start Time</th>
+      <th>End Time</th>
+      <th>No of Period</th>
+    </tr>
+  </thead>
+      
       @for((item,index)<-value.zipWithIndex){
+      
+       <tbody>
       <tr>
       
       <td> @item.className </td>
       <td> @item.classStartTime </td>
       <td> @item.classEndTime  </td>
       <td> @item.noOfPeriod  </td>
-      <td> <button>Edit</button> </td>
-      <td> <a href="@school.routes.ClassController.deleteClass(item.className)">delete</a> </td>
-      
-      <td> <input type="submit" value="delete" action="@school.routes.ClassController.deleteClass(item.className)"/> </td>
-    </tr>
-      
+      <td><div class="ui buttons"><a class="ui tiny blue edit button" href="./edit_action.html"><i class="edit icon"></i>edit</a><div class="or"></div> <a class="ui tiny green edit button"><i class="trash icon"></i>delete</a></td>
+     
+      </tr>
+       </tbody>
+       </table>
+       
+       <div class="ui small modal">
+    
+    <div class="header">Add Section to class-@key</div>
+    <div class="content">
+    <form class="ui form" method="POST" action="">
+  <div class="field">
+    <label>Section Name</label>
+    <input name="nameOfSection" placeholder="Section Name" type="text" >
+  </div>
+  <div class="field">
+    <label>Start Time</label>
+    <input name="classStartTime" placeholder="class Start Time " type="text" value="@item.classStartTime" >
+  </div>
+  <div class="field">
+    <label>End Time</label>
+    <input name="classEndTime" placeholder="class End Time " type="text" value="@item.classEndTime">
+  </div>
+  <div class="field">
+    <label>noOfPeriod</label>
+    <input name="noOfPeriod" placeholder="noOfPeriod" type="text" value="@item.noOfPeriod">
+  </div>
+  <button class="ui button" type="submit">Submit</button>
+</form>
+</div>
+    </div>
+    
       
       }
 
   
-    
+ 
 }
+ 
 
-
-</table>
-</html>
-</body>
+</div>
+</div>
+</div>
+</div>
+</div>
+}

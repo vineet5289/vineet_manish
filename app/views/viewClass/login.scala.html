@@ -1,18 +1,15 @@
  @(loginForm:Form[views.forms.LoginForm])
  @viewClass.main2("login"){
- 
- <div class="ui floated right tiny buttons">
-  <a href="@routes.RegistrationRequest.preAddNewSchoolRequest()" class="ui button positive">School Registeration Request</a>
-  <span class="or"></span>
-  <a href="@routes.Assets.at("otp.html")" class="ui button negative">Complete School Registration</a>
-</div>
+ <script type="text/javascript">
+    function OTP(){
+$('.small.modal')
+  .modal('show')
+;
+}
+ </script>
 
- 
- 
- <div class="ui container">
-       
-
-        <div class="ui centered stackable grid">
+              
+        <div class="ui two column middle aligned very relaxed stackable grid">
             <div class="six wide column">
                 <div class="ui segments" align="center">
                     <div class="ui inverted blue padded segment">
@@ -45,8 +42,34 @@
                     <div class="ui secondary segment">
                         <a href="">Forgot Password?</a>
                     </div>
-                </div>
+                
             </div>
+        </div>
+        <div class="ui vertical divider">
+    Or
+  </div>
+  <div class="center aligned column">
+  <a href="@routes.RegistrationRequest.preAddNewSchoolRequest()" class="ui button positive">School Registeration Request</a>
+  <span class="or"></span>
+  <div class="ui button red negative" onClick="OTP()">Complete School Registration</div>
+</div>
+
+    </div>
+    
+    <div class="ui small modal">
+       <div class="header">Add Refrence Key and OTP sent on your Mobile</div>
+        <div class="content">
+             <form class="ui form" method="POST" action="/submitopt">
+                  <div class="field">
+                      <label>Reference Key</label>
+                      <input name="referenceKey" placeholder="referenceKey" type="text" >
+                  </div>
+                  <div class="field">
+                      <label>OTP</label>
+                      <input name="otp" placeholder="otp" type="text" >
+                  </div>
+                  <button class="ui button" type="submit">Submit</button>
+             </form>
         </div>
     </div>
    

@@ -13,12 +13,13 @@ import dao.ClassDAO;
 import enum_package.SessionKey;
 import views.html.addClass;
 import views.html.viewClass.viewclasses;
+import views.html.viewClass.addClasses;
 
 
 public class ClassController extends CustomController {
 	public Result preAddClass() {
 		Form<ClassForm> classForm = Form.form(ClassForm.class);
-		return ok(addClass.render(classForm));
+		return ok(addClasses.render(classForm));
 	}
 
 	public Result postAddClass() {
