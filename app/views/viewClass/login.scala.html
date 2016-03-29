@@ -1,0 +1,76 @@
+ @(loginForm:Form[views.forms.LoginForm])
+ @viewClass.main2("login"){
+ <script type="text/javascript">
+    function OTP(){
+$('.small.modal')
+  .modal('show')
+;
+}
+ </script>
+
+              
+        <div class="ui two column middle aligned very relaxed stackable grid">
+            <div class="six wide column">
+                <div class="ui segments" align="center">
+                    <div class="ui inverted blue padded segment">
+                        <span class="ui header">Hello! Welcome in Be Awesome Admin</span>
+                    </div>
+                    <div class="ui segment">
+                        <form class="ui form" id="loginform" action="@routes.SRPController.postLogin()" method="Post">
+                            <div class="field">
+                                <div class="ui left icon input">
+                                    <input type="text" name="userName" placeholder="Username">
+                                    <i class="user icon"></i>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="ui left icon input">
+                                    <input type="password" name="password" placeholder="Password">
+                                    <i class="lock icon"></i>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="ui checkbox">
+                                    <input type="checkbox" tabindex="0" class="hidden">
+                                    <label>Remember Me</label>
+                                </div>
+                            </div>
+                            <button class="ui big fluid blue icon button" type="submit">Sign In <i class="sign in icon"></i></button>
+                            <div class="ui error message"></div>
+                        </form>
+                    </div>
+                    <div class="ui secondary segment">
+                        <a href="">Forgot Password?</a>
+                    </div>
+                
+            </div>
+        </div>
+        <div class="ui vertical divider">
+    Or
+  </div>
+  <div class="center aligned column">
+  <a href="@routes.RegistrationRequest.preAddNewSchoolRequest()" class="ui button positive">School Registeration Request</a>
+  <span class="or"></span>
+  <div class="ui button red negative" onClick="OTP()">Complete School Registration</div>
+</div>
+
+    </div>
+    
+    <div class="ui small modal">
+       <div class="header">Add Refrence Key and OTP sent on your Mobile</div>
+        <div class="content">
+             <form class="ui form" method="POST" action="/submitopt">
+                  <div class="field">
+                      <label>Reference Key</label>
+                      <input name="referenceKey" placeholder="referenceKey" type="text" >
+                  </div>
+                  <div class="field">
+                      <label>OTP</label>
+                      <input name="otp" placeholder="otp" type="text" >
+                  </div>
+                  <button class="ui button" type="submit">Submit</button>
+             </form>
+        </div>
+    </div>
+   
+}

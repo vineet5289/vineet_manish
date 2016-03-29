@@ -5,10 +5,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import play.db.DB;
 import views.forms.school.ClassForm;
+import views.forms.school.DisplayClassForm;
 
 public class ClassDAO {
 	private String tableName = "class";
@@ -78,76 +84,75 @@ public class ClassDAO {
 		return true;
 	}
 
-	public boolean addEditClass(List<ClassForm> classes, long schoolId, String userName) throws SQLException {
-		boolean isSuccessfull = false;
+	public boolean editClass(long schoolId, String userName, DisplayClassForm editClass) throws SQLException {
 		Connection connection = null;
-		PreparedStatement insertStatement = null;
-		String insertQuery = String.format("INSERT INTO class (%s, %s, %s, %s, %s, %s, %, %s) VALUES(?, ?, ?, ?, ?, ?, ?, ?);", 
-				className, schoolIdField, classStartTime, classEndTime, noOfPeriod, parentClass, isActive, userNameField);
+		PreparedStatement updateStatement = null;
+		int result = 0;
+		String updateQuery = String.format("UPDATE %s SET %s=?, %s=?, %s=?, %s=? WHERE %s=? AND %s=?;", 
+				tableName, classStartTime, classEndTime, noOfPeriod, userNameField, schoolId, className);
 		try {
 			connection = DB.getDataSource("srp").getConnection();
-			connection.setAutoCommit(false);
-
-
+			updateStatement = connection.prepareStatement(updateQuery);
+			updateStatement.setString(1, editClass.getClassStartTime());
+			updateStatement.setString(2, editClass.getClassEndTime());
+			updateStatement.setInt(3, editClass.getNoOfPeriod());
+			updateStatement.setString(4, userName);
+			updateStatement.setLong(5, schoolId);
+			updateStatement.setString(6, className);
+			result = updateStatement.executeUpdate();
 		} catch(Exception exception) {
+			result = 0;
+			exception.printStackTrace();
 			if(connection != null)
 				connection.rollback();
+			throw new SQLException(exception);
 		} finally {
-			if(insertStatement != null)
-				insertStatement.close();
+			if(updateStatement != null)
+				updateStatement.close();
 			if(connection != null)
 				connection.close();
 		}
-		return true;
+		return (result == 1);
 	}
 
-	public boolean addEditClassTime(List<ClassForm> classes, long schoolId, String userName) throws SQLException {
-		boolean isSuccessfull = false;
-		Connection connection = null;
-		PreparedStatement insertStatement = null;
-		String insertQuery = String.format("INSERT INTO class (%s, %s, %s, %s, %s, %s, %, %s) VALUES(?, ?, ?, ?, ?, ?, ?, ?);", 
-				className, schoolIdField, classStartTime, classEndTime, noOfPeriod, parentClass, isActive, userNameField);
-		try {
-			connection = DB.getDataSource("srp").getConnection();
-			connection.setAutoCommit(false);
-
-
-		} catch(Exception exception) {
-			if(connection != null)
-				connection.rollback();
-		} finally {
-			if(insertStatement != null)
-				insertStatement.close();
-			if(connection != null)
-				connection.close();
-		}
-		return true;
-	}
-
-	public List<ClassForm> getClass(long schoolId) throws SQLException {
-		List<ClassForm> classes = new ArrayList<ClassForm>();
+	public Map<String, List<DisplayClassForm>> getClass(long schoolId) throws SQLException {
+		Map<String, List<DisplayClassForm>> sortedClasses = new HashMap<String, List<DisplayClassForm>>();
 		Connection connection = null;
 		PreparedStatement selectStatement = null;
 		ResultSet resultSet = null;
-		String selectQuery = String.format("Select %s, %s, %s, %s, %s, %s, %s, %s FROM %s WHERE %=?;", 
+		String selectQuery = String.format("Select %s, %s, %s, %s, %s, %s, %s, %s FROM %s WHERE %s=? AND %s=?;", 
 				className, schoolIdField, classStartTime, classEndTime, noOfPeriod, parentClass, userNameField, updatedAt,
-				tableName, schoolIdField);
+				tableName, schoolIdField, isActive);
 		try {
+			Map<String, List<DisplayClassForm>> classes = new HashMap<String, List<DisplayClassForm>>();
 			connection = DB.getDataSource("srp").getConnection();
 			selectStatement = connection.prepareStatement(selectQuery);
 			selectStatement.setLong(1, schoolId);
+			selectStatement.setBoolean(2, true);
 			resultSet = selectStatement.executeQuery();
 			while(resultSet.next()) {
-				ClassForm addClass = new ClassForm();
-				//				addClass.setClassName(resultSet.getString(className));
-				//				addClass.setClassStartTime(resultSet.getString(classStartTime));
-				//				addClass.setClassEndTime(resultSet.getString(classEndTime));
-				//				addClass.setParentClassName(resultSet.getString(parentClass));
-				//				addClass.setUserName(resultSet.getString(userNameField));
+				DisplayClassForm addClass = new DisplayClassForm();
+				addClass.setClassName(resultSet.getString(className));
+				addClass.setClassStartTime(resultSet.getString(classStartTime));
+				addClass.setClassEndTime(resultSet.getString(classEndTime));
+				String pClass = resultSet.getString(parentClass);
+				addClass.setParentClassName(pClass);
+				addClass.setNoOfPeriod(resultSet.getInt(noOfPeriod));
+				List<DisplayClassForm> classList = classes.get(pClass);
+				if(classList == null || classList.size() == 0)
+					classList = new ArrayList<DisplayClassForm>();
+				classList.add(addClass);
+				classes.put(pClass, classList);
 			}
 
+			for(Map.Entry<String, List<DisplayClassForm>> entry : classes.entrySet()) {
+				String pClass = entry.getKey();
+				List<DisplayClassForm> cClass = entry.getValue();
+				cClass.sort((c1, c2) -> c1.className.compareTo(c2.className));
+				sortedClasses.put(pClass, cClass);
+			}
 		} catch(Exception exception) {
-			classes = null;
+			sortedClasses = null;
 			exception.printStackTrace();
 			if(connection != null)
 				connection.rollback();
@@ -162,6 +167,97 @@ public class ClassDAO {
 			if(connection != null)
 				connection.close();
 		}
-		return classes;
+		return sortedClasses;
+	}
+
+	public boolean deleteClass(long schoolId, String classNameValue) throws SQLException {
+		Connection connection = null;
+		PreparedStatement updateStatement = null;
+		int result = 0;
+		String updateQuery = String.format("UPDATE %s SET %s=? WHERE %s=? AND %s=?;", tableName, isActive, schoolId, className);
+		try {
+			connection = DB.getDataSource("srp").getConnection();
+			updateStatement = connection.prepareStatement(updateQuery);
+			updateStatement.setBoolean(1, false);
+			updateStatement.setLong(2, schoolId);
+			updateStatement.setString(3, classNameValue);
+			result = updateStatement.executeUpdate();
+		} catch(Exception exception) {
+			result = 0;
+			exception.printStackTrace();
+			if(connection != null)
+				connection.rollback();
+			throw new SQLException(exception);
+		} finally {
+			if(updateStatement != null)
+				updateStatement.close();
+
+			if(connection != null)
+				connection.close();
+		}
+		return (result == 1);
+	}
+
+	public boolean addSection(long schoolId, String parentClassValue, DisplayClassForm section, String userNameValue) throws SQLException {
+		boolean isSuccessful = false;
+		Connection connection = null;
+		PreparedStatement insertStatement = null;
+		PreparedStatement selectStatement = null;
+		ResultSet resultSet = null;
+		String insertQuery = String.format("INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s) VALUES(?, ?, ?, ?, ?, ?, ?);", 
+				tableName, className, schoolIdField, classStartTime, classEndTime, noOfPeriod, parentClass, userNameField);
+		String selectQuery = String.format("Select %s, %s, %s, %s, %s, %s, %s FROM %s WHERE %s=? AND %s=? AND %s=? AND %s=?;", 
+				className, classStartTime, classEndTime, noOfPeriod, parentClass, userNameField, isActive, tableName,
+				schoolIdField, parentClass, className, isActive);
+		try {
+			connection = DB.getDataSource("srp").getConnection();
+			connection.setAutoCommit(false);
+			selectStatement = connection.prepareStatement(selectQuery);
+			selectStatement.setLong(1, schoolId);
+			selectStatement.setString(2, parentClassValue);
+			selectStatement.setString(3, parentClassValue);
+			selectStatement.setBoolean(4, true);
+
+			resultSet = selectStatement.executeQuery();
+			if(resultSet != null && resultSet.next()) {
+				resultSet.updateString(className, section.getClassName());
+				resultSet.updateString(classStartTime, section.getClassStartTime());
+				resultSet.updateString(classEndTime, section.getClassEndTime());
+				resultSet.updateString(userNameField, userNameValue);
+				resultSet.updateInt(noOfPeriod, section.getNoOfPeriod());
+				resultSet.updateRow();
+			} else {
+				insertStatement = connection.prepareStatement(insertQuery);
+				insertStatement.setString(1, section.getClassName());
+				insertStatement.setLong(2, schoolId);
+				insertStatement.setString(3, section.getClassStartTime());
+				insertStatement.setString(4, section.getClassEndTime());
+				insertStatement.setInt(5, section.getNoOfPeriod());
+				insertStatement.setString(6, section.getParentClassName());
+				insertStatement.setString(7, userNameValue);
+				insertStatement.execute();
+			}
+
+			connection.commit();
+			isSuccessful = true;
+		} catch(Exception exception) {
+			exception.printStackTrace();
+			if(connection != null)
+				connection.rollback();
+			throw new SQLException(exception);
+		} finally {
+			if(resultSet != null)
+				resultSet.close();
+
+			if(insertStatement != null)
+				insertStatement.close();
+
+			if(selectStatement != null)
+				selectStatement.close();
+
+			if(connection != null)
+				connection.close();
+		}
+		return isSuccessful;
 	}
 }
