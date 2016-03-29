@@ -64,10 +64,14 @@ $('.small.modal')
     
     <div class="header">Add Section to class-@key</div>
     <div class="content">
-    <form class="ui form" method="POST" action="">
+    <form class="ui form" method="POST" action="@school.routes.ClassController.addSection(key)">
+   
+    <div class="field">
+    <input name="parentClassName" placeholder="Section Name" type="hidden" value="@key" >
+  </div> 
   <div class="field">
     <label>Section Name</label>
-    <input name="nameOfSection" placeholder="Section Name" type="text" >
+    <input name="className" placeholder="Section Name" type="text" >
   </div>
   <div class="field">
     <label>Start Time</label>

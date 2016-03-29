@@ -19,7 +19,7 @@ public class SRPController extends CustomController {
 
 	@Security.Authenticated(ActionAuthenticator.class)
 	public Result index() {
-		response().setHeader("Cache-Control", "no-cache");
+		//response().setHeader("Cache-Control", "no-cache");
 		return ok(dashboard.render(session().get(SessionKey.USER_NAME.name()), session().get(SessionKey.USER_ROLE.name())));
 	}
 
@@ -46,11 +46,12 @@ public class SRPController extends CustomController {
 				session(SessionKey.USER_NAME.name(), userName);
 				session(SessionKey.USER_ROLE.name(), loginDetails.getRole().name());
 				session(SessionKey.AUTH_TOKEN.name(), loginDetails.getAuthToken());
+				session(SessionKey.SCHOOL_ID.name(), loginDetails.getSchoolId().toString());
 			} catch (Exception exception){
 				flash("error", "Server problem occur. Please try after some time");
 				return redirect(routes.SRPController.preLogin());
 			}
-			response().setHeader("Cache-Control", "no-cache");
+			//response().setHeader("Cache-Control", "no-cache");
 			return redirect(routes.SRPController.index());
 		}
 	}

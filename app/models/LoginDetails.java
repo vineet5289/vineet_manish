@@ -9,4 +9,5 @@ public class LoginDetails {
 	private Role role;
 	private String authToken;
 	private String error = "";
+	private Long schoolId;
 }
