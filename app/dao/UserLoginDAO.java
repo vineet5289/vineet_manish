@@ -15,6 +15,7 @@ import utils.RandomGenerator;
 public class UserLoginDAO {
 	private String tableName = "login"; 
 	private String authTokeFieldName = "auth_token";
+	private String schoolIdField = "school_id";
 	private static final RandomGenerator randomGenerator = new RandomGenerator();
 	private static final SecureRandom secureRandom = new SecureRandom();
 
@@ -41,6 +42,7 @@ public class UserLoginDAO {
 			loginDetails.setRole(Role.valueOf(resultSet.getString("role")));
 			loginDetails.setUserName(userName);
 			loginDetails.setError("");
+			loginDetails.setSchoolId(resultSet.getLong(schoolIdField));
 			resultSet.updateRow();
 		} catch(Exception exception) {
 			loginDetails.setError("Server Problem occure. Please try after some time");

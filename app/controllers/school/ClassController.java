@@ -23,19 +23,23 @@ public class ClassController extends CustomController {
 	}
 
 	public Result postAddClass() {
+		System.out.println("===== 1");
 		Form<ClassForm> classForm = Form.form(ClassForm.class).bindFromRequest();
 		if (classForm == null || classForm.hasErrors()) {
 			flash("error", "Some server exception happen");
 			return redirect(controllers.routes.SRPController.preLogin()); // check for correct redirection
 		}
 		else {
+			System.out.println("===== 2");
 			String userName = session().get(SessionKey.USER_NAME.name());
 			String schoolIdFromSession = session().get(SessionKey.SCHOOL_ID.name());
 			ClassForm classFormDetails = classForm.get();
+			System.out.println("===== 3 " + userName +" " + schoolIdFromSession);
 			long schoolId = -1l;
 			try {
 				schoolId = Long.parseLong(schoolIdFromSession);
 			} catch(Exception exception) {
+				System.out.println("===== 4");
 				flash("error", "Some server exception happen");
 				return redirect(controllers.routes.SRPController.preLogin()); // check for correct redirection
 			}
