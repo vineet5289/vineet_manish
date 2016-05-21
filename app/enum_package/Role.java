@@ -6,5 +6,6 @@ public enum Role {
 	SUPERADMIN,
 	FATHER,
 	MOTHER,
-	GUARGIAN;
+	GUARGIAN,
+	TEACHER;
 }

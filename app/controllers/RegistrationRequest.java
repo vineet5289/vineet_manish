@@ -97,12 +97,12 @@ public class RegistrationRequest extends CustomController {
 		Form<OTPField> otp = Form.form(OTPField.class).bindFromRequest();
 		if(otp == null || otp.hasErrors()) {
 			flash("error", "Something parameter is missing or invalid in request. Please check and enter valid value");
-			return redirect(routes.SRPController.preLogin());
+			return redirect(controllers.login_logout.routes.LoginController.preLogin());
 		}
 		Map<String, String> otpValues = otp.data();
 		if(otpValues == null || otpValues.size() == 0) {
 			flash("error", "Something parameter is missing or invalid in request. Please check and enter valid value");
-			return redirect(routes.SRPController.preLogin());
+			return redirect(controllers.login_logout.routes.LoginController.preLogin());
 		}
 
 		String referenceKey = otpValues.get("referenceKey");
@@ -128,7 +128,7 @@ public class RegistrationRequest extends CustomController {
 			exception.printStackTrace();
 		}
 		flash("error", "Your reference number or otp is invalid. Please check and enter again.");
-		return redirect(routes.SRPController.preLogin());
+		return redirect(controllers.login_logout.routes.LoginController.preLogin());
 	}
 
 	@Security.Authenticated(SchoolRegisterRequestAuthenticator.class)

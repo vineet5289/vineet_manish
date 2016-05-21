@@ -4,15 +4,24 @@
 
 # Home page
 GET     /        	                        	   controllers.SRPController.index()
-GET     /login                       			   controllers.SRPController.preLogin()
-POST    /login                       			   controllers.SRPController.postLogin()
-GET     /logout                       			   controllers.SRPController.logout()
+
+# login handler
+GET     /login                       			   controllers.login_logout.LoginController.preLogin()
+POST    /login                       			   controllers.login_logout.LoginController.postLogin()
+GET     /logout                       			   controllers.login_logout.LoginController.logout()
 
 # mailer
 #GET       /sendmail                           	   controllers.Application.sendMailTest()
 
 # Message Api
-GET			/sendMessage							   controllers.MessageController.sendMessage() 
+GET			/sendMessage							   controllers.message.MobileMessageController.sendMessage()
+
+# Notification Listening Controller
+GET     	/listen                           		   controllers.message.NotificationListeningController.listen()
+GET     	/listeningWS                     		   controllers.message.NotificationListeningController.listeningSocket()
+
+# Notification Controller
+POST     	/notification                              controllers.message.NotificationController.notification()
 
 # add new schoole request
 GET      	/addnewschoolrequest                	   controllers.RegistrationRequest.preAddNewSchoolRequest()

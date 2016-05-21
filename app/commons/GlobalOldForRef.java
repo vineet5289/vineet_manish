@@ -1,3 +1,4 @@
+package commons;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,13 +19,13 @@ import play.mvc.Results;
 import scala.concurrent.duration.Duration;
 
 
-public class Global extends GlobalSettings {
+public class GlobalOldForRef extends GlobalSettings {
 	@Override
 	public void onStart(Application app) {
 		super.onStart(app);
-		System.out.println("**************in side global start **********");
-		initialized();
-		System.out.println("**************out side global start **********");
+//		System.out.println("**************in side global start **********");
+//		initialized();
+//		System.out.println("**************out side global start **********");
 	}
 
 	@Override

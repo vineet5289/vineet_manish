@@ -14,6 +14,7 @@ public class SecurityHelper {
 		String authTokenValue = ctx.session().get(SessionKey.AUTH_TOKEN.name());
 		String userNameValue = ctx.session().get(SessionKey.USER_NAME.name());
 		String userRole = ctx.session().get(SessionKey.USER_ROLE.name());
+		String schoolIds = ctx.session().get(SessionKey.SCHOOL_ID.name());
 
 		if(authTokenValue != null && !authTokenValue.isEmpty())
 			userHeaderCredential.put(SessionKey.AUTH_TOKEN.name(), authTokenValue);
@@ -24,7 +25,10 @@ public class SecurityHelper {
 		if(userRole != null && !userRole.isEmpty())
 			userHeaderCredential.put(SessionKey.USER_ROLE.name(), userRole);
 
-		if(!userHeaderCredential.isEmpty() && userHeaderCredential.size() == 3)
+		if(schoolIds != null && !schoolIds.isEmpty())
+			userHeaderCredential.put(SessionKey.SCHOOL_ID.name(), schoolIds);
+
+		if(!userHeaderCredential.isEmpty() && userHeaderCredential.size() == 4)
 			return userHeaderCredential;
 
 		return null;

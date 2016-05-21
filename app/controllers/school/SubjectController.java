@@ -33,7 +33,7 @@ public class SubjectController extends CustomController {
 			schoolId = Long.parseLong(schoolIdFromSession);
 		} catch(Exception exception) {
 			flash("error", "Some server exception happen");
-			return redirect(controllers.routes.SRPController.preLogin()); // check for correct redirection
+			return redirect(controllers.login_logout.routes.LoginController.preLogin()); // check for correct redirection
 		}
 		List<SubjectForm.SubjectInfo> subjects= subjectsDetails.getSubjectsInfo();
 		Long classId = 1L;//subjectsDetails.getClassId();

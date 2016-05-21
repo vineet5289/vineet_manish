@@ -6,7 +6,7 @@
 @main("index") {
 	<div class="container">
 	  <div class="well">
-	    @form(routes.SRPController.postLogin(), 'class -> "form-horizontal") {
+	    @form(login_logout.routes.LoginController.postLogin(), 'class -> "form-horizontal") {
     		@login(loginForm)
        }
        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1>

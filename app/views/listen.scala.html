@@ -1,0 +1,23 @@
+@main("Messages") {
+
+<script type="text/javascript">
+	var WS = window['MozWebSocket'] ? MozWebSocket : WebSocket
+	var listeningSocket = new WS(
+			"@message.routes.NotificationListeningController.listeningSocket().webSocketURL(request)");
+	alert(listeningSocket);
+	alert(listeningSocket);
+	var receiveEvent = function(event) {
+		var newMessagesDiv = document.getElementById("newMessages");
+		var newMessage = document.createElement("li");
+		var textNode = document.createTextNode(event.data);
+		newMessage.appendChild(textNode);
+		newMessagesDiv.appendChild(newMessage);
+	}
+	listeningSocket.onmessage = receiveEvent;
+</script>
+
+<strong>Messages</strong>
+<br>
+<ul id="newMessages"></ul>
+
+}

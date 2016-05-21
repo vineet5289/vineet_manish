@@ -1,4 +1,4 @@
-package controllers;
+package controllers.message;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +13,9 @@ import com.twilio.sdk.TwilioRestException;
 import com.twilio.sdk.resource.factory.MessageFactory;
 import com.twilio.sdk.resource.instance.Message;
 
-public class MessageController extends CustomController {
+import controllers.CustomController;
+
+public class MobileMessageController extends CustomController {
 	public static final String ACCOUNT_SID = "ACa645de78a29eb92d5f71772776a9421e"; 
 	public static final String AUTH_TOKEN = "5be5c101a91e1bf49e6924a96605e3ee"; 
 	public Result sendMessage() throws TwilioRestException {

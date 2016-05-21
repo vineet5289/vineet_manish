@@ -19,6 +19,6 @@ public class SchoolRegisterRequestAuthenticator extends Security.Authenticator{
 
 	@Override
 	public Result onUnauthorized(Http.Context ctx) {
-		return redirect(controllers.routes.SRPController.preLogin());
+		return redirect(controllers.login_logout.routes.LoginController.preLogin());
 	}
 }
