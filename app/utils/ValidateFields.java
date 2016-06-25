@@ -37,10 +37,11 @@ public class ValidateFields {
 	}
 
 	public static boolean isValidPassword(String password) {
-		if(password == null)
-			return false;
-
-		Matcher matcher = passwordPattern.matcher(password);
-		return matcher.matches();
+//		if(password == null)
+//			return false;
+//
+//		Matcher matcher = passwordPattern.matcher(password);
+//		return matcher.matches();
+		return true;
 	}
 }
