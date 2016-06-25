@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class CustomController extends Controller {
 	public Result testRoute() {
-		return ok(testAcessRight.render());
+		return ok(test2.render());
 	}
 	
 	public Result postRoute() {

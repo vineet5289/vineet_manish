@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="@routes.Assets.versioned("semanticUI/css/semantic.css")">
     <link rel="stylesheet" href="@routes.Assets.versioned("semanticUI/css/main.css")">
         <link rel="stylesheet" href="@routes.Assets.versioned("semanticUI/css/test.css")">
+        
     <link rel="stylesheet" href="@routes.Assets.versioned("semanticUI/css/animate.css")">
     
 </head>
@@ -109,7 +110,7 @@
                         <a href="@school.routes.ClassController.preAddClass()" class="item"><i class="bar chart icon"></i>Add Class</a>
                         <a href="@school.routes.ClassController.viewAllClass()" class="item"><i class="bar chart icon"></i>View All Class</a>
                         <a href="@routes.CustomController.testRoute()" class="item"><i class="calendar icon"></i>Test Page</a>
-                        <a href="progress.html" class="item"><i class="file icon"></i>Message</a>
+                        <a href='/allUser/@session.get("SCHOOL_ID")' class="item"><i class="file icon"></i>Users</a>
                         <a href="index.html" class="item"><i class="sign in icon"></i> <span>Login</span></a>
                         <a href="dashboard.html" class="item"><i class="file icon"></i> <span>Sample</span></a>
                         <a href="dashboard.html" class="item"><i class="file icon"></i> <span>Sample</span></a>

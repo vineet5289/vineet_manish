@@ -11,7 +11,7 @@ import enum_package.Role;
 import play.mvc.Result;
 import play.mvc.Security;
 import security.ActionAuthenticator;
-
+import views.html.viewClass.allUser;
 public class UserController extends CustomController {
 
 	@Security.Authenticated(ActionAuthenticator.class)
@@ -38,6 +38,6 @@ public class UserController extends CustomController {
 			exception.printStackTrace();
 			//redirect to particular page
 		}
-		return ok("hello");
+		return ok(allUser.render(userInfos));
 	}
 }

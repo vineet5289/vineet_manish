@@ -1,0 +1,34 @@
+@(users:List[models.UserInfo])
+@mainDashboard("All Users"){
+<div class="sixteen wide column" id="content">
+    
+       <div class="ui main container" >
+<p></p>
+<div class="ui raised segment" > 
+  <table id="examplesearch" class="ui compact selectable striped celled table" cellspacing="0" width="100%" >
+  <thead>
+            <tr>
+                <th>Name</th>
+                <th>username</th>
+               
+            </tr>
+        </thead>
+ 
+  
+        @for((item,index)<-users.zipWithIndex){
+        <tbody>
+                <tr>
+                <td>@item.name</td>
+                <td>@item.name</td>
+            </tr>
+            
+        </tbody>
+       }
+   </table>
+  </div>
+</div>
+
+</div>
+
+}
+
