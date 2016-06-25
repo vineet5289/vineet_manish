@@ -48,7 +48,7 @@ public class UserLoginDAO {
 				userNameField, isActiveField);
 
 		String userSchoolSelectQuery = String.format("SELECT %s, %s, %s FROM %s WHERE %s=?;", userNameField, nameField, schoolIdField,
-				loginTableName, userNameField);
+				userSchoolTableName, userNameField);
 
 		boolean isFieldSet = true;
 		try {
