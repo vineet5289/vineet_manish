@@ -69,7 +69,7 @@ CREATE TABLE IF NOT EXISTS login (
   role varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   access_rights longtext COLLATE utf8_unicode_ci,
   is_active tinyint(1) DEFAULT 1,
-  school_id varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  name varchar(150) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (id),
   UNIQUE KEY (user_name)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

@@ -73,6 +73,11 @@ POST		/editSubjects/:subjectId				   controllers.school.SubjectController.editSu
 POST		/editSubjects/:subjectId				   controllers.school.SubjectController.deleteSubjects(subjectId: Long)
 
 #test
-GET			/addTest							   controllers.CustomController.testRoute()
-POST		/addTest							   controllers.CustomController.postRoute()
+GET			/addTest							   		controllers.CustomController.testRoute()
+POST		/addTest							   		controllers.CustomController.postRoute()
 
+# access rights
+POST		/updateAccessRights						   controllers.AccessRightsController.addAccessRight()
+
+# view all user
+GET			/allUser									controllers.user.UserController.getAllUser()

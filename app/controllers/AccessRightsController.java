@@ -6,10 +6,14 @@ import java.util.List;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
+import play.mvc.Security;
+import security.ActionAuthenticator;
 import views.forms.AccessRightsForm;
 import dao.UserLoginDAO;
 
 public class AccessRightsController extends Controller {
+
+	@Security.Authenticated(ActionAuthenticator.class)
 	public Result addAccessRight() {
 		Form<AccessRightsForm> accessRightsForm = Form.form(AccessRightsForm.class).bindFromRequest();
 		if(accessRightsForm == null || accessRightsForm.hasErrors()) {
