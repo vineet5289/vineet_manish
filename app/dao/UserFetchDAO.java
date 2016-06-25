@@ -12,7 +12,7 @@ import models.LoginDetails;
 import models.UserInfo;
 
 public class UserFetchDAO {
-	private final String userNameField = "userName";
+	private final String userNameField = "user_name";
 	private final String schoolIdField = "school_id";
 	private final String nameField = "name";
 	private final String tableName = "user_school";
@@ -42,7 +42,6 @@ public class UserFetchDAO {
 		} catch(Exception exception) {
 			System.out.println("Problem during user fetch. Please Try again");
 			exception.printStackTrace();
-			connection.rollback();
 		} finally {
 			if(resultSet != null)
 				resultSet.close();

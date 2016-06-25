@@ -38,6 +38,7 @@ public class UserController extends CustomController {
 			exception.printStackTrace();
 			//redirect to particular page
 		}
+		System.out.println("===> " + userInfos);
 		return ok(allUser.render(userInfos));
 	}
 }
