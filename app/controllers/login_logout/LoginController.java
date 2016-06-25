@@ -36,13 +36,14 @@ public class LoginController extends CustomController {
 					return redirect(controllers.login_logout.routes.LoginController.preLogin());
 				}
 
-
 				session(SessionKey.USER_NAME.name(), userName);
 				session(SessionKey.USER_ROLE.name(), loginDetails.getRole().name());
 				session(SessionKey.AUTH_TOKEN.name(), loginDetails.getAuthToken());
-				session(SessionKey.SCHOOL_ID.name(), loginDetails.getSchoolId());
+				session(SessionKey.SCHOOL_ID.name(), loginDetails.getSchoolIdList());
+				session(SessionKey.USER_ACCESSRIGHT.name(), loginDetails.getAccessRightList());
 			} catch (Exception exception){
 				flash("error", "Server problem occur. Please try after some time");
+				session().clear();
 				return redirect(controllers.login_logout.routes.LoginController.preLogin());
 			}
 
@@ -51,20 +52,13 @@ public class LoginController extends CustomController {
 	}
 
 	public Result preLogin() {
+		session().clear();
 		Form<LoginForm> loginForm = Form.form(LoginForm.class);
 		return ok(login.render(loginForm));
 	}
 
 	@Security.Authenticated(ActionAuthenticator.class)
 	public Result logout() {
-//		String authToken = session().get(SessionKey.AUTH_TOKEN.name());
-//		String userName = session().get(SessionKey.USER_NAME.name());
-//		UserLoginDAO userLoginDAO = new UserLoginDAO();
-//		try{
-//			userLoginDAO.logout(userName);
-//		} catch (Exception exception){
-//			exception.printStackTrace();
-//		}
 		session().clear();
 		flash("success", "You've been logged out");
 		return redirect(controllers.login_logout.routes.LoginController.preLogin());

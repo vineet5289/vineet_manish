@@ -15,6 +15,7 @@ public class NotificationController extends CustomController {
 	public NotificationController(MessageService messageService) {
 		this.messageService = messageService;
 	}
+
 	public Result notification() {
 		System.out.println("NotificationController.notification");
 		JsonNode message = request().body().asJson();

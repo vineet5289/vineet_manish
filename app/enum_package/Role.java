@@ -4,8 +4,7 @@ public enum Role {
 	STUDENT,
 	ADMIN,
 	SUPERADMIN,
-	FATHER,
-	MOTHER,
 	GUARGIAN,
-	TEACHER;
+	TEACHER,
+	OTHER;
 }

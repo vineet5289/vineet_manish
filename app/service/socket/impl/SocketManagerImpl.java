@@ -1,15 +1,10 @@
 package service.socket.impl;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
-import akka.actor.ActorRef;
-import akka.actor.Cancellable;
-import scala.concurrent.duration.Duration;
 import service.socket.SocketManager;
+import akka.actor.ActorRef;
 
 public class SocketManagerImpl implements SocketManager {
 

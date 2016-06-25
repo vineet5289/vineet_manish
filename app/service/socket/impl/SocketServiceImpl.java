@@ -2,8 +2,6 @@ package service.socket.impl;
 
 import javax.inject.Inject;
 
-import com.fasterxml.jackson.databind.JsonNode;
-
 import akka.actor.ActorRef;
 import akka.actor.Props;
 import play.libs.F;

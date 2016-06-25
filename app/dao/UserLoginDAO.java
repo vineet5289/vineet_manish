@@ -7,32 +7,33 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import enum_package.Role;
 import models.LoginDetails;
 import play.db.DB;
 import utils.RandomGenerator;
+import enum_package.Role;
 
 public class UserLoginDAO {
 	private String tableName = "login"; 
-	private String authTokeFieldNameField = "auth_token";
-	private String schoolIdField = "school_id";
-	private String isActiveField = "is_active";
-	private String roleField = "role";
+	private String emailIdField = "email_id";
 	private String userNameField = "user_name";
 	private String passwordField = "password";
 	private String passwordStateField = "password_state";
+	private String createdAt = "created_at";
+	private String updatedAt = "updated_at";
+	private String roleField = "role";
+	private String accessRightsField = "access_rights";
+	private String isActiveField = "is_active";
+	private String schoolIdField = "school_id";
 	
-	private static final RandomGenerator randomGenerator = new RandomGenerator();
-	private static final SecureRandom secureRandom = new SecureRandom();
-
 	public LoginDetails isValidUserCredentials(String userName, String password) throws SQLException {
 		LoginDetails loginDetails = new LoginDetails();
-		String authToken = "";
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
-		String selectQuery = String.format("SELECT %s, %s, %s, %s, %s FROM %s WHERE %s=? AND %s=?;", userNameField,
-				passwordField, passwordStateField, schoolIdField, roleField, tableName, userNameField, isActiveField);
+		String selectQuery = String.format("SELECT %s, %s, %s, %s, %s, %s, %s, %s FROM %s WHERE %s=? AND %s=?;", userNameField,
+				emailIdField, passwordField, passwordStateField, schoolIdField, roleField, accessRightsField, isActiveField, tableName,
+				userNameField, isActiveField);
+		boolean isFieldSet = true;
 		try {
 			connection = DB.getDataSource("srp").getConnection();
 			preparedStatement = connection.prepareStatement(selectQuery, ResultSet.TYPE_FORWARD_ONLY);
@@ -44,18 +45,23 @@ public class UserLoginDAO {
 				loginDetails.setError("UserName/Password is invalid. Please Try again");
 				return loginDetails;
 			}
-			authToken = randomGenerator.nextSessionId(150, secureRandom);
-//			resultSet.updateString(authTokeFieldName, authToken);
-			loginDetails.setAuthToken(authToken);
+			
 			loginDetails.setRole(Role.valueOf(resultSet.getString(roleField)));
 			loginDetails.setUserName(userName);
 			loginDetails.setError("");
-			loginDetails.setSchoolId(resultSet.getString(schoolIdField));
-//			resultSet.updateRow();
+
+			String authToken = geterateAuthToken();
+			if(authToken == null || authToken.isEmpty())
+				isFieldSet = false;
+			loginDetails.setAuthToken(authToken);
+
+			loginDetails.setSchoolIdList(resultSet.getString(schoolIdField));
+			loginDetails.setAccessRightList(resultSet.getString(accessRightsField));
 		} catch(Exception exception) {
 			loginDetails.setError("Server Problem occure. Please try after some time");
 			exception.printStackTrace();
 			connection.rollback();
+			isFieldSet = false;
 		} finally {
 			if(resultSet != null)
 				resultSet.close();
@@ -64,40 +70,43 @@ public class UserLoginDAO {
 			if(connection != null)
 				connection.close();
 		}
+
+		if(!isFieldSet)
+			return null;
 
 		return loginDetails;
 	}
 
-	public void logout(String userName) throws SQLException {
-		if(userName == null || userName.isEmpty())
-			return;
-
-		Connection connection = null;
-		PreparedStatement preparedStatement = null;
-		ResultSet resultSet = null;
-		String selectQuery = String.format("SELECT * FROM %s WHERE user_name=?;", tableName);
-		try {
-			connection = DB.getDataSource("srp").getConnection();
-			preparedStatement = connection.prepareStatement(selectQuery, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
-			preparedStatement.setString(1, userName);
-
-			resultSet = preparedStatement.executeQuery();
-			if(resultSet.next()){
-				resultSet.updateString(authTokeFieldNameField, null);
-				resultSet.updateRow();
-			}
-		} catch(Exception exception) {
-			exception.printStackTrace();
-			connection.rollback();
-		} finally {
-			if(resultSet != null)
-				resultSet.close();
-			if(preparedStatement != null)
-				preparedStatement.close();
-			if(connection != null)
-				connection.close();
-		}
-	}
+//	public void logout(String userName) throws SQLException {
+//		if(userName == null || userName.isEmpty())
+//			return;
+//
+//		Connection connection = null;
+//		PreparedStatement preparedStatement = null;
+//		ResultSet resultSet = null;
+//		String selectQuery = String.format("SELECT * FROM %s WHERE user_name=?;", tableName);
+//		try {
+//			connection = DB.getDataSource("srp").getConnection();
+//			preparedStatement = connection.prepareStatement(selectQuery, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
+//			preparedStatement.setString(1, userName);
+//
+//			resultSet = preparedStatement.executeQuery();
+//			if(resultSet.next()){
+//				resultSet.updateString(authTokeFieldNameField, null);
+//				resultSet.updateRow();
+//			}
+//		} catch(Exception exception) {
+//			exception.printStackTrace();
+//			connection.rollback();
+//		} finally {
+//			if(resultSet != null)
+//				resultSet.close();
+//			if(preparedStatement != null)
+//				preparedStatement.close();
+//			if(connection != null)
+//				connection.close();
+//		}
+//	}
 
 	public boolean isUserPresent(String userName, String authKey) throws SQLException {
 		Connection connection = null;
@@ -129,5 +138,15 @@ public class UserLoginDAO {
 
 	private boolean isPasswordMatch(String enteredPassword, String dbPassword) throws NoSuchAlgorithmException {
 		return RandomGenerator.checkPasswordMatch(dbPassword, enteredPassword);
+	}
+	
+	private String geterateAuthToken() {
+		String authToken = "";
+		try {
+			authToken = RandomGenerator.nextSessionId(150, new SecureRandom());
+		}catch(Exception exception) {
+			exception.printStackTrace();
+		}
+		return authToken;
 	}
 }
