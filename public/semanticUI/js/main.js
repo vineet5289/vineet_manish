@@ -19,10 +19,16 @@ $(document).ready(function() {
     });
 
     $('#verticalMenu').niceScroll({ cursorcolor: "transparent" });
-    $('.ui.accordion').accordion();
+    
     $('.ui.dropdown').dropdown();
     $('.ui.checkbox').checkbox();
     $('.ui.progress').progress();
+    $('.ui.accordion').accordion();
+	$('.trigger.example.accordion').accordion({
+    selector: {
+      trigger: '.title .icon'
+    }
+  });
 
     $('#showToggle').hide();
     $('#hideToggle').show();
@@ -36,4 +42,19 @@ $(document).ready(function() {
         $('#hideToggle').show();
         $('#sideMenu').removeClass('hide');
     });
+    
+     $('.ui .item').on('click', function() {
+        $('.ui .item').removeClass('active');
+        $(this).addClass('active');
+    });
+    $('.demo.menu .item').tab({history:false});
+    $("#fileUpload").on("click", function() {
+   $('#new-file-upload').click(); 
+});
+
+    $('#addSection').click(function(){
+       $('#modalAddSection').modal('show');    
+      });
+  
+    
 });

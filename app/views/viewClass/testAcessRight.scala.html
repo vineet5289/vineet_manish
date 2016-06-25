@@ -1,0 +1,62 @@
+@mainDashboard("AccessRights"){
+
+  <div class="sixteen wide column" id="content"> 
+  
+  <script type="text/javascript">
+
+function yesnoCheck() {
+    if (document.getElementById('yesCheck').checked) {
+        document.getElementById('ifYes').style.display = 'block';
+    }
+    else document.getElementById('ifYes').style.display = 'none';
+
+}
+
+</script>
+ <label> Provide Access Rights </label>
+ Yes <input type="radio" onclick="javascript:yesnoCheck();" name="yesno" id="yesCheck">
+ No  <input type="radio" onclick="javascript:yesnoCheck();" name="yesno" id="noCheck">
+ 
+ <br>
+     <div id="ifYes" style="display:none">
+        Add STudents: <input type='checkbox' id='yes' name='AddStudents'><br>
+        
+    </div>
+        
+        other 3<input type='text' id='other3' name='other3'><br>
+        other 4<input type='text' id='other4' name='other4'><br>
+        
+        <div class="ui celled relaxed list">
+  <div class="item">
+    <div class="ui master checkbox">
+      <input name="Access Rights" type="checkbox">
+      <label>Access Rights</label>
+    </div>
+    <div class="list">
+      <div class="item">
+        <div class="ui child checkbox">
+          <input name="addStudent" type="checkbox">
+          <label>addStudent</label>
+        </div>
+      </div>
+      <div class="item">
+        <div class="ui child checkbox">
+          <input name="addClass" type="checkbox">
+          <label>addClass</label>
+        </div>
+      </div>
+      <div class="item">
+        <div class="ui child checkbox">
+          <input name="addSubject" type="checkbox">
+          <label>addSubject</label>
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+</div>
+  
+  
+   </div>
+
+}

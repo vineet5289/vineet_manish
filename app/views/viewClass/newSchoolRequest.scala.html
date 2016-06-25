@@ -8,8 +8,8 @@
                         <span class="ui header">Register<span>
                     </div>
                     <div class="ui segment">
-                        <form class="ui form" id="form1" action="@routes.RegistrationRequest.postAddNewSchoolRequest" method="Post">
-						     <div class="field">
+                        <form id="schoolRegistrationForm" class="ui form" method="Post" action="@routes.RegistrationRequest.postAddNewSchoolRequest()">
+                                <div class="field">
                                  <div class="ui left icon input">
                                     <input type="text" name="schoolName" placeholder="schoolName">
                                     <i class="user icon"></i>
@@ -39,7 +39,7 @@
                              
 							 <div class="field">
                                  <div class="ui left icon input">
-                                    <input type="text" name="principalEmail" placeholder="principalEmail">
+                                    <input type="email" name="principalEmail" placeholder="principalEmail">
                                     <i class="mail icon"></i>
                                  </div>
                              </div>
@@ -61,8 +61,13 @@
                             </div>
                             
                             <button class="ui big fluid blue icon button" type="submit">Send Request <i class="sign in icon"></i></button>
-                            <div class="ui error message"></div>
+                            
+							  <div class="ui reset button">Reset</div>
+							  <div class="ui clear button">Clear</div>
+				               <div class="ui error message"></div> 
+  
                         </form>
+                        
                     </div>
                     </div>
             </div>

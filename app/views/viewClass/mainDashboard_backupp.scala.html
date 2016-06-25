@@ -8,7 +8,6 @@
     
     <link rel="stylesheet" href="@routes.Assets.versioned("semanticUI/css/semantic.css")">
     <link rel="stylesheet" href="@routes.Assets.versioned("semanticUI/css/main.css")">
-        <link rel="stylesheet" href="@routes.Assets.versioned("semanticUI/css/test.css")">
     <link rel="stylesheet" href="@routes.Assets.versioned("semanticUI/css/animate.css")">
     
 </head>
@@ -18,7 +17,7 @@
     <a href="javascript:void(0)" class="icon active item" id="hideToggle"><h3><i class="chevron left icon"></i></h3></a>
     <a href="javascript:void(0)" class="icon active item" id="showToggle"><h3><i class="chevron right icon"></i></h3></a>
     
-        <a href="/login" data-toggle="slide" class="item">schoolName!</a>
+        <a href="/login" data-toggle="slide" class="item mobile-button" id="top-menu">schoolName!</a>
         <div class="menu right">
             <a class="icon item pointer" data-toggle="popup" data-content="#mail" data-position="bottom right"><i class="mail icon"></i></a>
             <div id="mail" class="ui fluid popup" style="min-width:400px;padding-top:30px;">
@@ -97,34 +96,35 @@
                 </div>
             </div>
         </div>
-    </div>
+       </div>
     <div class="pusher">
         <div class="ui fluid container">
+       
             <div class="ui one column grid">
-           
-                <div class="side menu" id="sideMenu">
-                    
-                    <div class="ui fluid vertical menu" id="verticalMenu">
-                        <a href="@routes.SRPController.index()" class="item"><i class="home icon"></i>Home</a>
-                        <a href="@school.routes.ClassController.preAddClass()" class="item"><i class="bar chart icon"></i>Add Class</a>
-                        <a href="@school.routes.ClassController.viewAllClass()" class="item"><i class="bar chart icon"></i>View All Class</a>
-                        <a href="@routes.CustomController.testRoute()" class="item"><i class="calendar icon"></i>Test Page</a>
-                        <a href="progress.html" class="item"><i class="file icon"></i>Message</a>
-                        <a href="index.html" class="item"><i class="sign in icon"></i> <span>Login</span></a>
-                        <a href="dashboard.html" class="item"><i class="file icon"></i> <span>Sample</span></a>
-                        <a href="dashboard.html" class="item"><i class="file icon"></i> <span>Sample</span></a>
-                        <a class="item"><i class="trophy icon"></i>Achievements</a>
-    <a class="item"><i class="shop icon"></i>Store</a>
-    <a class="item"><i class="settings icon"></i>Settings</a>
-    <a class="item"><i class="trophy icon"></i>Achievements</a>
-    <a class="item"><i class="shop icon"></i>Store</a>
-    <a class="item"><i class="settings icon"></i>Settings</a>
-    <a class="item"><i class="trophy icon"></i>Achievements</a>
-    <a class="item"><i class="shop icon"></i>Store</a>
-    <a class="item"><i class="settings icon"></i>Settings</a>
-                    </div>
+          
+          <div class="side menu" id="sideMenu">
+          
+          <div class="ui fluid vertical menu" id="verticalMenu">
+    <a href="@routes.SRPController.index()" class="item"><i class="home icon"></i><span>Home</span></a>
+    <a href="@school.routes.ClassController.viewAllClass()" class="item"><i class="smile icon"></i>View Class</a>
+    <a href="@school.routes.ClassController.preAddClass()" class="item"><i class="block layout icon"></i>Add Class</a>
     
-                 </div>
+    <a href="@routes.CustomController.testRoute()" class="item"><i class="calendar icon"></i>Test Page</a>
+    <a class="item"><i class="mail icon"></i>Messages</a>
+    <a class="item"><i class="chat icon"></i>Discussions</a>
+    <a class="item"><i class="trophy icon"></i>Achievements</a>
+    <a class="item"><i class="shop icon"></i>Store</a>
+    <a class="item"><i class="settings icon"></i>Settings</a>
+    <a class="item"><i class="trophy icon"></i>Achievements</a>
+    <a class="item"><i class="shop icon"></i>Store</a>
+    <a class="item"><i class="settings icon"></i>Settings</a>
+    <a class="item"><i class="trophy icon"></i>Achievements</a>
+    <a class="item"><i class="shop icon"></i>Store</a>
+    <a class="item"><i class="settings icon"></i>Settings</a>
+  </div>
+  </div>
+ 
+               
     
 
                 @content
@@ -135,18 +135,9 @@
 		<script type="text/javascript" src="@routes.Assets.versioned("semanticUI/js/jquery.min.js")"></script>
 		<script type="text/javascript" src="@routes.Assets.versioned("semanticUI/js/semantic.js")"></script>
 		<script type="text/javascript" src="@routes.Assets.versioned("semanticUI/js/semantic.min.js")"></script>
-		<script type="text/javascript" src="@routes.Assets.versioned("semanticUI/js/nicescroll.js")"></script>
-		<script type="text/javascript" src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+		
 		<script type="text/javascript" src="@routes.Assets.versioned("semanticUI/js/jquery-1.12.2.js")"></script>
 		<script type="text/javascript" src="@routes.Assets.versioned("semanticUI/js/main.js")"></script>
-		<script type="text/javascript" src="@routes.Assets.versioned("semanticUI/js/main2.js")"></script>
-		<script type="text/javascript" src="@routes.Assets.versioned("semanticUI/js/test.js")"></script>
-		
 		<script type="text/javascript" src="@routes.Assets.versioned("semanticUI/js/graph.js")"></script>
-		
-
-		
-
- 			
 </body>
 </html>

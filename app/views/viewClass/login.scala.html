@@ -1,22 +1,19 @@
  @(loginForm:Form[views.forms.LoginForm])
  @viewClass.main2("login"){
- <script type="text/javascript">
-    function OTP(){
-$('.small.modal')
-  .modal('show')
-;
-}
- </script>
+ 
 
               
-        <div class="ui two column middle aligned very relaxed stackable grid">
-            <div class="six wide column">
-                <div class="ui segments" align="center">
+        <!-- <div class="ui two column middle aligned very relaxed stackable grid"> -->
+        <div class="ui center aligned segment">
+                  <div class="two wide column"> 
+                <div class="ui segments">
                     <div class="ui inverted blue padded segment">
-                        <span class="ui header">Hello! Welcome in Be Awesome Admin</span>
+                        <span class="ui header">Login</span>
                     </div>
+
                     <div class="ui segment">
                         <form class="ui form" id="loginform" action="@login_logout.routes.LoginController.postLogin()" method="Post">
+
                             <div class="field">
                                 <div class="ui left icon input">
                                     <input type="text" name="userName" placeholder="Username">
@@ -43,9 +40,9 @@ $('.small.modal')
                         <a href="">Forgot Password?</a>
                     </div>
                 
-            </div>
+             </div> 
         </div>
-        <div class="ui vertical divider">
+        <div class="ui horizontal divider">
     Or
   </div>
   <div class="center aligned column">

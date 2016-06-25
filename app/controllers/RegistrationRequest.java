@@ -33,6 +33,7 @@ import akka.actor.ActorSystem;
 import dao.SchoolRegistrationDAO;
 import dao.SchoolRegistrationRequestDAO;
 import enum_package.SessionKey;
+import views.html.viewClass.thanku;
 
 
 public class RegistrationRequest extends CustomController {
@@ -89,7 +90,7 @@ public class RegistrationRequest extends CustomController {
 		messageActor.tell(newSchoolRequest, messageActor);
 		
 		System.out.println("********postAddNewSchoolRequest 7" );
-		return ok(requestRefNumber); // generate proper html page and show reference number and message
+		return ok(thanku.render(requestRefNumber)); // generate proper html page and show reference number and message
 	}
 
 	public Result submitOTP() {

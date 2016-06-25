@@ -22,10 +22,10 @@ body {
   color: #FFFFFF;
 }
 .side.menu {
-  background-color: #569edd;
-  width: 230px;
-  height: 100vh;
-  padding: 10px 0px 0px 0px;
+  background-color: #FFFFFF;
+  width: 200px;
+  height: 150vh;
+  padding: 15px 10px 0px 0px;
   position: fixed;
   z-index: 9998;
   left: 0;
@@ -57,7 +57,7 @@ body {
   border-radius: 0;
   box-shadow: none;
   border: none;
-  max-height: 320px;
+  max-height: 495px;
   overflow-y: scroll;
 }
 @media (max-width: 768px) {
@@ -66,7 +66,7 @@ body {
   }
 }
 .side.menu .ui.vertical.menu .item {
-  background-color: #569edd;
+  background-color: #333231;
   color: rgba(255, 255, 255, 0.7);
   border-radius: 0;
 }
@@ -86,13 +86,23 @@ body {
   }
 }
 #content {
-  padding-right: 25px;
-  padding-left: 265px;
+  padding-right: 30px;
+  padding-left: 230px;
   -webkit-transition: all 0.5s;
   -moz-transition: all 0.5s;
   -o-transition: all 0.5s;
   transition: all 0.5s;
 }
+
+#content2 {
+  padding-right:30px;
+  padding-left: 230px;
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  -o-transition: all 0.5s;
+  transition: all 0.5s;
+}
+
 @media (max-width: 768px) {
   #content {
     padding-left: 60px;
