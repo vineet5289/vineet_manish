@@ -19,7 +19,7 @@ import views.forms.AccessRightsForm;
 import enum_package.Role;
 
 public class UserLoginDAO {
-	private String tableName = "login"; 
+	private String loginTableName = "login"; 
 	private String idField = "id";
 	private String emailIdField = "email_id";
 	private String userNameField = "user_name";
@@ -30,30 +30,52 @@ public class UserLoginDAO {
 	private String roleField = "role";
 	private String accessRightsField = "access_rights";
 	private String isActiveField = "is_active";
+
+	private String userSchoolTableName = "user_school";
+	private String nameField = "name";
 	private String schoolIdField = "school_id";
 
 	public LoginDetails isValidUserCredentials(String userName, String password) throws SQLException {
 		LoginDetails loginDetails = new LoginDetails();
 		Connection connection = null;
-		PreparedStatement preparedStatement = null;
-		ResultSet resultSet = null;
-		String selectQuery = String.format("SELECT %s, %s, %s, %s, %s, %s, %s, %s FROM %s WHERE %s=? AND %s=?;", userNameField,
-				emailIdField, passwordField, passwordStateField, schoolIdField, roleField, accessRightsField, isActiveField, tableName,
+		PreparedStatement loginPreparedStatement = null;
+		PreparedStatement userSchoolPreparedStatement = null;
+		ResultSet loginResultSet = null;
+		ResultSet userSchoolResultSet = null;
+
+		String loginSelectQuery = String.format("SELECT %s, %s, %s, %s, %s, %s, %s FROM %s WHERE %s=? AND %s=?;", userNameField,
+				emailIdField, passwordField, passwordStateField, roleField, accessRightsField, isActiveField, loginTableName,
 				userNameField, isActiveField);
+
+		String userSchoolSelectQuery = String.format("SELECT %s, %s, %s FROM %s WHERE %s=?;", userNameField, nameField, schoolIdField,
+				loginTableName, userNameField);
+
 		boolean isFieldSet = true;
 		try {
 			connection = DB.getDataSource("srp").getConnection();
-			preparedStatement = connection.prepareStatement(selectQuery, ResultSet.TYPE_FORWARD_ONLY);
-			preparedStatement.setString(1, userName);
-			preparedStatement.setBoolean(2, true);
+			connection.setAutoCommit(false);
 
-			resultSet = preparedStatement.executeQuery();
-			if(!resultSet.next() || !isPasswordMatch(password, resultSet.getString(passwordField))) {
+			loginPreparedStatement = connection.prepareStatement(loginSelectQuery, ResultSet.TYPE_FORWARD_ONLY);
+			loginPreparedStatement.setString(1, userName);
+			loginPreparedStatement.setBoolean(2, true);
+
+			userSchoolPreparedStatement = connection.prepareStatement(userSchoolSelectQuery, ResultSet.TYPE_FORWARD_ONLY);
+			userSchoolPreparedStatement.setString(1, userName);
+
+			loginResultSet = loginPreparedStatement.executeQuery();
+			if(!loginResultSet.next() || !isPasswordMatch(password, loginResultSet.getString(passwordField))) {
 				loginDetails.setError("UserName/Password is invalid. Please Try again");
 				return loginDetails;
 			}
 
-			loginDetails.setRole(Role.valueOf(resultSet.getString(roleField)));
+			userSchoolResultSet = userSchoolPreparedStatement.executeQuery();
+			StringBuilder sb = new StringBuilder();
+			while (userSchoolResultSet.next()) {
+				sb.append(userSchoolResultSet.getLong(schoolIdField) + ",");
+			}
+			loginDetails.setName(userSchoolResultSet.getString(nameField));
+			
+			loginDetails.setRole(Role.valueOf(loginResultSet.getString(roleField)));
 			loginDetails.setUserName(userName);
 			loginDetails.setError("");
 
@@ -62,18 +84,19 @@ public class UserLoginDAO {
 				isFieldSet = false;
 			loginDetails.setAuthToken(authToken);
 
-			loginDetails.setSchoolIdList(resultSet.getString(schoolIdField));
-			loginDetails.setAccessRightList(resultSet.getString(accessRightsField));
+			loginDetails.setSchoolIdList(sb.toString());
+			loginDetails.setAccessRightList(loginResultSet.getString(accessRightsField));
+			connection.commit();
 		} catch(Exception exception) {
 			loginDetails.setError("Server Problem occure. Please try after some time");
 			exception.printStackTrace();
 			connection.rollback();
 			isFieldSet = false;
 		} finally {
-			if(resultSet != null)
-				resultSet.close();
-			if(preparedStatement != null)
-				preparedStatement.close();
+			if(loginResultSet != null)
+				loginResultSet.close();
+			if(loginPreparedStatement != null)
+				loginPreparedStatement.close();
 			if(connection != null)
 				connection.close();
 		}
@@ -89,7 +112,7 @@ public class UserLoginDAO {
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		String selectUpdateQuery = String.format("SELECT %s, %s, %s, %s, %s, %s, FROM %s WHERE %s=? AND %s=true;", idField,userNameField,
-				schoolIdField, roleField, accessRightsField, isActiveField, tableName, userNameField, isActiveField);
+				schoolIdField, roleField, accessRightsField, isActiveField, loginTableName, userNameField, isActiveField);
 		boolean isSuccessful = true;
 		try {
 			connection = DB.getDataSource("srp").getConnection();
@@ -140,7 +163,7 @@ public class UserLoginDAO {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
-		String selectQuery = String.format("SELECT * FROM %s WHERE user_name=? AND auth_token=?;", tableName);
+		String selectQuery = String.format("SELECT * FROM %s WHERE user_name=? AND auth_token=?;", loginTableName);
 		try {
 			connection = DB.getDataSource("srp").getConnection();
 			preparedStatement = connection.prepareStatement(selectQuery, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);

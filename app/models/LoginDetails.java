@@ -11,5 +11,6 @@ public class LoginDetails {
 	private String authToken;
 	private String schoolIdList;
 	private String accessRightList;
+	private String name;
 	private String error = "";
 }
