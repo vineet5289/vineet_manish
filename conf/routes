@@ -80,4 +80,4 @@ POST		/addTest							   		controllers.CustomController.postRoute()
 POST		/updateAccessRights						   controllers.AccessRightsController.addAccessRight()
 
 # view all user
-GET			/allUser/:schoolId							controllers.user.UserController.getAllUser(schoolId: Long)
+GET			/allUser/:schoolId							controllers.user.UserController.getUsers(schoolId: Long, category: String ?="")

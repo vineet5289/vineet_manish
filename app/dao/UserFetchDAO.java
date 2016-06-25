@@ -53,4 +53,24 @@ public class UserFetchDAO {
 		}
 		return userInfos;
 	}
+
+	public List<UserInfo> getAllTeachers(Long schoolId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<UserInfo> getAllGuardian(Long schoolId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<UserInfo> getAllStudents(Long schoolId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<UserInfo> getAllOtherUser(Long schoolId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
