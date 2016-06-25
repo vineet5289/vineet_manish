@@ -1,4 +1,4 @@
-package views.forms.school;
+package views.forms;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -11,7 +11,6 @@ import views.forms.school.DisplayClassForm;
 import controllers.CustomController;
 import dao.ClassDAO;
 import enum_package.SessionKey;
-import views.html.addClass;
 import views.html.viewClass.viewclasses;
 import views.html.viewClass.addClasses;
 
@@ -116,9 +115,7 @@ public class ClassController extends CustomController {
 	}
 
 	public Result deleteClass(String classsName) {
-		System.out.println("++++++++++++++");
 		System.out.println(classsName);
-		System.out.println("++++++++++++++");
 		String schoolIdFromSession = "1";//session().get(SessionKey.SCHOOL_ID.name());
 		long schoolId = -1l;
 		try {
@@ -155,9 +152,7 @@ public class ClassController extends CustomController {
 	}
 
 	public Result addSection(String classsName) {
-		System.out.println("++++++addSection++++++++");
 		System.out.println(classsName);
-		System.out.println("+++++addSection+++++++++");
 		String schoolIdFromSession = "1";//session().get(SessionKey.SCHOOL_ID.name());
 		String userName = "vineet";//session().get(SessionKey.USER_NAME.name());
 		long schoolId = -1l;

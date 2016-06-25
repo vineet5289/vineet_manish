@@ -19,6 +19,16 @@ public class ParseString {
 		return parsedMap;
 	}
 
+	public static String getString(Map<String, String> value) {
+		if(value == null || value.isEmpty())
+			return "";
+		StringBuilder sb = new StringBuilder();
+		for(Map.Entry<String, String> entry : value.entrySet()) {
+			sb.append(entry.getKey() + "=" + entry.getValue() + ",");
+		}
+		return sb.toString();
+	}
+
 	public static List<Long> getList(String value) {
 		List<Long> parsedList = new ArrayList<Long>();
 		if(value == null || value.isEmpty())

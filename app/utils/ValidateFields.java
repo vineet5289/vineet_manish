@@ -14,10 +14,14 @@ public class ValidateFields {
 	private static final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$";
 	private static Pattern passwordPattern;
 
+	private static final String ACCESS_RIGHTS_PATTERN = "^[a-z0-9=,]{1,}$";
+	private static Pattern accessRightsPattern;
+
 	static {
 		userNamePattern = Pattern.compile(USERNAME_PATTERN, Pattern.CASE_INSENSITIVE);
 		passwordPattern = Pattern.compile(PASSWORD_PATTERN);
 		emailPattern = Pattern.compile(EMAIL_PATTERN, Pattern.CASE_INSENSITIVE);
+		accessRightsPattern = Pattern.compile(ACCESS_RIGHTS_PATTERN, Pattern.CASE_INSENSITIVE);
 	}
 
 	public static boolean isValidEmailId(String emailId) {
@@ -33,6 +37,14 @@ public class ValidateFields {
 			return false;
 
 		Matcher matcher = userNamePattern.matcher(userName);
+		return matcher.matches();
+	}
+
+	public static boolean isValidAccessRigths(String accessRight) {
+		if(accessRight == null)
+			return false;
+
+		Matcher matcher = accessRightsPattern.matcher(accessRight);
 		return matcher.matches();
 	}
 

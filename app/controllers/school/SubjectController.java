@@ -4,12 +4,10 @@ import java.util.List;
 
 import play.data.Form;
 import play.mvc.Result;
-import views.forms.school.ClassForm;
 import views.forms.school.SubjectForm;
 import views.html.test;
 import controllers.CustomController;
 import dao.SubjectDAO;
-import enum_package.SessionKey;
 
 public class SubjectController extends CustomController {
 
@@ -35,6 +33,7 @@ public class SubjectController extends CustomController {
 			flash("error", "Some server exception happen");
 			return redirect(controllers.login_logout.routes.LoginController.preLogin()); // check for correct redirection
 		}
+
 		List<SubjectForm.SubjectInfo> subjects= subjectsDetails.getSubjectsInfo();
 		Long classId = 1L;//subjectsDetails.getClassId();
 		SubjectDAO subjectDAO = new SubjectDAO();
