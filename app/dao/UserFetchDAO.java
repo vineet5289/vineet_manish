@@ -94,7 +94,7 @@ public class UserFetchDAO {
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		Connection connection = null;
-		String selectQuery = String.format("SELECT %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s FROM %s WHERE %s=? AND %s=? AND is_active=true;",
+		String selectQuery = String.format("SELECT %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s FROM %s WHERE %s=? AND %s=? AND is_active=true;",
 				userNameField, schoolIdField, nameField, designationField, empEmailField, joiningDateFeild, leavingDateField, genderField, empCategoryField, dobField, departmentField,
 				addressLine1Field, addressLine2Field, cityField, stateField, pinCodeField, countryField, phoneNumber1Field, phoneNumber2Field, employeeTableName,
 				schoolIdField, userNameField);
