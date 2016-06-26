@@ -12,6 +12,7 @@ import play.mvc.Result;
 import play.mvc.Security;
 import security.ActionAuthenticator;
 import views.html.viewClass.allUser;
+import views.html.user.userProfile;
 public class UserController extends CustomController {
 
 	@Security.Authenticated(ActionAuthenticator.class)
@@ -64,6 +65,6 @@ public class UserController extends CustomController {
 			//redirect to particular page
 		}
 		System.out.println("===> " + userInfos);
-		return ok("");
+		return ok(userProfile.render(userInfos));
 	}
 }

@@ -2,11 +2,26 @@
 @mainDashboard("All Users"){
 <div class="sixteen wide column" id="content">
     
-       <div class="ui main container" >
-<p></p>
-<div class="ui raised segment" > 
-  <table id="examplesearch" class="ui compact selectable striped celled table" cellspacing="0" width="100%" >
+       
+
+  
+  <div class="ui main container" >
+      <div class="ui pointing secondary demo menu">
+            <a class="active red item" data-tab="All">
+                <i class="home icon" ></i>All</a>
+            <a class="green item"  data-tab="teachers">
+                <i class="mail icon"></i>Teachers</a>
+            <a class="blue item" data-tab="student">
+                <i class="user icon"></i>Student</a>
+			<a class="olive item" data-tab="employees">
+                <i class="user icon"></i>Employee</a>
+                
+        </div>
+    <div class="ui active tab segment" data-tab="All">
+       <table id="examplesearch" class="ui compact selectable striped celled table" cellspacing="0" width="100%" >
+   
   <thead>
+  
             <tr>
                 <th>Name</th>
                 <th>username</th>
@@ -14,19 +29,35 @@
             </tr>
         </thead>
  
-  
+       
         @for((item,index)<-users.zipWithIndex){
+        
+                
         <tbody>
-                <tr>
-                <td>@item.name</td>
+            <tr>
+                <td><a href="/userInfo/@session.get("SCHOOL_ID")/@item.userName?category=employee">@item.name</a></td>
                 <td>@item.userName</td>
             </tr>
             
         </tbody>
+      
+       
+                
        }
+        
    </table>
+    </div>
+<div class="ui tab segment" data-tab="teachers">Teachers</div>
+<div class="ui tab segment" data-tab="students">Students</div> 
+<div class="ui tab segment" data-tab="employees">Employee</div>  
+      
+     
+    
+  
+							
+   
   </div>
-</div>
+
 
 </div>
 
