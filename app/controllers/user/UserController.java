@@ -41,4 +41,29 @@ public class UserController extends CustomController {
 		System.out.println("===> " + userInfos);
 		return ok(allUser.render(userInfos));
 	}
+
+	@Security.Authenticated(ActionAuthenticator.class)
+	public Result getUser(Long schoolId, String userName, String category) {
+		if(schoolId <= 0 || userName == null || userName.isEmpty() || category == null || category.isEmpty()) {
+			// redirect to error page
+		}
+
+		UserFetchDAO userFetchDAO = new UserFetchDAO();
+		UserInfo userInfos = null;
+		try {
+			if(category.equals(Role.GUARDIAN.name())) {
+//				userInfos = userFetchDAO.getAllGuardian(schoolId);
+			} else if(category.equalsIgnoreCase(Role.STUDENT.name())) {
+//				userInfos = userFetchDAO.getAllStudents(schoolId);
+			} else {
+				userInfos = userFetchDAO.getEmployeeInfo(userName, schoolId);
+			}
+
+		} catch (SQLException exception) {
+			exception.printStackTrace();
+			//redirect to particular page
+		}
+		System.out.println("===> " + userInfos);
+		return ok(allUser.render(userInfos));
+	}
 }
