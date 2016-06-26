@@ -70,10 +70,16 @@ public class UserLoginDAO {
 
 			userSchoolResultSet = userSchoolPreparedStatement.executeQuery();
 			StringBuilder sb = new StringBuilder();
-			while (userSchoolResultSet.next()) {
-				sb.append(userSchoolResultSet.getLong(schoolIdField) + ",");
+			String name = "";
+			if(userSchoolResultSet.next()) {
+				name = userSchoolResultSet.getString(nameField);
+				sb.append(userSchoolResultSet.getLong(schoolIdField));
 			}
-			loginDetails.setName(userSchoolResultSet.getString(nameField));
+
+			while (userSchoolResultSet.next()) {
+				sb.append("," + userSchoolResultSet.getLong(schoolIdField));
+			}
+			loginDetails.setName(name);
 			
 			loginDetails.setRole(Role.valueOf(loginResultSet.getString(roleField)));
 			loginDetails.setUserName(userName);
