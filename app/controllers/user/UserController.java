@@ -64,6 +64,6 @@ public class UserController extends CustomController {
 			//redirect to particular page
 		}
 		System.out.println("===> " + userInfos);
-		return ok(allUser.render(userInfos));
+		return ok("");
 	}
 }

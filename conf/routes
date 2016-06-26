@@ -81,3 +81,6 @@ POST		/updateAccessRights						   controllers.AccessRightsController.addAccessRi
 
 # view all user
 GET			/allUser/:schoolId							controllers.user.UserController.getUsers(schoolId: Long, category: String ?="")
+
+# view all user
+GET			/userInfo/:schoolId/:userName							controllers.user.UserController.getUser(schoolId: Long, userName:String, category: String ?="")
