@@ -2,7 +2,9 @@ package controllers.user;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import models.UserInfo;
 import controllers.CustomController;
@@ -21,19 +23,20 @@ public class UserController extends CustomController {
 			// redirect to error page
 		}
 		UserFetchDAO userFetchDAO = new UserFetchDAO();
-		List<UserInfo> userInfos = new ArrayList<UserInfo>();
+		Map<String, List<UserInfo>> userInfos = new HashMap<String, List<UserInfo>>();
 		try {
-			if(category == null || category.isEmpty())
-				userInfos = userFetchDAO.getAllUser(schoolId);
-			else if(category.equalsIgnoreCase(Role.TEACHER.name())) {
-				userInfos = userFetchDAO.getAllTeachers(schoolId);
-			} else if(category.equals(Role.GUARDIAN.name())) {
-				userInfos = userFetchDAO.getAllGuardian(schoolId);
-			} else if(category.equalsIgnoreCase(Role.STUDENT.name())) {
-				userInfos = userFetchDAO.getAllStudents(schoolId);
-			} else {
-				userInfos = userFetchDAO.getAllOtherUser(schoolId);
-			}
+			userInfos = userFetchDAO.getAllUser(schoolId);
+//			if(category == null || category.isEmpty())
+//				userInfos = userFetchDAO.getAllUser(schoolId);
+//			else if(category.equalsIgnoreCase(Role.TEACHER.name())) {
+//				userInfos = userFetchDAO.getAllTeachers(schoolId);
+//			} else if(category.equals(Role.GUARDIAN.name())) {
+//				userInfos = userFetchDAO.getAllGuardian(schoolId);
+//			} else if(category.equalsIgnoreCase(Role.STUDENT.name())) {
+//				userInfos = userFetchDAO.getAllStudents(schoolId);
+//			} else {
+//				userInfos = userFetchDAO.getAllOtherUser(schoolId);
+//			}
 
 		} catch (SQLException exception) {
 			exception.printStackTrace();
@@ -57,14 +60,16 @@ public class UserController extends CustomController {
 			} else if(category.equalsIgnoreCase(Role.STUDENT.name())) {
 //				userInfos = userFetchDAO.getAllStudents(schoolId);
 			} else {
+				System.out.println("===========> 1");
 				userInfos = userFetchDAO.getEmployeeInfo(userName, schoolId);
+				System.out.println("===========> 2" + userInfos);
 			}
 
 		} catch (SQLException exception) {
 			exception.printStackTrace();
 			//redirect to particular page
 		}
-		System.out.println("===> " + userInfos);
+//		System.out.println("===> " + userInfos.get);
 		return ok(userProfile.render(userInfos));
 	}
 }

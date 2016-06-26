@@ -5,8 +5,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import enum_package.Role;
 import play.db.DB;
 import models.UserInfo;
 
@@ -15,6 +18,7 @@ public class UserFetchDAO {
 	private final String schoolIdField = "school_id";
 	private final String nameField = "name";
 	private final String userSchoolTableName = "user_school";
+	private final String roleField = "role";
 
 	private final String employeeTableName = "employee";
 	private final String designationField = "designation";
@@ -37,13 +41,14 @@ public class UserFetchDAO {
 	private final String updatedAt = "updated_at";
 	private final String isActive = "is_active";
 
-	public List<UserInfo> getAllUser(Long schoolId) throws SQLException {
-		List<UserInfo> userInfos = new ArrayList<UserInfo>();
+	public Map<String, List<UserInfo>> getAllUser(Long schoolId) throws SQLException {
+		Map<String, List<UserInfo>> userInfos = new HashMap<String, List<UserInfo>>();
+//		List<UserInfo> userInfoList = new ArrayList<UserInfo>();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		Connection connection = null;
-		String selectQuery = String.format("SELECT %s, %s, %s FROM %s WHERE %s=?;", userNameField, schoolIdField, nameField,
-				userSchoolTableName, schoolIdField);
+		String selectQuery = String.format("SELECT %s, %s, %s, %s FROM %s WHERE %s=?;", userNameField, schoolIdField, nameField,
+				roleField, userSchoolTableName, schoolIdField);
 		try {
 			connection = DB.getDataSource("srp").getConnection();
 			preparedStatement = connection.prepareStatement(selectQuery, ResultSet.TYPE_FORWARD_ONLY);
@@ -52,11 +57,27 @@ public class UserFetchDAO {
 			while (resultSet.next()) {
 				String userName = resultSet.getString(userNameField);
 				String name = resultSet.getString(nameField);
+				String role = resultSet.getString(roleField);
+
 				UserInfo userInfo = new UserInfo();
 				userInfo.setName(name);
 				userInfo.setUserName(userName);
 				userInfo.setSchoolIds(schoolId.toString());
-				userInfos.add(userInfo);
+				userInfo.setRole(role);
+
+				String key = "OTHER";
+				if(role.equalsIgnoreCase(Role.TEACHER.name()) || role.equalsIgnoreCase(Role.STUDENT.name()) ||
+						userInfos.containsKey(Role.GUARDIAN.name())) {
+					key = role.toUpperCase();
+				}
+
+				if(!userInfos.containsKey(key)) {
+					userInfos.put(key, new ArrayList<UserInfo>());
+				}
+
+				List<UserInfo> value = userInfos.get(key);
+				value.add(userInfo);
+				userInfos.put(key, value);
 			}
 			
 		} catch(Exception exception) {
@@ -73,8 +94,40 @@ public class UserFetchDAO {
 		return userInfos;
 	}
 
-	public List<UserInfo> getAllTeachers(Long schoolId) {
-		return null;
+	public List<UserInfo> getAllTeachers(Long schoolId) throws SQLException {
+		List<UserInfo> teacherInfos = new ArrayList<UserInfo>();
+//		PreparedStatement preparedStatement = null;
+//		ResultSet resultSet = null;
+//		Connection connection = null;
+//		String selectQuery = String.format("SELECT %s, %s FROM %s AS us, %s AS l WHERE us.%s = AND us.%s = l.%s AND l.%s=", userNameField, nameField,
+//				userSchoolTableName, loginTableName, schoolIdField);
+//		try {
+//			connection = DB.getDataSource("srp").getConnection();
+//			preparedStatement = connection.prepareStatement(selectQuery, ResultSet.TYPE_FORWARD_ONLY);
+//			preparedStatement.setLong(1, schoolId);
+//			resultSet = preparedStatement.executeQuery();
+//			while (resultSet.next()) {
+//				String userName = resultSet.getString(userNameField);
+//				String name = resultSet.getString(nameField);
+//				UserInfo userInfo = new UserInfo();
+//				userInfo.setName(name);
+//				userInfo.setUserName(userName);
+//				userInfo.setSchoolIds(schoolId.toString());
+//				teacherInfos.add(userInfo);
+//			}
+//			
+//		} catch(Exception exception) {
+//			System.out.println("Problem during user fetch. Please Try again");
+//			exception.printStackTrace();
+//		} finally {
+//			if(resultSet != null)
+//				resultSet.close();
+//			if(preparedStatement != null)
+//				preparedStatement.close();
+//			if(connection != null)
+//				connection.close();
+//		}
+		return teacherInfos;
 	}
 
 	public List<UserInfo> getAllGuardian(Long schoolId) {

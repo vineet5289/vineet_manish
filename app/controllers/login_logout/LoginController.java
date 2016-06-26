@@ -16,9 +16,12 @@ import enum_package.SessionKey;
 
 public class LoginController extends CustomController {
 
-	public Result postLogin() {
-		System.out.println("---------------------------");
+	public Result postLogin(String phone) {
+		System.out.println("--------------------------- " + phone);
 		Form<LoginForm> loginForm = Form.form(LoginForm.class).bindFromRequest();
+		System.out.println("request = " + request());
+		System.out.println("loginForm " + loginForm);
+		
 		if (loginForm == null || loginForm.hasErrors()) {
 			flash("error", "Login credentials not valid.");
 			System.out.println("===1");

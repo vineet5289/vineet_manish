@@ -7,7 +7,7 @@ GET     /        	                        	   controllers.SRPController.index()
 
 # login handler
 GET     /login                       			   controllers.login_logout.LoginController.preLogin()
-POST    /login                       			   controllers.login_logout.LoginController.postLogin()
+POST    /login                       			   controllers.login_logout.LoginController.postLogin(phone: String ?="")
 GET     /logout                       			   controllers.login_logout.LoginController.logout()
 
 # mailer
@@ -83,4 +83,4 @@ POST		/updateAccessRights						   controllers.AccessRightsController.addAccessRi
 GET			/allUser/:schoolId							controllers.user.UserController.getUsers(schoolId: Long, category: String ?="")
 
 # view all user
-GET			/userInfo/:schoolId/:userName							controllers.user.UserController.getUser(schoolId: Long, userName:String, category: String ?="")
+GET			/userInfo/:schoolId/:userName				controllers.user.UserController.getUser(schoolId: Long, userName:String, category: String ?="")

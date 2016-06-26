@@ -24,5 +24,6 @@ public class UserInfo {
 	public String city;
 	public String state;
 	public String pinCode;
-	public String country;	
+	public String country;
+	public String role;
 }
