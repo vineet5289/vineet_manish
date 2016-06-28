@@ -2,6 +2,8 @@ package controllers.login_logout;
 
 import java.util.Map;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import models.LoginDetails;
 import play.data.Form;
 import play.mvc.Result;
@@ -47,6 +49,12 @@ public class LoginController extends CustomController {
 				session(SessionKey.AUTH_TOKEN.name(), loginDetails.getAuthToken());
 				session(SessionKey.SCHOOL_ID.name(), loginDetails.getSchoolIdList());
 				session(SessionKey.USER_ACCESSRIGHT.name(), loginDetails.getAccessRightList());
+				ObjectMapper mapper = new ObjectMapper();
+				String jsonSting = mapper.writeValueAsString(loginDetails);
+				System.out.println("jsonSting=" + jsonSting);
+				if(phone.equalsIgnoreCase("android")) {
+					return ok(jsonSting);
+				}
 			} catch (Exception exception){
 				System.out.println("===5");
 				flash("error", "Server problem occur. Please try after some time");
