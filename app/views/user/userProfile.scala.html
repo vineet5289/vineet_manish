@@ -1,8 +1,43 @@
 @(user:models.UserInfo)
 @viewClass.mainDashboard("Profile"){
     <div class="sixteen wide column" id="content">
-    <h1>@user.name</h1>
-    <h1>@user.userName</h1>
-    <h1>@user.schoolIds</h1>
+       <div class="ui pointing secondary demo menu">
+         <a class="active red item" data-tab="Profile"><i class="home icon" ></i>Profile</a>
+         <a class="blue item" data-tab="Account"> <i class="mail icon"></i>Account</a>
+         <a class="green item" data-tab="AccessRights"> <i class="mail icon"></i>Access Rights</a>
+       </div>
+       <div class="active ui tab segment" data-tab="Profile">
+           <h1>@user.name</h1>
+           <h1>@user.userName</h1>
+           <h1>@user.schoolIds</h1>
+       </div>
+       <div class="ui tab segment" data-tab="Account">
+         
+       </div>
+       <div class="ui tab segment" data-tab="AccessRights">
+          <select name="skills" multiple="" class="ui fluid dropdown" id="accesright">
+  <option value="">Skills</option>
+<option value="angular">Angular</option>
+<option value="css">CSS</option>
+<option value="design">Graphic Design</option>
+<option value="ember">Ember</option>
+<option value="html">HTML</option>
+<option value="ia">Information Architecture</option>
+<option value="javascript">Javascript</option>
+<option value="mech">Mechanical Engineering</option>
+<option value="meteor">Meteor</option>
+<option value="node">NodeJS</option>
+<option value="plumbing">Plumbing</option>
+<option value="python">Python</option>
+<option value="rails">Rails</option>
+<option value="react">React</option>
+<option value="repair">Kitchen Repair</option>
+<option value="ruby">Ruby</option>
+<option value="ui">UI Design</option>
+<option value="ux">User Experience</option>
+</select>
+       </div>   
+    
     </div>
+   
 }
