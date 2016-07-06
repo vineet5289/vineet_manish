@@ -39,12 +39,12 @@ insert into login (user_name, password, name, role, school_id) VALUES ('vineet52
 insert into login (user_name, password, name, role, school_id) VALUES ('sumit52', '$2a$10$uOlVktWoYf06wmwED53WaO1wUPGV.qFyJ.WtefhEDyooXgOF4UByC', 'student3', 'STUDENT', 1);
 insert into login (user_name, password, name, role, school_id) VALUES ('manish52', '$2a$10$uOlVktWoYf06wmwED53WaO1wUPGV.qFyJ.WtefhEDyooXgOF4UByC', 'student4', 'STUDENT', 1);
 insert into login (user_name, password, name, role, school_id) VALUES ('saurabh52', '$2a$10$uOlVktWoYf06wmwED53WaO1wUPGV.qFyJ.WtefhEDyooXgOF4UByC', 'student5', 'STUDENT', 1);
-insert into user_super_user (login_id, user_name, school_id, name) VALUES ('vineet5289', 'vivek52', 1, 'student1');
-insert into user_super_user (login_id, user_name, school_id, name) VALUES ('manish5289', 'vivek52', 1, 'student1');
-insert into user_super_user (login_id, user_name, school_id, name) VALUES ('saurabh5289', 'vineet52', 1, 'student2');
-insert into user_super_user (login_id, user_name, school_id, name) VALUES ('sumit5289', 'sumit52', 1, 'student3');
-insert into user_super_user (login_id, user_name, school_id, name) VALUES ('vivek5289', 'manish52', 1, 'student4');
-insert into user_super_user (login_id, user_name, school_id, name) VALUES ('vineet5289', 'manish52', 1, 'student4');
+insert into user_super_user (super_user_name, user_name, school_id, name) VALUES ('vineet5289', 'vivek52', 1, 'student1');
+insert into user_super_user (super_user_name, user_name, school_id, name) VALUES ('manish5289', 'vivek52', 1, 'student1');
+insert into user_super_user (super_user_name, user_name, school_id, name) VALUES ('saurabh5289', 'vineet52', 1, 'student2');
+insert into user_super_user (super_user_name, user_name, school_id, name) VALUES ('sumit5289', 'sumit52', 1, 'student3');
+insert into user_super_user (super_user_name, user_name, school_id, name) VALUES ('vivek5289', 'manish52', 1, 'student4');
+insert into user_super_user (super_user_name, user_name, school_id, name) VALUES ('vineet5289', 'manish52', 1, 'student4');
 
 # --- !Downs
 
