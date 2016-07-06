@@ -68,6 +68,7 @@ public class UserLoginDAO {
 			loginDetails.setName(loginResultSet.getString(nameField));
 			loginDetails.setEmailId(loginResultSet.getString(emailIdField));
 			loginDetails.setAuthToken(authToken);
+			loginDetails.setAccessRight(loginResultSet.getString(accessRightsField));
 			Long superUserSchoolId = loginResultSet.getLong(schoolIdField);
 			if( superUserSchoolId != null && superUserSchoolId > 0) {
 				loginDetails.setSchoolId(superUserSchoolId);

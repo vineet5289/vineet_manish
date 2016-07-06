@@ -18,7 +18,6 @@ public class LoginController extends CustomController {
 
 	public Result postLogin(String phone) {
 		Form<LoginForm> loginForm = Form.form(LoginForm.class).bindFromRequest();
-		
 		if (loginForm == null || loginForm.hasErrors()) {
 			flash("error", "Login credentials not valid.");
 			return redirect(controllers.login_logout.routes.LoginController.preLogin());
@@ -35,30 +34,38 @@ public class LoginController extends CustomController {
 					flash("error",  "Login credentials not valid.");
 					return redirect(controllers.login_logout.routes.LoginController.preLogin());
 				}
+
 				session(SessionKey.SUPER_USER_NAME.name(), userName);
 				session(SessionKey.CURRENT_USER_NAME.name(), userName);
 
-				session(SessionKey.SUPER_USER_ROLE.name(), loginDetails.getRole().name());
-				session(SessionKey.CURRENT_USER_ROLE.name(), loginDetails.getRole().name());
+				String superUserRole = loginDetails.getRole().name();
+				if(superUserRole != null) {
+					session(SessionKey.SUPER_USER_ROLE.name(), superUserRole);
+					session(SessionKey.CURRENT_USER_ROLE.name(), superUserRole);
+				}
 
-				session(SessionKey.SUPER_AUTH_TOKEN.name(), loginDetails.getAuthToken());
-				session(SessionKey.CURRENT_AUTH_TOKEN.name(), loginDetails.getAuthToken());
+				String superAuthToken = loginDetails.getAuthToken();
+				if(superAuthToken != null) {
+					session(SessionKey.SUPER_AUTH_TOKEN.name(), superAuthToken);
+					session(SessionKey.CURRENT_AUTH_TOKEN.name(), superAuthToken);
+				}
 
-				session(SessionKey.SUPER_USER_ACCESSRIGHT.name(), loginDetails.getAccessRight());
-				session(SessionKey.CURRENT_USER_ACCESSRIGHT.name(), loginDetails.getAccessRight());
+				String superUserAccessRight = loginDetails.getAccessRight();
+				if(superUserAccessRight != null) {
+					session(SessionKey.SUPER_USER_ACCESSRIGHT.name(), superUserAccessRight);
+					session(SessionKey.CURRENT_USER_ACCESSRIGHT.name(), superUserAccessRight);
+				}
 
 				Long superUserSchoolId = loginDetails.getSchoolId();
 				if(superUserSchoolId != null && superUserSchoolId > 0) {
 					session(SessionKey.SUPER_SCHOOL_ID.name(), superUserSchoolId.toString());
 					session(SessionKey.CURRENT_SCHOOL_ID.name(), superUserSchoolId.toString());
 				}
-
 			} catch (Exception exception){
 				flash("error", "Server problem occur. Please try after some time");
 				session().clear();
 				return redirect(controllers.login_logout.routes.LoginController.preLogin());
 			}
-
 			return redirect(routes.SRPController.index());
 		}
 	}
