@@ -9,8 +9,8 @@ public class LoginDetails {
 	private String emailId;
 	private Role role;
 	private String authToken;
-	private String schoolIdList;
-	private String accessRightList;
+	private Long schoolId;
+	private String accessRight;
 	private String name;
 	private String error = "";
 }

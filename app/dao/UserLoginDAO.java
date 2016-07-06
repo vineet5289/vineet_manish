@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,80 +20,59 @@ import views.forms.AccessRightsForm;
 import enum_package.Role;
 
 public class UserLoginDAO {
-	private String loginTableName = "login"; 
 	private String idField = "id";
 	private String emailIdField = "email_id";
 	private String userNameField = "user_name";
 	private String passwordField = "password";
 	private String passwordStateField = "password_state";
-	private String createdAt = "created_at";
-	private String updatedAt = "updated_at";
 	private String roleField = "role";
 	private String accessRightsField = "access_rights";
 	private String isActiveField = "is_active";
-
-	private String userSchoolTableName = "user_school";
 	private String nameField = "name";
 	private String schoolIdField = "school_id";
+	private String superUserNameField = "super_user_name";
+
+	private String loginTableName = "login"; 
+	private String userSuperUserTableName = "user_super_user";
 
 	public LoginDetails isValidUserCredentials(String userName, String password) throws SQLException {
 		LoginDetails loginDetails = new LoginDetails();
 		Connection connection = null;
 		PreparedStatement loginPreparedStatement = null;
-		PreparedStatement userSchoolPreparedStatement = null;
 		ResultSet loginResultSet = null;
-		ResultSet userSchoolResultSet = null;
 
-		String loginSelectQuery = String.format("SELECT %s, %s, %s, %s, %s, %s, %s FROM %s WHERE %s=? AND %s=?;", userNameField,
-				emailIdField, passwordField, passwordStateField, roleField, accessRightsField, isActiveField, loginTableName,
-				userNameField, isActiveField);
-
-		String userSchoolSelectQuery = String.format("SELECT %s, %s, %s FROM %s WHERE %s=?;", userNameField, nameField, schoolIdField,
-				userSchoolTableName, userNameField);
+		String loginSelectQuery = String.format("SELECT %s, %s, %s, %s, %s, %s, %s, %s, %s FROM %s WHERE %s=? AND %s=?;", idField,
+				userNameField, emailIdField, passwordField, passwordStateField, roleField, accessRightsField, nameField, schoolIdField,
+				loginTableName, userNameField, isActiveField);
 
 		boolean isFieldSet = true;
 		try {
 			connection = DB.getDataSource("srp").getConnection();
-			connection.setAutoCommit(false);
-
 			loginPreparedStatement = connection.prepareStatement(loginSelectQuery, ResultSet.TYPE_FORWARD_ONLY);
 			loginPreparedStatement.setString(1, userName);
 			loginPreparedStatement.setBoolean(2, true);
-
-			userSchoolPreparedStatement = connection.prepareStatement(userSchoolSelectQuery, ResultSet.TYPE_FORWARD_ONLY);
-			userSchoolPreparedStatement.setString(1, userName);
-
 			loginResultSet = loginPreparedStatement.executeQuery();
+
 			if(!loginResultSet.next() || !isPasswordMatch(password, loginResultSet.getString(passwordField))) {
 				loginDetails.setError("UserName/Password is invalid. Please Try again");
 				return loginDetails;
 			}
 
-			userSchoolResultSet = userSchoolPreparedStatement.executeQuery();
-			StringBuilder sb = new StringBuilder();
-			String name = "";
-			if(userSchoolResultSet.next()) {
-				name = userSchoolResultSet.getString(nameField);
-				sb.append(userSchoolResultSet.getLong(schoolIdField));
-			}
-
-			while (userSchoolResultSet.next()) {
-				sb.append("," + userSchoolResultSet.getLong(schoolIdField));
-			}
-			loginDetails.setName(name);
-			
-			loginDetails.setRole(Role.valueOf(loginResultSet.getString(roleField)));
-			loginDetails.setUserName(userName);
-			loginDetails.setError("");
-
 			String authToken = geterateAuthToken();
 			if(authToken == null || authToken.isEmpty())
 				isFieldSet = false;
-			loginDetails.setAuthToken(authToken);
 
-			loginDetails.setSchoolIdList(sb.toString());
-			loginDetails.setAccessRightList(loginResultSet.getString(accessRightsField));
-			connection.commit();
+			loginDetails.setRole(Role.valueOf(loginResultSet.getString(roleField)));
+			loginDetails.setUserName(userName);
+			loginDetails.setError("");
+			loginDetails.setName(loginResultSet.getString(nameField));
+			loginDetails.setEmailId(loginResultSet.getString(emailIdField));
+			loginDetails.setAuthToken(authToken);
+			Long superUserSchoolId = loginResultSet.getLong(schoolIdField);
+			if( superUserSchoolId != null && superUserSchoolId > 0) {
+				loginDetails.setSchoolId(superUserSchoolId);
+			}
+
 		} catch(Exception exception) {
 			loginDetails.setError("Server Problem occure. Please try after some time");
 			exception.printStackTrace();
@@ -111,6 +91,53 @@ public class UserLoginDAO {
 			return null;
 
 		return loginDetails;
+	}
+
+	public List<LoginDetails> getAllUserRelatedToCurrentUser(String superUserName) throws SQLException {
+		List<LoginDetails> userDetails = new ArrayList<LoginDetails>();
+		boolean isFieldSet = true;
+		Connection connection = null;
+		PreparedStatement userSuperUserPreparedStatement = null;
+		ResultSet userSuperUserResultSet = null;
+		String userSuperUserSelectQuery = String.format("SELECT %s, %s, %s, %s FROM %s WHERE %s=? AND %s=?;", userNameField, nameField, schoolIdField,
+				superUserNameField, userSuperUserTableName, superUserNameField, isActiveField);
+		try {
+			connection = DB.getDataSource("srp").getConnection();
+			userSuperUserPreparedStatement = connection.prepareStatement(userSuperUserSelectQuery, ResultSet.TYPE_FORWARD_ONLY);
+			userSuperUserPreparedStatement.setString(1, superUserName);
+			userSuperUserPreparedStatement.setBoolean(2, true);
+			userSuperUserResultSet = userSuperUserPreparedStatement.executeQuery();
+			while (userSuperUserResultSet.next()) {
+				String userAuthToken = geterateAuthToken();
+				if(userAuthToken == null || userAuthToken.isEmpty())
+					isFieldSet = false;
+
+				LoginDetails userDetail = new LoginDetails();
+				userDetail.setAuthToken(userAuthToken);
+				userDetail.setName(userSuperUserResultSet.getString(nameField));
+				userDetail.setRole(Role.valueOf(userSuperUserResultSet.getString(roleField)));
+				userDetail.setUserName(userSuperUserResultSet.getString(userNameField));
+				userDetail.setSchoolId(userSuperUserResultSet.getLong(schoolIdField));
+				userDetails.add(userDetail);
+			}
+
+		} catch(Exception exception) {
+			exception.printStackTrace();
+			connection.rollback();
+			isFieldSet = false;
+		} finally {
+			if(userSuperUserResultSet != null)
+				userSuperUserResultSet.close();
+			if(userSuperUserPreparedStatement != null)
+				userSuperUserPreparedStatement.close();
+			if(connection != null)
+				connection.close();
+		}
+
+		if(!isFieldSet)
+			return null;
+
+		return userDetails;
 	}
 
 	public boolean updateUserAccessRight(List<AccessRightsForm.UserAccessRights> accessRights) throws SQLException {

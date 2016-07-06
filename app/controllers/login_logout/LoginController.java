@@ -2,8 +2,6 @@ package controllers.login_logout;
 
 import java.util.Map;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import models.LoginDetails;
 import play.data.Form;
 import play.mvc.Result;
@@ -19,19 +17,14 @@ import enum_package.SessionKey;
 public class LoginController extends CustomController {
 
 	public Result postLogin(String phone) {
-		System.out.println("--------------------------- " + phone);
 		Form<LoginForm> loginForm = Form.form(LoginForm.class).bindFromRequest();
-		System.out.println("request = " + request());
-		System.out.println("loginForm " + loginForm);
 		
 		if (loginForm == null || loginForm.hasErrors()) {
 			flash("error", "Login credentials not valid.");
-			System.out.println("===1");
 			return redirect(controllers.login_logout.routes.LoginController.preLogin());
 		}
 		else {
 			session().clear();
-			System.out.println("===2");
 			Map<String, String> userDetails = loginForm.data();
 			UserLoginDAO userLoginDAO = new UserLoginDAO();
 			String userName = userDetails.get("userName");
@@ -40,28 +33,32 @@ public class LoginController extends CustomController {
 				LoginDetails loginDetails = userLoginDAO.isValidUserCredentials(userName, password);
 				if(!loginDetails.getError().isEmpty()) {
 					flash("error",  "Login credentials not valid.");
-					System.out.println("===3");
 					return redirect(controllers.login_logout.routes.LoginController.preLogin());
 				}
-				System.out.println("===4");
-				session(SessionKey.USER_NAME.name(), userName);
-				session(SessionKey.USER_ROLE.name(), loginDetails.getRole().name());
-				session(SessionKey.AUTH_TOKEN.name(), loginDetails.getAuthToken());
-				session(SessionKey.SCHOOL_ID.name(), loginDetails.getSchoolIdList());
-				session(SessionKey.USER_ACCESSRIGHT.name(), loginDetails.getAccessRightList());
-				ObjectMapper mapper = new ObjectMapper();
-				String jsonSting = mapper.writeValueAsString(loginDetails);
-				System.out.println("jsonSting=" + jsonSting);
-				if(phone.equalsIgnoreCase("android")) {
-					return ok(jsonSting);
+				session(SessionKey.SUPER_USER_NAME.name(), userName);
+				session(SessionKey.CURRENT_USER_NAME.name(), userName);
+
+				session(SessionKey.SUPER_USER_ROLE.name(), loginDetails.getRole().name());
+				session(SessionKey.CURRENT_USER_ROLE.name(), loginDetails.getRole().name());
+
+				session(SessionKey.SUPER_AUTH_TOKEN.name(), loginDetails.getAuthToken());
+				session(SessionKey.CURRENT_AUTH_TOKEN.name(), loginDetails.getAuthToken());
+
+				session(SessionKey.SUPER_USER_ACCESSRIGHT.name(), loginDetails.getAccessRight());
+				session(SessionKey.CURRENT_USER_ACCESSRIGHT.name(), loginDetails.getAccessRight());
+
+				Long superUserSchoolId = loginDetails.getSchoolId();
+				if(superUserSchoolId != null && superUserSchoolId > 0) {
+					session(SessionKey.SUPER_SCHOOL_ID.name(), superUserSchoolId.toString());
+					session(SessionKey.CURRENT_SCHOOL_ID.name(), superUserSchoolId.toString());
 				}
+
 			} catch (Exception exception){
-				System.out.println("===5");
 				flash("error", "Server problem occur. Please try after some time");
 				session().clear();
 				return redirect(controllers.login_logout.routes.LoginController.preLogin());
 			}
-			System.out.println("===6");
+
 			return redirect(routes.SRPController.index());
 		}
 	}
