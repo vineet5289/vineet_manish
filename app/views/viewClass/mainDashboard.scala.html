@@ -19,7 +19,7 @@
     <a href="javascript:void(0)" class="icon active item" id="hideToggle"><h3><i class="chevron left icon"></i></h3></a>
     <a href="javascript:void(0)" class="icon active item" id="showToggle"><h3><i class="chevron right icon"></i></h3></a>
     
-        <a href="/login" data-toggle="slide" class="item">schoolName!</a>
+        <a href="/login" data-toggle="slide" class="item">Welcome:@session.get("USER_ROLE")-> @session.get("USER_NAME")</a>
         <div class="menu right">
             <a class="icon item pointer" data-toggle="popup" data-content="#mail" data-position="bottom right"><i class="mail icon"></i></a>
             <div id="mail" class="ui fluid popup" style="min-width:400px;padding-top:30px;">
@@ -142,6 +142,7 @@
 		<script type="text/javascript" src="@routes.Assets.versioned("semanticUI/js/main.js")"></script>
 		<script type="text/javascript" src="@routes.Assets.versioned("semanticUI/js/main2.js")"></script>
 		<script type="text/javascript" src="@routes.Assets.versioned("semanticUI/js/test.js")"></script>
+		<script type="text/javascript" src="@routes.Assets.versioned("semanticUI/js/accessright.js")"></script>
 		
 		<script type="text/javascript" src="@routes.Assets.versioned("semanticUI/js/graph.js")"></script>
 		

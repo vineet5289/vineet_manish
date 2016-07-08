@@ -4,37 +4,22 @@
 <div class="sixteen wide column" id="content">
    <div class="ui horizontal divider">Parent Child</div>
     <div class="ui equal width grid">
-       <div class="row">
-           <div class="column">
-            
-		    <a class="ui massive blue image label" href="/login>
-               
-                    <i class="user icon">  Vineet</i>
-              <div class="detail">Teacher</div>
-           </a>
-           </div>
+       <div class="row" id="userInList">
+       
+           @for(item <- otherUserDetails){
            
-           <div class="column">
-          
-<a class="ui huge teal image label">
-  
-  manish
-  <div class="detail">Student</div>
-</a>
-</div>
-
-<div class="column">
-
-<a class="ui large yellow image label">
-
-  vivek
-  <div class="detail">Student</div>
-</a>
-
-</div>
-       </div>
-    </div>
-
-</div>
-
-}
+               <div class="column">
+            
+		            <a class="ui large blue image label" href="/login>
+                    <i class="user icon">@item.getUserName()</i>
+                    <div class="detail">@item.getRole()</div>
+                 </a>
+              </div>
+           }
+           
+           </div>
+          </div>
+         </div>
+   }
+       
+    
