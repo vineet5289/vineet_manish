@@ -6,79 +6,180 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import enum_package.Role;
 import models.LoginDetails;
 import play.db.DB;
+import utils.ParseString;
 import utils.RandomGenerator;
+import utils.ValidateFields;
+import views.forms.AccessRightsForm;
+import enum_package.Role;
 
 public class UserLoginDAO {
-	private String tableName = "login"; 
-	private String authTokeFieldName = "auth_token";
-	private static final RandomGenerator randomGenerator = new RandomGenerator();
-	private static final SecureRandom secureRandom = new SecureRandom();
+	private String idField = "id";
+	private String emailIdField = "email_id";
+	private String userNameField = "user_name";
+	private String passwordField = "password";
+	private String passwordStateField = "password_state";
+	private String roleField = "role";
+	private String accessRightsField = "access_rights";
+	private String isActiveField = "is_active";
+	private String nameField = "name";
+	private String schoolIdField = "school_id";
+	private String superUserNameField = "super_user_name";
+
+	private String loginTableName = "login"; 
+	private String userSuperUserTableName = "user_super_user";
 
 	public LoginDetails isValidUserCredentials(String userName, String password) throws SQLException {
 		LoginDetails loginDetails = new LoginDetails();
-		String authToken = "";
 		Connection connection = null;
-		PreparedStatement preparedStatement = null;
-		ResultSet resultSet = null;
-		String selectQuery = String.format("SELECT * FROM %s WHERE user_name=?;", tableName);
+		PreparedStatement loginPreparedStatement = null;
+		ResultSet loginResultSet = null;
+
+		String loginSelectQuery = String.format("SELECT %s, %s, %s, %s, %s, %s, %s, %s, %s FROM %s WHERE %s=? AND %s=?;", idField,
+				userNameField, emailIdField, passwordField, passwordStateField, roleField, accessRightsField, nameField, schoolIdField,
+				loginTableName, userNameField, isActiveField);
+
+		boolean isFieldSet = true;
 		try {
 			connection = DB.getDataSource("srp").getConnection();
-			preparedStatement = connection.prepareStatement(selectQuery, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
-			preparedStatement.setString(1, userName);
+			loginPreparedStatement = connection.prepareStatement(loginSelectQuery, ResultSet.TYPE_FORWARD_ONLY);
+			loginPreparedStatement.setString(1, userName);
+			loginPreparedStatement.setBoolean(2, true);
+			loginResultSet = loginPreparedStatement.executeQuery();
 
-			resultSet = preparedStatement.executeQuery();
-			if(!resultSet.next() || !isPasswordMatch(password, resultSet.getString("password"))) {
+			if(!loginResultSet.next() || !isPasswordMatch(password, loginResultSet.getString(passwordField))) {
 				loginDetails.setError("UserName/Password is invalid. Please Try again");
 				return loginDetails;
 			}
-			authToken = randomGenerator.nextSessionId(150, secureRandom);
-			resultSet.updateString(authTokeFieldName, authToken);
-			loginDetails.setAuthToken(authToken);
-			loginDetails.setRole(Role.valueOf(resultSet.getString("role")));
+
+			String authToken = geterateAuthToken();
+			if(authToken == null || authToken.isEmpty())
+				isFieldSet = false;
+
+			loginDetails.setRole(Role.valueOf(loginResultSet.getString(roleField)));
 			loginDetails.setUserName(userName);
 			loginDetails.setError("");
-			resultSet.updateRow();
+			loginDetails.setName(loginResultSet.getString(nameField));
+			loginDetails.setEmailId(loginResultSet.getString(emailIdField));
+			loginDetails.setAuthToken(authToken);
+			loginDetails.setAccessRight(loginResultSet.getString(accessRightsField));
+			Long superUserSchoolId = loginResultSet.getLong(schoolIdField);
+			if( superUserSchoolId != null && superUserSchoolId > 0) {
+				loginDetails.setSchoolId(superUserSchoolId);
+			}
+
 		} catch(Exception exception) {
 			loginDetails.setError("Server Problem occure. Please try after some time");
 			exception.printStackTrace();
-			connection.rollback();
+			isFieldSet = false;
 		} finally {
-			if(resultSet != null)
-				resultSet.close();
-			if(preparedStatement != null)
-				preparedStatement.close();
+			if(loginResultSet != null)
+				loginResultSet.close();
+			if(loginPreparedStatement != null)
+				loginPreparedStatement.close();
 			if(connection != null)
 				connection.close();
 		}
+
+		if(!isFieldSet)
+			return null;
 
 		return loginDetails;
 	}
 
-	public void logout(String userName) throws SQLException {
-		if(userName == null || userName.isEmpty())
-			return;
-
+	public List<LoginDetails> getAllUserRelatedToCurrentUser(String superUserName) throws SQLException {
+		List<LoginDetails> userDetails = new ArrayList<LoginDetails>();
+		boolean isFieldSet = true;
 		Connection connection = null;
-		PreparedStatement preparedStatement = null;
-		ResultSet resultSet = null;
-		String selectQuery = String.format("SELECT * FROM %s WHERE user_name=?;", tableName);
+		PreparedStatement userSuperUserPreparedStatement = null;
+		ResultSet userSuperUserResultSet = null;
+		String userSuperUserSelectQuery = String.format("SELECT %s, %s, %s, %s FROM %s WHERE %s=? AND %s=?;", userNameField, nameField, schoolIdField,
+				superUserNameField, userSuperUserTableName, superUserNameField, isActiveField);
 		try {
 			connection = DB.getDataSource("srp").getConnection();
-			preparedStatement = connection.prepareStatement(selectQuery, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
-			preparedStatement.setString(1, userName);
+			userSuperUserPreparedStatement = connection.prepareStatement(userSuperUserSelectQuery, ResultSet.TYPE_FORWARD_ONLY);
+			userSuperUserPreparedStatement.setString(1, superUserName);
+			userSuperUserPreparedStatement.setBoolean(2, true);
+			userSuperUserResultSet = userSuperUserPreparedStatement.executeQuery();
+			while (userSuperUserResultSet.next()) {
+				String userAuthToken = geterateAuthToken();
+				if(userAuthToken == null || userAuthToken.isEmpty())
+					isFieldSet = false;
 
-			resultSet = preparedStatement.executeQuery();
-			if(resultSet.next()){
-				resultSet.updateString(authTokeFieldName, null);
-				resultSet.updateRow();
+				LoginDetails userDetail = new LoginDetails();
+				userDetail.setAuthToken(userAuthToken);
+				userDetail.setName(userSuperUserResultSet.getString(nameField));
+				userDetail.setRole(Role.STUDENT);
+				userDetail.setUserName(userSuperUserResultSet.getString(userNameField));
+				userDetail.setSchoolId(userSuperUserResultSet.getLong(schoolIdField));
+				userDetails.add(userDetail);
 			}
+
 		} catch(Exception exception) {
 			exception.printStackTrace();
 			connection.rollback();
+			isFieldSet = false;
+		} finally {
+			if(userSuperUserResultSet != null)
+				userSuperUserResultSet.close();
+			if(userSuperUserPreparedStatement != null)
+				userSuperUserPreparedStatement.close();
+			if(connection != null)
+				connection.close();
+		}
+
+		if(!isFieldSet)
+			return null;
+
+		return userDetails;
+	}
+
+	public boolean updateUserAccessRight(List<AccessRightsForm.UserAccessRights> accessRights) throws SQLException {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		String selectUpdateQuery = String.format("SELECT %s, %s, %s, %s, %s, %s, FROM %s WHERE %s=? AND %s=true;", idField,userNameField,
+				schoolIdField, roleField, accessRightsField, isActiveField, loginTableName, userNameField, isActiveField);
+		boolean isSuccessful = true;
+		try {
+			connection = DB.getDataSource("srp").getConnection();
+			connection.setAutoCommit(false);
+			for(AccessRightsForm.UserAccessRights accessRight : accessRights) {
+				String userName = accessRight.getUserName();
+				String newAccessRights = accessRight.getAccessRights();
+				String action = accessRight.getAction();
+
+				if(!ValidateFields.isValidUserName(userName) || !ValidateFields.isValidAccessRigths(newAccessRights)) {
+					System.out.println("Access rigths or userName is not valid for user = " + userName);
+					continue;
+				}
+
+				preparedStatement = connection.prepareStatement(selectUpdateQuery, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
+				preparedStatement.setString(1, userName);
+				try {
+					resultSet = preparedStatement.executeQuery();
+					if(resultSet != null && resultSet.next()) {
+						String oldAccessRights = resultSet.getString(accessRightsField);
+						String updatedAccessRights = mergeAccessRight(action,newAccessRights, oldAccessRights);
+						resultSet.updateString(accessRightsField, updatedAccessRights);
+						resultSet.updateRow();
+					}
+				} catch(Exception exception) {
+					isSuccessful = false;
+					throw new Exception("update access rights is failed for some user");
+				}
+			}
+			connection.commit();
+		} catch(Exception exception) {
+			exception.printStackTrace();
+			connection.rollback();
+			isSuccessful = false;
 		} finally {
 			if(resultSet != null)
 				resultSet.close();
@@ -87,13 +188,15 @@ public class UserLoginDAO {
 			if(connection != null)
 				connection.close();
 		}
+		return isSuccessful;
 	}
+
 
 	public boolean isUserPresent(String userName, String authKey) throws SQLException {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
-		String selectQuery = String.format("SELECT * FROM %s WHERE user_name=? AND auth_token=?;", tableName);
+		String selectQuery = String.format("SELECT * FROM %s WHERE user_name=? AND auth_token=?;", loginTableName);
 		try {
 			connection = DB.getDataSource("srp").getConnection();
 			preparedStatement = connection.prepareStatement(selectQuery, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
@@ -101,15 +204,12 @@ public class UserLoginDAO {
 			preparedStatement.setString(2, authKey);
 			resultSet = preparedStatement.executeQuery();
 			if(resultSet.next()){
-				System.out.println("*****in if****");
 				return true;
 			}
 		} catch(Exception exception) {
-			System.out.println("******* in catch******");
 			exception.printStackTrace();
 			connection.rollback();
 		} finally {
-			System.out.println("finally executed");
 			if(resultSet != null)
 				resultSet.close();
 			if(preparedStatement != null)
@@ -117,10 +217,49 @@ public class UserLoginDAO {
 			if(connection != null)
 				connection.close();
 		}
-		System.out.println("afetr final");
 		return false;
 	}
+
 	private boolean isPasswordMatch(String enteredPassword, String dbPassword) throws NoSuchAlgorithmException {
 		return RandomGenerator.checkPasswordMatch(dbPassword, enteredPassword);
+	}
+
+	private String geterateAuthToken() {
+		String authToken = "";
+		try {
+			authToken = RandomGenerator.nextSessionId(150, new SecureRandom());
+		}catch(Exception exception) {
+			exception.printStackTrace();
+		}
+		return authToken;
+	}
+
+	private String mergeAccessRight(String action, String newAccessString, String dbAccessString) {
+		Map<String, String> newAccessRight = ParseString.getMap(newAccessString);
+		Map<String, String> oldAccessRight = ParseString.getMap(dbAccessString);
+		Map<String, String> afterMergeAccessRight = null;
+		if(action != null && action.equalsIgnoreCase("add")) {
+			afterMergeAccessRight = addAccessRights(newAccessRight, oldAccessRight);
+		} else if(action != null && action.equalsIgnoreCase("minus")) {
+			afterMergeAccessRight = removeAccessRights(newAccessRight, oldAccessRight);
+		}
+		return ParseString.getString(afterMergeAccessRight);
+	}
+
+	private Map<String, String> addAccessRights(Map<String, String> rights1, Map<String, String> rights2) {
+		Map<String, String> afterMergeAccessRight = new HashMap<String, String>();
+		afterMergeAccessRight.putAll(rights2);
+		afterMergeAccessRight.putAll(rights1);
+		return afterMergeAccessRight;
+	}
+
+	private Map<String, String> removeAccessRights(Map<String, String> rights1, Map<String, String> rights2) {
+		Map<String, String> afterMergeAccessRight = new HashMap<String, String>();
+		afterMergeAccessRight.putAll(rights2);
+		for(Map.Entry<String, String> entry : rights1.entrySet()) {
+			String key = entry.getKey();
+			afterMergeAccessRight.remove(key);
+		}
+		return afterMergeAccessRight;
 	}
 }

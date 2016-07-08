@@ -1,0 +1,174 @@
+@(userMap: Map[String, List[models.UserInfo]])
+@mainDashboard("All Users"){
+<div class="sixteen wide column" id="content">
+    
+       
+
+  
+  <div class="ui main container" >
+      <div class="ui pointing secondary demo menu">
+            <a class="active red item" data-tab="All">
+                <i class="home icon" ></i>All</a>
+            <a class="green item"  data-tab="teachers">
+                <i class="mail icon"></i>Teachers</a>
+            <a class="blue item" data-tab="student">
+                <i class="user icon"></i>Student</a>
+			<a class="olive item" data-tab="employees">
+                <i class="user icon"></i>Employee</a>
+                
+        </div>
+        
+    <div class="ui active tab segment" data-tab="All">
+       <table id="examplesearch" class="ui compact selectable striped celled table" cellspacing="0" width="100%" >
+       
+           <thead>
+  
+            <tr>
+                <th>Name</th>
+                <th>username</th>
+                <th>Designation</th>
+               
+            </tr>
+        </thead>
+        
+         @for(((key, value), currentIndex) <- userMap.zipWithIndex) {
+         @for((item,index)<-value.zipWithIndex){
+        
+                
+        <tbody>
+            <tr>
+                <td><a href="/userInfo/@session.get("SCHOOL_ID")/@item.userName?category=employee">@item.name</a></td>
+                <td>@item.userName</td>
+                <td>@key</td>
+            </tr>
+            
+        </tbody>
+      
+         
+                
+       }
+       }
+   
+   </table>
+    </div>
+    <div class="ui tab segment" data-tab="teachers">
+       <table id="examplesearch" class="ui compact selectable striped celled table" cellspacing="0" width="100%" >
+       
+           <thead>
+  
+            <tr>
+                <th>Name</th>
+                <th>username</th>
+                <th>Designation</th>
+               
+            </tr>
+        </thead>
+        
+         @for(((key, value), currentIndex) <- userMap.zipWithIndex) {
+         @if(key=="TEACHER"){
+         
+         @for((item,index)<-value.zipWithIndex){
+        
+                
+        <tbody>
+            <tr>
+                <td><a href="/userInfo/@session.get("SCHOOL_ID")/@item.userName?category=employee">@item.name</a></td>
+                <td>@item.userName</td>
+                <td>@key</td>
+            </tr>
+            
+        </tbody>
+      
+         
+       }      
+       }
+       }
+   
+   </table>
+   </div>
+   
+   <div class="ui tab segment" data-tab="student">
+       <table id="examplesearch" class="ui compact selectable striped celled table" cellspacing="0" width="100%" >
+       
+           <thead>
+  
+            <tr>
+                <th>Name</th>
+                <th>username</th>
+                <th>Designation</th>
+               
+            </tr>
+        </thead>
+        
+         @for(((key, value), currentIndex) <- userMap.zipWithIndex) {
+         @if(key=="STUDENT"){
+         
+         @for((item,index)<-value.zipWithIndex){
+        
+                
+        <tbody>
+            <tr>
+                <td><a href="/userInfo/@session.get("SCHOOL_ID")/@item.userName?category=employee">@item.name</a></td>
+                <td>@item.userName</td>
+                <td>@key</td>
+            </tr>
+            
+        </tbody>
+      
+         
+       }      
+       }
+       }
+   
+   </table>
+   
+   </div>
+    
+<div class="ui tab segment" data-tab="employees">
+   <table id="examplesearch" class="ui compact selectable striped celled table" cellspacing="0" width="100%" >
+       
+           <thead>
+  
+            <tr>
+                <th>Name</th>
+                <th>username</th>
+                <th>Designation</th>
+               
+            </tr>
+        </thead>
+        
+         @for(((key, value), currentIndex) <- userMap.zipWithIndex) {
+         @if(key=="OTHER"){
+         
+         @for((item,index)<-value.zipWithIndex){
+        
+                
+        <tbody>
+            <tr>
+                <td><a href="/userInfo/@session.get("SCHOOL_ID")/@item.userName?category=employee">@item.name</a></td>
+                <td>@item.userName</td>
+                <td>@key</td>
+            </tr>
+            
+        </tbody>
+      
+         
+       }      
+       }
+       }
+   
+   </table>
+</div>  
+      
+     
+    
+  
+							
+   
+  </div>
+
+
+</div>
+
+}
+

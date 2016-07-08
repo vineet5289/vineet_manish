@@ -6,17 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
-    <link rel="stylesheet" href="@routes.Assets.at("semanticUI/css/semantic.css")">
-    <link rel="stylesheet" href="@routes.Assets.at("semanticUI/css/main.css")">
-    <link rel="stylesheet" href="@routes.Assets.at("semanticUI/css/animate.css")">
+    <link rel="stylesheet" href="@routes.Assets.versioned("semanticUI/css/semantic.css")">
+    <link rel="stylesheet" href="@routes.Assets.versioned("semanticUI/css/main.css")">
+        <link rel="stylesheet" href="@routes.Assets.versioned("semanticUI/css/test.css")">
+        
+    <link rel="stylesheet" href="@routes.Assets.versioned("semanticUI/css/animate.css")">
     
 </head>
 <body>
 
     <div class="ui fixed top menu">
-        <a href="javascript:void(0)" class="icon active item" id="hideToggle"><h3><i class="chevron left icon"></i></h3></a>
-        <a href="javascript:void(0)" class="icon active item" id="showToggle"><h3><i class="chevron right icon"></i></h3></a>
-        <a href="" data-toggle="slide" class="item">schoolName!</a>
+    <a href="javascript:void(0)" class="icon active item" id="hideToggle"><h3><i class="chevron left icon"></i></h3></a>
+    <a href="javascript:void(0)" class="icon active item" id="showToggle"><h3><i class="chevron right icon"></i></h3></a>
+    
+        <a href="/login" data-toggle="slide" class="item">Welcome:@session.get("USER_ROLE")-> @session.get("USER_NAME")</a>
         <div class="menu right">
             <a class="icon item pointer" data-toggle="popup" data-content="#mail" data-position="bottom right"><i class="mail icon"></i></a>
             <div id="mail" class="ui fluid popup" style="min-width:400px;padding-top:30px;">
@@ -91,57 +94,61 @@
                     <a href="" class="item">Groups <i class="users icon"></i></a>
                     <a href="" class="item">Settings <i class="settings icon"></i></a>
                     <div class="ui divider"></div>
-                    <a href="@routes.SRPController.logout()" class="item">Logout <i class="sign out icon"></i></a>
+                    <a href="@login_logout.routes.LoginController.logout()" class="item">Logout <i class="sign out icon"></i></a>
                 </div>
             </div>
         </div>
     </div>
     <div class="pusher">
         <div class="ui fluid container">
-            <div class="ui two column grid">
+            <div class="ui one column grid">
+           
                 <div class="side menu" id="sideMenu">
-                    <div align="center" class="profile">
-                        <br>
-                        <!-- <a href=""><img src="assets/img/people_4.jpg" alt="Marry Doe" class="ui circular image" width="150px"></a> -->
-                        <div class="ui white header">userName</div>
-                        <div class="ui divider"></div>
-                    </div>
+                    
                     <div class="ui fluid vertical menu" id="verticalMenu">
-                        <a href="@routes.SRPController.index()" class="item"><i class="dashboard icon"></i> <span>Dashboard</span></a>
-                        <a href="form.html" class="item"><i class="book icon"></i> <span>Form</span></a>
-                        <a href="table.html" class="item"><i class="table icon"></i> <span>Table</span></a>
-                        <a href="@school.routes.ClassController.preAddClass()" class="item"><i class="bar chart icon"></i> <span>Class</span></a>
-                        <a href="@school.routes.ClassController.viewAllClass()" class="item"><i class="bar chart icon"></i> <span>View All Class</span></a>
-                        <a href="card.html" class="item"><i class="block layout icon"></i> <span>Card</span></a>
-                        <a href="progress.html" class="item"><i class="tasks icon"></i> <span>Progress Bar</span></a>
+                        <a href="@routes.SRPController.index()" class="item"><i class="home icon"></i>Home</a>
+                        <a href="@school.routes.ClassController.preAddClass()" class="item"><i class="bar chart icon"></i>Add Class</a>
+                        <a href="@school.routes.ClassController.viewAllClass()" class="item"><i class="bar chart icon"></i>View All Class</a>
+                        <a href="@routes.CustomController.testRoute()" class="item"><i class="calendar icon"></i>Test Page</a>
+                        <a href='/allUser/@session.get("SCHOOL_ID")' class="item"><i class="file icon"></i>Users</a>
                         <a href="index.html" class="item"><i class="sign in icon"></i> <span>Login</span></a>
                         <a href="dashboard.html" class="item"><i class="file icon"></i> <span>Sample</span></a>
                         <a href="dashboard.html" class="item"><i class="file icon"></i> <span>Sample</span></a>
+                        <a class="item"><i class="trophy icon"></i>Achievements</a>
+    <a class="item"><i class="shop icon"></i>Store</a>
+    <a class="item"><i class="settings icon"></i>Settings</a>
+    <a class="item"><i class="trophy icon"></i>Achievements</a>
+    <a class="item"><i class="shop icon"></i>Store</a>
+    <a class="item"><i class="settings icon"></i>Settings</a>
+    <a class="item"><i class="trophy icon"></i>Achievements</a>
+    <a class="item"><i class="shop icon"></i>Store</a>
+    <a class="item"><i class="settings icon"></i>Settings</a>
                     </div>
-                </div>
+    
+                 </div>
     
 
                 @content
                 
                 </div>
                 </div>
-    
-    
-    
-    <script type="text/javascript" src="@routes.Assets.at("semanticUI/js/jquery.min.js")"></script>
-    <script type="text/javascript" src="@routes.Assets.at("semanticUI/js/semantic.min.js")"></script>
-    <script type="text/javascript" src="@routes.Assets.at("semanticUI/js/main.js")"></script>
-    
-    <script type="text/javascript" src="@routes.Assets.at("semanticUI/js/nicescroll.js")"></script>
-   
+                </div>
+		<script type="text/javascript" src="@routes.Assets.versioned("semanticUI/js/jquery.min.js")"></script>
+		<script type="text/javascript" src="@routes.Assets.versioned("semanticUI/js/semantic.js")"></script>
+		<script type="text/javascript" src="@routes.Assets.versioned("semanticUI/js/semantic.min.js")"></script>
+		<script type="text/javascript" src="@routes.Assets.versioned("semanticUI/js/nicescroll.js")"></script>
+		<script type="text/javascript" src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+		<script type="text/javascript" src="@routes.Assets.versioned("semanticUI/js/jquery-1.12.2.js")"></script>
+		<script type="text/javascript" src="@routes.Assets.versioned("semanticUI/js/main.js")"></script>
+		<script type="text/javascript" src="@routes.Assets.versioned("semanticUI/js/main2.js")"></script>
+		<script type="text/javascript" src="@routes.Assets.versioned("semanticUI/js/test.js")"></script>
+		<script type="text/javascript" src="@routes.Assets.versioned("semanticUI/js/accessright.js")"></script>
+		
+		<script type="text/javascript" src="@routes.Assets.versioned("semanticUI/js/graph.js")"></script>
+		
 
-    <!-- Include AmCharts -->
-    <script type="text/javascript" src="@routes.Assets.at("semanticUI/js/amcharts/amcharts.js")"></script>
-    <script type="text/javascript" src="@routes.Assets.at("semanticUI/js/amcharts/serial.js")"></script>
-    <script type="text/javascript" src="@routes.Assets.at("semanticUI/js/amcharts/themes/light.js")"></script>
+		
 
-    <script type="text/javascript" src="@routes.Assets.at("semanticUI/js/main.js")"></script>
-    <script type="text/javascript" src="@routes.Assets.at("semanticUI/js/graph.js")"></script>
-   
+ 			
 </body>
 </html>

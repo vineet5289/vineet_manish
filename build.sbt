@@ -17,7 +17,10 @@ libraryDependencies ++= Seq(
    "org.mindrot" % "jbcrypt" % "0.3m",
    "com.typesafe.play" %% "play-mailer" % "3.0.1",
    "org.apache.commons" % "commons-email" % "1.3.3",
+   "com.google.guava" % "guava" % "19.0",
    "com.twilio.sdk" % "twilio-java-sdk" % "3.4.5",
+   "com.rabbitmq" % "amqp-client" % "3.5.3",
+   "redis.clients" % "jedis" % "2.7.2",
    evolutions
 )
 

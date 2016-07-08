@@ -1,76 +1,65 @@
 package controllers;
 
-import java.util.Map;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
-import models.LoginDetails;
 import dao.UserLoginDAO;
-import enum_package.SessionKey;
-import play.data.Form;
+import models.LoginDetails;
 import play.mvc.Result;
 import play.mvc.Security;
 import security.ActionAuthenticator;
-import views.forms.*;
-import views.html.profile;
-import views.html.index;
-import views.html.viewClass.login;
 import views.html.viewClass.dashboard;
+import views.html.parent.parentHome;
+import views.html.teacher.teacherHome;
+import views.html.student.studentHome;
+import enum_package.Role;
+import enum_package.SessionKey;
 
 public class SRPController extends CustomController {
 
 	@Security.Authenticated(ActionAuthenticator.class)
 	public Result index() {
-		response().setHeader("Cache-Control", "no-cache");
-		return ok(dashboard.render(session().get(SessionKey.USER_NAME.name()), session().get(SessionKey.USER_ROLE.name())));
-	}
+		String superUserName = session().get(SessionKey.SUPER_USER_NAME.name());
+		String superUserRole = session().get(SessionKey.SUPER_USER_ROLE.name());
+		String superUserAuthKey = session().get(SessionKey.SUPER_AUTH_TOKEN.name());
+		String superUserAccessRight = session().get(SessionKey.SUPER_USER_ACCESSRIGHT.name());
+		String superUserSchoolId = session().get(SessionKey.SUPER_SCHOOL_ID.name());
 
-	public Result postLogin() {
-		Form<LoginForm> loginForm = Form.form(LoginForm.class).bindFromRequest();
-		//		Form<AddNewSchoolRequest> registerForm = Form.form(AddNewSchoolRequest.class);
-		if (loginForm== null || loginForm.hasErrors()) {
-			flash("error", "Login credentials not valid.");
-			return redirect(routes.SRPController.preLogin());
-			//			return badRequest(index.render(loginForm, registerForm));
+		session(SessionKey.CURRENT_USER_NAME.name(), superUserName);
+		session(SessionKey.CURRENT_USER_ROLE.name(), superUserRole);
+		session(SessionKey.CURRENT_AUTH_TOKEN.name(), superUserAuthKey);
+		if(superUserAccessRight != null && !superUserAccessRight.isEmpty())
+			session(SessionKey.CURRENT_USER_ACCESSRIGHT.name(), superUserAccessRight);
+
+		if(superUserSchoolId != null && !superUserSchoolId.isEmpty()) {
+			session(SessionKey.CURRENT_SCHOOL_ID.name(), superUserSchoolId);
 		}
-		else {
-			session().clear();
-			Map<String, String> userDetails = loginForm.data();
-			UserLoginDAO userLoginDAO = new UserLoginDAO();
-			String userName = userDetails.get("userName");
-			String password = userDetails.get("password");
-			try {
-				LoginDetails loginDetails = userLoginDAO.isValidUserCredentials(userName, password);
-				if(!loginDetails.getError().isEmpty()) {
-					flash("error", loginDetails.getError());
-					return redirect(routes.SRPController.preLogin());
-				}
-				session(SessionKey.USER_NAME.name(), userName);
-				session(SessionKey.USER_ROLE.name(), loginDetails.getRole().name());
-				session(SessionKey.AUTH_TOKEN.name(), loginDetails.getAuthToken());
-			} catch (Exception exception){
-				flash("error", "Server problem occur. Please try after some time");
-				return redirect(routes.SRPController.preLogin());
-			}
-			response().setHeader("Cache-Control", "no-cache");
-			return redirect(routes.SRPController.index());
+
+		if(superUserRole.equalsIgnoreCase(Role.SUPERADMIN.name())) {
+			return ok(dashboard.render(session().get(SessionKey.CURRENT_USER_NAME.name()), session().get(SessionKey.CURRENT_USER_ROLE.name())));
 		}
-	}
-
-	public Result preLogin() {
-		Form<LoginForm> loginForm = Form.form(LoginForm.class);
-		return ok(login.render(loginForm));
-	}
-
-	public Result logout() {
-		String authToken = session().get(SessionKey.AUTH_TOKEN.name());
-		String userName = session().get(SessionKey.USER_NAME.name());
 		UserLoginDAO userLoginDAO = new UserLoginDAO();
-		try{
-			userLoginDAO.logout(userName);
-		} catch (Exception exception){
+		List<LoginDetails> userDetails = null;
+		try {
+			userDetails = userLoginDAO.getAllUserRelatedToCurrentUser(superUserName);
+		} catch (SQLException exception) {
 			exception.printStackTrace();
+			userDetails = new ArrayList<LoginDetails>();
 		}
-		session().clear();
-		flash("success", "You've been logged out");
-		return redirect(routes.SRPController.preLogin());
+		System.out.println("====>" + userDetails);
+		
+		if(superUserRole.equalsIgnoreCase(Role.TEACHER.name())) {
+			return ok(teacherHome.render(session().get(SessionKey.CURRENT_USER_NAME.name()), session().get(SessionKey.CURRENT_USER_ROLE.name()), userDetails));
+		}
+
+		if(superUserRole.equalsIgnoreCase(Role.GUARDIAN.name())) {
+			return ok(parentHome.render(session().get(SessionKey.CURRENT_USER_NAME.name()), session().get(SessionKey.CURRENT_USER_ROLE.name()), userDetails));
+		}
+		if(superUserRole.equalsIgnoreCase(Role.STUDENT.name())) {
+			return ok(studentHome.render(session().get(SessionKey.CURRENT_USER_NAME.name()), session().get(SessionKey.CURRENT_USER_ROLE.name()), userDetails));
+		}
+
+		return ok(dashboard.render(session().get(SessionKey.CURRENT_USER_NAME.name()), session().get(SessionKey.CURRENT_USER_ROLE.name())));
 	}
 }

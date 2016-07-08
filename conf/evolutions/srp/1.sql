@@ -60,20 +60,19 @@ CREATE TABLE IF NOT EXISTS school (
 
 CREATE TABLE IF NOT EXISTS login (
   id bigint(20) NOT NULL AUTO_INCREMENT,
-  user_name varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  user_name varchar(150) COLLATE utf8_unicode_ci NOT NULL,
   email_id varchar(255) COLLATE utf8_unicode_ci,
   password varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   password_state enum('FIRST_TIME', 'RESET', 'BLOCKED', 'CORRECT_PASSWORD') NOT NULL,
   created_at timestamp DEFAULT CURRENT_TIMESTAMP,
   updated_at timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  auth_token varchar(255) COLLATE utf8_unicode_ci,
-  role enum('STUDENT', 'ADMIN', 'SUPERADMIN', 'TEACHER') NOT NULL,
+  role varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  access_rights longtext COLLATE utf8_unicode_ci,
   is_active tinyint(1) DEFAULT 1,
-  school_id bigint(20) NOT NULL,
+  name varchar(150) COLLATE utf8_unicode_ci NOT NULL,
+  school_id bigint(20),
   PRIMARY KEY (id),
-  UNIQUE KEY (user_name),
-  KEY FK_login_school_id (school_id),
-  CONSTRAINT FK_login_school_id FOREIGN KEY (school_id) REFERENCES school (id)
+  UNIQUE KEY (user_name)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS employee (
@@ -83,8 +82,8 @@ CREATE TABLE IF NOT EXISTS employee (
   designation varchar(225) COLLATE utf8_unicode_ci NULL,
   school_id bigint(20) NOT NULL,
   emp_email varchar(225) COLLATE utf8_unicode_ci NULL,
-  joining_date timestamp NULL,
-  leaving_date timestamp NULL,
+  joining_date date NULL,
+  leaving_date date NULL,
   gender enum('M', 'F') NOT NULL,
   emp_category enum('TEACHER', 'ACCOUNTENT') NOT NULL,
   department varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,

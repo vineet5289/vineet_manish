@@ -2,7 +2,6 @@
 
 import java.util.Map;
 
-import enum_package.SessionKey;
 import play.libs.F;
 import play.libs.F.Promise;
 import play.mvc.Action;

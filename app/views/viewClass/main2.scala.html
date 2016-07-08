@@ -6,27 +6,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
-    <link rel="stylesheet" href="@routes.Assets.at("semanticUI/css/semantic.css")">
-    <link rel="stylesheet" href="@routes.Assets.at("semanticUI/css/main.css")">
-    <link rel="stylesheet" href="@routes.Assets.at("semanticUI/css/animate.css")">
+    <link rel="stylesheet" href="@routes.Assets.versioned("semanticUI/css/semantic.css")">
+    <link rel="stylesheet" href="@routes.Assets.versioned("semanticUI/css/main.css")">
+    <link rel="stylesheet" href="@routes.Assets.versioned("semanticUI/css/animate.css")">
     
 </head>
 <body>
     @content
-    <script type="text/javascript" src="@routes.Assets.at("semanticUI/js/jquery.min.js")"></script>
-    <script type="text/javascript" src="@routes.Assets.at("semanticUI/js/semantic.min.js")"></script>
-    <script type="text/javascript" src="@routes.Assets.at("semanticUI/js/main.js")"></script>
-    
-    <script type="text/javascript" src="@routes.Assets.at("semanticUI/js/nicescroll.js")"></script>
-   
+    <script type="text/javascript" src="@routes.Assets.versioned("semanticUI/js/jquery.min.js")"></script>
+		<script type="text/javascript" src="@routes.Assets.versioned("semanticUI/js/semantic.js")"></script>
+		<script type="text/javascript" src="@routes.Assets.versioned("semanticUI/js/semantic.min.js")"></script>
+		<script type="text/javascript" src="@routes.Assets.versioned("semanticUI/js/nicescroll.js")"></script>
+		
+		<script type="text/javascript" src="@routes.Assets.versioned("semanticUI/js/jquery-1.12.2.js")"></script>
+		<script type="text/javascript" src="@routes.Assets.versioned("semanticUI/js/main.js")"></script>
+		<script type="text/javascript" src="@routes.Assets.versioned("semanticUI/js/main2.js")"></script>
+		
 
-    <!-- Include AmCharts -->
-    <script type="text/javascript" src="@routes.Assets.at("semanticUI/js/amcharts/amcharts.js")"></script>
-    <script type="text/javascript" src="@routes.Assets.at("semanticUI/js/amcharts/serial.js")"></script>
-    <script type="text/javascript" src="@routes.Assets.at("semanticUI/js/amcharts/themes/light.js")"></script>
-
-    <script type="text/javascript" src="@routes.Assets.at("semanticUI/js/main.js")"></script>
-    <script type="text/javascript" src="@routes.Assets.at("semanticUI/js/graph.js")"></script>
-   
+     <script type="text/javascript">
+     function OTP(){
+              $('.small.modal')
+               .modal('show');
+}
+</script>
 </body>
 </html>

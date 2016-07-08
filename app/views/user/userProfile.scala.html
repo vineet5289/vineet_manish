@@ -1,0 +1,62 @@
+@(user:models.UserInfo)
+@viewClass.mainDashboard("Profile"){
+    <div class="sixteen wide column" id="content">
+       <div class="ui pointing secondary demo menu">
+         <a class="active red item" data-tab="Profile"><i class="home icon" ></i>Profile</a>
+         <a class="blue item" data-tab="Account"> <i class="mail icon"></i>Account</a>
+         <a class="green item" data-tab="AccessRights"> <i class="mail icon"></i>Access Rights</a>
+       </div>
+       <div class="active ui tab segment" data-tab="Profile">
+           <h1>@user.name</h1>
+           <h1>@user.userName</h1>
+           <h1>@user.schoolIds</h1>
+       </div>
+       <div class="ui tab segment" data-tab="Account">
+         
+       </div>
+       <div class="ui tab segment" data-tab="AccessRights">
+          Provide Access Rights to @session.get("USER_NAME")
+         <div class="ui text container">
+               <h1 class="ui header">Privileges List</h1>
+         </div>
+        <div class="ui raised very padded text container segment">
+             <div class="ui hidden divider"></div>
+<div class="ui stackable grid container">
+  <div class="eight wide column">
+    <form class="ui form" method="post" action="@routes.CustomController.postRoute()">
+      <div class="field  ">
+        <label class="" for="id_members">Members</label>
+          <select class="ui fluid search dropdown" id="members_dropdown" multiple="" name="members">
+               <option value="addstudent">Add Students</option>
+               <option value="addteacher">Add Teacher</option>
+               <option value="addclass">Add Class</option>
+               <option value="addsubject">Add Subjects</option>
+               <option value="addemployee">Add Employees</option>
+          </select>
+      </div>
+      
+      <div id="dtBox"></div>
+      <div class="ui toggle checkbox">
+        <input type="checkbox" id="selectall">
+        <label>Select all</label>
+      </div>
+       <div class="ui hidden divider"></div>
+          <div class="ui inverted blue animated fade submit button" type="submit" id="postaccessright" name="postaccessright">
+             
+          <div class="visible content">SAVE</div>
+          <div class="hidden content">
+             CONFIRM
+          </div>
+
+    </form>
+  </div>
+</div>
+        </div>
+
+
+
+       </div>   
+    
+    </div>
+   
+}

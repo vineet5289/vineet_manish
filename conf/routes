@@ -4,15 +4,24 @@
 
 # Home page
 GET     /        	                        	   controllers.SRPController.index()
-GET     /login                       			   controllers.SRPController.preLogin()
-POST    /login                       			   controllers.SRPController.postLogin()
-GET     /logout                       			   controllers.SRPController.logout()
+
+# login handler
+GET     /login                       			   controllers.login_logout.LoginController.preLogin()
+POST    /login                       			   controllers.login_logout.LoginController.postLogin(phone: String ?="")
+GET     /logout                       			   controllers.login_logout.LoginController.logout()
 
 # mailer
 #GET       /sendmail                           	   controllers.Application.sendMailTest()
 
 # Message Api
-GET			/sendMessage							   controllers.MessageController.sendMessage() 
+GET			/sendMessage							   controllers.message.MobileMessageController.sendMessage()
+
+# Notification Listening Controller
+GET     	/listen                           		   controllers.message.NotificationListeningController.listen()
+GET     	/listeningWS                     		   controllers.message.NotificationListeningController.listeningSocket()
+
+# Notification Controller
+POST     	/notification                              controllers.message.NotificationController.notification()
 
 # add new schoole request
 GET      	/addnewschoolrequest                	   controllers.RegistrationRequest.preAddNewSchoolRequest()
@@ -31,8 +40,9 @@ GET      	/registersstudent                 		   controllers.RegistrationRequest
 POST     	/registerempstudent            	       	   controllers.RegistrationRequest.postStudentRegistrationRequest()
 
 # Map static resources from the /public folder to the /assets URL path
-#GET     	/assets/*file                              controllers.Assets.versioned(path="/public", file: Asset)
+GET     	/assets/*file                              controllers.Assets.versioned(path="/public", file: Asset)
 GET     	/assets/*file		                  	   controllers.Assets.at(path="/public", file: String)
+
 
 # approved school
 
@@ -63,6 +73,14 @@ POST		/editSubjects/:subjectId				   controllers.school.SubjectController.editSu
 POST		/editSubjects/:subjectId				   controllers.school.SubjectController.deleteSubjects(subjectId: Long)
 
 #test
-GET			/addTest							   controllers.CustomController.testRoute()
-POST		/addTest							   controllers.CustomController.postRoute()
+GET			/addTest							   		controllers.CustomController.testRoute()
+POST		/addTest							   		controllers.CustomController.postRoute()
 
+# access rights
+POST		/updateAccessRights						   controllers.AccessRightsController.addAccessRight()
+
+# view all user
+GET			/allUser/:schoolId							controllers.user.UserController.getUsers(schoolId: Long, category: String ?="")
+
+# view all user
+GET			/userInfo/:schoolId/:userName				controllers.user.UserController.getUser(schoolId: Long, userName:String, category: String ?="")

@@ -1,0 +1,25 @@
+@(userName: String, role: String, otherUserDetails: List[models.LoginDetails])
+@parentDashboard("ParentHome"){
+
+<div class="sixteen wide column" id="content">
+   <div class="ui horizontal divider">Parent Child</div>
+    <div class="ui equal width grid">
+       <div class="row" id="userInList">
+       
+           @for(item <- otherUserDetails){
+           
+               <div class="column">
+            
+		            <a class="ui large blue image label" href="/login>
+                    <i class="user icon">@item.getUserName()</i>
+                    <div class="detail">@item.getRole()</div>
+                 </a>
+              </div>
+           }
+           
+           </div>
+          </div>
+         </div>
+   }
+       
+    

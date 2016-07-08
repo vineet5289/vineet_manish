@@ -1,0 +1,32 @@
+@mainDashboard("formvalidation"){
+<div class="sixteen wide column" id="content">
+
+   
+<div class='add_meeting'>
+  <header>
+    <h1 class='icon-calendar-empty'>Message</h1>
+  </header>
+  <section>
+    <form method="post" action="@routes.CustomController.postRoute()">
+      <label>Message Title</label>
+      <input type='text' placeholder=''>
+      <label>Message</label>
+     <textarea id="textarea" rows="8" cols="30" maxlength="99" name="messageToSend"></textarea>
+          <div id="textarea_feedback"></div>
+          <div id="sendbutton"></div>
+          <button  class="ui green button" type="submit" id="msgSendAll" name="msgSendAll" value="hi evryone">Send to All</button>
+    </form>
+  </section>
+  <footer>
+   
+ 
+<div class="ui segment">
+   
+  
+   <div class="ui red button" id="msgSendStudent">selected Student</div>
+   <div class="ui pink button" id="msgSendTeachers">selected Teachers</div>
+</div>
+ </footer>
+</div>
+</div>
+}

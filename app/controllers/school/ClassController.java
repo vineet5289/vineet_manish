@@ -11,7 +11,6 @@ import views.forms.school.DisplayClassForm;
 import controllers.CustomController;
 import dao.ClassDAO;
 import enum_package.SessionKey;
-import views.html.addClass;
 import views.html.viewClass.viewclasses;
 import views.html.viewClass.addClasses;
 
@@ -26,18 +25,18 @@ public class ClassController extends CustomController {
 		Form<ClassForm> classForm = Form.form(ClassForm.class).bindFromRequest();
 		if (classForm == null || classForm.hasErrors()) {
 			flash("error", "Some server exception happen");
-			return redirect(controllers.routes.SRPController.preLogin()); // check for correct redirection
+			return redirect(controllers.login_logout.routes.LoginController.preLogin()); // check for correct redirection
 		}
 		else {
-			String userName = session().get(SessionKey.USER_NAME.name());
-			String schoolIdFromSession = session().get(SessionKey.SCHOOL_ID.name());
+			String userName = session().get(SessionKey.CURRENT_USER_NAME.name()); // random set will change
+			String schoolIdFromSession = session().get(SessionKey.CURRENT_SCHOOL_ID.name()); // random set will change
 			ClassForm classFormDetails = classForm.get();
 			long schoolId = -1l;
 			try {
 				schoolId = Long.parseLong(schoolIdFromSession);
 			} catch(Exception exception) {
 				flash("error", "Some server exception happen");
-				return redirect(controllers.routes.SRPController.preLogin()); // check for correct redirection
+				return redirect(controllers.login_logout.routes.LoginController.preLogin()); // check for correct redirection
 			}
 			List<ClassForm.AddClass> classes= classFormDetails.getClasses();
 			ClassDAO classDAO = new ClassDAO();
@@ -60,7 +59,7 @@ public class ClassController extends CustomController {
 				schoolId = Long.parseLong(schoolIdFromSession);
 			} catch(Exception exception) {
 				flash("error", "Some server exception happen");
-				return redirect(controllers.routes.SRPController.preLogin()); // check for correct redirection
+				return redirect(controllers.login_logout.routes.LoginController.preLogin()); // check for correct redirection
 			}
 			classes = classDAO.getClass(schoolId);
 		} catch (SQLException exception) {
@@ -83,7 +82,7 @@ public class ClassController extends CustomController {
 				|| className == null || className.isEmpty()
 				|| schoolIdFromSession == null || schoolIdFromSession.isEmpty()) {
 			flash("error", "Some server exception happen");
-			return redirect(controllers.routes.SRPController.preLogin()); // check for correct redirection
+			return redirect(controllers.login_logout.routes.LoginController.preLogin()); // check for correct redirection
 		}
 
 		long schoolId = -1l;
@@ -92,13 +91,13 @@ public class ClassController extends CustomController {
 			schoolId = Long.parseLong(schoolIdFromSession);
 		} catch(Exception exception) {
 			flash("error", "Some server exception happen");
-			return redirect(controllers.routes.SRPController.preLogin()); // check for correct redirection
+			return redirect(controllers.login_logout.routes.LoginController.preLogin()); // check for correct redirection
 		}
 		ClassDAO classDAO = new ClassDAO();
 		DisplayClassForm editClass = editClassForm.get();
 		if(editClass == null) {
 			flash("error", "Some server exception happen");
-			return redirect(controllers.routes.SRPController.preLogin()); // check for correct redirection
+			return redirect(controllers.login_logout.routes.LoginController.preLogin()); // check for correct redirection
 		}
 
 		boolean isSuccessful = false;
@@ -116,16 +115,14 @@ public class ClassController extends CustomController {
 	}
 
 	public Result deleteClass(String classsName) {
-		System.out.println("++++++++++++++");
 		System.out.println(classsName);
-		System.out.println("++++++++++++++");
 		String schoolIdFromSession = "1";//session().get(SessionKey.SCHOOL_ID.name());
 		long schoolId = -1l;
 		try {
 			schoolId = Long.parseLong(schoolIdFromSession);
 		} catch(Exception exception) {
 			flash("error", "Some server exception happen");
-			return redirect(controllers.routes.SRPController.preLogin()); // check for correct redirection
+			return redirect(controllers.login_logout.routes.LoginController.preLogin()); // check for correct redirection
 		}
 		ClassDAO classDAO = new ClassDAO();
 		Map<String, List<DisplayClassForm>> classes = null;
@@ -155,9 +152,7 @@ public class ClassController extends CustomController {
 	}
 
 	public Result addSection(String classsName) {
-		System.out.println("++++++addSection++++++++");
 		System.out.println(classsName);
-		System.out.println("+++++addSection+++++++++");
 		String schoolIdFromSession = "1";//session().get(SessionKey.SCHOOL_ID.name());
 		String userName = "vineet";//session().get(SessionKey.USER_NAME.name());
 		long schoolId = -1l;
@@ -165,7 +160,7 @@ public class ClassController extends CustomController {
 			schoolId = Long.parseLong(schoolIdFromSession);
 		} catch(Exception exception) {
 			flash("error", "Some server exception happen");
-			return redirect(controllers.routes.SRPController.preLogin()); // check for correct redirection
+			return redirect(controllers.login_logout.routes.LoginController.preLogin()); // check for correct redirection
 		}
 
 		Form<DisplayClassForm> sectionFormDetails = Form.form(DisplayClassForm.class).bindFromRequest();

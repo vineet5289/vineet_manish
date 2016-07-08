@@ -1,0 +1,281 @@
+@mainDashboard("Student Registration"){
+                    <div class="sixteen wide column" id="content">
+						<div class="ui horizontal divider">Fill Student Information</div>
+						                            
+						
+                        <form class="ui form" id="form3" action="@routes.RegistrationRequest.postAddNewSchoolRequest" method="Post">
+						    
+						     <div class="ui three item demo menu">
+								  <a class="active item" data-tab="student">Part 1 : Student</a>
+								  <a class="item" data-tab="parents">Part 2 : Parents</a>
+								  <a class="item" data-tab="guardian">Part 3 : Local Guardian</a>
+							</div>
+							
+							<div class="active  ui tab segment" data-tab="student">
+						
+							 <div class="field">
+                                 <div class="ui left icon input">
+                                    <input type="text" name="studentFirstName" placeholder="student First Name">
+                                    <i class="user icon"></i>
+                                    <input type="text" name="studentMiddleName" placeholder="student Middle Name">
+                                  
+                                     <input type="text" name="studentLastName" placeholder="student Last Name">
+                                    
+                                 </div>
+                             </div>
+							 <div class="field">
+                                 
+                                    <select class="ui dropdown">
+                                           <option value="">Gender</option>
+                                           <option value="1">Male</option>
+                                           <option value="0">Female</option>
+                                    </select>
+                                    
+                            </div>
+                            
+                            <div class="field">
+                                  <div class="ui left icon input">
+                                  <i class="user icon"></i>
+                                  <input type="email" name="studentEmail" placeholder="student Email Id">
+                                  <input type="text" value="+91" style="width:0.2px">
+                                 <input type="text" name="studentPhoneNumber" placeholder="Student Contact No">
+                                  </div>  
+                                    
+                             </div>
+                            
+                            <div class="field">
+                                 <div class="ui left icon input">
+                                    <input type="text" name="studentAddress1" placeholder="address Line 1">
+                                    <i class="home icon"></i>
+                                    <input type="text" name="studentAddress2" placeholder="address Line 2">
+                                    
+                                 </div>
+                             </div>
+                             
+                            
+                             
+                             <div class="field">
+                                 <div class="ui left icon input">
+                                    <input type="text" name="city" placeholder="city">
+                                    <i class="home icon"></i>
+                                  <select multiple="" class="ui dropdown" placeholder="State">
+                                        <option name="studentState" value="">Select State</option>
+                                        <option name="studentState" value="u">Uttar Pradesh</option>
+                                        <option name="studentState" value="m">Madhya Pradesh</option>
+                                        <option name="studentState" value="d">Delhi</option>
+                                        <option name="studentState" value="r">Rajasthan</option>
+                                        <option name="studentState" value="o">Orissa</option>
+                                        <option name="studentState" value="w">West Bengal</option>
+                                  </select>
+                            
+                            
+                                    <input type="text" name="studentCountry" placeholder="Country">
+                                    <i class="home icon"></i>
+                                     <input type="text" name="studentPincode" placeholder="pincode">
+                                 </div>
+                             </div>
+                             
+                              </div>
+							 
+							 
+							
+                            <!-- --------------------------------------------------------------------------------------------------------  -->
+							 <div class="ui tab segment" data-tab="parents">
+							 <div class="field">
+                                 <div class="ui left icon input">
+                                    <input type="text" name="fatherFirstName" placeholder="Father's First Name">
+                                    <input type="text" name="fatherMiddleName" placeholder="Father's Middle Name">
+                                    <input type="text" name="fatherLastName" placeholder="Father's Last Name">
+                                    <i class="user icon"></i>
+                                 </div>
+                             </div>
+							 
+							
+							 
+							 <div class="field">
+                                 <div class="ui left icon input">
+                                    <input type="text" name="motherFirstName" placeholder="Mothers First Name">
+                                     <input type="text" name="motherMiddleName" placeholder="Mothers Middle Name">
+                                    <input type="text" name="motherLastName" placeholder="Mothers Last Name">
+                                     
+                                    <i class="user icon"></i>
+                                 </div>
+                             </div>
+							 
+							 
+                             <div class="field">
+                                 <div class="ui left icon input">
+                                    <input type="email" name="email1" placeholder="Email Id">
+                                    <i class="mail icon"></i>
+									<select class="ui dropdown">
+                                           <option value=""></option>
+                                           <option value="1">Mother</option>
+                                           <option value="0">Father</option>
+                                    </select>
+                                 </div>
+                             </div>
+							 
+							 <div class="field">
+                                 <div class="ui left icon input">
+                                    <input type="email" name="email2" placeholder="Email Id">
+                                    <i class="mail icon"></i>
+									<select class="ui dropdown">
+                                           <option value=""></option>
+                                           <option value="1">Mother</option>
+                                           <option value="0">Father</option>
+                                    </select>
+                                 </div>
+                             </div>
+                             <div class="field">
+                                 <div class="ui left icon input">
+                                    <input type="text" name="phoneNumber1" placeholder="contactNumber">
+                                    <i class="mail icon"></i>
+									<select class="ui dropdown">
+                                           <option value=""></option>
+                                           <option value="1">Mother</option>
+                                           <option value="0">Father</option>
+                                    </select>
+                                 </div>
+                             </div>
+							 
+							 <div class="field">
+                                 <div class="ui left icon input">
+                                    <input type="text" name="phoneNumber2" placeholder="contactNumber">
+                                    <i class="mail icon"></i>
+									<select class="ui dropdown">
+                                           <option value=""></option>
+                                           <option value="1">Mother</option>
+                                           <option value="0">Father</option>
+                                    </select>
+                                 </div>
+                             </div>
+                            <div class="field">
+                                 <div class="ui left icon input">
+                                    <input type="text" name="fatherAddress1" placeholder="address Line 1">
+                                     <input type="text" name="fatherAddress2" placeholder="address Line 2">
+                                    <i class="home icon"></i>
+                                 </div>
+                             </div>
+                             
+                            
+                             
+							 <div class="field">
+                                 <div class="ui left icon input">
+                                    <input type="text" name="fatherCity" placeholder="city">
+                                    <i class="home icon"></i>
+                                <select multiple="" class="ui dropdown" placeholder="State">
+                                        <option name="studentState" value="">Select State</option>
+                                        <option name="studentState" value="u">Uttar Pradesh</option>
+                                        <option name="studentState" value="m">Madhya Pradesh</option>
+                                        <option name="studentState" value="d">Delhi</option>
+                                        <option name="studentState" value="r">Rajasthan</option>
+                                        <option name="studentState" value="o">Orissa</option>
+                                        <option name="studentState" value="w">West Bengal</option>
+                                  </select>
+                                  </div>
+                             </div>
+                            
+                             <div class="field">
+                                 <div class="ui left icon input">
+                                    <input type="text" name="fatherCountry" placeholder="Country">
+                                    <input type="text" name="fatherPincode" placeholder="pincode">
+                                    <i class="home icon"></i>
+                                 </div>
+                             </div>
+                             
+                            
+							 <div class="field">
+                                 <div class="ui left icon input">
+                                    <input type="text" name="motherAddress1" placeholder="address Line 1">
+                                    <input type="text" name="motherAddress2" placeholder="address Line 2">
+                                    <i class="home icon"></i>
+                                 </div>
+                             </div>
+                             
+                             
+                             
+							 <div class="field">
+                                 <div class="ui left icon input">
+                                    <input type="text" name="motherCity" placeholder="city">
+                                    <i class="home icon"></i>
+                               
+                                  <select multiple="" class="ui dropdown" placeholder="State">
+                                        <option name="studentState" value="">Select State</option>
+                                        <option name="studentState" value="u">Uttar Pradesh</option>
+                                        <option name="studentState" value="m">Madhya Pradesh</option>
+                                        <option name="studentState" value="d">Delhi</option>
+                                        <option name="studentState" value="r">Rajasthan</option>
+                                        <option name="studentState" value="o">Orissa</option>
+                                        <option name="studentState" value="w">West Bengal</option>
+                                  </select>
+                                  <input type="text" name="motherCountry" placeholder="Country">
+                                    <input type="text" name="motherPincode" placeholder="pincode">
+                                  </div>
+                             </div>
+                             </div>
+                             
+                            
+                           <!--  ---------------------------------------------------------------------------------------------------------  -->
+							  <div class="ui tab segment" data-tab="guardian">
+							  <div class="field">
+                                 <div class="ui left icon input">
+                                    <input type="text" name="guardianFirstName" placeholder="Guardian First Name">
+                                    <input type="text" name="guardianMiddleName" placeholder="Guardian Middle Name">
+                                     <input type="text" name="guardianLastName" placeholder="Guardian Last Name">
+                                    <i class="user icon"></i>
+                                 </div>
+                             </div>
+							 
+							
+                             
+                            <div class="field">
+                                 <div class="ui left icon input">
+                                    <input type="email" name="guardianEmail" placeholder="Guardian Email Id">
+                                    <i class="mail icon"></i>
+                                    <input type="text" name="guardianPhoneNumber" placeholder="Guardian Contact No">
+                                 </div>
+                             </div>
+                             
+                             
+                            <div class="field">
+                                 <div class="ui left icon input">
+                                    <input type="text" name="guardianAddress1" placeholder="address Line 1">
+                                    <input type="text" name="guardianAddress2" placeholder="address Line 2">
+                                    <i class="home icon"></i>
+                                 </div>
+                             </div>
+                             <div class="field">
+                                 <div class="ui left icon input">
+                                    <input type="text" name="guardianCity" placeholder="city">
+                                    <i class="home icon"></i>
+                               
+                           
+                                  <select multiple="" class="ui dropdown" placeholder="State">
+                                        <option name="studentState" value="">Select State</option>
+                                        <option name="studentState" value="u">Uttar Pradesh</option>
+                                        <option name="studentState" value="m">Madhya Pradesh</option>
+                                        <option name="studentState" value="d">Delhi</option>
+                                        <option name="studentState" value="r">Rajasthan</option>
+                                        <option name="studentState" value="o">Orissa</option>
+                                        <option name="studentState" value="w">West Bengal</option>
+                                  </select>
+                                  <input type="text" name="guardianCountry" placeholder="Country">
+                                     <input type="text" name="guardianPincode" placeholder="pincode">
+                                  
+                                  </div>
+                             </div>
+                            
+                            
+                             </div>
+							<button class="ui tiny blue icon button" type="submit" align="center">Send Request <i class="sign in icon"></i></button>
+                            <div class="ui error message"></div>
+                        </form>
+                    </div>
+                    
+                    
+                    
+   }               
+            
+        
+
+    

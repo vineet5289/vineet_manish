@@ -7,7 +7,7 @@ import java.security.SecureRandom;
 import org.mindrot.jbcrypt.BCrypt;
 
 public class RandomGenerator {
-	public String nextSessionId(int length, SecureRandom random) {
+	public static String nextSessionId(int length, SecureRandom random) {
 		return new BigInteger(length, random).toString(32);
 	}
 
