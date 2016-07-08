@@ -47,6 +47,7 @@ public class SRPController extends CustomController {
 			exception.printStackTrace();
 			userDetails = new ArrayList<LoginDetails>();
 		}
+		System.out.println("====>" + userDetails);
 		
 		if(superUserRole.equalsIgnoreCase(Role.TEACHER.name())) {
 			return ok(teacherHome.render(session().get(SessionKey.CURRENT_USER_NAME.name()), session().get(SessionKey.CURRENT_USER_ROLE.name()), userDetails));

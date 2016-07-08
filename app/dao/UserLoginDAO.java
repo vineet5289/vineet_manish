@@ -77,7 +77,6 @@ public class UserLoginDAO {
 		} catch(Exception exception) {
 			loginDetails.setError("Server Problem occure. Please try after some time");
 			exception.printStackTrace();
-			connection.rollback();
 			isFieldSet = false;
 		} finally {
 			if(loginResultSet != null)
@@ -116,7 +115,7 @@ public class UserLoginDAO {
 				LoginDetails userDetail = new LoginDetails();
 				userDetail.setAuthToken(userAuthToken);
 				userDetail.setName(userSuperUserResultSet.getString(nameField));
-				userDetail.setRole(Role.valueOf(userSuperUserResultSet.getString(roleField)));
+				userDetail.setRole(Role.STUDENT);
 				userDetail.setUserName(userSuperUserResultSet.getString(userNameField));
 				userDetail.setSchoolId(userSuperUserResultSet.getLong(schoolIdField));
 				userDetails.add(userDetail);
