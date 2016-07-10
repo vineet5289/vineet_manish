@@ -40,7 +40,7 @@ public class SchoolRegistrationDAO {
 	private String schoolIdField = "school_id";
 
 	private String loginTableName = "login";
-	private String schoolTableName = "login";
+	private String schoolTableName = "school";
 
 	public boolean registerSchool(SchoolFormData schoolData) throws SQLException {
 		boolean isSuccessfull = false;
@@ -57,7 +57,7 @@ public class SchoolRegistrationDAO {
 		String insertSchoolRegistrationQuery = String.format("INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,"
 				+ " %s, %s) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);", schoolTableName, schoolNameField, schoolRegistrationIdField, 
 				schoolUserNameField, schooleEmailField, addressLine1Field, addressLine2Field, cityField, stateField, pincodeField, phoneNumberField,
-				officeNumberField, countryField, noOfShiftField, schoolCategoryField, schoolBoardField, schoolTypeField);
+				officeNumberField, countryField, noOfShiftField, schoolCategoryField, schoolBoardField, schoolTypeField, isActiveField);
 
 //		String insertEmpRegistrationQuery = String.format("INSERT INTO employee (%s, %s, %s, %s, %s) VALUES(?, ?, ?, ?, ?);",
 //				principleName, principleUserName, principalEmail, phoneNumber1, schoolId);

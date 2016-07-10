@@ -131,7 +131,9 @@ public class RegistrationRequest extends CustomController {
 	@Security.Authenticated(SchoolRegisterRequestAuthenticator.class)
 	public Result postSchoolRegistrationRequest() {
 		Form<SchoolFormData> schoolForm = Form.form(SchoolFormData.class).bindFromRequest();
+		System.out.println("===> " + schoolForm);
 		if(schoolForm == null || schoolForm.hasErrors()) {
+			System.out.println("***************");
 			flash("error", "Something parameter is missing or invalid in your registration request.");
 			return redirect(routes.RegistrationRequest.preAddNewSchoolRequest());
 		}
@@ -149,9 +151,12 @@ public class RegistrationRequest extends CustomController {
 			boolean isSuccessfull = schoolRegistrationDAO.registerSchool(schoolFormDetails);
 		} catch(Exception exception) {
 			System.out.println("exception &&&&&&&&&");
+			exception.printStackTrace();
 		}
 
-		return ok("school Registration completed. please login using your user name and password");
+		session().clear();
+		
+		return redirect(controllers.login_logout.routes.LoginController.preLogin());
 
 	}
 
