@@ -7,17 +7,18 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import enum_package.PasswordState;
+import enum_package.RequestedStatus;
 import enum_package.Role;
 import play.db.DB;
+import utils.RandomGenerator;
 import views.forms.SchoolFormData;
 
 public class SchoolRegistrationDAO {
-	//school registration field
 	private String idField = "id";
-	private String schoolNameField = "name";
+	private String nameField = "name";
 	private String schoolRegistrationIdField = "school_registration_id";
 	private String schoolUserNameField = "school_user_name";
-	private String schooleEmailField = "schoole_email";
+	private String schooleEmailField = "school_email";
 	private String addressLine1Field = "address_line1";
 	private String addressLine2Field = "address_line2";
 	private String cityField = "city";
@@ -38,40 +39,76 @@ public class SchoolRegistrationDAO {
 	private String loginPasswordStateField = "password_state";
 	private String loginRoleField = "role";
 	private String schoolIdField = "school_id";
+	private String addSchoolRequestIdField = "add_school_request_id";
+	private String contactField = "contact"; 
+	private String statusField = "status"; 
+	private String authTokenField = "auth_token";
+	private String schoolNameField = "school_name";
+	private String principalNameField = "principal_name";
+	private String principalEmailField = "principal_email";
+	private String requestNumberField = "request_number";
 
 	private String loginTableName = "login";
 	private String schoolTableName = "school";
+	private String schoolRegistrationRequestTableName = "school_registration_request";
 
-	public boolean registerSchool(SchoolFormData schoolData) throws SQLException {
+	public boolean registerSchool(SchoolFormData schoolData, String referenceNumber, String authToken) throws SQLException {
 		boolean isSuccessfull = false;
 		Connection connection = null;
 		PreparedStatement schoolRegistrationPreparedStatement = null;
 		PreparedStatement schoolLoginPreparedStatement = null;
-		PreparedStatement empRegistrationPreparedStatement = null;
-		PreparedStatement empLoginPreparedStatement = null;
+		PreparedStatement selectRegistrationRequestPreparedStatement = null;
+		PreparedStatement updateRegistrationRequestPreparedStatement = null;
 		ResultSet resultSet = null;
+		ResultSet selectResultSet = null;
 		String insertLoginQuery = String.format("INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s, %s, %s) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);", 
 				loginTableName, loginUserNameField, loginEmailIdField, loginPasswordField, loginPasswordStateField, loginRoleField, 
-				accessRightsField, isActiveField, schoolNameField, schoolIdField);
+				accessRightsField, isActiveField, nameField, schoolIdField);
 
-		String insertSchoolRegistrationQuery = String.format("INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,"
-				+ " %s, %s) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);", schoolTableName, schoolNameField, schoolRegistrationIdField, 
+		String insertSchoolRegistrationQuery = String.format("INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+				+ " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);", schoolTableName, nameField, schoolRegistrationIdField, 
 				schoolUserNameField, schooleEmailField, addressLine1Field, addressLine2Field, cityField, stateField, pincodeField, phoneNumberField,
-				officeNumberField, countryField, noOfShiftField, schoolCategoryField, schoolBoardField, schoolTypeField, isActiveField);
+				officeNumberField, countryField, noOfShiftField, schoolCategoryField, schoolBoardField, schoolTypeField, isActiveField, addSchoolRequestIdField);
 
-//		String insertEmpRegistrationQuery = String.format("INSERT INTO employee (%s, %s, %s, %s, %s) VALUES(?, ?, ?, ?, ?);",
-//				principleName, principleUserName, principalEmail, phoneNumber1, schoolId);
+		String selectSchoolRegistrationRequest = String.format("SELECT %s, %s, %s, %s FROM %s WHERE %s=? AND %s=? AND %s=? AND %s=?;", idField,
+				schoolNameField, schoolRegistrationIdField, isActiveField, schoolRegistrationRequestTableName,isActiveField, requestNumberField,
+				authTokenField, statusField);
+
+		String updateSchoolRegistrationRequest = String.format("UPDATE %s SET %s=?, %s=? WHERE %s=?;", schoolRegistrationRequestTableName, isActiveField,
+				statusField, idField);
 
 		try {
+			String bCryptPassword = RandomGenerator.getBCryptPassword(schoolData.getSchoolPassword());
+
 			connection = DB.getDataSource("srp").getConnection();
 			connection.setAutoCommit(false);
 
 			schoolRegistrationPreparedStatement = connection.prepareStatement(insertSchoolRegistrationQuery, Statement.RETURN_GENERATED_KEYS);
 			schoolLoginPreparedStatement = connection.prepareStatement(insertLoginQuery, Statement.RETURN_GENERATED_KEYS);
-//			empRegistrationPreparedStatement = connection.prepareStatement(insertEmpRegistrationQuery, Statement.RETURN_GENERATED_KEYS);
-			empLoginPreparedStatement = connection.prepareStatement(insertLoginQuery, Statement.RETURN_GENERATED_KEYS);
+			updateRegistrationRequestPreparedStatement = connection.prepareStatement(updateSchoolRegistrationRequest);
+			selectRegistrationRequestPreparedStatement = connection.prepareStatement(selectSchoolRegistrationRequest, ResultSet.TYPE_FORWARD_ONLY);
 
-			//school register + login insert // CORRECT_PASSWORD, SUPERADMIN
+			selectRegistrationRequestPreparedStatement.setBoolean(1, true);
+			selectRegistrationRequestPreparedStatement.setString(2, referenceNumber);
+			selectRegistrationRequestPreparedStatement.setString(3, authToken);
+			selectRegistrationRequestPreparedStatement.setString(4, RequestedStatus.APPROVED.name());
+			selectResultSet = selectRegistrationRequestPreparedStatement.executeQuery();
+			if(!selectResultSet.next()) {
+				System.out.println("select query exception occur inside SchoolRegistrationDAO.registerSchool");
+				return false;
+			}
+
+			Long registrationRequestId = selectResultSet.getLong(idField);
+			System.out.println("===> registrationRequestId" + registrationRequestId);
+			updateRegistrationRequestPreparedStatement.setBoolean(1, false);
+			updateRegistrationRequestPreparedStatement.setString(2, RequestedStatus.REGISTERED.name());
+			updateRegistrationRequestPreparedStatement.setLong(3, registrationRequestId);
+			int updateRowCount = updateRegistrationRequestPreparedStatement.executeUpdate();
+			if(updateRowCount == 0) {
+				System.out.println("update query exception occur inside SchoolRegistrationDAO.registerSchool");
+				return false;
+			}
+
 			schoolRegistrationPreparedStatement.setString(1, schoolData.getSchoolName());//schoolName
 			schoolRegistrationPreparedStatement.setString(2, schoolData.getSchoolRegistration()); //schoolRegistrationId
 			schoolRegistrationPreparedStatement.setString(3, schoolData.getSchoolUserName()); //schoolUserName
@@ -89,6 +126,7 @@ public class SchoolRegistrationDAO {
 			schoolRegistrationPreparedStatement.setString(15, schoolData.getSchoolBoard()); //schoolBoard
 			schoolRegistrationPreparedStatement.setString(16, schoolData.getSchoolType()); //schoolType
 			schoolRegistrationPreparedStatement.setBoolean(17, true);
+			schoolRegistrationPreparedStatement.setLong(18, registrationRequestId);
 			schoolRegistrationPreparedStatement.executeUpdate();
 			
 			resultSet = schoolRegistrationPreparedStatement.getGeneratedKeys();
@@ -97,11 +135,9 @@ public class SchoolRegistrationDAO {
 				 generatedSchoolId = resultSet.getLong(1);
 			}
 				
-			System.out.println("school primary key= " + generatedSchoolId);
-
 			schoolLoginPreparedStatement.setString(1, schoolData.getSchoolUserName());
 			schoolLoginPreparedStatement.setString(2, schoolData.getSchoolEmail());
-			schoolLoginPreparedStatement.setString(3, schoolData.getSchoolPassword());
+			schoolLoginPreparedStatement.setString(3, bCryptPassword);
 			schoolLoginPreparedStatement.setString(4, PasswordState.CORRECT_PASSWORD.name());
 			schoolLoginPreparedStatement.setString(5, Role.SUPERADMIN.name());
 			schoolLoginPreparedStatement.setString(6, "ALL=1");
@@ -127,11 +163,11 @@ public class SchoolRegistrationDAO {
 			if(schoolLoginPreparedStatement != null)
 				schoolLoginPreparedStatement.close();
 
-			if(empRegistrationPreparedStatement != null)
-				empRegistrationPreparedStatement.close();
+			if(selectRegistrationRequestPreparedStatement != null)
+				selectRegistrationRequestPreparedStatement.close();
 
-			if(empLoginPreparedStatement != null)
-				empLoginPreparedStatement.close();
+			if(updateRegistrationRequestPreparedStatement != null)
+				updateRegistrationRequestPreparedStatement.close();
 
 			if(connection != null)
 				connection.close();

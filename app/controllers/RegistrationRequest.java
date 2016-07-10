@@ -148,7 +148,7 @@ public class RegistrationRequest extends CustomController {
 		String authToken = session().get("AUTH-TOKEN");
 		SchoolRegistrationDAO schoolRegistrationDAO = new SchoolRegistrationDAO();
 		try {
-			boolean isSuccessfull = schoolRegistrationDAO.registerSchool(schoolFormDetails);
+			boolean isSuccessfull = schoolRegistrationDAO.registerSchool(schoolFormDetails, referenceNumber, authToken);
 		} catch(Exception exception) {
 			System.out.println("exception &&&&&&&&&");
 			exception.printStackTrace();

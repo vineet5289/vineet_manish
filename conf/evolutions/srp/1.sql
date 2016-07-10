@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS school (
   name varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   school_registration_id varchar(225) COLLATE utf8_unicode_ci DEFAULT NULL,
   school_user_name varchar(225) COLLATE utf8_unicode_ci NOT NULL,
-  schoole_email varchar(225) COLLATE utf8_unicode_ci,
+  school_email varchar(225) COLLATE utf8_unicode_ci,
   address_line1 varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   address_line2 varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   city varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -54,6 +54,7 @@ CREATE TABLE IF NOT EXISTS school (
   created_at timestamp DEFAULT CURRENT_TIMESTAMP,
   updated_at timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   is_active tinyint(1) DEFAULT 1,
+  add_school_request_id bigint(20) NOT NULL,
   PRIMARY KEY (id),
   UNIQUE KEY (school_user_name)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
