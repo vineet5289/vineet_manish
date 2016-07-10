@@ -13,41 +13,34 @@ import views.forms.SchoolFormData;
 
 public class SchoolRegistrationDAO {
 	//school registration field
-	private String id = "id";
-	private String schoolName = "name";
-	private String schoolRegistrationId = "school_registration_id";
-	private String schoolUserName = "school_user_name";
-	private String schooleEmail = "schoole_email";
-	private String addressLine1 = "address_line1";
-	private String addressLine2 = "address_line2";
-	private String city = "city";
-	private String state = "state";
-	private String pincode = "pin_code"; 
-	private String phoneNumber = "phone_number";
-	private String officeNumber = "office_number";
-	private String country = "country";
-	private String noOfShift = "no_of_shift";
-	private String schoolCategory = "school_category";
-	private String schoolBoard = "school_board";
-	private String schoolType = "school_type";
-	private String createdAt = "created_at";
-	private String updatedAt = "updated_at";
-	private String isActive = "is_active";
+	private String idField = "id";
+	private String schoolNameField = "name";
+	private String schoolRegistrationIdField = "school_registration_id";
+	private String schoolUserNameField = "school_user_name";
+	private String schooleEmailField = "schoole_email";
+	private String addressLine1Field = "address_line1";
+	private String addressLine2Field = "address_line2";
+	private String cityField = "city";
+	private String stateField = "state";
+	private String pincodeField = "pin_code"; 
+	private String phoneNumberField = "phone_number";
+	private String officeNumberField = "office_number";
+	private String countryField = "country";
+	private String noOfShiftField = "no_of_shift";
+	private String schoolCategoryField = "school_category";
+	private String schoolBoardField = "school_board";
+	private String schoolTypeField = "school_type";
+	private String isActiveField = "is_active";
+	private String accessRightsField = "access_rights";
+	private String loginUserNameField = "user_name";
+	private String loginEmailIdField = "email_id";
+	private String loginPasswordField = "password";
+	private String loginPasswordStateField = "password_state";
+	private String loginRoleField = "role";
+	private String schoolIdField = "school_id";
 
-	//employee mendatory field
-	private String principleName = "name";
-	private String principleUserName = "user_name";
-	private String principalEmail = "emp_email";
-	private String phoneNumber1 = "phone_number1";
-
-	//login table field
-	private String loginUserName = "user_name";
-	private String loginEmailId = "email_id";
-	private String loginPassword = "password";
-	private String loginPasswordState = "password_state";
-	private String loginRole = "role";
-
-	private String schoolId = "school_id";
+	private String loginTableName = "login";
+	private String schoolTableName = "login";
 
 	public boolean registerSchool(SchoolFormData schoolData) throws SQLException {
 		boolean isSuccessfull = false;
@@ -57,16 +50,17 @@ public class SchoolRegistrationDAO {
 		PreparedStatement empRegistrationPreparedStatement = null;
 		PreparedStatement empLoginPreparedStatement = null;
 		ResultSet resultSet = null;
-		String insertLoginQuery = String.format("INSERT INTO login (%s, %s, %s, %s, %s, %s) VALUES(?, ?, ?, ?, ?, ?);", 
-				loginUserName, loginEmailId, loginPassword, loginPasswordState, loginRole, schoolId);
+		String insertLoginQuery = String.format("INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s, %s, %s) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);", 
+				loginTableName, loginUserNameField, loginEmailIdField, loginPasswordField, loginPasswordStateField, loginRoleField, 
+				accessRightsField, isActiveField, schoolNameField, schoolIdField);
 
-		String insertSchoolRegistrationQuery = String.format("INSERT INTO school (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, "
-				+ "%s, %s, %s) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);", schoolName, schoolRegistrationId, schoolUserName,
-				schooleEmail, addressLine1, addressLine2, city, state, pincode, phoneNumber, officeNumber, country, noOfShift, schoolCategory,
-				schoolBoard, schoolType);
+		String insertSchoolRegistrationQuery = String.format("INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,"
+				+ " %s, %s) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);", schoolTableName, schoolNameField, schoolRegistrationIdField, 
+				schoolUserNameField, schooleEmailField, addressLine1Field, addressLine2Field, cityField, stateField, pincodeField, phoneNumberField,
+				officeNumberField, countryField, noOfShiftField, schoolCategoryField, schoolBoardField, schoolTypeField);
 
-		String insertEmpRegistrationQuery = String.format("INSERT INTO employee (%s, %s, %s, %s, %s) VALUES(?, ?, ?, ?, ?);",
-				principleName, principleUserName, principalEmail, phoneNumber1, schoolId);
+//		String insertEmpRegistrationQuery = String.format("INSERT INTO employee (%s, %s, %s, %s, %s) VALUES(?, ?, ?, ?, ?);",
+//				principleName, principleUserName, principalEmail, phoneNumber1, schoolId);
 
 		try {
 			connection = DB.getDataSource("srp").getConnection();
@@ -74,7 +68,7 @@ public class SchoolRegistrationDAO {
 
 			schoolRegistrationPreparedStatement = connection.prepareStatement(insertSchoolRegistrationQuery, Statement.RETURN_GENERATED_KEYS);
 			schoolLoginPreparedStatement = connection.prepareStatement(insertLoginQuery, Statement.RETURN_GENERATED_KEYS);
-			empRegistrationPreparedStatement = connection.prepareStatement(insertEmpRegistrationQuery, Statement.RETURN_GENERATED_KEYS);
+//			empRegistrationPreparedStatement = connection.prepareStatement(insertEmpRegistrationQuery, Statement.RETURN_GENERATED_KEYS);
 			empLoginPreparedStatement = connection.prepareStatement(insertLoginQuery, Statement.RETURN_GENERATED_KEYS);
 
 			//school register + login insert // CORRECT_PASSWORD, SUPERADMIN
@@ -90,10 +84,11 @@ public class SchoolRegistrationDAO {
 			schoolRegistrationPreparedStatement.setString(10, schoolData.getSchoolMobileNumber()); //phoneNumber
 			schoolRegistrationPreparedStatement.setString(11, schoolData.getSchoolOfficeNumber()); //officeNumber
 			schoolRegistrationPreparedStatement.setString(12, schoolData.getSchoolCountry()); //country
-			schoolRegistrationPreparedStatement.setInt(13, 1);  //noOfShift  *****************************************
+			schoolRegistrationPreparedStatement.setInt(13, schoolData.getNoOfShift());  //noOfShift  *****************************************
 			schoolRegistrationPreparedStatement.setString(14, schoolData.getSchoolCategory()); //schoolCategory
 			schoolRegistrationPreparedStatement.setString(15, schoolData.getSchoolBoard()); //schoolBoard
 			schoolRegistrationPreparedStatement.setString(16, schoolData.getSchoolType()); //schoolType
+			schoolRegistrationPreparedStatement.setBoolean(17, true);
 			schoolRegistrationPreparedStatement.executeUpdate();
 			
 			resultSet = schoolRegistrationPreparedStatement.getGeneratedKeys();
@@ -107,28 +102,13 @@ public class SchoolRegistrationDAO {
 			schoolLoginPreparedStatement.setString(1, schoolData.getSchoolUserName());
 			schoolLoginPreparedStatement.setString(2, schoolData.getSchooleEmail());
 			schoolLoginPreparedStatement.setString(3, schoolData.getSchoolPassword());
-			schoolLoginPreparedStatement.setString(4, PasswordState.CORRECT_PASSWORD.name()); //loginPasswordState
+			schoolLoginPreparedStatement.setString(4, PasswordState.CORRECT_PASSWORD.name());
 			schoolLoginPreparedStatement.setString(5, Role.SUPERADMIN.name());
-			schoolLoginPreparedStatement.setLong(6, generatedSchoolId);
+			schoolLoginPreparedStatement.setString(6, "ALL=1");
+			schoolLoginPreparedStatement.setBoolean(7, true);
+			schoolLoginPreparedStatement.setString(8, schoolData.getSchoolName());
+			schoolLoginPreparedStatement.setLong(9, generatedSchoolId);
 			schoolLoginPreparedStatement.execute();
-
-			//employee register + login insert // First, ADMIN
-			empRegistrationPreparedStatement.setString(1, schoolData.getPrincipleName()); //principleName
-			empRegistrationPreparedStatement.setString(2, schoolData.getPrincipleUserName()); //principleUserName
-			empRegistrationPreparedStatement.setString(3, schoolData.getPrincipleEmail()); //principalEmail
-			empRegistrationPreparedStatement.setString(4, schoolData.getPrincipleMobileNumber()); //phoneNumber1
-			empRegistrationPreparedStatement.setLong(5, generatedSchoolId); //schoolId
-			empRegistrationPreparedStatement.execute();
-			
-			empLoginPreparedStatement.setString(1, schoolData.getPrincipleUserName());
-			empLoginPreparedStatement.setString(2, schoolData.getPrincipleEmail());
-			empLoginPreparedStatement.setString(3, schoolData.getPrinciplePassword());
-			empLoginPreparedStatement.setString(4, PasswordState.FIRST_TIME.name()); //loginPasswordState
-			empLoginPreparedStatement.setString(5, Role.ADMIN.name());
-			empLoginPreparedStatement.setLong(6, generatedSchoolId);
-			empLoginPreparedStatement.execute();
-			
-			//make invalie school_registration_request
 			connection.commit();
 			isSuccessfull = true;
 		} catch(Exception exception) {
