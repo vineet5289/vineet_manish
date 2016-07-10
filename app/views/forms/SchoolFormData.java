@@ -11,7 +11,7 @@ import utils.ValidateFields;
 public class SchoolFormData {
 	private String schoolName = "";
 	private String schoolRegistration;
-	private String schooleEmail;
+	private String schoolEmail;
 	private String schoolMobileNumber;
 	private String schoolOfficeNumber;
 	private String schoolUserName;
@@ -40,7 +40,7 @@ public class SchoolFormData {
 //			errors.add(new ValidationError("schoolname", "No schoolName was given."));
 //		}
 
-		if (schooleEmail != null && !ValidateFields.isValidEmailId(schooleEmail)) {
+		if (schoolEmail != null && !ValidateFields.isValidEmailId(schoolEmail)) {
 			errors.add(new ValidationError("schooleEmail", "School email is empty"));
 		}
 
