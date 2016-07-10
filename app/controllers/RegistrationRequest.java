@@ -73,7 +73,7 @@ public class RegistrationRequest extends CustomController {
 			return redirect(routes.RegistrationRequest.preAddNewSchoolRequest());
 		}
 
-		//send mail
+
 		String principleEmailId = addNewSchoolRequestDetails.get("principalEmail");
 		String schoolEmailId = addNewSchoolRequestDetails.get("schoolEmail");
 		String receiverPhoneNumber = addNewSchoolRequestDetails.get("contact");
@@ -108,7 +108,6 @@ public class RegistrationRequest extends CustomController {
 		SchoolRegistrationRequestDAO schoolRegistrationRequestDAO = new SchoolRegistrationRequestDAO();
 		try {
 			boolean isValidUser = schoolRegistrationRequestDAO.isValidUserByOtpAndReferenceKey(referenceKey, otpValue);
-			System.out.println("isValidUser" + isValidUser);
 			if(isValidUser) {
 				session("REFERENCE-NUMBER", referenceKey);
 				session("AUTH-TOKEN", otpValue);

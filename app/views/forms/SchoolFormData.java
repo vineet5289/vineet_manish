@@ -4,11 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Data;
-import models.SchoolBoard;
-import models.State;
 import play.data.validation.ValidationError;
-import enum_package.SchoolCateroryEnum;
-import enum_package.SchoolTypeEnum;
+import utils.ValidateFields;
 
 @Data
 public class SchoolFormData {
@@ -31,24 +28,33 @@ public class SchoolFormData {
 	private String schoolCategory;
 	private String schoolType;
 
-	private String principleName;
-	private String principleEmail;
-	private String principleMobileNumber;
-	private String principleUserName;
-	private String principlePassword;
-	private String principleConfirmPassword;
-
 	public List<ValidationError> validate() {
 
 		List<ValidationError> errors = new ArrayList<>();
-//
-//		if (schoolName == null || schoolName.isEmpty()) {
+
+		if (schoolName == null || schoolName.isEmpty()) {
+			errors.add(new ValidationError("schoolname", "No schoolName was given."));
+		}
+
+//		if (schoolRegistration != null || schoolName.isEmpty()) {
 //			errors.add(new ValidationError("schoolname", "No schoolName was given."));
 //		}
-//
-//		if (principleName == null || principleName.isEmpty()) {
-//			errors.add(new ValidationError("principalname", "No principleName was given."));
+
+		if (schooleEmail != null && !ValidateFields.isValidEmailId(schooleEmail)) {
+			errors.add(new ValidationError("schooleEmail", "School email is empty"));
+		}
+
+//		if () { phone number validation
+//			errors.add(new ValidationError("schoolname", "No schoolName was given."));
 //		}
+
+		if (!ValidateFields.isValidPassword(schoolPassword)) {
+			errors.add(new ValidationError("schoolPassword", "School password is invalid"));
+		}
+
+		if (schoolConfirmPassword == null || schoolPassword == null || !schoolConfirmPassword.equals(schoolPassword)) {
+			errors.add(new ValidationError("schoolPassword", "School password is invalid"));
+		}
 
 		if(errors.size() > 0)
 			return errors;
