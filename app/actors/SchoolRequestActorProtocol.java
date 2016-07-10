@@ -6,7 +6,8 @@ public class SchoolRequestActorProtocol {
 
 	@Data
 	public static class NewSchoolRequest {
-		private String receiverEmailId;
+		private String principleEmailId;
+		private String schoolEmailId;
 		private String receiverName;
 		private String receiverPhoneNumber;
 		private String referenceNumber;

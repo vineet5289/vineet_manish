@@ -11,7 +11,7 @@ POST    /login                       			   controllers.login_logout.LoginControl
 GET     /logout                       			   controllers.login_logout.LoginController.logout()
 
 # mailer
-#GET       /sendmail                           	   controllers.Application.sendMailTest()
+GET       /sendmail                           	   controllers.MailController.sendMailTest()
 
 # Message Api
 GET			/sendMessage							   controllers.message.MobileMessageController.sendMessage()

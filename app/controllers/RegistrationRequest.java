@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import models.Country;
 import models.SchoolBoard;
@@ -11,20 +12,16 @@ import models.SchoolCategory;
 import models.SchoolType;
 import models.State;
 import play.data.Form;
-import play.libs.mailer.MailerClient;
 import play.mvc.Result;
 import play.mvc.Security;
 import security.SchoolRegisterRequestAuthenticator;
 import views.forms.AddNewSchoolRequest;
-import views.forms.NewSchoolApprovedRequest;
 import views.forms.OTPField;
 import views.forms.SchoolFormData;
 import views.html.newSchoolApproved;
-import views.html.schoolFieldSetIndex;
-import views.html.addNewSchoolRequestIndex;
-import views.html.viewClass.newSchoolRequest;
 import views.html.viewClass.SchoolRegistration;
-import actors.MailerActor;
+import views.html.viewClass.newSchoolRequest;
+import views.html.viewClass.thanku;
 import actors.MessageActor;
 import actors.SchoolRequestActorProtocol.ApprovedSchool;
 import actors.SchoolRequestActorProtocol.NewSchoolRequest;
@@ -32,18 +29,18 @@ import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import dao.SchoolRegistrationDAO;
 import dao.SchoolRegistrationRequestDAO;
-import enum_package.SessionKey;
-import views.html.viewClass.thanku;
 
 
 public class RegistrationRequest extends CustomController {
 
-	
-//	@Inject MailerClient mailerClient;
 	final ActorSystem actorSystem = ActorSystem.create("srp");
-//	final ActorRef mailerActor = actorSystem.actorOf(MailerActor.props(mailerClient));
+	final ActorRef mailerActor;
 	final ActorRef messageActor = actorSystem.actorOf(MessageActor.props());
-	
+	@Inject
+	public RegistrationRequest(@Named("srp") ActorRef mailerActor) {
+		this.mailerActor = mailerActor;
+	}
+
 	public Result preAddNewSchoolRequest() {
 		Form<AddNewSchoolRequest> addNewSchoolRequest = Form.form(AddNewSchoolRequest.class);
 		return ok(newSchoolRequest.render(addNewSchoolRequest));
@@ -75,21 +72,21 @@ public class RegistrationRequest extends CustomController {
 			flash("error", "Something wrong happen with our server. Please try again.");
 			return redirect(routes.RegistrationRequest.preAddNewSchoolRequest());
 		}
+
 		//send mail
-		String receiverEmailId = addNewSchoolRequestDetails.get("principalEmail");
+		String principleEmailId = addNewSchoolRequestDetails.get("principalEmail");
+		String schoolEmailId = addNewSchoolRequestDetails.get("schoolEmail");
 		String receiverPhoneNumber = addNewSchoolRequestDetails.get("contact");
-		String receiverName = addNewSchoolRequestDetails.get("principalName");
+		String receiverName = addNewSchoolRequestDetails.get("schoolName");
+
 		NewSchoolRequest newSchoolRequest = new NewSchoolRequest();
-		newSchoolRequest.setReceiverEmailId(receiverEmailId);
+		newSchoolRequest.setPrincipleEmailId(principleEmailId);
+		newSchoolRequest.setSchoolEmailId(schoolEmailId);
 		newSchoolRequest.setReceiverName(receiverName);
 		newSchoolRequest.setReceiverPhoneNumber(receiverPhoneNumber);
 		newSchoolRequest.setReferenceNumber(requestRefNumber);
-		System.out.println("********postAddNewSchoolRequest 3" );
-//		mailerActor.tell(newSchoolRequest, mailerActor);
-		System.out.println("********postAddNewSchoolRequest 6" );
+		mailerActor.tell(newSchoolRequest, mailerActor);
 		messageActor.tell(newSchoolRequest, messageActor);
-		
-		System.out.println("********postAddNewSchoolRequest 7" );
 		return ok(thanku.render(requestRefNumber)); // generate proper html page and show reference number and message
 	}
 

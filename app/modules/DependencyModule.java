@@ -3,6 +3,7 @@ package modules;
 import javax.inject.Singleton;
 
 import play.libs.Akka;
+import play.libs.akka.AkkaGuiceSupport;
 import service.messages.MessageService;
 import service.messages.impl.MessageServiceImpl;
 import service.messaging.MessagingConnectionHandler;
@@ -20,7 +21,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.rabbitmq.client.ConnectionFactory;
 
-public class DependencyModule  extends AbstractModule {
+public class DependencyModule  extends AbstractModule implements AkkaGuiceSupport {
 
 	@Override
 	protected void configure() {

@@ -2,54 +2,48 @@ package actors;
 
 import javax.inject.Inject;
 
+import play.Configuration;
 import play.libs.mailer.Email;
 import play.libs.mailer.MailerClient;
 import actors.SchoolRequestActorProtocol.NewSchoolRequest;
-import akka.actor.Props;
 import akka.actor.UntypedActor;
-import akka.japi.Creator;
 
 public class MailerActor extends UntypedActor {
 
-//	public static Props props = Props.create(new MailerActor());
-//	@Inject MailerClient mailerClient;
+	private static String senderMail;
 	MailerClient mailerClient;
-	@Inject
-	public MailerActor(MailerClient mailerClient) {
-
-		System.out.println("inside MailerActor constructor");
-
+	@Inject	
+	public MailerActor(MailerClient mailerClient, Configuration configure) {
 		this.mailerClient = mailerClient;
+		senderMail = configure.getString("play.mailer.user");
 	}
 
 	@Override
 	public void onReceive(Object message) throws Exception {
 		if(message instanceof NewSchoolRequest) {
-			System.out.println("inside mailer sctor 1");
+			String mailContent = "Dear %s,\n\nThank you for using srp system for your school. Your request number id %s.\n\n"
+					+ "We have received your registration request and will verify and process it shortly.\n\n. Don't not hesitate"
+					+ " to contact us for any query.\n\nThanks again for you business.\n\nSRP Teams.";
+			String mailSubject = "Registration confirmation email";
+
+			NewSchoolRequest newSchoolRequest = (NewSchoolRequest)message;
+			String requestRefNumber = newSchoolRequest.getReferenceNumber();
+			String principleEmailId = newSchoolRequest.getPrincipleEmailId();
+			String schoolEmailId = newSchoolRequest.getSchoolEmailId();
+			String receiverName = newSchoolRequest.getReceiverName();
+			String mailBody = String.format(mailContent, receiverName, requestRefNumber);
 			Email email = new Email();
-			System.out.println("inside mailer sctor 2");
-			email.setSubject("Activation Link");
-			System.out.println("inside mailer sctor 3");
-//			email.setFrom("vineet5289@gmail.com");
-			System.out.println("inside mailer sctor 4");
-			email.addTo("niet.vineet@gmail.com");
-			System.out.println("inside mailer sctor 5");
-			email.setBodyText("hello");
+			email.setSubject(mailSubject);
+			email.setFrom(senderMail);
+			if(principleEmailId != null && !principleEmailId.isEmpty())
+				email.addTo(principleEmailId);
+
+			if(schoolEmailId != null && !schoolEmailId.isEmpty())
+				email.addTo(schoolEmailId);
+
+			email.setBodyText(mailBody);
 			mailerClient.send(email);
-			System.out.println("inside mailer sctor 6");
 		}
 		
 	}
-	
-
-	public static Props props(final MailerClient mailerClient) {
-	    return Props.create(new Creator<MailerActor>() {
-	      private static final long serialVersionUID = 1L;
-	      @Override
-	      public MailerActor create() throws Exception {
-	        return new MailerActor(mailerClient);
-	      }
-	    });
-	  }
-
 }
