@@ -80,4 +80,8 @@ $(function () {
 		inline: false,
 	
 	});
+	
+	$('#addNewClass').click(function(){
+    $('.addSchool-modal').modal('show');
+    });
 });

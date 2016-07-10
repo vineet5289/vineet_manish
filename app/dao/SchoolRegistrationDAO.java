@@ -75,7 +75,7 @@ public class SchoolRegistrationDAO {
 			schoolRegistrationPreparedStatement.setString(1, schoolData.getSchoolName());//schoolName
 			schoolRegistrationPreparedStatement.setString(2, schoolData.getSchoolRegistration()); //schoolRegistrationId
 			schoolRegistrationPreparedStatement.setString(3, schoolData.getSchoolUserName()); //schoolUserName
-			schoolRegistrationPreparedStatement.setString(4, schoolData.getSchooleEmail()); //schooleEmail
+			schoolRegistrationPreparedStatement.setString(4, schoolData.getSchoolEmail()); //schooleEmail
 			schoolRegistrationPreparedStatement.setString(5, schoolData.getAddressLine1()); //addressLine1
 			schoolRegistrationPreparedStatement.setString(6, schoolData.getAddressLine2()); //addressLine2
 			schoolRegistrationPreparedStatement.setString(7, schoolData.getCity()); //city
@@ -100,7 +100,7 @@ public class SchoolRegistrationDAO {
 			System.out.println("school primary key= " + generatedSchoolId);
 
 			schoolLoginPreparedStatement.setString(1, schoolData.getSchoolUserName());
-			schoolLoginPreparedStatement.setString(2, schoolData.getSchooleEmail());
+			schoolLoginPreparedStatement.setString(2, schoolData.getSchoolEmail());
 			schoolLoginPreparedStatement.setString(3, schoolData.getSchoolPassword());
 			schoolLoginPreparedStatement.setString(4, PasswordState.CORRECT_PASSWORD.name());
 			schoolLoginPreparedStatement.setString(5, Role.SUPERADMIN.name());
