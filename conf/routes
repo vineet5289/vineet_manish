@@ -32,6 +32,8 @@ POST      	/submitopt                            	   controllers.RegistrationReq
 POST     	/registerschool            	           	   controllers.RegistrationRequest.postSchoolRegistrationRequest()
 
 # employee registration request
+GET      	/empaddrequest                   		   controllers.EmployeeRegistrationController.preEmployeeAddRequest()
+POST     	/empaddrequest		            	       controllers.EmployeeRegistrationController.postEmployeeAddRequest()
 GET      	/registersemp                              controllers.RegistrationRequest.preEmployeeRegistrationRequest()
 POST     	/registeremp            	               controllers.RegistrationRequest.postEmployeeRegistrationRequest()
 
