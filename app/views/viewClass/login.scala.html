@@ -12,7 +12,7 @@
                         <span class="ui header">Login</span>
                     </div>
 
-                    <div class="ui segment">
+                    <div class="ui blue segment">
                         <form class="ui form" id="loginform" action="@login_logout.routes.LoginController.postLogin()" method="Post">
 
                             <div class="field">
@@ -37,7 +37,7 @@
                             <div class="ui error message"></div>
                         </form>
                     </div>
-                    <div class="ui secondary segment">
+                    <div class="ui secondary blue segment">
                         <a href="">Forgot Password?</a>
                     </div>
                 
@@ -55,7 +55,7 @@
     </div>
     
     <div class="ui small modal">
-       <div class="blue header">Add Refrence Key and OTP sent on your Mobile</div>
+       <div class="header">Add Refrence Key and OTP sent on your Mobile</div>
         <div class="content">
              <form class="ui form" method="POST" action="/submitopt">
                   <div class="field">
@@ -67,7 +67,7 @@
                       <input name="otp" placeholder="otp" type="text" >
                   </div>
                   <div class="actions">
-			         <button class="ui negative button">
+			         <button class="ui negative cancel button">
 				           Cancel
 			        </button>
 			        <button class="ui green button" type="submit">
@@ -81,7 +81,7 @@
     </div>
     
      @if(flash.containsKey("success")) {
-     <div class="ui red segment">
+     <div class="ui segment">
   <div class="ui green success message" id="success-message">
       <div class="header">
         SUCCESSFULLY
@@ -93,7 +93,7 @@
 </div>
   }
   @if(flash.containsKey("error")) {
-  <div class="ui red segment">
+  <div class="ui segment">
  
    <div class="ui red error message" id="error-message">
       <div class="header">
