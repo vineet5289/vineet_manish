@@ -4,9 +4,10 @@
 
               
         <!-- <div class="ui two column middle aligned very relaxed stackable grid"> -->
-        <div class="ui center aligned segment">
-                  <div class="two wide column"> 
-                <div class="ui segments">
+                  <div class="ui center aligned segment">
+                  
+                  <div class="six wide column"> 
+                    <div class="ui segments">
                     <div class="ui inverted blue padded segment">
                         <span class="ui header">Login</span>
                     </div>
@@ -54,7 +55,7 @@
     </div>
     
     <div class="ui small modal">
-       <div class="header">Add Refrence Key and OTP sent on your Mobile</div>
+       <div class="blue header">Add Refrence Key and OTP sent on your Mobile</div>
         <div class="content">
              <form class="ui form" method="POST" action="/submitopt">
                   <div class="field">
@@ -65,24 +66,44 @@
                       <label>OTP</label>
                       <input name="otp" placeholder="otp" type="text" >
                   </div>
-                  <button class="ui button" type="submit">Submit</button>
+                  <div class="actions">
+			         <button class="ui negative button">
+				           Cancel
+			        </button>
+			        <button class="ui green button" type="submit">
+			              Submit
+			        </button>
+		</div>
+                  
+                  
              </form>
         </div>
     </div>
     
      @if(flash.containsKey("success")) {
-  <div class="well">
-    <div id="success-message" class="text-success">
-      @flash.get("success")
-    </div>
+     <div class="ui red segment">
+  <div class="ui green success message" id="success-message">
+      <div class="header">
+        SUCCESSFULLY
   </div>
+  <ul class="list">
+    <li> @flash.get("success")</li>
+  </ul>
+</div>
+</div>
   }
   @if(flash.containsKey("error")) {
-  <div class="well">
-    <div id="error-message" class="text-danger">
-      @flash.get("error")
+  <div class="ui red segment">
+ 
+   <div class="ui red error message" id="error-message">
+      <div class="header">
+        ERROR
   </div>
-    </div>
-  }
+  <ul class="list">
+    <li> @flash.get("error")</li>
+  </ul>
+</div>
+</div>
+ }
    
 }

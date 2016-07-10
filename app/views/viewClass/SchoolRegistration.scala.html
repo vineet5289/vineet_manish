@@ -1,14 +1,15 @@
-@(schoolForm: Form[views.forms.SchoolFormData],
+@(schoolForm:       Form[views.forms.SchoolFormData],
   schoolBoard:      List[String],
-  schoolCategory:    List[String],
-  schoolType:        List[String],
-  schoolCountry:         List[String],
-  state:      		 List[String])
+  schoolCategory:   List[String],
+  schoolType:       List[String],
+  schoolCountry:    List[String],
+  state:      		List[String])
 @main2("School Information"){
-<div class="ui container">
-        <div class="ui centered stackable grid">
-            <div class="six wide column">
-                <div class="ui segments" align="center">
+
+<div class="ui grid page">
+  <div class="six wide column"></div>
+      <div class="ten wide column">
+           <div class="ui segments" align="center">
                     <div class="ui inverted blue padded segment">
                         <span class="ui header">Register<span>
                     </div>
@@ -45,28 +46,28 @@
                             
                              <div class="field">
                                 <div class="ui left icon input">
-                                    <input type="text" name="schoolOfficeNumber" placeholder="School contact">
+                                    <input type="text" name="schoolOfficeNumber" placeholder="School LANDLINE contact">
                                     <i class="phone square icon"></i>
                                 </div>
                             </div>
                             
                             <div class="field">
                                  <div class="ui left icon input">
-                                    <input type="text" name="schoolUserName" placeholder="schoolUserName">
+                                    <input type="text" name="schoolUserName" placeholder="schoolUserName" autocomplete="off">
                                     <i class="user icon"></i>
                                  </div>
                              </div>
                              
                              <div class="field">
                                  <div class="ui left icon input">
-                                    <input type="text" name="schoolPassword" placeholder="schoolPassword">
+                                    <input type="text" name="schoolPassword" placeholder="schoolPassword" autocomplete="off">
                                     <i class="user icon"></i>
                                  </div>
                              </div>
                              
                              <div class="field">
                                  <div class="ui left icon input">
-                                    <input type="text" name="schoolConfirmPassword" placeholder="schoolConfirmPassword">
+                                    <input type="text" name="schoolConfirmPassword" placeholder="schoolConfirmPassword" autocomplete="off">
                                     <i class="user icon"></i>
                                  </div>
                              </div>
@@ -102,8 +103,8 @@
                             </div>
                             
                             <div class="field">
-                                  <label>Car</label>
-                                  <select multiple="" class="ui dropdown">
+                                 
+                                  <select class="ui dropdown">
                                         <option value="">Select State</option>
                                         <option value="u">Uttar Pradesh</option>
                                         <option value="m">Madhya Pradesh</option>
@@ -130,7 +131,7 @@
                              
                              <div class="field">
                                  <div class="ui left icon input">
-                                    <input type="text" name="noOfShift" value="1" placeholder="">
+                                    <input type="text" name="noOfShift" value="1 [Default]" placeholder="No of Shifts">
                                     <i class="home icon"></i>
                                  </div>
                              </div>
@@ -150,11 +151,12 @@
                              </div>
                              
                              <div class="field">
-                                 <label>schoolType</label>
+                                 
                                     <select class="ui dropdown">
-                                           <option value="">School</option>
-                                           <option value="1">Male</option>
-                                           <option value="0">Female</option>
+                                           <option value="">School Type</option>
+                                           <option value="1">Day Scholar</option>
+                                           <option value="2">Residential</option>
+                                           <option value="3">Both (Residential & Day Scholar)</option>
                                     </select>
                             </div>
                              
@@ -213,15 +215,18 @@
                                 </div>
                             </div>
                             
-                            <button class="ui big fluid blue icon button" type="submit">Send Request <i class="sign in icon"></i></button>
-                            <div class="ui error message"></div>
+                            <button class="ui blue icon button" type="submit">Send Request <i class="sign in icon"></i></button>
+                              <div class="ui black clear button">Clear</div>
                         </form>
                     </div>
                     </div>
-            </div>
-        </div>
-    </div>
-    
+                    
+     
+  </div>
+ <div class="two wide column">
+      
+				               <div class="ui error message"></div> 
+ </div>
+</div>
 
-    
-  }
+}

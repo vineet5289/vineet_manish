@@ -8,7 +8,7 @@
                         <span class="ui header">Register<span>
                     </div>
                     <div class="ui segment">
-                        <form id="schoolRegistrationForm" class="ui form" method="Post" action="@routes.RegistrationRequest.postAddNewSchoolRequest()">
+                        <form id="newSchoolRegistrationForm" class="ui form" method="Post" action="@routes.RegistrationRequest.postAddNewSchoolRequest()">
                                 <div class="field">
                                  <div class="ui left icon input">
                                     <input type="text" name="schoolName" placeholder="schoolName">
@@ -60,10 +60,10 @@
                                 </div>
                             </div>
                             
-                            <button class="ui big fluid blue icon button" type="submit">Send Request <i class="sign in icon"></i></button>
+                            <button class="ui blue icon button" type="submit">Send Request <i class="sign in icon"></i></button>
                             
-							  <div class="ui reset button">Reset</div>
-							  <div class="ui clear button">Clear</div>
+							  <div class="ui green reset button">Reset</div>
+							  <div class="ui black clear button">Clear</div>
 				               <div class="ui error message"></div> 
   
                         </form>
@@ -72,6 +72,30 @@
                     </div>
             </div>
         </div>
+             
+             <div class="ui modal" id="newSchoolRequestPost">
+		<i class="close icon"></i>
+		<div class="header">
+			Header
+		</div>
+		<div class="content">
+			<div class="left">
+			   After Clicking on OKAY , An OTP we be sent for Verification.
+			</div>
+			<div class="right">
+				Click On cancel to stop sending this form.
+			</div>
+		</div>
+		<div class="actions">
+			<button class="ui negative cancel button">
+				Cancel
+			</button>
+			<button class="ui positive button">
+				Okay
+			</button>
+		</div>
+	</div>
+        
     </div>
     
 
