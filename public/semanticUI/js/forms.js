@@ -67,7 +67,8 @@ $(function () {
             }
 	};
 
-	
+
+	// New School Request Form
 
 	$('#newSchoolRegistrationForm').form(validationObj, {
 		inline: false,
@@ -76,12 +77,24 @@ $(function () {
 		}
 	});
 	
+	// For Main login form
 	$('#loginform').form(validationObj, {
 		inline: false,
 	
 	});
 	
+	// For adding new Class
+	
 	$('#addNewClass').click(function(){
-    $('.addSchool-modal').modal('show');
+    $('#addSchool_modal').modal('show');
     });
+    
+    //After sending OTP modal comes
+    
+    $('#completeSchoolRegistration').click(function(){
+    $('#OTP-modal').modal('show');
+    
+    });    
+    
+    
 });
