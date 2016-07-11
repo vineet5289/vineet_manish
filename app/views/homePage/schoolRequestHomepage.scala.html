@@ -1,0 +1,34 @@
+ @viewClass.main2("School HomePage"){
+ <div class="ui grid">
+   <div class="Six wide column"></div>
+   <div class="six wide column">
+      <div class="center aligned column">
+            <a href="@routes.RegistrationRequest.preAddNewSchoolRequest()" class="ui button positive">School Registeration Request</a>
+     <span class="or"></span>
+     <button class="ui button red negative" id="completeSchoolRegistration">Complete School Registration</button>
+</div>
+   </div>
+ </div>
+ <div class="ui small modal" id="OTP-modal">
+       <div class="header">Add Refrence Key and OTP sent on your Mobile</div>
+       <div class="content">
+             <form class="ui form" method="POST" action="/submitopt">
+                  <div class="field">
+                      <label>Reference Key</label>
+                      <input name="referenceKey" placeholder="Enter Reference Key Received on Mobile" type="text" >
+                  </div>
+                  <div class="field">
+                      <label>OTP</label>
+                      <input name="otp" placeholder="Enter OTP" type="text" >
+                      
+                  </div>
+                  <div class="actions">
+			         <button class="ui button approve green" type="submit">SEND</button>
+			         <div class="ui error message"></div>
+			     </div>
+                  
+                  
+             </form>
+        </div>
+    </div>
+ }
