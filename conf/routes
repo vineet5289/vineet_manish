@@ -84,3 +84,8 @@ GET			/allUser/:schoolId							controllers.user.UserController.getUsers(schoolId
 
 # view all user
 GET			/userInfo/:schoolId/:userName				controllers.user.UserController.getUser(schoolId: Long, userName:String, category: String ?="")
+
+# initial registration
+GET			/registration/:userType						controllers.RegistrationController.preRegistration(userType : String)
+POST		/registration								controllers.RegistrationController.postRegistration()
+
