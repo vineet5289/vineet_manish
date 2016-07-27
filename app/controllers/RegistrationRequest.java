@@ -105,14 +105,12 @@ public class RegistrationRequest extends CustomController {
 
 		String referenceKey = otpValues.get("referenceKey");
 		String otpValue = otpValues.get("otp");
-		String otpCategory = otpValues.get("otpCategory");
 		SchoolRegistrationRequestDAO schoolRegistrationRequestDAO = new SchoolRegistrationRequestDAO();
 		try {
 			boolean isValidUser = schoolRegistrationRequestDAO.isValidUserByOtpAndReferenceKey(referenceKey, otpValue);
 			if(isValidUser) {
 				session("REFERENCE-NUMBER", referenceKey);
 				session("AUTH-TOKEN", otpValue);
-				session("OTP-CATEGORY", otpCategory);
 				Form<SchoolFormData> schoolFormData = Form.form(SchoolFormData.class);
 				List<String> schoolBoards = SchoolBoard.getSchoolboardList();
 				List<String> schoolCategory = SchoolCategory.getSchoolCategoryList();
