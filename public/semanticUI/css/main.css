@@ -1,6 +1,10 @@
+* {
+    font: Verdana, Arial, 'sans-serif' !important;/* <-- fonts */
+}
 body {
   padding-top: 70px;
   background-color: #FFFFFF;
+  font:
 }
 .pointer {
   cursor: pointer;
@@ -24,8 +28,8 @@ body {
 .side.menu {
   background-color: #FFFFFF;
   width: 200px;
-  height: 150vh;
-  padding: 15px 10px 0px 0px;
+  height: 200vh;
+  padding: 20px 20px 0px 0px;
   position: fixed;
   z-index: 9998;
   left: 0;

@@ -7,7 +7,7 @@ $(document).ready(function() {
         })
     });
 
-    $('a[data-toggle="slide"]').on('click', function(e) {
+   $('a[data-toggle="slide"]').on('click', function(e) {
         e.preventDefault();
 
         var target = this.hash;

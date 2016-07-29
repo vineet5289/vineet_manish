@@ -15,6 +15,37 @@
 <body>
   <div class="ui fixed top menu">
       <a href="/login" class="item">SRP</a>
+      <div class="item">Home</div>
+      <div class="item">About</div>
+      <div class="item">Contact</div>
+      <div class="item">#</div>
+      <div class="right item">
+        <div class="ui search">
+             <div class="ui icon input">
+                <input class="prompt" placeholder="Search" type="text">
+                <i class="search icon"></i>
+            </div>
+        </div>
+      </div>
+      <div class="right item">
+         <a class="icon item pointer" data-toggle="popup" data-position="bottom right">REGISTER</a>
+            <div class="ui fluid popup" style="min-width:300px;padding-top:10px;">
+              <div class="item">
+                <form class="ui form" method="GET" action="/registration">
+                  <div class="field">
+                      <select class="ui dropdown" name="reg_user_request">
+                              <option value="">YOU REGISTERED AS </option>
+                              <option value="SCHOOL">SCHOOL</option>
+                              <option value="OTHER USER">OTHER USER</option>
+                       </select>
+                  </div>
+                  
+                     <button class="ui small fluid blue icon button" type="submit">REGISTER <i class="users icon"></i></button>
+              </form>
+              </div>
+            </div>
+            
+      </div>
   </div> 
    @content 
       

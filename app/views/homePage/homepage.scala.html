@@ -2,17 +2,17 @@
  @viewClass.main2("login"){
  
 
-              
-        <!-- <div class="ui two column middle aligned very relaxed stackable grid"> -->
-                  <div class="ui center aligned segment">
-                  
-                  <div class="six wide column"> 
-                    <div class="ui segments">
-                    <div class="ui inverted blue padded segment">
-                        <span class="ui header">Login</span>
-                    </div>
-
-                    <div class="ui blue segment">
+            
+        <div class="ui three column grid">
+        <div class="row">
+            <div class="column">
+                <div class="ui segment"></div>
+            </div>
+            
+           <div class="column"></div>
+             <div class="column">
+               
+                  <div class="ui segment">
                         <form class="ui form" id="loginform" action="@login_logout.routes.LoginController.postLogin()" method="Post">
 
                             <div class="field">
@@ -33,44 +33,20 @@
                                     <label>Remember Me</label>
                                 </div>
                             </div>
-                            <button class="ui big fluid blue icon button" type="submit">Sign In <i class="sign in icon"></i></button>
+                            <button class="ui inverted big fluid blue icon button" type="submit">Sign In <i class="sign in icon"></i></button>
                             <div class="ui error message"></div>
                         </form>
+                          
+                             <a href="">Forgot Password?</a>
+                         
                     </div>
-                    <div class="ui segment">
-                        <a href="">Forgot Password?</a>
-                    </div>
+                   
                 
-             </div> 
+                </div>
+            
         </div>
-        <div class="ui horizontal divider">
-    Or
-  </div>
-  <div class="ui segment">
-  
-              <form class="ui form" method="GET" action="/registration">
-                  <div class="field">
-                      <select class="ui dropdown" name="reg_user_request">
-                              <option value="">YOU REGISTERED AS </option>
-                              <option value="SCHOOL">SCHOOL</option>
-                              <option value="EMPLOYEE">EMPLOYEE</option>
-                              <option value="OTHER USER">OTHER USER</option>
-                       </select>
-                  </div>
-                  <div class="ui segment">
-                     <button class="ui big fluid blue icon button" type="submit">REGISTER <i class="users icon"></i></button>
-                  </div>
-                <div class="ui error message"></div>
-                            
-              </form>
-  
-  </div>
-
-    </div>
-    
-    
-    
-     @if(flash.containsKey("success")) {
+    </div>   
+    @if(flash.containsKey("success")) {
      <div class="ui segment">
   <div class="ui green success message" id="success-message">
       <div class="header">
@@ -95,5 +71,6 @@
 </div>
 </div>
  }
+    
    
 }

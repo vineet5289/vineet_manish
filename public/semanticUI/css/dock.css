@@ -1,0 +1,139 @@
+ 
+.wrapperdock{
+	position: relative;
+  width: 800px;
+  height: 200px;
+  perspective: 1000px;
+  perspecvite-origin: 50% 0;
+  -webkit-perspective: 1000px;
+  -webkit-perspecvite-origin: 50% 0;
+  -moz-perspective: 1000px;
+  -moz-perspecvite-origin: 50% 0;
+  margin: 80px auto 0 auto;
+  text-align: center;
+}
+.item-wrapper{
+  width: 800px;
+  height: 200px;
+  margin: 0 auto;
+  position: absolute;
+  z-index: 3;
+  text-align: center;
+  
+}
+.itemdock{
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  z-index: 4;   
+  padding: 2px;
+  background-repeat: no-repeat;s  
+}
+.item11{
+  margin-left: 20px; 
+  background-image: url('https://lh4.googleusercontent.com/-IXZPM9NzBXc/Tr_-3eqrKVI/AAAAAAAAA3g/sMK38v0RtU4/s50/Firefox.png');
+ 
+}
+.item21{
+margin-left: 85px;  
+  background-image: url('http://virginiahealthandlife.com/wp-content/uploads/2011/08/linkedin-round.png');
+}
+.item31{
+	margin-left: 150px;  
+  background-image: url('http://www.stainelec.com.au/images/youtube-icon.png');
+}
+.item41{
+	margin-left: 220px;  
+  background-image: url('http://www.conferencedesign.com.au/acem2012/images/icon_twitter.png');
+}
+
+.item51{
+	margin-left: 290px;  
+  background-image: url('http://www.maintenancegood.com/images/icon_skype.png');
+}
+
+.item61{
+	margin-left: 360px;  
+  background-image: url('http://a.deviantart.net/avatars/o/l/oliverpw.png');
+}
+.item71{
+	margin-left: 430px;  
+  background-image: url('http://www.hemispheresolutions.com.au/uploads/36141/ufiles/flickr-icon-sm2.png');
+}
+
+.item81{
+ margin-left: 500px;  
+  background-image: url('http://www.billieholiday.com/wp-content/uploads/2013/08/Spotify_Icon.png');
+}
+
+.item91{
+  margin-left: 570px;  
+  background-image: url('http://media.merchantcircle.com/29977666/Facebook-icon%2050p_full.png');
+}
+
+.item101{
+	margin-left: 640px;  
+  background-image: url('http://www.africanviolet.org.au/Images/pinterest-icon.png');
+}
+.item111{
+	margin-left: 710px;  
+  background-image: url('http://www.icreatemagazine.com/wp-content/uploads/2013/07/Safari.png');
+}
+.dock{
+	position: absolute;
+  width: 800px;
+  height: 100px;
+  background-color:#A4A4A4;
+  transform: rotateX(45deg); 
+	-webkit-transform: rotateX(45deg);  
+  -moz-transform: rotateX(45deg); 
+  background: linear-gradient(#6E6E6E, #A4A4A4, #BDBDBD);
+  background: -webkit-linear-gradient(#6E6E6E, #A4A4A4, #BDBDBD);
+  background: -moz-linear-gradient(#6E6E6E, #A4A4A4);
+  opacity: 0.9;
+  z-index:2
+}
+.dock-bottom{
+  width: 829px;
+  height: 6px;
+  margin-left: -14px;
+  background-color:#BDBDBD;  
+  position: absolute;
+  top: 42%;
+  z-index: 2;
+  border-top: 3px solid #D8D8D8;
+  opacity: 0.9;
+}
+
+.motion{
+	transition: all .4s ease 0s;
+  -webkit-transition: all .4s ease 0s;
+  -moz-transition: all .4s ease 0s;
+}
+.motion:hover{
+	transform: scale(1.5);
+  -webkit-transform: scale(1.5);
+  -moz-transform: scale(1.5);
+  top: -20px;
+  cursor: pointer;
+}
+.caption{
+  color: white;
+  font-family: arial;
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 80px;
+  border-radius: 20px;
+  margin-top: -30px;  
+  margin-left: -15px;
+  position: absolute;
+  z-index: 100;
+  padding: 2px 0 2px 0;
+  visibility: hidden;  
+}
+.motion:hover > .caption{
+	visibility: visible;
+  transform: scale(0.7);
+  -webkit-transform: scale(0.7);
+  -moz-transform: scale(0.7);
+}
+   
