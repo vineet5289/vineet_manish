@@ -103,7 +103,7 @@ public class ValidateFields {
 		if(emailId == null)
 			return false;
 
-		Matcher matcher = emailPattern.matcher(emailId);
+		Matcher matcher = emailPattern.matcher(emailId.trim());
 		return matcher.matches();
 	}
 

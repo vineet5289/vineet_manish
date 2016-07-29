@@ -6,10 +6,9 @@ public class SchoolRequestActorProtocol {
 
 	@Data
 	public static class NewSchoolRequest {
-		private String principleEmailId;
 		private String schoolEmailId;
-		private String receiverName;
-		private String receiverPhoneNumber;
+		private String schoolName;
+		private String schoolPhoneNumber;
 		private String referenceNumber;
 	}
 

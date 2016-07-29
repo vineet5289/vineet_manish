@@ -73,17 +73,14 @@ public class RegistrationRequest extends CustomController {
 			return redirect(routes.RegistrationRequest.preAddNewSchoolRequest());
 		}
 
-
-		String principleEmailId = addNewSchoolRequestDetails.get("principalEmail");
 		String schoolEmailId = addNewSchoolRequestDetails.get("schoolEmail");
-		String receiverPhoneNumber = addNewSchoolRequestDetails.get("contact");
+		String receiverPhoneNumber = addNewSchoolRequestDetails.get("schoolMobileNumber");
 		String receiverName = addNewSchoolRequestDetails.get("schoolName");
 
 		NewSchoolRequest newSchoolRequest = new NewSchoolRequest();
-		newSchoolRequest.setPrincipleEmailId(principleEmailId);
 		newSchoolRequest.setSchoolEmailId(schoolEmailId);
-		newSchoolRequest.setReceiverName(receiverName);
-		newSchoolRequest.setReceiverPhoneNumber(receiverPhoneNumber);
+		newSchoolRequest.setSchoolName(receiverName);
+		newSchoolRequest.setSchoolPhoneNumber(receiverPhoneNumber);
 		newSchoolRequest.setReferenceNumber(requestRefNumber);
 		mailerActor.tell(newSchoolRequest, mailerActor);
 		messageActor.tell(newSchoolRequest, messageActor);
