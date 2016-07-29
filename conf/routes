@@ -76,6 +76,7 @@ POST		/editSubjects/:subjectId				   controllers.school.SubjectController.delete
 GET			/addTest							   		controllers.CustomController.testRoute()
 POST		/addTest							   		controllers.CustomController.postRoute()
 
+
 # access rights
 POST		/updateAccessRights						   controllers.AccessRightsController.addAccessRight()
 
