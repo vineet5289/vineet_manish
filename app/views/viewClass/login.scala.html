@@ -4,14 +4,15 @@
 
               
         <!-- <div class="ui two column middle aligned very relaxed stackable grid"> -->
-        <div class="ui center aligned segment">
-                  <div class="two wide column"> 
-                <div class="ui segments">
+                  <div class="ui center aligned segment">
+                  
+                  <div class="six wide column"> 
+                    <div class="ui segments">
                     <div class="ui inverted blue padded segment">
                         <span class="ui header">Login</span>
                     </div>
 
-                    <div class="ui segment">
+                    <div class="ui blue segment">
                         <form class="ui form" id="loginform" action="@login_logout.routes.LoginController.postLogin()" method="Post">
 
                             <div class="field">
@@ -36,7 +37,7 @@
                             <div class="ui error message"></div>
                         </form>
                     </div>
-                    <div class="ui secondary segment">
+                    <div class="ui segment">
                         <a href="">Forgot Password?</a>
                     </div>
                 
@@ -48,41 +49,66 @@
   <div class="center aligned column">
   <a href="@routes.RegistrationRequest.preAddNewSchoolRequest()" class="ui button positive">School Registeration Request</a>
   <span class="or"></span>
-  <div class="ui button red negative" onClick="OTP()">Complete School Registration</div>
+  <button class="ui button red negative" id="completeSchoolRegistration">Complete School Registration</button>
 </div>
 
     </div>
     
-    <div class="ui small modal">
+    <div class="ui small modal" id="OTP-modal">
        <div class="header">Add Refrence Key and OTP sent on your Mobile</div>
-        <div class="content">
+       <div class="content">
              <form class="ui form" method="POST" action="/submitopt">
                   <div class="field">
+                      <select class="ui dropdown" name="role_OTP_redirect">
+                              <option value="">YOU REGISTERED AS </option>
+                              <option value="1">SCHOOL</option>
+                              <option value="2">PARENT</option>
+                              <option value="3">EMPLOYEE</option>
+                       </select>
+                  </div>
+                  <div class="field">
                       <label>Reference Key</label>
-                      <input name="referenceKey" placeholder="referenceKey" type="text" >
+                      <input name="referenceKey" placeholder="Enter Reference Key Received on Mobile" type="text" >
                   </div>
                   <div class="field">
                       <label>OTP</label>
-                      <input name="otp" placeholder="otp" type="text" >
+                      <input name="otp" placeholder="Enter OTP" type="text" >
+                      
                   </div>
-                  <button class="ui button" type="submit">Submit</button>
+                  <div class="actions">
+			         <button class="ui button approve green" type="submit">SEND</button>
+			         <div class="ui error message"></div>
+			     </div>
+                  
+                  
              </form>
         </div>
     </div>
     
      @if(flash.containsKey("success")) {
-  <div class="well">
-    <div id="success-message" class="text-success">
-      @flash.get("success")
-    </div>
+     <div class="ui segment">
+  <div class="ui green success message" id="success-message">
+      <div class="header">
+        SUCCESSFULLY
   </div>
+  <ul class="list">
+    <li> @flash.get("success")</li>
+  </ul>
+</div>
+</div>
   }
   @if(flash.containsKey("error")) {
-  <div class="well">
-    <div id="error-message" class="text-danger">
-      @flash.get("error")
+  <div class="ui segment">
+ 
+   <div class="ui red error message" id="error-message">
+      <div class="header">
+        ERROR
   </div>
-    </div>
-  }
+  <ul class="list">
+    <li> @flash.get("error")</li>
+  </ul>
+</div>
+</div>
+ }
    
 }

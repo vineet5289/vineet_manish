@@ -6,4 +6,5 @@ import lombok.Data;
 public class OTPField {
 	private String referenceKey;
 	private String otp;
+	private String otpCategory;
 }

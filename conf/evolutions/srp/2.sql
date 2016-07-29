@@ -1,7 +1,7 @@
 # --- !Ups
 
-insert into school_registration_request (school_name, principal_name, school_address, contact,request_number) values('dps', 'vineet', 'abcd', '9003218471', '12345');
-insert into school (name, school_user_name, school_board, school_registration_id) values ('dps', 'dps', 'CBSE', 1234);
+insert into school_registration_request (school_name, principal_name, school_address, contact,request_number, status, auth_token, auth_token_genereated_at) values('vineet school', 'vineet', 'abcd', '+919003218471', '12345', 'APPROVED', '1234', now());
+insert into school (name, school_user_name, school_board, school_registration_id, add_school_request_id) values ('vineet school', 'dps', 'CBSE', 1234, 1);
 insert into employee (name, user_name, school_id, phone_number1) values('vineet', 'vineet5289', 1, '9003218471');
 insert into employee (name, user_name, school_id, phone_number1) values('vivek', 'vivek5289', 1, '9003218471');
 insert into employee (name, user_name, school_id, phone_number1) values('sumit', 'sumit5289', 1, '9003218471');

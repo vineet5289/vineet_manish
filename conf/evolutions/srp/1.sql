@@ -15,9 +15,10 @@ CREATE TABLE IF NOT EXISTS school_registration_request (
   principal_name varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   principal_email varchar(255) COLLATE utf8_unicode_ci,
   school_address varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  contact varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  school_email varchar(255) COLLATE utf8_unicode_ci,
+  contact varchar(15) COLLATE utf8_unicode_ci NOT NULL,
   school_registration_id varchar(20) COLLATE utf8_unicode_ci,
-  query varchar(20) COLLATE utf8_unicode_ci,
+  query text COLLATE utf8_unicode_ci,
   requested_at timestamp DEFAULT CURRENT_TIMESTAMP,
   status enum('REQUESTED', 'REJECTED', 'APPROVED', 'REGISTERED'),
   status_updated_at timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -28,8 +29,7 @@ CREATE TABLE IF NOT EXISTS school_registration_request (
   updated_at timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   is_active tinyint(1) DEFAULT 1,
   alert_done tinyint(1) DEFAULT 0,
-  PRIMARY KEY (id),
-  UNIQUE KEY(request_number)
+  PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS school (
   name varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   school_registration_id varchar(225) COLLATE utf8_unicode_ci DEFAULT NULL,
   school_user_name varchar(225) COLLATE utf8_unicode_ci NOT NULL,
-  schoole_email varchar(225) COLLATE utf8_unicode_ci,
+  school_email varchar(225) COLLATE utf8_unicode_ci,
   address_line1 varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   address_line2 varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   city varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -54,6 +54,7 @@ CREATE TABLE IF NOT EXISTS school (
   created_at timestamp DEFAULT CURRENT_TIMESTAMP,
   updated_at timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   is_active tinyint(1) DEFAULT 1,
+  add_school_request_id bigint(20) NOT NULL,
   PRIMARY KEY (id),
   UNIQUE KEY (school_user_name)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

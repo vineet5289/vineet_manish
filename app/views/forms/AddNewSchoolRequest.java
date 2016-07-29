@@ -3,26 +3,22 @@ package views.forms;
 import java.util.ArrayList;
 import java.util.List;
 
-import play.data.validation.ValidationError;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import lombok.Data;
+import play.data.validation.ValidationError;
+import utils.ValidateFields;
 
 @Data
 public class AddNewSchoolRequest {
 	private String id;
-	private String schoolName="";
-	private String principalName="";
-	private String principalEmail="";
-	private String schoolAddress="";
-	private String contact="";
-	private String schoolRegistrationId="";
-	private String query="";
-	private String referenceNumber="";
-
-	private static Pattern emailNamePtrn = Pattern.compile("^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+	private String schoolName = "";
+	private String principalName = "";
+	private String principalEmail = "";
+	private String schoolAddress = "";
+	private String schoolEmail = "";
+	private String contact = "";
+	private String schoolRegistrationId = "";
+	private String query = "";
+	private String referenceNumber = "";
 
 	public List<ValidationError> validate() {
 		List<ValidationError> errors = new ArrayList<>();
@@ -38,23 +34,16 @@ public class AddNewSchoolRequest {
 			errors.add(new ValidationError("address", "No School Address was given."));
 		}
 
-		if (contact == null || contact.isEmpty()) {
+		if (contact == null ||  contact.isEmpty()) {
 			errors.add(new ValidationError("mobile", "No contact was given."));
 		}
 
-		if(principalEmail == null || validateEmailAddress(principalEmail)==false) {
-			errors.add(new ValidationError("Email","check your email"));
+		if(!(ValidateFields.isValidEmailId(principalEmail) || ValidateFields.isValidEmailId(schoolEmail))) {
+			errors.add(new ValidationError("email","enter atleast one valid email id"));
 		}
+
 		if(errors.size() > 0)
 			return errors;
 		return null;
-	}
-
-	public static boolean validateEmailAddress(String email) {
-		Matcher mtch = emailNamePtrn.matcher(email);
-		if(mtch.matches()){
-			return true;
-		}
-		return false;
 	}
 }

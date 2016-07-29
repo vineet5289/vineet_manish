@@ -15,7 +15,7 @@ public class RandomGenerator {
 		return new BigInteger(length, random).toString(32);
 	}
 
-	public String getBCryptPassword(String password) {
+	public static String getBCryptPassword(String password) {
 		String cryptPassword = BCrypt.hashpw(password, BCrypt.gensalt(10, new SecureRandom()));
 		return cryptPassword;
 	}

@@ -9,6 +9,7 @@ public class MailController extends CustomController {
 	@Inject
 	private MailerService mailerService;
 	public Result sendMailTest() {
+		System.out.println("==============>");
 		mailerService.sendEmail();
 		return ok("send ...");
 	}

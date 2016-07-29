@@ -9,5 +9,8 @@ public class Global extends GlobalSettings {
 	public void onStart(Application application) {
 		NotificationInitializer notificationInitializer = application.injector().instanceOf(NotificationInitializer.class);
 		notificationInitializer.init(application);
+
+//		MailInitializer mailInitializer = application.injector().instanceOf(MailInitializer.class);
+//		mailInitializer.init(application);
 	}
 }

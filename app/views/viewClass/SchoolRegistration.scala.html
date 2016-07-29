@@ -1,37 +1,39 @@
-@(schoolForm: Form[views.forms.SchoolFormData],
+@(schoolForm:       Form[views.forms.SchoolFormData],
   schoolBoard:      List[String],
-  schoolCategory:    List[String],
-  schoolType:        List[String],
-  schoolCountry:         List[String],
-  state:      		 List[String])
+  schoolCategory:   List[String],
+  schoolType:       List[String],
+  schoolCountry:    List[String],
+  state:      		List[String])
 @main2("School Information"){
-<div class="ui container">
-        <div class="ui centered stackable grid">
+    <div class="ui container">
+       <div class="ui centered stackable grid">
+          <div class="six wide column"></div>
+          <div class="ui vertical divider"></div>
+          <div class="no"></div>
             <div class="six wide column">
-                <div class="ui segments" align="center">
+                 <div class="ui segments" align="center">
                     <div class="ui inverted blue padded segment">
                         <span class="ui header">Register<span>
                     </div>
                     <div class="ui segment">
-                        <form class="ui form" id="form1" action="@routes.RegistrationRequest.postAddNewSchoolRequest" method="Post">
-						    
-						     <div class="field">
+                       <form class="ui form" id="form1" action="@routes.RegistrationRequest.postSchoolRegistrationRequest" method="Post">
+                         <div class="field">
                                  <div class="ui left icon input">
                                     <input type="text" name="schoolName" placeholder="schoolName">
                                     <i class="user icon"></i>
                                  </div>
                              </div>
                              
-							 <div class="field">
+                             	 <div class="field">
                                  <div class="ui left icon input">
                                     <input type="text" name="schoolRegistration" placeholder="schoolRegistrationId">
                                     <i class="user icon"></i>
                                  </div>
                              </div>
                              
-                              <div class="field">
+                             <div class="field">
                                  <div class="ui left icon input">
-                                    <input type="text" name="schoolEmail" placeholder="principalEmail">
+                                    <input type="email" name="schoolEmail" placeholder="schoolEmail">
                                     <i class="mail icon"></i>
                                  </div>
                              </div>
@@ -45,31 +47,12 @@
                             
                              <div class="field">
                                 <div class="ui left icon input">
-                                    <input type="text" name="schoolOfficeNumber" placeholder="School contact">
+                                    <input type="text" name="schoolOfficeNumber" placeholder="School LANDLINE contact">
                                     <i class="phone square icon"></i>
                                 </div>
                             </div>
                             
-                            <div class="field">
-                                 <div class="ui left icon input">
-                                    <input type="text" name="schoolUserName" placeholder="schoolUserName">
-                                    <i class="user icon"></i>
-                                 </div>
-                             </div>
-                             
-                             <div class="field">
-                                 <div class="ui left icon input">
-                                    <input type="text" name="schoolPassword" placeholder="schoolPassword">
-                                    <i class="user icon"></i>
-                                 </div>
-                             </div>
-                             
-                             <div class="field">
-                                 <div class="ui left icon input">
-                                    <input type="text" name="schoolConfirmPassword" placeholder="schoolConfirmPassword">
-                                    <i class="user icon"></i>
-                                 </div>
-                             </div>
+                            
                             
                              <div class="field">
                                  <div class="ui left icon input">
@@ -92,18 +75,11 @@
                                  </div>
                              </div>
                              
-                            <div class="field">
-                                 <label>Gender</label>
-                                    <select class="ui dropdown">
-                                           <option value="">Gender</option>
-                                           <option value="1">Male</option>
-                                           <option value="0">Female</option>
-                                    </select>
-                            </div>
+                           
                             
                             <div class="field">
-                                  <label>Car</label>
-                                  <select multiple="" class="ui dropdown">
+                                 
+                                  <select class="ui dropdown" name="state">
                                         <option value="">Select State</option>
                                         <option value="u">Uttar Pradesh</option>
                                         <option value="m">Madhya Pradesh</option>
@@ -130,98 +106,96 @@
                              
                              <div class="field">
                                  <div class="ui left icon input">
-                                    <input type="text" name="noOfShift" value="1" placeholder="">
+                                    <input type="text" name="noOfShift" value="1" placeholder="No of Shifts">
                                     <i class="home icon"></i>
                                  </div>
                              </div>
                              
                              <div class="field">
                                  <div class="ui left icon input">
-                                    <input type="text" name="schoolBoard"  placeholder="schoolBoard">
-                                    <i class="home icon"></i>
+                                   <select class="ui dropdown" name="schoolBoard">
+                                           <option value="">school Board</option>
+                                           <option value="1">CBSE</option>
+                                           <option value="2">ICSE</option>
+                                           <option value="3">UPBOARD</option>
+                                    </select>
                                  </div>
                              </div>
                              
                              <div class="field">
-                                 <div class="ui left icon input">
-                                    <input type="text" name="schoolCategory"  placeholder="schoolCategory">
-                                    <i class="home icon"></i>
-                                 </div>
-                             </div>
-                             
-                             <div class="field">
-                                 <label>schoolType</label>
-                                    <select class="ui dropdown">
-                                           <option value="">School</option>
-                                           <option value="1">Male</option>
-                                           <option value="0">Female</option>
+                                 
+                                    <select class="ui dropdown" name="schoolCategory">
+                                           <option value="">schoolCategory</option>
+                                           <option value="1">Day Scholar</option>
+                                           <option value="2">Residential</option>
+                                           <option value="3">Both (Residential & Day Scholar)</option>
                                     </select>
                             </div>
                              
                              <div class="field">
-                                 <div class="ui left icon input">
-                                    <input type="text" name="schoolType" placeholder="schoolType">
-                                    <i class="home icon"></i>
-                                 </div>
+                                      <select class="ui dropdown" name="schoolType">
+                                           <option value="">school Type</option>
+                                           <option value="1">GOVERNMENT</option>
+                                           <option value="2">PRIVATE</option>
+                                    </select>
                              </div>
                              
-							 
-							 <div class="field">
+                             <div class="field">
                                  <div class="ui left icon input">
-                                    <input type="text" name="principalName" placeholder="principalName">
+                                    <input type="text" name="schoolUserName" placeholder="schoolUserName" autocomplete="off">
                                     <i class="user icon"></i>
-                                 </div>
-                             </div>
-                             
-							 <div class="field">
-                                 <div class="ui left icon input">
-                                    <input type="text" name="principalEmail" placeholder="principalEmail">
-                                    <i class="mail icon"></i>
                                  </div>
                              </div>
                              
                              <div class="field">
                                  <div class="ui left icon input">
-                                    <input type="text" name="principleMobileNumber" placeholder="principleMobileNumber">
-                                    <i class="mail icon"></i>
+                                    <input type="password" name="schoolPassword" placeholder="schoolPassword" autocomplete="off">
+                                    <i class="user icon"></i>
                                  </div>
                              </div>
-                          
-							 
-							 
-                            <div class="field">
-                                <div class="ui left icon input">
-                                    <input type="text" name="principleUserName" placeholder="principleUserName">
-                                    <i class="phone square icon"></i>
-                                </div>
-                            </div>
-                            
-                            <div class="field">
-                                <div class="ui left icon input">
-                                    <input type="text" name="principlePassword" placeholder="principlePassword" help="Please Enter Your Password">
-                                    
-                                    <i class="comment icon"></i>
-                                </div>
-                            </div>
-                            
-                            
-                            <div class="field">
-                                <div class="ui left icon input">
-                                    <input type="text" name="principleConfirmPassword" placeholder="principleConfirmPassword" help="Please Confirm Your Password ">
-                                    
-                                    <i class="comment icon"></i>
-                                </div>
-                            </div>
-                            
-                            <button class="ui big fluid blue icon button" type="submit">Send Request <i class="sign in icon"></i></button>
-                            <div class="ui error message"></div>
-                        </form>
+                             
+                             <div class="field">
+                                 <div class="ui left icon input">
+                                    <input type="password" name="schoolConfirmPassword" placeholder="schoolConfirmPassword" autocomplete="off">
+                                    <i class="user icon"></i>
+                                 </div>
+                             </div>
+                                                     
+                            <button class="ui blue icon button" type="submit">Send Request <i class="sign in icon"></i></button>
+                              <div class="ui green reset button">Reset</div>
+							  <div class="ui black clear button">Clear</div>
+				               <div class="ui error message"></div> 
+                       </form>
                     </div>
-                    </div>
+                 </div>
             </div>
-        </div>
+       </div>
     </div>
     
-
-    
+    @if(flash.containsKey("success")) {
+     <div class="ui segment">
+  <div class="ui green success message" id="success-message">
+      <div class="header">
+        SUCCESSFULLY
+  </div>
+  <ul class="list">
+    <li> @flash.get("success")</li>
+  </ul>
+</div>
+</div>
   }
+  @if(flash.containsKey("error")) {
+  <div class="ui segment">
+ 
+   <div class="ui red error message" id="error-message">
+      <div class="header">
+        ERROR
+  </div>
+  <ul class="list">
+    <li> @flash.get("error")</li>
+  </ul>
+</div>
+</div>
+ }
+
+}

@@ -1,6 +1,6 @@
 $(document).ready(function(){
 
-$('#schoolRegistrationForm').form({
+$('#newSchoolRegistrationForm').form({
         inline:true,
                
         fields: {

@@ -2,13 +2,16 @@
 @main2("Register"){
 <div class="ui container">
         <div class="ui centered stackable grid">
+        <div class="six wide column"></div>
+        <div class="ui vertical divider"></div>
+        <div class="no"></div>
             <div class="six wide column">
                 <div class="ui segments" align="center">
                     <div class="ui inverted blue padded segment">
                         <span class="ui header">Register<span>
                     </div>
-                    <div class="ui segment">
-                        <form id="schoolRegistrationForm" class="ui form" method="Post" action="@routes.RegistrationRequest.postAddNewSchoolRequest()">
+                    <div class="ui segment" id="forToolTip">
+                        <form id="newSchoolRegistrationForm" class="ui form" method="Post" action="@routes.RegistrationRequest.postAddNewSchoolRequest()">
                                 <div class="field">
                                  <div class="ui left icon input">
                                     <input type="text" name="schoolName" placeholder="schoolName">
@@ -27,6 +30,13 @@
                                  <div class="ui left icon input">
                                     <input type="text" name="schoolAddress" placeholder="schoolAddress">
                                     <i class="home icon"></i>
+                                 </div>
+                             </div>
+                             
+                             <div class="field">
+                                 <div class="ui left icon input">
+                                    <input type="email" name="schoolEmail" placeholder="schoolEmail">
+                                    <i class="mail icon"></i>
                                  </div>
                              </div>
 							 
@@ -60,20 +70,46 @@
                                 </div>
                             </div>
                             
-                            <button class="ui big fluid blue icon button" type="submit">Send Request <i class="sign in icon"></i></button>
+                            <button class="ui blue icon button" type="submit">Send Request <i class="sign in icon"></i></button>
                             
-							  <div class="ui reset button">Reset</div>
-							  <div class="ui clear button">Clear</div>
+							  <div class="ui green reset button">Reset</div>
+							  <div class="ui black clear button">Clear</div>
 				               <div class="ui error message"></div> 
   
                         </form>
+                        
                         
                     </div>
                     </div>
             </div>
         </div>
     </div>
-    
+       
+    @if(flash.containsKey("success")) {
+     <div class="ui segment">
+  <div class="ui green success message" id="success-message">
+      <div class="header">
+        SUCCESSFULLY
+  </div>
+  <ul class="list">
+    <li> @flash.get("success")</li>
+  </ul>
+</div>
+</div>
+  }
+  @if(flash.containsKey("error")) {
+  <div class="ui segment">
+ 
+   <div class="ui red error message" id="error-message">
+      <div class="header">
+        ERROR
+  </div>
+  <ul class="list">
+    <li> @flash.get("error")</li>
+  </ul>
+</div>
+</div>
+ }
 
     
   }

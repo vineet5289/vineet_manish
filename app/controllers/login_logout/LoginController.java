@@ -8,11 +8,12 @@ import play.mvc.Result;
 import play.mvc.Security;
 import security.ActionAuthenticator;
 import views.forms.LoginForm;
-import views.html.viewClass.login;
+import views.html.homePage.homepage;
 import controllers.CustomController;
 import controllers.routes;
 import dao.UserLoginDAO;
 import enum_package.SessionKey;
+
 
 public class LoginController extends CustomController {
 
@@ -73,7 +74,7 @@ public class LoginController extends CustomController {
 	public Result preLogin() {
 		session().clear();
 		Form<LoginForm> loginForm = Form.form(LoginForm.class);
-		return ok(login.render(loginForm));
+		return ok(homepage.render(loginForm));
 	}
 
 	@Security.Authenticated(ActionAuthenticator.class)

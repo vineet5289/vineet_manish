@@ -1,0 +1,76 @@
+ @(loginForm:Form[views.forms.LoginForm])
+ @viewClass.main2("login"){
+ 
+
+            
+        <div class="ui three column grid">
+        <div class="row">
+            <div class="column">
+                <div class="ui segment"></div>
+            </div>
+            
+           <div class="column"></div>
+             <div class="column">
+               
+                  <div class="ui segment">
+                        <form class="ui form" id="loginform" action="@login_logout.routes.LoginController.postLogin()" method="Post">
+
+                            <div class="field">
+                                <div class="ui left icon input">
+                                    <input type="text" name="userName" placeholder="Username">
+                                    <i class="user icon"></i>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="ui left icon input">
+                                    <input type="password" name="password" placeholder="Password">
+                                    <i class="lock icon"></i>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="ui checkbox">
+                                    <input type="checkbox" tabindex="0" class="hidden">
+                                    <label>Remember Me</label>
+                                </div>
+                            </div>
+                            <button class="ui inverted big fluid blue icon button" type="submit">Sign In <i class="sign in icon"></i></button>
+                            <div class="ui error message"></div>
+                        </form>
+                          
+                             <a href="">Forgot Password?</a>
+                         
+                    </div>
+                   
+                
+                </div>
+            
+        </div>
+    </div>   
+    @if(flash.containsKey("success")) {
+     <div class="ui segment">
+  <div class="ui green success message" id="success-message">
+      <div class="header">
+        SUCCESSFULLY
+  </div>
+  <ul class="list">
+    <li> @flash.get("success")</li>
+  </ul>
+</div>
+</div>
+  }
+  @if(flash.containsKey("error")) {
+  <div class="ui segment">
+ 
+   <div class="ui red error message" id="error-message">
+      <div class="header">
+        ERROR
+  </div>
+  <ul class="list">
+    <li> @flash.get("error")</li>
+  </ul>
+</div>
+</div>
+ }
+    
+   
+}

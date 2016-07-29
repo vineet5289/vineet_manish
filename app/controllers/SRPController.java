@@ -10,9 +10,11 @@ import play.mvc.Result;
 import play.mvc.Security;
 import security.ActionAuthenticator;
 import views.html.viewClass.dashboard;
+import views.html.homePage.schoolRequestHomepage;
 import views.html.parent.parentHome;
 import views.html.teacher.teacherHome;
 import views.html.student.studentHome;
+import enum_package.RegisterUserType;
 import enum_package.Role;
 import enum_package.SessionKey;
 
@@ -48,7 +50,7 @@ public class SRPController extends CustomController {
 			userDetails = new ArrayList<LoginDetails>();
 		}
 		System.out.println("====>" + userDetails);
-		
+
 		if(superUserRole.equalsIgnoreCase(Role.TEACHER.name())) {
 			return ok(teacherHome.render(session().get(SessionKey.CURRENT_USER_NAME.name()), session().get(SessionKey.CURRENT_USER_ROLE.name()), userDetails));
 		}
@@ -61,5 +63,26 @@ public class SRPController extends CustomController {
 		}
 
 		return ok(dashboard.render(session().get(SessionKey.CURRENT_USER_NAME.name()), session().get(SessionKey.CURRENT_USER_ROLE.name())));
+	}
+
+	public Result preRegistration(String userType) {
+		if(userType.trim().equalsIgnoreCase("school")) {
+			session().clear();
+			session(SessionKey.REG_USER_REQUEST.name(), RegisterUserType.SCHOOL.name());
+			return ok(schoolRequestHomepage.render());
+		}
+
+		if(userType.trim().equalsIgnoreCase("employee")) {
+			session(SessionKey.REG_USER_REQUEST.name(), RegisterUserType.EMPLOYEE.name());
+		}
+
+		if(userType.trim().equalsIgnoreCase("other user")) {
+			session(SessionKey.REG_USER_REQUEST.name(), RegisterUserType.OTHER_USER.name());
+		}
+
+		if(userType.equalsIgnoreCase("error")) {
+			System.out.println("error");
+		}
+		return ok("pre registration");
 	}
 }

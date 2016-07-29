@@ -1,78 +1,88 @@
 @(classForm : Form[views.forms.school.ClassForm])
 @mainDashboard("Add Class"){
-
-<script type="text/javascript">
-   		    var i = 0;
-            function addRows(){
-            var className = "classes[" + i + "].className";
-            var classStartTime = "classes[" + i + "].classStartTime";
-            var classEndTime = "classes[" + i + "].classEndTime";
-            var noOfPeriod = "classes[" + i + "].noOfPeriod";
-            var nameOfSection = "classes[" + i + "].nameOfSection";
-            
-            document.getElementById("myTable").insertRow(-1).innerHTML ='<td><div class="ui icon input"><input size="8" type="text" name='+ className +' id='+ className +' /></div></td>'+
-            '<td><div class="ui icon input"><input size="8" type="text" name=' + classStartTime + ' id=' + classStartTime + ' /></td></div>'+
-            '<td><div class="ui icon input"><input size="8" type="text" name=' + classEndTime + ' id=' + classEndTime + ' value=""/></td></div>'+
-            '<td><div class="ui icon input"><input size="8" type="text" name=' + noOfPeriod + ' id=' + noOfPeriod + '/></td></div>'+
-            '<td><div class="ui icon input"><input size="8" type="text" name=' + nameOfSection + ' id=' + nameOfSection + ' placeholder="insert comma seperated section Name"/></td></div>'+
-            ' <td><div class="ui buttons"><a class="ui tiny blue edit button" href="./edit_action.html"><i class="edit icon"></i>edit</a><div class="or"></div> <a class="ui tiny green edit button"><i class="trash icon"></i>delete</a></td>';
-        
-        
-       
-        }
-       </script>
-       
-      
-
-         <div class="sixteen wide column" id="content">
-         <h2><i class="signal icon"></i> Classes</h2>
+  
+    <div class="sixteen wide column" id="content">
+    <h2><i class="signal icon"></i> Classes</h2>
          <div class="ui divider"></div>
-         
-               
-                
-                <div class="column">
-                            <div class="ui segments">
-                                <div class="ui segment">
-                     <a class="ui red small labeled icon add button" onClick="addRows()"><i class="add icon"></i>Add new Class</a>
+          <div class="ui grid container">
+	 <div class="four wide column">
+			   <div class="ui cards">
+			      <div class="create-action card">
+                       <div class="content" style="opacity: 0.5;">
+                           <i class="right floated mail icon teal" style="font-size: 30px;"></i>
+
+                <div class="header">
+                   Add New Classes
                 </div>
-                                 
-                                <div class="ui segment"><h5>Enter Class Name with its start time and end time , click on Submit to save your class</h5></div>
-                                
-                                
-                                 <div clas=="ui segment">
-                                 <form name="form" action="@school.routes.ClassController.postAddClass()" method="POST">
-                                    
-                                    <table class="ui small compact table" id="myTable">
-                                        <thead>
-                                            <tr>
-                                                <th>className</th>
-                                                <th>class Start Time</th>
-                                                <th>class End Time</th>
-                                                <th>no Of Period</th>
-                                                <th>name Of Section</th>
-                                                <th>Edit Or Delete</th>
-                                            </tr>
-                                        </thead>
-                                    </table>
+     
+    </div>
+    
+    <div class="ui attached bottom button" style=""  id="addNewClass">
+     Click To Add New Class
+    </div>
+  </div>
+			   </div>
+	</div>
+             <div class="four wide column">
+               			   <div class="ui cards">
+			      <div class="create-action card">
+                       <div class="content" style="opacity: 0.5;">
+                           <i class="right floated mail icon teal" style="font-size: 30px;"></i>
 
-                                </div>
-                                            
-                                <div class="ui segment"><h3><button class="ui olive button" type="submit">Submit</button></h3></div>
-
-                                </form>
-                                
-                               
-                                </div>
-                                </div>
-                        </div>
-                        </div>
-                        
-      
-                        
-                       
-                        
-                      
-                     
-                        
-				
+                <div class="header">
+                   Add New Classes
+                </div>
+     
+       </div>
+    
+         <div class="ui attached bottom button" style=""  id="addNewClass">
+                Click To Add New Class
+        </div>
+        </div>
+	 </div>
+             </div>
+             <div class="four wide column">C</div>
+             <div class="four wide column">D</div>
+            																														        
+        </div>
+          
+          <div class="ui modal addSchool-modal"id="addSchool_modal">
+              <div class="header" style="">Add New Class</div>
+              <div class="content">
+                  <form class="ui form" method="POST" action="@school.routes.ClassController.postAddClass()">
+                  <div class="field">
+                      <label>class Name</label>
+                      <input name="className" placeholder="className" type="text" >
+                  </div>
+                  <div class="field">
+                      <label>Start Time</label>
+                      <input name="classStartTime" placeholder="classStartTime" type="text" >
+                  </div>
+                  <div class="field">
+                      <label>End Time</label>
+                      <input name="classEndTime" placeholder="classEndTime" type="text" >
+                  </div>
+                  <div class="field">
+                      <label>Total Number Period</label>
+                      <input name="noOfPeriod" placeholder="noOfPeriod" type="text" >
+                  </div>
+                  <div class="field">
+                      <label>Add Sections</label>
+                      <input name="nameOfSection" placeholder="nameOfSection" type="text" >
+                  </div>
+                  
+                  <div class="actions">
+			         <button class="ui black deny button">
+				           Cancel
+			        </button>
+			        <button class="ui positive right labeled icon button" type="submit">
+			              Save
+			        </button>
+		          </div>
+		      </form>
+           </div>
+        </div>
+          
+        
+    </div>
 }
