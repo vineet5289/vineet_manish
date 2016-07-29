@@ -14,6 +14,7 @@ import views.html.homePage.schoolRequestHomepage;
 import views.html.parent.parentHome;
 import views.html.teacher.teacherHome;
 import views.html.student.studentHome;
+import enum_package.RegisterUserType;
 import enum_package.Role;
 import enum_package.SessionKey;
 
@@ -67,16 +68,16 @@ public class SRPController extends CustomController {
 	public Result preRegistration(String userType) {
 		if(userType.trim().equalsIgnoreCase("school")) {
 			session().clear();
-			session("REG_USER_REQUEST", "school");
+			session(SessionKey.REG_USER_REQUEST.name(), RegisterUserType.SCHOOL.name());
 			return ok(schoolRequestHomepage.render());
 		}
 
 		if(userType.trim().equalsIgnoreCase("employee")) {
-			System.out.println("employee");
+			session(SessionKey.REG_USER_REQUEST.name(), RegisterUserType.EMPLOYEE.name());
 		}
 
 		if(userType.trim().equalsIgnoreCase("other user")) {
-			System.out.println("other user");
+			session(SessionKey.REG_USER_REQUEST.name(), RegisterUserType.OTHER_USER.name());
 		}
 
 		if(userType.equalsIgnoreCase("error")) {
