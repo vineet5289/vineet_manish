@@ -32,12 +32,12 @@ POST      	/submitopt                            	   controllers.RegistrationReq
 POST     	/registerschool            	           	   controllers.RegistrationRequest.postSchoolRegistrationRequest()
 
 # employee registration request
-GET      	/registersemp                              controllers.RegistrationRequest.preEmployeeRegistrationRequest()
+GET      	/registeremp                              controllers.RegistrationRequest.preEmployeeRegistrationRequest()
 POST     	/registeremp            	               controllers.RegistrationRequest.postEmployeeRegistrationRequest()
 
 # students registration request
-GET      	/registersstudent                 		   controllers.RegistrationRequest.preStudentRegistrationRequest()
-POST     	/registerempstudent            	       	   controllers.RegistrationRequest.postStudentRegistrationRequest()
+GET      	/registerstudent                 		   controllers.RegistrationRequest.preStudentRegistrationRequest()
+POST     	/registerstudent            	       	   controllers.RegistrationRequest.postStudentRegistrationRequest()
 
 # Map static resources from the /public folder to the /assets URL path
 GET     	/assets/*file                              controllers.Assets.versioned(path="/public", file: Asset)
