@@ -10,36 +10,61 @@ import utils.ValidateFields;
 @Data
 public class AddNewSchoolRequest {
 	private String id;
+	private String referenceNumber = "";
+
+	//compulsory field
 	private String schoolName = "";
-	private String principalName = "";
-	private String principalEmail = "";
-	private String schoolAddress = "";
 	private String schoolEmail = "";
-	private String contact = "";
+	private String schoolMobileNumber = "";
+	private String schoolAddressLine1 = "";
+	private String city;
+	private String state;
+	private String country;
+	private String pincode;
+
+	// optional field
+	private String schoolAlternativeNumber = "";
+	private String schoolAddressLine2 = "";
 	private String schoolRegistrationId = "";
 	private String query = "";
-	private String referenceNumber = "";
 
 	public List<ValidationError> validate() {
 		List<ValidationError> errors = new ArrayList<>();
-		if (schoolName == null || schoolName.isEmpty()) {
-			errors.add(new ValidationError("schoolName", "No School Name Was Given."));
+		if (!ValidateFields.isValidSchoolName(schoolName)) {
+			errors.add(new ValidationError("schoolName", "School name should not be empty. And should not contains special characters like ;@[]"));
 		}
 
-		if (principalName == null || principalName.isEmpty()) {
-			errors.add(new ValidationError("principalname", "No Principla Name Was Given."));
+		if(!ValidateFields.isValidEmailId(schoolEmail)) {
+			errors.add(new ValidationError("schoolEmail","Enter valid email id like abcd@xyz.com"));
 		}
 
-		if (schoolAddress == null || schoolAddress.isEmpty()) {
-			errors.add(new ValidationError("address", "No School Address was given."));
+		if (!ValidateFields.isValidMobileNumber(schoolMobileNumber)) {
+			errors.add(new ValidationError("schoolMobileNumber", "Enter valid contract number."));
 		}
 
-		if (contact == null ||  contact.isEmpty()) {
-			errors.add(new ValidationError("mobile", "No contact was given."));
+		if (schoolAlternativeNumber != null && !schoolAlternativeNumber.trim().isEmpty()
+				&& (ValidateFields.isValidMobileNumber(schoolAlternativeNumber) || ValidateFields.isValidAlternativeNumber(schoolAlternativeNumber))) {
+			errors.add(new ValidationError("schoolAlternativeNumber", "Alternative number should be valid."));
 		}
 
-		if(!(ValidateFields.isValidEmailId(principalEmail) || ValidateFields.isValidEmailId(schoolEmail))) {
-			errors.add(new ValidationError("email","enter atleast one valid email id"));
+		if(schoolAddressLine1 == null || schoolAddressLine1.trim().isEmpty()) {
+			errors.add(new ValidationError("schoolAddressLine1", "Address should not be empty."));
+		}
+
+		if(!ValidateFields.isValidCity(city)) {
+			errors.add(new ValidationError("city", "City should not be empty. And should not contains any special characters except space."));
+		}
+
+		if(!ValidateFields.isValidState(state)) {
+			errors.add(new ValidationError("state", "State should not be empty. And should not contains any special characters except space."));
+		}
+
+		if(!ValidateFields.isValidCountry(country)) {
+			errors.add(new ValidationError("country", "Country should not be empty. And should not contains any special characters except space."));
+		}
+
+		if(!ValidateFields.isValidPincode(pincode)) {
+			errors.add(new ValidationError("pincode", "Pincode should not be empty. And should not contains any special characters."));
 		}
 
 		if(errors.size() > 0)
