@@ -2,7 +2,7 @@ package controllers;
 
 import play.data.Form;
 import play.mvc.Result;
-import views.forms.SchoolFormData;
+import views.forms.school.SchoolFormData;
 
 public class EmployeeController extends CustomController {
 	public Result preEmployeeRegistrationRequest() {

@@ -1,4 +1,4 @@
-package views.forms;
+package views.forms.school;
 
 import java.util.Date;
 

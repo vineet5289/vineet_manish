@@ -14,8 +14,8 @@ import java.util.Map;
 import play.db.DB;
 import utils.RandomGenerator;
 import utils.StringUtils;
-import views.forms.NewSchoolApprovedRequest;
-import views.forms.SchoolFormData;
+import views.forms.school.NewSchoolApprovedRequest;
+import views.forms.school.SchoolFormData;
 import actors.SchoolRequestActorProtocol.ApprovedSchool;
 import enum_package.RequestedStatus;
 
