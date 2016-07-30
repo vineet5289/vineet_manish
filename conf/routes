@@ -24,20 +24,20 @@ GET     	/listeningWS                     		   controllers.message.NotificationL
 POST     	/notification                              controllers.message.NotificationController.notification()
 
 # add new schoole request
-GET      	/addnewschoolrequest                	   controllers.RegistrationRequest.preAddNewSchoolRequest()
-POST     	/addnewschoolrequest                       controllers.RegistrationRequest.postAddNewSchoolRequest()
+GET      	/addnewschoolrequest                	   controllers.SchoolController.preAddNewSchoolRequest()
+POST     	/addnewschoolrequest                       controllers.SchoolController.postAddNewSchoolRequest()
 
 # schoole registration request
-POST      	/submitopt                            	   controllers.RegistrationRequest.submitOTP()
-POST     	/registerschool            	           	   controllers.RegistrationRequest.postSchoolRegistrationRequest()
+POST      	/submitopt                            	   controllers.SchoolController.submitOTP()
+POST     	/registerschool            	           	   controllers.SchoolController.postSchoolRegistrationRequest()
 
 # employee registration request
-GET      	/registeremp                              controllers.RegistrationRequest.preEmployeeRegistrationRequest()
-POST     	/registeremp            	               controllers.RegistrationRequest.postEmployeeRegistrationRequest()
+GET      	/registeremp                              controllers.EmployeeController.preEmployeeRegistrationRequest()
+POST     	/registeremp            	               controllers.EmployeeController.postEmployeeRegistrationRequest()
 
 # students registration request
-GET      	/registerstudent                 		   controllers.RegistrationRequest.preStudentRegistrationRequest()
-POST     	/registerstudent            	       	   controllers.RegistrationRequest.postStudentRegistrationRequest()
+GET      	/registerstudent                 		   controllers.StudentController.preStudentRegistrationRequest()
+POST     	/registerstudent            	       	   controllers.StudentController.postStudentRegistrationRequest()
 
 # Map static resources from the /public folder to the /assets URL path
 GET     	/assets/*file                              controllers.Assets.versioned(path="/public", file: Asset)
@@ -46,8 +46,8 @@ GET     	/assets/*file		                  	   controllers.Assets.at(path="/publi
 
 # approved school
 
-GET			/approvedschool							   controllers.RegistrationRequest.preApprovedNewSchoolRequest()
-POST		/approvedschool							   controllers.RegistrationRequest.postApproveNewSchooldRequest()
+#GET			/approvedschool							   controllers.SchoolController.preApprovedNewSchoolRequest()
+#POST		/approvedschool							   controllers.SchoolController.postApproveNewSchooldRequest()
 
 # students and guardian registration
 

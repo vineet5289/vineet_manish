@@ -1,16 +1,41 @@
 # --- !Ups
+CREATE TABLE IF NOT EXISTS subject (
+  id bigint(20) NOT NULL AUTO_INCREMENT,
+  subject_name varchar(120) COLLATE utf8_unicode_ci NOT NULL,
+  class_id bigint(20) NOT NULL,
+  school_id bigint(20) NOT NULL,
+  subject_code varchar(20) COLLATE utf8_unicode_ci,
+  created_at timestamp DEFAULT CURRENT_TIMESTAMP,
+  updated_at timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  is_active tinyint(1) DEFAULT 1,
+  user_name varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (id),
+  KEY FK_subject_class_id (class_id),
+  CONSTRAINT FK_subject_class_id FOREIGN KEY (class_id) REFERENCES class (id),
+  KEY FK_subject_school_id (school_id),
+  CONSTRAINT FK_subject_school_id FOREIGN KEY (school_id) REFERENCES school (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-insert into school_registration_request (school_name, principal_name, school_address, contact,request_number, status, auth_token, auth_token_genereated_at) values('vineet school', 'vineet', 'abcd', '+919003218471', '12345', 'APPROVED', '1234', now());
-insert into school (name, school_user_name, school_board, school_registration_id, add_school_request_id) values ('vineet school', 'dps', 'CBSE', 1234, 1);
-insert into employee (name, user_name, school_id, phone_number1) values('vineet', 'vineet5289', 1, '9003218471');
-insert into employee (name, user_name, school_id, phone_number1) values('vivek', 'vivek5289', 1, '9003218471');
-insert into employee (name, user_name, school_id, phone_number1) values('sumit', 'sumit5289', 1, '9003218471');
-insert into employee (name, user_name, school_id, phone_number1) values('manish', 'manish5289', 1, '9003218471');
-insert into school_principle (school_id, principle_id) values(1, 1);
-insert into class(class_name, school_id, class_start_time, class_end_time,no_of_period, parent_class, user_name) values('7A', 1, '09:30 AM', '04:40 PM', 7, '7', 'manish');
-insert into employee_class (class_id, teacher_id) values(1, 1);
-insert into guardian (name, user_name, phone_number1) values('parma', 'parma', '9003218471');
-insert into student (name, user_name, school_id) values('vineet', 'vineet', 1);
-insert into student_guardian (student_id, guardian_id) values(1, 1);
-insert into student_class (student_id, class_id) values(1, 1);
+CREATE TABLE IF NOT EXISTS time_table (
+  id bigint(20) NOT NULL AUTO_INCREMENT,
+  lecture_name varchar(25) COLLATE utf8_unicode_ci NOT NULL,
+  lecture_start_time varchar(25) COLLATE utf8_unicode_ci NOT NULL,
+  lecture_end_time varchar(25) COLLATE utf8_unicode_ci NOT NULL,
+  lecture_start_day varchar(25) COLLATE utf8_unicode_ci NOT NULL,
+  lecture_end_day varchar(25) COLLATE utf8_unicode_ci NOT NULL,
+  class_id bigint(20) NOT NULL,
+  teacher_id bigint(20) NOT NULL,
+  subject_id bigint(20) NOT NULL,
+  is_active tinyint(1) DEFAULT 1,
+  created_at timestamp DEFAULT CURRENT_TIMESTAMP,
+  updated_at timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  KEY FK_time_table_class_id (class_id),
+  CONSTRAINT FK_time_table_class_id FOREIGN KEY (class_id) REFERENCES class (id),
+  KEY FK_time_table_teacher_id (teacher_id),
+  CONSTRAINT FK_time_table_teacher_id FOREIGN KEY (teacher_id) REFERENCES employee (id),
+  KEY FK_time_table_subject_id (subject_id),
+  CONSTRAINT FK_time_table_subject_id FOREIGN KEY (subject_id) REFERENCES subject (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 # --- !Downs

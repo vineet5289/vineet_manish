@@ -28,16 +28,12 @@ public class MailerActor extends UntypedActor {
 
 			NewSchoolRequest newSchoolRequest = (NewSchoolRequest)message;
 			String requestRefNumber = newSchoolRequest.getReferenceNumber();
-			String principleEmailId = newSchoolRequest.getPrincipleEmailId();
 			String schoolEmailId = newSchoolRequest.getSchoolEmailId();
-			String receiverName = newSchoolRequest.getReceiverName();
+			String receiverName = newSchoolRequest.getSchoolName();
 			String mailBody = String.format(mailContent, receiverName, requestRefNumber);
 			Email email = new Email();
 			email.setSubject(mailSubject);
 			email.setFrom(senderMail);
-			if(principleEmailId != null && !principleEmailId.isEmpty())
-				email.addTo(principleEmailId);
-
 			if(schoolEmailId != null && !schoolEmailId.isEmpty())
 				email.addTo(schoolEmailId);
 

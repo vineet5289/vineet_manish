@@ -4,11 +4,11 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
+import controllers.CustomController;
 import play.data.Form;
 import play.mvc.Result;
 import views.forms.school.ClassForm;
 import views.forms.school.DisplayClassForm;
-import controllers.CustomController;
 import dao.ClassDAO;
 import enum_package.SessionKey;
 import views.html.viewClass.viewclasses;

@@ -1,14 +1,2 @@
-@(schools : List[models.NewSchoolApprovedRequest])
+@(schools : List[views.forms.NewSchoolApprovedRequest])
 @import helper._
-
-@for(school <- schools) {
-	@school.schoolName
-	@school.principalName
-	@school.id
-	@school.status
-	@form(routes.RegistrationRequest.postApproveNewSchooldRequest()) {
-	    <input type="hidden" id=@school.id value="@school.id" name="id">
-	    <input type="hidden" id=@school.requestNumber value="@school.requestNumber" name="requestNumber">
-		<input type="submit" value="Approved">
-	}
-}

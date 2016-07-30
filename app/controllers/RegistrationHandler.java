@@ -7,6 +7,8 @@ import play.mvc.Result;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
+import controllers.routes;
+
 public class RegistrationHandler extends CustomController {
 
 	public Result preRegistorSchool(String regCat) throws JsonParseException, JsonMappingException, IOException {
