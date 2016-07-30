@@ -12,7 +12,7 @@ import enum_package.Role;
 import play.db.DB;
 import utils.RandomGenerator;
 import utils.StringUtils;
-import views.forms.SchoolFormData;
+import views.forms.school.SchoolFormData;
 
 public class SchoolRegistrationDAO {
 	private String idField = "id";
