@@ -6,7 +6,6 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import controllers.routes;
 import models.Country;
 import models.SchoolBoard;
 import models.SchoolCategory;
@@ -18,19 +17,16 @@ import play.mvc.Security;
 import security.SchoolRegisterRequestAuthenticator;
 import views.forms.OTPField;
 import views.forms.school.AddNewSchoolRequest;
-import views.forms.school.NewSchoolApprovedRequest;
 import views.forms.school.SchoolFormData;
-import views.html.newSchoolApproved;
 import views.html.viewClass.SchoolRegistration;
 import views.html.viewClass.newSchoolRequest;
 import views.html.viewClass.thanku;
 import actors.MessageActor;
-import actors.SchoolRequestActorProtocol.ApprovedSchool;
 import actors.SchoolRequestActorProtocol.NewSchoolRequest;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
-import dao.SchoolRegistrationDAO;
 import dao.AddNewSchoolRequestDAO;
+import dao.SchoolRegistrationDAO;
 import enum_package.SessionKey;
 
 
