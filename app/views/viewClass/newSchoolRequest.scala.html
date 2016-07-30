@@ -1,8 +1,45 @@
-@(schoolRegister:Form[views.forms.AddNewSchoolRequest])
+@(schoolRegister:Form[views.forms.AddNewSchoolRequest],
+schoolCountry:    List[String],
+state:            List[String])
 @main2("Register"){
 <div class="ui container">
         <div class="ui centered stackable grid">
-        <div class="six wide column"></div>
+        <div class="six wide column">
+           <form class="ui form" method="post">
+  <div class="field">
+    <div class="ui left icon input">
+	  <input type="text" name="name" placeholder="name" required minlength="6" />
+	  <i class="user icon"></i>
+	</div>
+  </div>
+  <div class="field">
+    <div class="ui left icon input">
+	  <input type="email" name="email" placeholder="email" required />
+	  <i class="mail icon"></i>
+	</div>
+  </div>
+  <div class="field">
+    <div class="ui left icon input">
+	  <input type="text" name="telephone" placeholder="telephone" required />
+	  <i class="phone icon"></i>
+	</div>
+  </div>
+  <div class="field">
+  	<select required name="select">
+  	</select>
+  </div>
+  <div class="field">
+    <textarea name="textarea" placeholder="textarea" required minlength="10" maxlength="20"></textarea>
+  </div>
+  <div class="field">
+    <div class="ui checkbox">
+      <input type="checkbox" tabindex="0" class="hidden" name="agree" required />
+      <label>T&C*</label>
+    </div>
+  </div>
+  <button class="ui button" type="submit">Submit</button>
+</form>
+        </div>
         <div class="ui vertical divider"></div>
         <div class="no"></div>
             <div class="six wide column">
@@ -11,7 +48,7 @@
                         <span class="ui header">Register<span>
                     </div>
                     <div class="ui segment" id="forToolTip">
-                        <form id="newSchoolRegistrationForm" class="ui form" method="Post" action="@routes.RegistrationRequest.postAddNewSchoolRequest()">
+                        <form id="newSchoolRegistrationForm" class="ui form" method="Post" action="@routes.SchoolController.postAddNewSchoolRequest()">
                                 <div class="field">
                                  <div class="ui left icon input">
                                     <input type="text" name="schoolName" placeholder="schoolName">

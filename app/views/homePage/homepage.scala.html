@@ -8,7 +8,7 @@
        
        <div class="ui segment" id="loginHome">
                         <form class="ui form" id="loginform" action="@login_logout.routes.LoginController.postLogin()" method="Post">
-                             <h2 class="ui header">Log-In to Your Account</h2>
+                             <h2 class="ui dividing header">Log-In to Your Account</h2>
                             <div class="field">
                                 <div class="ui left icon input">
                                     <input type="text" name="userName" placeholder="Username">
@@ -308,7 +308,7 @@
  
   <div class="actions">
     
-     <a  class="ui black button" href="@routes.RegistrationRequest.preAddNewSchoolRequest()">NO</a>
+     <a  class="ui black button" href="@routes.SchoolController.preAddNewSchoolRequest()">NO</a>
      
    
     
@@ -342,7 +342,7 @@
                   <div class="actions">
 			         <button class="ui button approve green" type="submit">SEND</button>
 			         <div class="ui error message"></div>
-			     </div>
+			      </div>
                   
                   
              </form>

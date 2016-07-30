@@ -66,11 +66,11 @@ $(function () {
                 }]
             }
 	};
-
+    
 
 	// New School Request Form
 
-	$('#newSchoolRegistrationForm').form(validationObj, {
+	   $('#newSchoolRegistrationForm').form(validationObj, {
 		inline: false,
 		onSuccess: function(){
 			$('#newSchoolRequestPost').modal('show');
@@ -94,10 +94,16 @@ $(function () {
     $('#completeSchoolRegistration').click(function(){
     $('#OTP-modal').modal('show');
     
-    });    
+    });  
+    
+    $('#RegisterSchoolButton').click(function(){
+     $('#RegisterSchoolModal').modal('show');
+    });  
     
     // captcha  code on otp form
     captchaCode();
+    
+    
 });
 
 
@@ -113,4 +119,6 @@ function captchaCode() {
         $("#captcha input").remove();
         $("#captcha").append("<span id='code'>" + Code+"  " + "</span><input type='button' onclick='captchaCode();'>");
    }
+   
+   
   
