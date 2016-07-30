@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS board (
 CREATE TABLE IF NOT EXISTS school_registration_request (
   id bigint(20) NOT NULL AUTO_INCREMENT,
   school_name varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  contract_person_name varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   school_email varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   mobile_number varchar(15) COLLATE utf8_unicode_ci NOT NULL,
   alternative_number varchar(15) COLLATE utf8_unicode_ci NOT NULL,

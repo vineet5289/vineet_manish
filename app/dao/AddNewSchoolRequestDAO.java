@@ -14,10 +14,11 @@ import java.util.Map;
 import play.db.DB;
 import utils.RandomGenerator;
 import utils.StringUtils;
+import views.forms.SchoolFormData;
 import actors.SchoolRequestActorProtocol.ApprovedSchool;
 import enum_package.RequestedStatus;
 
-public class SchoolRegistrationRequestDAO {
+public class AddNewSchoolRequestDAO {
 	private String tableName = "school_registration_request";
 	private String idField = "id";
 	private String schoolNameField = "school_name";
@@ -40,16 +41,16 @@ public class SchoolRegistrationRequestDAO {
 	private String updatedAtField = "updated_at";
 	private String alertDoneField = "alert_done";
 	private String isActiveField = "is_active";
-
+	private String contractPersonNameField = "contract_person_name";
 
 	public String generateRequest(Map<String, String> addNewSchoolRequestDetails) throws Exception {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 
-		String insertQuery = String.format("INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) VALUES (?, ?, ?, ?,"
-				+ "?, ?, ?, ?, ?, ?, ?, ?, ?);", tableName, schoolNameField, schoolEmailField, mobileNumberField, alternativeNumberField,
+		String insertQuery = String.format("INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) VALUES (?, ?, ?, ?,"
+				+ "?, ?, ?, ?, ?, ?, ?, ?, ?, ?);", tableName, schoolNameField, schoolEmailField, mobileNumberField, alternativeNumberField,
 				schoolRegistrationIdField, queryField, schoolAddressLine1Field, schoolAddressLine2Field, cityField, stateField, 
-				countryField, pinCodeField, requestNumberField);
+				countryField, pinCodeField, contractPersonNameField, requestNumberField);
 
 		String requestNumber = "";
 		try {
@@ -74,7 +75,8 @@ public class SchoolRegistrationRequestDAO {
 			preparedStatement.setString(10, addNewSchoolRequestDetails.get("state").trim());
 			preparedStatement.setString(11, addNewSchoolRequestDetails.get("country").trim());
 			preparedStatement.setString(12, addNewSchoolRequestDetails.get("pincode").trim());
-			preparedStatement.setString(13, requestNumber);
+			preparedStatement.setString(13, StringUtils.getValidStringValue(addNewSchoolRequestDetails.get("contractPersonName")));
+			preparedStatement.setString(14, requestNumber);
 
 			preparedStatement.execute();
 		} catch(Exception exception) {
@@ -192,32 +194,47 @@ public class SchoolRegistrationRequestDAO {
 		return schools; 
 	}
 
-	public boolean isValidUserByOtpAndReferenceKey(String referenceKey, String otp) throws SQLException {
+	public SchoolFormData isValidSchoolRegistrationRequest(String requestNumber, String otp, String emailId) throws SQLException {
+		SchoolFormData schoolFormData = null;
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
-		boolean isValidUser = false;
-		String selectQuery = String.format("SELECT %s, %s, %s, %s FROM %s WHERE %s=? AND %s=? AND %s=? AND %s=?;",
-				idField, authTokenField, requestNumberField, authTokenGenereatedAtField, tableName, requestNumberField, authTokenField, statusField, isActiveField);
+		String selectQuery = String.format("SELECT %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s FROM %s WHERE %s=? AND %s=? AND %s=? AND %s=? AND %s=?;",
+				idField, schoolNameField, schoolEmailField, mobileNumberField, alternativeNumberField, schoolRegistrationIdField, schoolAddressLine1Field,
+				schoolAddressLine2Field, cityField, stateField, countryField, pinCodeField, authTokenField, authTokenGenereatedAtField, tableName, isActiveField,
+				requestNumberField, authTokenField, schoolEmailField, statusField);
+
 		try {
+			schoolFormData = new SchoolFormData();
 			connection = DB.getDataSource("srp").getConnection();
-			connection.setAutoCommit(false);
 			preparedStatement = connection.prepareStatement(selectQuery, ResultSet.TYPE_FORWARD_ONLY, ResultSet .CONCUR_UPDATABLE);
-			preparedStatement.setString(1, referenceKey);
-			preparedStatement.setString(2, otp);
-			preparedStatement.setString(3, RequestedStatus.APPROVED.name());
-			preparedStatement.setBoolean(4, true);
+			preparedStatement.setBoolean(1, true);
+			preparedStatement.setString(2, requestNumber.trim());
+			preparedStatement.setString(3, otp.trim());			
+			preparedStatement.setString(4, emailId);
+			preparedStatement.setString(5, RequestedStatus.APPROVED.name());
+
 			resultSet = preparedStatement.executeQuery();
 			if(resultSet.next()) {
-				isValidUser = true;
+				schoolFormData.setSchoolName(resultSet.getString(schoolNameField));
+				schoolFormData.setSchoolEmail(resultSet.getString(schoolEmailField));
+				schoolFormData.setSchoolUserName(resultSet.getString(schoolEmailField));
+				schoolFormData.setSchoolMobileNumber(resultSet.getString(mobileNumberField));
+				schoolFormData.setSchoolAlternativeNumber(resultSet.getString(alternativeNumberField));
+				schoolFormData.setSchoolRegistrationId(resultSet.getString(schoolRegistrationIdField));
+				schoolFormData.setSchoolAddressLine1(resultSet.getString(schoolAddressLine1Field));
+				schoolFormData.setSchoolAddressLine2(resultSet.getString(schoolAddressLine2Field));
+				schoolFormData.setCity(resultSet.getString(cityField));
+				schoolFormData.setState(resultSet.getString(stateField));
+				schoolFormData.setCountry(resultSet.getString(countryField));
+				schoolFormData.setPincode(resultSet.getString(pinCodeField));
+				schoolFormData.setValidSchool(true);
+			} else {
+				schoolFormData.setValidSchool(false);
 			}
-			connection.commit();
 		} catch(Exception exception) {
 			System.out.println("connection exception happen");
 			exception.printStackTrace();
-			if(connection != null)
-				connection.rollback();
-			isValidUser = false;
 		} finally {
 			if(resultSet != null)
 				resultSet.close();
@@ -226,7 +243,7 @@ public class SchoolRegistrationRequestDAO {
 			if(connection != null)
 				connection.close();
 		}
-		return isValidUser;
+		return schoolFormData;
 	}
 
 	private String getRequestNumber(String schooleName) {

@@ -4,9 +4,9 @@ import javax.inject.Inject;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
+import controllers.CustomController;
 import play.mvc.Result;
 import service.messages.MessageService;
-import controllers.CustomController;
 
 public class NotificationController extends CustomController {
 	MessageService messageService;

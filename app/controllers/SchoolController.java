@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import controllers.routes;
 import models.Country;
 import models.SchoolBoard;
 import models.SchoolCategory;
@@ -28,22 +29,25 @@ import actors.SchoolRequestActorProtocol.NewSchoolRequest;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import dao.SchoolRegistrationDAO;
-import dao.SchoolRegistrationRequestDAO;
+import dao.AddNewSchoolRequestDAO;
+import enum_package.SessionKey;
 
 
-public class RegistrationRequest extends CustomController {
+public class SchoolController extends CustomController {
 
 	final ActorSystem actorSystem = ActorSystem.create("srp");
 	final ActorRef mailerActor;
 	final ActorRef messageActor = actorSystem.actorOf(MessageActor.props());
 	@Inject
-	public RegistrationRequest(@Named("srp") ActorRef mailerActor) {
+	public SchoolController(@Named("srp") ActorRef mailerActor) {
 		this.mailerActor = mailerActor;
 	}
 
 	public Result preAddNewSchoolRequest() {
 		Form<AddNewSchoolRequest> addNewSchoolRequest = Form.form(AddNewSchoolRequest.class);
-		return ok(newSchoolRequest.render(addNewSchoolRequest));
+		List<String> countries = Country.getCountries();
+		List<String> states = State.getStates();
+		return ok(newSchoolRequest.render(addNewSchoolRequest, states, countries));
 	}
 
 	public Result postAddNewSchoolRequest() {
@@ -59,7 +63,7 @@ public class RegistrationRequest extends CustomController {
 			return redirect(routes.RegistrationRequest.preAddNewSchoolRequest());
 		}
 
-		SchoolRegistrationRequestDAO schoolRegistrationRequestDAO = new SchoolRegistrationRequestDAO();
+		AddNewSchoolRequestDAO schoolRegistrationRequestDAO = new AddNewSchoolRequestDAO();
 		String requestRefNumber = "";
 		try {
 			requestRefNumber = schoolRegistrationRequestDAO.generateRequest(addNewSchoolRequestDetails);
@@ -89,60 +93,61 @@ public class RegistrationRequest extends CustomController {
 
 	public Result submitOTP() {
 		session().clear();
-		Form<OTPField> otp = Form.form(OTPField.class).bindFromRequest();
-		if(otp == null || otp.hasErrors()) {
+		Form<OTPField> otpForm = Form.form(OTPField.class).bindFromRequest();
+		if(otpForm == null || otpForm.hasErrors()) {
 			flash("error", "Something parameter is missing or invalid in request. Please check and enter valid value");
-			return redirect(controllers.login_logout.routes.LoginController.preLogin());
+			return redirect(controllers.login_logout.routes.LoginController.preLogin());// same otp page call
 		}
-		Map<String, String> otpValues = otp.data();
-		if(otpValues == null || otpValues.size() == 0) {
+		Map<String, String> otpFieldsValues = otpForm.data();
+		if(otpFieldsValues == null || otpFieldsValues.size() == 0) {
 			flash("error", "Something parameter is missing or invalid in request. Please check and enter valid value");
-			return redirect(controllers.login_logout.routes.LoginController.preLogin());
+			return redirect(controllers.login_logout.routes.LoginController.preLogin());// same otp page call
 		}
 
-		String referenceKey = otpValues.get("referenceKey");
-		String otpValue = otpValues.get("otp");
-		SchoolRegistrationRequestDAO schoolRegistrationRequestDAO = new SchoolRegistrationRequestDAO();
+		String referenceKey = otpFieldsValues.get("referenceKey");
+		String otp = otpFieldsValues.get("otp");
+		String emailId = otpFieldsValues.get("emailId");
+
+		AddNewSchoolRequestDAO schoolRegistrationRequestDAO = new AddNewSchoolRequestDAO();
 		try {
-			boolean isValidUser = schoolRegistrationRequestDAO.isValidUserByOtpAndReferenceKey(referenceKey, otpValue);
-			if(isValidUser) {
-				session("REFERENCE-NUMBER", referenceKey);
-				session("AUTH-TOKEN", otpValue);
+			SchoolFormData schoolData = schoolRegistrationRequestDAO.isValidSchoolRegistrationRequest(referenceKey, otp, emailId);
+			if(schoolData != null && schoolData.isValidSchool()) {
+				session(SessionKey.REG_SCHOOL_REQUEST_NUMBER.name(), referenceKey);
+				session(SessionKey.OTP_KEY.name(), otp);
+
 				Form<SchoolFormData> schoolFormData = Form.form(SchoolFormData.class);
+				schoolFormData.fill(schoolData);
 				List<String> schoolBoards = SchoolBoard.getSchoolboardList();
 				List<String> schoolCategory = SchoolCategory.getSchoolCategoryList();
-				List<String> schoolType = SchoolType.getSchoolTypeList();
-				List<String> countries = Country.getCountries();
-				List<String> states = State.getStates();
-				
-				return ok(SchoolRegistration.render(schoolFormData, schoolBoards, schoolCategory, 
-						schoolType, countries, states));
+				List<String> schoolType = SchoolType.getSchoolTypeList();				
+				return ok(SchoolRegistration.render(schoolFormData, schoolBoards, schoolCategory, schoolType));
+			} else {
+				flash("error", "Your reference number or otp or email id is invalid. Please check and try again.");
+				return redirect(controllers.login_logout.routes.LoginController.preLogin()); // check here for proper redirection
 			}
 		} catch(Exception exception) {
 			exception.printStackTrace();
 		}
-		flash("error", "Your reference number or otp is invalid. Please check and enter again.");
-		return redirect(controllers.login_logout.routes.LoginController.preLogin());
+		flash("error", "We Are Sorry! Server exception occur. Please try after sometime.");
+		return redirect(controllers.login_logout.routes.LoginController.preLogin()); // check here for proper redirection
 	}
 
 	@Security.Authenticated(SchoolRegisterRequestAuthenticator.class)
 	public Result postSchoolRegistrationRequest() {
 		Form<SchoolFormData> schoolForm = Form.form(SchoolFormData.class).bindFromRequest();
-		System.out.println("===> " + schoolForm);
 		if(schoolForm == null || schoolForm.hasErrors()) {
-			System.out.println("***************");
 			flash("error", "Something parameter is missing or invalid in your registration request.");
-			return redirect(routes.RegistrationRequest.preAddNewSchoolRequest());
+			return redirect(controllers.login_logout.routes.LoginController.preLogin());
 		}
 
 		SchoolFormData schoolFormDetails = schoolForm.get();
 		if(schoolFormDetails == null) {
 			flash("error", "Something parameter is missing or invalid in your registration request.");
-			return redirect(routes.RegistrationRequest.preAddNewSchoolRequest());
+			return redirect(controllers.login_logout.routes.LoginController.preLogin());
 		}
 		
-		String referenceNumber = session().get("REFERENCE-NUMBER");
-		String authToken = session().get("AUTH-TOKEN");
+		String referenceNumber = session().get(SessionKey.REG_SCHOOL_REQUEST_NUMBER.name());
+		String authToken = session().get(SessionKey.OTP_KEY.name());
 		SchoolRegistrationDAO schoolRegistrationDAO = new SchoolRegistrationDAO();
 		try {
 			boolean isSuccessfull = schoolRegistrationDAO.registerSchool(schoolFormDetails, referenceNumber, authToken);
@@ -150,48 +155,13 @@ public class RegistrationRequest extends CustomController {
 			System.out.println("exception &&&&&&&&&");
 			exception.printStackTrace();
 		}
-
 		session().clear();
-		
 		return redirect(controllers.login_logout.routes.LoginController.preLogin());
 
 	}
 
-	public Result preEmployeeRegistrationRequest() {
-		SchoolFormData studentData = new SchoolFormData();
-		Form<SchoolFormData> schoolForm = Form.form(SchoolFormData.class).fill(studentData);
-		return ok("");
-//		return ok(schoolFieldSetIndex.render(schoolForm,
-//				State.makeStateMap(studentData),
-//				SchoolBoard.makeSchoolBoardMap(studentData),
-//				SchoolType.makeSchoolTypeMap(studentData)
-//				));
-	}
-
-	public Result postEmployeeRegistrationRequest() {
-		Form<SchoolFormData> schoolForm = Form.form(SchoolFormData.class).bindFromRequest();
-		return ok("school Registration completed");
-
-	}
-
-	public Result preStudentRegistrationRequest() {
-		SchoolFormData studentData = new SchoolFormData();
-		Form<SchoolFormData> schoolForm = Form.form(SchoolFormData.class).fill(studentData);
-		return ok("");
-//		return ok(schoolFieldSetIndex.render(schoolForm,
-//				State.makeStateMap(studentData),
-//				SchoolBoard.makeSchoolBoardMap(studentData),
-//				SchoolType.makeSchoolTypeMap(studentData)
-//				));
-	}
-
-	public Result postStudentRegistrationRequest() {
-		Form<SchoolFormData> schoolForm = Form.form(SchoolFormData.class).bindFromRequest();
-		return ok("school Registration completed");
-	}
-
 	public Result preApprovedNewSchoolRequest() {
-		SchoolRegistrationRequestDAO schoolRegistrationRequestDAO = new SchoolRegistrationRequestDAO();
+		AddNewSchoolRequestDAO schoolRegistrationRequestDAO = new AddNewSchoolRequestDAO();
 		try {
 			List<models.NewSchoolApprovedRequest> schools = schoolRegistrationRequestDAO.getAllSchoolNeedToBeApproved();
 			return ok(newSchoolApproved.render(schools));
@@ -215,7 +185,7 @@ public class RegistrationRequest extends CustomController {
 			return redirect(routes.RegistrationRequest.preApprovedNewSchoolRequest()); // same page
 		}
 
-		SchoolRegistrationRequestDAO schoolRegistrationRequestDAO = new SchoolRegistrationRequestDAO();
+		AddNewSchoolRequestDAO schoolRegistrationRequestDAO = new AddNewSchoolRequestDAO();
 		long id = Long.parseLong(newSchoolApprovedRequestDetails.get("id"));
 		String referenceNumber = newSchoolApprovedRequestDetails.get("requestNumber");
 		try {

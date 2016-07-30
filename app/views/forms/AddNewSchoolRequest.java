@@ -5,10 +5,13 @@ import java.util.List;
 
 import lombok.Data;
 import play.data.validation.ValidationError;
+import utils.AddressFieldValidationUtils;
+import utils.SchoolSpecificFiledValidation;
 import utils.ValidateFields;
 
 @Data
 public class AddNewSchoolRequest {
+	//only for internal use
 	private String id;
 	private String referenceNumber = "";
 
@@ -21,6 +24,7 @@ public class AddNewSchoolRequest {
 	private String state;
 	private String country;
 	private String pincode;
+	private String contractPersonName;
 
 	// optional field
 	private String schoolAlternativeNumber = "";
@@ -30,8 +34,12 @@ public class AddNewSchoolRequest {
 
 	public List<ValidationError> validate() {
 		List<ValidationError> errors = new ArrayList<>();
-		if (!ValidateFields.isValidSchoolName(schoolName)) {
+		if (!SchoolSpecificFiledValidation.isValidSchoolName(schoolName)) {
 			errors.add(new ValidationError("schoolName", "School name should not be empty. And should not contains special characters like ;@[]"));
+		}
+
+		if (contractPersonName == null || contractPersonName.trim().isEmpty()) {
+			errors.add(new ValidationError("contractPersonName", "contract person name should not be empty. And should not contains special characters like ;@[]"));
 		}
 
 		if(!ValidateFields.isValidEmailId(schoolEmail)) {
@@ -51,19 +59,19 @@ public class AddNewSchoolRequest {
 			errors.add(new ValidationError("schoolAddressLine1", "Address should not be empty."));
 		}
 
-		if(!ValidateFields.isValidCity(city)) {
+		if(!AddressFieldValidationUtils.isValidCity(city)) {
 			errors.add(new ValidationError("city", "City should not be empty. And should not contains any special characters except space."));
 		}
 
-		if(!ValidateFields.isValidState(state)) {
+		if(!AddressFieldValidationUtils.isValidState(state)) {
 			errors.add(new ValidationError("state", "State should not be empty. And should not contains any special characters except space."));
 		}
 
-		if(!ValidateFields.isValidCountry(country)) {
+		if(!AddressFieldValidationUtils.isValidCountry(country)) {
 			errors.add(new ValidationError("country", "Country should not be empty. And should not contains any special characters except space."));
 		}
 
-		if(!ValidateFields.isValidPincode(pincode)) {
+		if(!AddressFieldValidationUtils.isValidPincode(pincode)) {
 			errors.add(new ValidationError("pincode", "Pincode should not be empty. And should not contains any special characters."));
 		}
 

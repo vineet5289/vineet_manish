@@ -11,8 +11,14 @@ public class RandomGenerator {
 		return new BigInteger(length, random).toString(32);
 	}
 
-	public String getSalt(int length, SecureRandom random) {
+	public static String getSalt(int length, SecureRandom random) {
 		return new BigInteger(length, random).toString(32);
+	}
+
+	public static String getOTP() throws NoSuchAlgorithmException {
+		SecureRandom secureRandom = SecureRandom.getInstance("SHA1PRNG");
+		String otp = new Integer(secureRandom.nextInt()).toString().replace("-", "");
+		return otp;
 	}
 
 	public static String getBCryptPassword(String password) {
