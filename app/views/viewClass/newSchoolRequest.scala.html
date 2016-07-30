@@ -4,50 +4,17 @@ state:            List[String])
 @main2("Register"){
 <div class="ui container">
         <div class="ui centered stackable grid">
-        <div class="six wide column">
-           <form class="ui form" method="post">
-  <div class="field">
-    <div class="ui left icon input">
-	  <input type="text" name="name" placeholder="name" required minlength="6" />
-	  <i class="user icon"></i>
-	</div>
-  </div>
-  <div class="field">
-    <div class="ui left icon input">
-	  <input type="email" name="email" placeholder="email" required />
-	  <i class="mail icon"></i>
-	</div>
-  </div>
-  <div class="field">
-    <div class="ui left icon input">
-	  <input type="text" name="telephone" placeholder="telephone" required />
-	  <i class="phone icon"></i>
-	</div>
-  </div>
-  <div class="field">
-  	<select required name="select">
-  	</select>
-  </div>
-  <div class="field">
-    <textarea name="textarea" placeholder="textarea" required minlength="10" maxlength="20"></textarea>
-  </div>
-  <div class="field">
-    <div class="ui checkbox">
-      <input type="checkbox" tabindex="0" class="hidden" name="agree" required />
-      <label>T&C*</label>
-    </div>
-  </div>
-  <button class="ui button" type="submit">Submit</button>
-</form>
+        <div class="three wide column">
+           
         </div>
         <div class="ui vertical divider"></div>
         <div class="no"></div>
-            <div class="six wide column">
+            <div class="eight wide column">
                 <div class="ui segments" align="center">
                     <div class="ui inverted blue padded segment">
                         <span class="ui header">Register<span>
                     </div>
-                    <div class="ui segment" id="forToolTip">
+                    <div class="ui segment">
                         <form id="newSchoolRegistrationForm" class="ui form" method="Post" action="@routes.SchoolController.postAddNewSchoolRequest()">
                                 <div class="field">
                                  <div class="ui left icon input">
@@ -65,10 +32,60 @@ state:            List[String])
 							 
 							 <div class="field">
                                  <div class="ui left icon input">
-                                    <input type="text" name="schoolAddress" placeholder="schoolAddress">
+                                    <input type="text" name="schoolAddressLine1" placeholder="schoolAddressLine1">
                                     <i class="home icon"></i>
                                  </div>
                              </div>
+                             
+                             <div class="field">
+                                 <div class="ui left icon input">
+                                    <input type="text" name="schoolAddressLine2" placeholder="schoolAddressLine2">
+                                    <i class="home icon"></i>
+                                 </div>
+                             </div>
+                             
+                             <div class="fields">
+                                 <div class="eight wide field">
+                                   <div class="ui left icon input">
+                                     <input type="text" name="city" placeholder="city">
+                                     <i class="home icon"></i>
+                                   </div>
+                                 </div>
+                                 <div class="eight wide field">
+                                   <select class="ui dropdown" name="state">
+                                        <option value="">Select State</option>
+                                        <option value="u">Uttar Pradesh</option>
+                                        <option value="m">Madhya Pradesh</option>
+                                        <option value="d">Delhi</option>
+                                        <option value="r">Rajasthan</option>
+                                        <option value="o">Orissa</option>
+                                        <option value="w">West Bengal</option>
+                                   </select>
+                                </div>
+                                
+                             </div>
+                             
+                           
+                            
+                            
+                            
+                             <div class="fields">
+                                <div class="eight wide field">
+                                  <div class="ui left icon input">
+                                    <input type="text" name="country" placeholder="Country">
+                                    <i class="home icon"></i>
+                                 </div>
+                               </div>
+                               <div class="eight wide field">
+                                 <div class="ui left icon input">
+                                    <input type="text" name="pincode" placeholder="pincode">
+                                    <i class="home icon"></i>
+                                 </div>
+                               </div>
+                              </div> 
+                              
+                             
+                             
                              
                              <div class="field">
                                  <div class="ui left icon input">
@@ -79,26 +96,27 @@ state:            List[String])
 							 
 							 <div class="field">
                                  <div class="ui left icon input">
-                                    <input type="text" name="principalName" placeholder="principalName">
+                                    <input type="text" name="contactPersonName" placeholder="Your Name (Who is Contacting)">
                                     <i class="user icon"></i>
                                  </div>
                              </div>
                              
-							 <div class="field">
-                                 <div class="ui left icon input">
-                                    <input type="email" name="principalEmail" placeholder="principalEmail">
-                                    <i class="mail icon"></i>
-                                 </div>
-                             </div>
-                          
-							 
-							 
+							<div class="field">
+							    
+                                  <div class="ui left icon input">
+                                    <input type="text" name="schoolMobileNumber" placeholder="school Mobile Number">
+                                    <i class="phone square icon"></i>
+                                   </div> 
+                                
+                            </div>
+                            
                             <div class="field">
                                 <div class="ui left icon input">
-                                    <input type="text" name="contact" placeholder="contact">
+                                    <input type="text" name="schoolAlternativeNumber" placeholder="Alternative  Mobile Number">
                                     <i class="phone square icon"></i>
                                 </div>
-                            </div>
+                            </div> 
+                            
                             <div class="field">
                                 <div class="ui left icon input">
                                     <input type="text" name="query" placeholder="query" help="Please Enter Your Query">
