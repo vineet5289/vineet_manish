@@ -8,10 +8,10 @@ public class AddressFieldValidationUtils {
 	private static final String CITY_PATTERN = "^([ \t]*[a-z]+[ \t]*)+$";
 
 	private static Pattern statePatter;
-	private static final String STATE_PATTERN = "^([ \t]*[a-z]+[ \t]*)+$";
+	private static final String STATE_PATTERN = "^([ \t]*[a-z. \t]+[ \t]*)+$";
 
 	private static Pattern countryPatter;
-	private static final String COUNTRY_PATTERN = "^([ \t]*[a-z]+[ \t]*)+$";
+	private static final String COUNTRY_PATTERN = "^([ \t]*[a-z.]+[ \t]*)+$";
 
 	private static Pattern pincodePatter;
 	private static final String PINCODE_PATTERN = "^[1-9]{1}[0-9]{5}$";
