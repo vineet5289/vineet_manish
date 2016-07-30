@@ -16,13 +16,13 @@ public class SchoolFormData {
 	private String schoolName;
 	private String schoolEmail;
 	private String schoolMobileNumber;
+	private String schoolAlternativeNumber;
 	private String schoolAddressLine1;
+	private String schoolAddressLine2;
 	private String city;
 	private String state;
 	private String country;
 	private String pincode;
-	private String schoolAlternativeNumber;
-	private String schoolAddressLine2;
 	private String schoolRegistrationId;
 	private String schoolUserName; //set to emial id
 

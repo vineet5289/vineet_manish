@@ -28,8 +28,8 @@ GET      	/addnewschoolrequest                	   controllers.SchoolController.p
 POST     	/addnewschoolrequest                       controllers.SchoolController.postAddNewSchoolRequest()
 
 # schoole registration request
-POST      	/submitopt                            	   controllers.RegistrationRequest.submitOTP()
-POST     	/registerschool            	           	   controllers.RegistrationRequest.postSchoolRegistrationRequest()
+POST      	/submitopt                            	   controllers.SchoolController.submitOTP()
+POST     	/registerschool            	           	   controllers.SchoolController.postSchoolRegistrationRequest()
 
 # employee registration request
 GET      	/registeremp                              controllers.EmployeeController.preEmployeeRegistrationRequest()
@@ -46,8 +46,8 @@ GET     	/assets/*file		                  	   controllers.Assets.at(path="/publi
 
 # approved school
 
-GET			/approvedschool							   controllers.SchoolController.preApprovedNewSchoolRequest()
-POST		/approvedschool							   controllers.SchoolController.postApproveNewSchooldRequest()
+#GET			/approvedschool							   controllers.SchoolController.preApprovedNewSchoolRequest()
+#POST		/approvedschool							   controllers.SchoolController.postApproveNewSchooldRequest()
 
 # students and guardian registration
 

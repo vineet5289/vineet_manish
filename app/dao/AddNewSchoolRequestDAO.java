@@ -14,6 +14,7 @@ import java.util.Map;
 import play.db.DB;
 import utils.RandomGenerator;
 import utils.StringUtils;
+import views.forms.NewSchoolApprovedRequest;
 import views.forms.SchoolFormData;
 import actors.SchoolRequestActorProtocol.ApprovedSchool;
 import enum_package.RequestedStatus;
@@ -92,94 +93,100 @@ public class AddNewSchoolRequestDAO {
 		return requestNumber; 
 	}
 
-	public ApprovedSchool approved(String referneceNumberValue, long idValue) throws Exception {
-		RandomGenerator randomGenerator = new RandomGenerator(); 
-		SecureRandom secureRandom = new SecureRandom();
-		Calendar calendar = Calendar.getInstance();
-		java.util.Date now = calendar.getTime();
+//	public ApprovedSchool approved(String referneceNumberValue, long idValue) throws Exception {
+//		RandomGenerator randomGenerator = new RandomGenerator(); 
+//		SecureRandom secureRandom = new SecureRandom();
+//		Calendar calendar = Calendar.getInstance();
+//		java.util.Date now = calendar.getTime();
+//		Connection connection = null;
+//		PreparedStatement preparedStatement = null;
+//		ResultSet resultSet = null;
+//		ApprovedSchool approvedSchool = null;
+//
+//		String selectQuery = String.format("SELECT %s, %s, %s, %s, %s, %s, %s FROM %s WHERE %s=? AND %s=?;",
+//				idField, principalNameField, principalEmailField, mobileNumberField, authTokenField, requestNumberField, alertDoneField, authTokenGenereatedAtField, 
+//				statusField, tableName, requestNumberField, idField);
+//		try {
+//			connection = DB.getDataSource("srp").getConnection();
+//			connection.setAutoCommit(false);
+//			preparedStatement = connection.prepareStatement(selectQuery, ResultSet.TYPE_FORWARD_ONLY, ResultSet .CONCUR_UPDATABLE);
+//			preparedStatement.setString(1, referneceNumberValue);
+//			preparedStatement.setLong(2, idValue);
+//			resultSet = preparedStatement.executeQuery();
+//			if(resultSet.next()) {
+//				approvedSchool = new ApprovedSchool();
+//				approvedSchool.setId(resultSet.getLong(idField));
+//
+//				String authTokeValue = randomGenerator.getReferenceNumber(30, secureRandom);
+//				approvedSchool.setAuthToke(authTokeValue);
+//				resultSet.updateString(authTokenField, authTokeValue);
+//				resultSet.updateTimestamp(authTokenGenereatedAtField, new Timestamp(now.getTime()));
+//
+//				approvedSchool.setContract(resultSet.getString(mobileNumberField));
+//				approvedSchool.setPrincipleEmail(resultSet.getString(principalEmailField));
+//				approvedSchool.setPrincipleName(resultSet.getString(principalNameField));
+//				approvedSchool.setReferenceNumber(resultSet.getString(requestNumberField));
+//
+//				resultSet.updateString(statusField, RequestedStatus.APPROVED.name());
+//				resultSet.updateBoolean(alertDoneField, true);
+//				resultSet.updateRow();
+//			}
+//			connection.commit();
+//		} catch(Exception exception) {
+//			System.out.println("connection exception happen");
+//			exception.printStackTrace();
+//			if(connection != null)
+//				connection.rollback();
+//			return null;
+//		} finally {
+//			if(resultSet != null)
+//				resultSet.close();
+//			if(preparedStatement != null)
+//				preparedStatement.close();
+//			if(connection != null)
+//				connection.close();
+//		}
+//		return approvedSchool; 
+//	}
+
+	public List<NewSchoolApprovedRequest> getAllSchoolNeedToBeApproved() throws Exception {
+		List<NewSchoolApprovedRequest> schools = new ArrayList<NewSchoolApprovedRequest>();
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
-		ApprovedSchool approvedSchool = null;
-
-		String selectQuery = String.format("SELECT %s, %s, %s, %s, %s, %s, %s, %s, %s FROM %s WHERE %s=? AND %s=?;",
-				idField, principalNameField, principalEmailField, mobileNumberField, authTokenField, requestNumberField, alertDoneField, authTokenGenereatedAtField, 
-				statusField, tableName, requestNumberField, idField);
-		try {
-			connection = DB.getDataSource("srp").getConnection();
-			connection.setAutoCommit(false);
-			preparedStatement = connection.prepareStatement(selectQuery, ResultSet.TYPE_FORWARD_ONLY, ResultSet .CONCUR_UPDATABLE);
-			preparedStatement.setString(1, referneceNumberValue);
-			preparedStatement.setLong(2, idValue);
-			resultSet = preparedStatement.executeQuery();
-			if(resultSet.next()) {
-				approvedSchool = new ApprovedSchool();
-				approvedSchool.setId(resultSet.getLong(idField));
-
-				String authTokeValue = randomGenerator.getReferenceNumber(30, secureRandom);
-				approvedSchool.setAuthToke(authTokeValue);
-				resultSet.updateString(authTokenField, authTokeValue);
-				resultSet.updateTimestamp(authTokenGenereatedAtField, new Timestamp(now.getTime()));
-
-				approvedSchool.setContract(resultSet.getString(mobileNumberField));
-				approvedSchool.setPrincipleEmail(resultSet.getString(principalEmailField));
-				approvedSchool.setPrincipleName(resultSet.getString(principalNameField));
-				approvedSchool.setReferenceNumber(resultSet.getString(requestNumberField));
-
-				resultSet.updateString(statusField, RequestedStatus.APPROVED.name());
-				resultSet.updateBoolean(alertDoneField, true);
-				resultSet.updateRow();
-			}
-			connection.commit();
-		} catch(Exception exception) {
-			System.out.println("connection exception happen");
-			exception.printStackTrace();
-			if(connection != null)
-				connection.rollback();
-			return null;
-		} finally {
-			if(resultSet != null)
-				resultSet.close();
-			if(preparedStatement != null)
-				preparedStatement.close();
-			if(connection != null)
-				connection.close();
-		}
-		return approvedSchool; 
-	}
-
-	public List<models.NewSchoolApprovedRequest> getAllSchoolNeedToBeApproved() throws Exception {
-		List<models.NewSchoolApprovedRequest> schools = new ArrayList<models.NewSchoolApprovedRequest>();
-		Connection connection = null;
-		PreparedStatement preparedStatement = null;
-		ResultSet resultSet = null;
-		String selectQuery = String.format("SELECT %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s FROM %s WHERE %s=?;",
-				idField, schoolNameField, principalNameField, principalEmailField, mobileNumberField, schoolAddressField, schoolRegistrationIdField, queryField, requestedAtField, 
-				statusField, statusUpdatedAtField, requestNumberField, tableName, statusField);
+		String selectQuery = String.format("SELECT %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s FROM %s WHERE %s=? AND %s=?;",
+				idField, schoolNameField, schoolEmailField, mobileNumberField, alternativeNumberField, queryField, schoolAddressLine1Field,
+				schoolAddressLine2Field, cityField, stateField, countryField, pinCodeField, statusField, requestNumberField, createdAtField,
+				updatedAtField, contractPersonNameField, tableName, statusField, isActiveField);
 
 		try {
 			connection = DB.getDataSource("srp").getConnection();
-			connection.setAutoCommit(false);
 			preparedStatement = connection.prepareStatement(selectQuery, ResultSet.TYPE_FORWARD_ONLY, ResultSet .CONCUR_UPDATABLE);
 			preparedStatement.setString(1, RequestedStatus.REQUESTED.name());
+			preparedStatement.setBoolean(2, true);
+
 			resultSet = preparedStatement.executeQuery();
 			while(resultSet.next()) {
-				models.NewSchoolApprovedRequest newSchoolApprovedRequest = new models.NewSchoolApprovedRequest();
+				NewSchoolApprovedRequest newSchoolApprovedRequest = new NewSchoolApprovedRequest();
 				newSchoolApprovedRequest.setId(resultSet.getLong(idField));
 				newSchoolApprovedRequest.setSchoolName(resultSet.getString(schoolNameField));
-				newSchoolApprovedRequest.setPrincipalName(resultSet.getString(principalNameField));
-				newSchoolApprovedRequest.setPrincipalEmail(resultSet.getString(principalEmailField));
-				newSchoolApprovedRequest.setContact(resultSet.getString(mobileNumberField));
-				newSchoolApprovedRequest.setSchoolAddress(resultSet.getString(schoolAddressField));
-				newSchoolApprovedRequest.setSchoolRegistrationId(resultSet.getString(schoolRegistrationIdField));
+				newSchoolApprovedRequest.setSchoolEmail(resultSet.getString(schoolEmailField));
+				newSchoolApprovedRequest.setSchoolMobileNumber(resultSet.getString(mobileNumberField));
+				newSchoolApprovedRequest.setSchoolAlternativeNumber(resultSet.getString(alternativeNumberField));
 				newSchoolApprovedRequest.setQuery(resultSet.getString(queryField));
-				newSchoolApprovedRequest.setRequestedAt(resultSet.getTimestamp(requestedAtField));
-				newSchoolApprovedRequest.setStatus(RequestedStatus.valueOf(resultSet.getString(statusField)));
-				newSchoolApprovedRequest.setStatusUpdatedAt(resultSet.getTimestamp(statusUpdatedAtField));
-				newSchoolApprovedRequest.setRequestNumber(resultSet.getString(requestNumberField));
+				newSchoolApprovedRequest.setSchoolAddressLine1(resultSet.getString(schoolAddressLine1Field));
+				newSchoolApprovedRequest.setSchoolAddressLine2(resultSet.getString(schoolAddressLine2Field));
+				newSchoolApprovedRequest.setCity(resultSet.getString(cityField));
+				newSchoolApprovedRequest.setState(resultSet.getString(stateField));
+				newSchoolApprovedRequest.setCountry(resultSet.getString(countryField));
+				newSchoolApprovedRequest.setPincode(resultSet.getString(pinCodeField));
+				newSchoolApprovedRequest.setStatus(resultSet.getString(statusField));
+				newSchoolApprovedRequest.setReferenceNumber(resultSet.getString(requestNumberField));
+				newSchoolApprovedRequest.setRequestedAt(resultSet.getTimestamp(createdAtField));
+				newSchoolApprovedRequest.setStatusUpdatedAt(resultSet.getTimestamp(updatedAtField));
+				newSchoolApprovedRequest.setContractPersonName(resultSet.getString(contractPersonNameField));
 				schools.add(newSchoolApprovedRequest);
 			}
-			connection.commit();
 		} catch(Exception exception) {
 			exception.printStackTrace();
 			return null;

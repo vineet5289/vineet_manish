@@ -17,6 +17,7 @@ import play.mvc.Result;
 import play.mvc.Security;
 import security.SchoolRegisterRequestAuthenticator;
 import views.forms.AddNewSchoolRequest;
+import views.forms.NewSchoolApprovedRequest;
 import views.forms.OTPField;
 import views.forms.SchoolFormData;
 import views.html.newSchoolApproved;
@@ -54,13 +55,13 @@ public class SchoolController extends CustomController {
 		Form<AddNewSchoolRequest> addNewSchoolRequest = Form.form(AddNewSchoolRequest.class).bindFromRequest();
 		if(addNewSchoolRequest == null || addNewSchoolRequest.hasErrors()) {
 			flash("error", "Something parameter is missing or invalid in your registration request.");
-			return redirect(routes.RegistrationRequest.preAddNewSchoolRequest());
+			return redirect(routes.SchoolController.preAddNewSchoolRequest());
 		}
 
 		Map<String, String> addNewSchoolRequestDetails = addNewSchoolRequest.data();
 		if(addNewSchoolRequestDetails == null || addNewSchoolRequestDetails.isEmpty()) {
 			flash("error", "Something parameter is missing or invalid in your registration request.");
-			return redirect(routes.RegistrationRequest.preAddNewSchoolRequest());
+			return redirect(routes.SchoolController.preAddNewSchoolRequest());
 		}
 
 		AddNewSchoolRequestDAO schoolRegistrationRequestDAO = new AddNewSchoolRequestDAO();
@@ -69,12 +70,12 @@ public class SchoolController extends CustomController {
 			requestRefNumber = schoolRegistrationRequestDAO.generateRequest(addNewSchoolRequestDetails);
 		} catch (Exception exception) {
 			flash("error", "Something wrong happen with our server. Please try again.");
-			return redirect(routes.RegistrationRequest.preAddNewSchoolRequest());
+			return redirect(routes.SchoolController.preAddNewSchoolRequest());
 		}
 
 		if(requestRefNumber == null || requestRefNumber.isEmpty()) {
 			flash("error", "Something wrong happen with our server. Please try again.");
-			return redirect(routes.RegistrationRequest.preAddNewSchoolRequest());
+			return redirect(routes.SchoolController.preAddNewSchoolRequest());
 		}
 
 		String schoolEmailId = addNewSchoolRequestDetails.get("schoolEmail");
@@ -149,55 +150,60 @@ public class SchoolController extends CustomController {
 		String referenceNumber = session().get(SessionKey.REG_SCHOOL_REQUEST_NUMBER.name());
 		String authToken = session().get(SessionKey.OTP_KEY.name());
 		SchoolRegistrationDAO schoolRegistrationDAO = new SchoolRegistrationDAO();
+		boolean isSuccessfull = false;
 		try {
-			boolean isSuccessfull = schoolRegistrationDAO.registerSchool(schoolFormDetails, referenceNumber, authToken);
+			isSuccessfull = schoolRegistrationDAO.registerSchool(schoolFormDetails, referenceNumber, authToken);
 		} catch(Exception exception) {
-			System.out.println("exception &&&&&&&&&");
 			exception.printStackTrace();
 		}
+
 		session().clear();
+		if(isSuccessfull) {
+			flash("success", "School has been successfully registered. Please use your username and password for login");			
+		} else {
+			flash("error", "Sorry!! something error occur registration request. Please try after sometime.");
+		}
 		return redirect(controllers.login_logout.routes.LoginController.preLogin());
-
 	}
 
-	public Result preApprovedNewSchoolRequest() {
-		AddNewSchoolRequestDAO schoolRegistrationRequestDAO = new AddNewSchoolRequestDAO();
-		try {
-			List<models.NewSchoolApprovedRequest> schools = schoolRegistrationRequestDAO.getAllSchoolNeedToBeApproved();
-			return ok(newSchoolApproved.render(schools));
-		} catch (Exception exception) {
-			flash("error", "Something wrong happen with our server. Please try again.");
-			exception.printStackTrace();
-			return badRequest(); // need to be decide
-		}
-	}
+//	public Result preApprovedNewSchoolRequest() {
+//		AddNewSchoolRequestDAO schoolRegistrationRequestDAO = new AddNewSchoolRequestDAO();
+//		try {
+//			List<NewSchoolApprovedRequest> schools = schoolRegistrationRequestDAO.getAllSchoolNeedToBeApproved();
+//			return ok(newSchoolApproved.render(schools));
+//		} catch (Exception exception) {
+//			flash("error", "Something wrong happen with our server. Please try again.");
+//			exception.printStackTrace();
+//			return badRequest(); // need to be decide
+//		}
+//	}
 
-	public Result postApproveNewSchooldRequest() {
-		Form<views.forms.NewSchoolApprovedRequest> newSchoolApprovedRequest = Form.form(views.forms.NewSchoolApprovedRequest.class).bindFromRequest();
-		if(newSchoolApprovedRequest == null || newSchoolApprovedRequest.hasErrors()) {
-			flash("error", "Referess page and try it again.");
-			return redirect(routes.RegistrationRequest.preApprovedNewSchoolRequest());
-		}
-
-		Map<String, String> newSchoolApprovedRequestDetails = newSchoolApprovedRequest.data();
-		if(newSchoolApprovedRequestDetails == null || newSchoolApprovedRequestDetails.isEmpty()) {
-			flash("error", "Referess page and try it again.");
-			return redirect(routes.RegistrationRequest.preApprovedNewSchoolRequest()); // same page
-		}
-
-		AddNewSchoolRequestDAO schoolRegistrationRequestDAO = new AddNewSchoolRequestDAO();
-		long id = Long.parseLong(newSchoolApprovedRequestDetails.get("id"));
-		String referenceNumber = newSchoolApprovedRequestDetails.get("requestNumber");
-		try {
-
-			ApprovedSchool approvedSchool = schoolRegistrationRequestDAO.approved(referenceNumber, id);
-			messageActor.tell(approvedSchool, messageActor);
-		} catch (Exception exception) {
-			flash("error", "Referess page and try it again.");
-			exception.printStackTrace();
-			return redirect(routes.RegistrationRequest.preApprovedNewSchoolRequest());
-		}
-		
-		return ok("approved");
-	}
+//	public Result postApproveNewSchooldRequest() {
+//		Form<NewSchoolApprovedRequest> newSchoolApprovedRequest = Form.form(NewSchoolApprovedRequest.class).bindFromRequest();
+//		if(newSchoolApprovedRequest == null || newSchoolApprovedRequest.hasErrors()) {
+//			flash("error", "Referess page and try it again.");
+//			return redirect(routes.RegistrationRequest.preApprovedNewSchoolRequest());
+//		}
+//
+//		Map<String, String> newSchoolApprovedRequestDetails = newSchoolApprovedRequest.data();
+//		if(newSchoolApprovedRequestDetails == null || newSchoolApprovedRequestDetails.isEmpty()) {
+//			flash("error", "Referess page and try it again.");
+//			return redirect(routes.RegistrationRequest.preApprovedNewSchoolRequest()); // same page
+//		}
+//
+//		AddNewSchoolRequestDAO schoolRegistrationRequestDAO = new AddNewSchoolRequestDAO();
+//		long id = newSchoolApprovedRequestDetails.get("id");
+//		String referenceNumber = newSchoolApprovedRequestDetails.get("requestNumber");
+//		try {
+//			ApprovedSchool approvedSchool = schoolRegistrationRequestDAO.approved(referenceNumber, id);
+//			mailerActor.tell(newSchoolRequest, mailerActor);
+//			messageActor.tell(approvedSchool, messageActor);
+//		} catch (Exception exception) {
+//			flash("error", "Referess page and try it again.");
+//			exception.printStackTrace();
+//			return redirect(routes.RegistrationRequest.preApprovedNewSchoolRequest());
+//		}
+//		
+//		return ok("approved");
+//	}
 }

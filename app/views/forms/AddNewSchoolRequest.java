@@ -12,7 +12,7 @@ import utils.ValidateFields;
 @Data
 public class AddNewSchoolRequest {
 	//only for internal use
-	private String id;
+	private Long id;
 	private String referenceNumber = "";
 
 	//compulsory field
