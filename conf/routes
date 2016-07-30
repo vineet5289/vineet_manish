@@ -32,7 +32,10 @@ POST      	/submitopt                            	   controllers.SchoolControlle
 POST     	/registerschool            	           	   controllers.SchoolController.postSchoolRegistrationRequest()
 
 # employee registration request
-GET      	/registeremp                              controllers.EmployeeController.preEmployeeRegistrationRequest()
+GET			/addemp									   controllers.EmployeeController.preAddEmployeeRequest()
+GET			/addemp									   controllers.EmployeeController.postAddEmployeeRequest()
+
+GET      	/registeremp                               controllers.EmployeeController.preEmployeeRegistrationRequest()
 POST     	/registeremp            	               controllers.EmployeeController.postEmployeeRegistrationRequest()
 
 # students registration request
