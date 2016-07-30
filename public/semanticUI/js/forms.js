@@ -25,7 +25,7 @@ $(function () {
                 identifier: 'schoolName',
                 rules: [{
                     type: 'empty',
-                    prompt: 'Please enter a value'
+                    prompt: 'Please enter School Name'
                 }]
             },
 	     schoolRegistrationId: {
@@ -36,24 +36,48 @@ $(function () {
                     prompt: 'Please enter your School Registration Id'
                 }]
             },
-		 schoolAddress: {
-                identifier: 'schoolAddress',
+		 schoolAddressLine1: {
+                identifier: 'schoolAddressLine1',
                 rules: [{
                     type: 'empty',
                     prompt: 'Please enter your School Address'
                 }]
             },
-		 principalName: {
-                identifier: 'principalName',
+            schoolAddressLine2: {
+                identifier: 'schoolAddressLine2',
                 rules: [{
+                    optional:true,
                     type: 'empty',
-                    prompt: 'Please enter your principal Name'
+                    prompt: 'Please enter your School Address'
                 }]
             },
-		contact: {
-                identifier: 'contact',
+             city: {
+                identifier: 'city',
                 rules: [{
-                    type: 'minLength[8]',
+                    type: 'empty',
+                    prompt: 'Please enter City'
+                }]
+            },
+            
+            state: {
+                identifier: 'state',
+                rules: [{
+                    type: 'empty',
+                    prompt: 'Please enter State'
+                }]
+            },
+            
+		 contactPersonName: {
+                identifier: 'contactPersonName',
+                rules: [{
+                    type: 'empty',
+                    prompt: 'Please enter your Name'
+                }]
+            },
+		schoolMobileNumber: {
+                identifier: 'schoolMobileNumber',
+                rules: [{
+                    type: 'minLength[10]',
                     prompt: 'Please enter your Contact Number'
                 }]
             },
@@ -72,9 +96,9 @@ $(function () {
 
 	   $('#newSchoolRegistrationForm').form(validationObj, {
 		inline: false,
-		onSuccess: function(){
-			$('#newSchoolRequestPost').modal('show');
-		}
+		//onSuccess: function(){
+			//$('#newSchoolRequestPost').modal('show');
+		//}
 	});
 	
 	// For Main login form
