@@ -24,7 +24,7 @@ public class AddNewSchoolRequest {
 	private String state;
 	private String country;
 	private String pincode;
-	private String contractPersonName;
+	private String contactPersonName;
 
 	// optional field
 	private String schoolAlternativeNumber = "";
@@ -38,7 +38,7 @@ public class AddNewSchoolRequest {
 			errors.add(new ValidationError("schoolName", "School name should not be empty. And should not contains special characters like ;@[]"));
 		}
 
-		if (contractPersonName == null || contractPersonName.trim().isEmpty()) {
+		if (contactPersonName == null || contactPersonName.trim().isEmpty()) {
 			errors.add(new ValidationError("contractPersonName", "contract person name should not be empty. And should not contains special characters like ;@[]"));
 		}
 
