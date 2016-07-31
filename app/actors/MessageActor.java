@@ -33,10 +33,10 @@ public class MessageActor extends UntypedActor {
 	public void onReceive(Object message) throws Exception {
 		if(message instanceof NewSchoolRequest) {
 			NewSchoolRequest newSchoolRequest = (NewSchoolRequest)message;
-			params.add(new BasicNameValuePair("To", newSchoolRequest.getReceiverPhoneNumber()));
+			params.add(new BasicNameValuePair("To", newSchoolRequest.getSchoolPhoneNumber()));
 			params.add(new BasicNameValuePair("From", "+19205692172")); // Replace with a valid phone number for your account.
 			String messageBody = String.format("Dear %s, your request has been received. Your request reference number is %s. "
-					+ "We will get back to you as soon as possible.", newSchoolRequest.getReceiverName(), newSchoolRequest.getReferenceNumber());
+					+ "We will get back to you as soon as possible.", newSchoolRequest.getSchoolName(), newSchoolRequest.getReferenceNumber());
 
 			params.add(new BasicNameValuePair("Body", messageBody));
 			MessageFactory messageFactory = twilioRestClient.getAccount().getMessageFactory();

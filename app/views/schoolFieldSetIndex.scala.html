@@ -1,4 +1,4 @@
-@(schoolForm: Form[views.forms.SchoolFormData],
+@(schoolForm: Form[views.forms.school.SchoolFormData],
   schoolBoard:      List[String],
   schoolCategory:    List[String],
   schoolType:        List[String],
@@ -11,7 +11,7 @@
 <div class="container">
   <div class="well">
 
-    @form(routes.RegistrationRequest.postSchoolRegistrationRequest(), 'class -> "form-horizontal") {
+    @form(routes.SchoolController.postSchoolRegistrationRequest(), 'class -> "form-horizontal") {
     	@schoolFieldSet(schoolForm, schoolBoard, schoolCategory, schoolType, schoolCountry, state)
     }
   </div>

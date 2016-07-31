@@ -8,47 +8,39 @@
     
     
     <link rel="stylesheet" href="@routes.Assets.versioned("semanticUI/css/semantic.css")">
-    <link rel="stylesheet" href="@routes.Assets.versioned("semanticUI/css/main.css")">
-    <link rel="stylesheet" href="@routes.Assets.versioned("semanticUI/css/animate.css")">
+    <link rel="stylesheet" href="@routes.Assets.versioned("semanticUI/css/homepage.css")">
     
 </head>
-<body>
-  <div class="ui fixed top menu">
-      <a href="/login" class="item">SRP</a>
-      <div class="item">Home</div>
-      <div class="item">About</div>
-      <div class="item">Contact</div>
-      <div class="item">#</div>
-      <div class="right item">
-        <div class="ui search">
-             <div class="ui icon input">
-                <input class="prompt" placeholder="Search" type="text">
-                <i class="search icon"></i>
-            </div>
-        </div>
-      </div>
-      <div class="right item">
-         <a class="icon item pointer" data-toggle="popup" data-position="bottom right">REGISTER</a>
-            <div class="ui fluid popup" style="min-width:300px;padding-top:10px;">
-              <div class="item">
-                <form class="ui form" method="GET" action="/registration">
-                  <div class="field">
-                      <select class="ui dropdown" name="reg_user_request">
-                              <option value="">YOU REGISTERED AS </option>
-                              <option value="SCHOOL">SCHOOL</option>
-                              <option value="OTHER USER">OTHER USER</option>
-                       </select>
-                  </div>
-                  
-                     <button class="ui small fluid blue icon button" type="submit">REGISTER <i class="users icon"></i></button>
-              </form>
+<body id="home">
+   <div class="ui inverted masthead segment">
+    <div class="ui page grid">
+      <div class="column">
+        <div class="ui inverted blue menu">
+          <a class="header item" href="\login">SRP</a>
+          <div class="right menu">
+            <div class="ui mobile dropdown link item">
+              Menu
+              <i class="dropdown icon"></i>
+              <div class="menu">
+                <a class="item">Classes</a>
+                <a class="item">Cocktail Hours</a>
+                <a class="item">Community</a>
               </div>
             </div>
             
-      </div>
-  </div> 
-   @content 
-      
+            <a class="item">Library</a>
+            <a class="item">Community</a>
+            <div class="ui dropdown link item">
+              Register
+              <i class="dropdown icon"></i>
+              <div class="menu">
+                <a class="item">School</a>
+                <a class="item">Other Users</a>
+              </div>
+            </div>
+          </div>
+        </div>
+@content
   
 
    
@@ -58,8 +50,11 @@
 		<script type="text/javascript" src="@routes.Assets.versioned("semanticUI/js/nicescroll.js")"></script>
 		
 		<script type="text/javascript" src="@routes.Assets.versioned("semanticUI/js/jquery-1.12.2.js")"></script>
-		<script type="text/javascript" src="@routes.Assets.versioned("semanticUI/js/main.js")"></script>
+		
+		<script type="text/javascript" src="@routes.Assets.versioned("semanticUI/js/homepage.js")"></script>
 		<script type="text/javascript" src="@routes.Assets.versioned("semanticUI/js/forms.js")"></script>
+	 <script type="text/javascript" src="@routes.Assets.versioned("semanticUI/js/jquery.validate.min.js")"></script>
+	 <script type="text/javascript" src="@routes.Assets.versioned("semanticUI/js/formvalidation.js")"></script>
 		
 
  

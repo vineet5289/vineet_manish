@@ -2,11 +2,11 @@ package controllers.school;
 
 import java.util.List;
 
+import controllers.CustomController;
 import play.data.Form;
 import play.mvc.Result;
 import views.forms.school.SubjectForm;
 import views.html.test;
-import controllers.CustomController;
 import dao.SubjectDAO;
 
 public class SubjectController extends CustomController {

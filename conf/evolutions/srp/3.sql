@@ -1,42 +1,29 @@
 # --- !Ups
-
-CREATE TABLE IF NOT EXISTS subject (
+CREATE TABLE IF NOT EXISTS message (
   id bigint(20) NOT NULL AUTO_INCREMENT,
-  subject_name varchar(120) COLLATE utf8_unicode_ci NOT NULL,
-  class_id bigint(20) NOT NULL,
   school_id bigint(20) NOT NULL,
-  subject_code varchar(20) COLLATE utf8_unicode_ci,
+  message longtext COLLATE utf8_unicode_ci NOT NULL,
+  receiver_ids text COLLATE utf8_unicode_ci, 
+  class_ids text COLLATE utf8_unicode_ci,
+  is_for_parents tinyint(1) DEFAULT 0,
+  is_for_teachers tinyint(1) DEFAULT 0,
+  is_for_students tinyint(1) DEFAULT 0,
+  is_for_school tinyint(1) DEFAULT 0, 
   created_at timestamp DEFAULT CURRENT_TIMESTAMP,
-  updated_at timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  is_active tinyint(1) DEFAULT 1,
-  user_name varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (id),
-  KEY FK_subject_class_id (class_id),
-  CONSTRAINT FK_subject_class_id FOREIGN KEY (class_id) REFERENCES class (id),
-  KEY FK_subject_school_id (school_id),
-  CONSTRAINT FK_subject_school_id FOREIGN KEY (school_id) REFERENCES school (id)
+  PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-CREATE TABLE IF NOT EXISTS time_table (
-  id bigint(20) NOT NULL AUTO_INCREMENT,
-  lecture_name varchar(25) COLLATE utf8_unicode_ci NOT NULL,
-  lecture_start_time varchar(25) COLLATE utf8_unicode_ci NOT NULL,
-  lecture_end_time varchar(25) COLLATE utf8_unicode_ci NOT NULL,
-  lecture_start_day varchar(25) COLLATE utf8_unicode_ci NOT NULL,
-  lecture_end_day varchar(25) COLLATE utf8_unicode_ci NOT NULL,
-  class_id bigint(20) NOT NULL,
-  teacher_id bigint(20) NOT NULL,
-  subject_id bigint(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS user_super_user (
+  super_user_name varchar(150) COLLATE utf8_unicode_ci NOT NULL,
+  school_id bigint(20) NOT NULL,
+  user_name varchar(150) COLLATE utf8_unicode_ci NOT NULL,
+  name varchar(150) COLLATE utf8_unicode_ci NOT NULL,
   is_active tinyint(1) DEFAULT 1,
-  created_at timestamp DEFAULT CURRENT_TIMESTAMP,
-  updated_at timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (id),
-  KEY FK_time_table_class_id (class_id),
-  CONSTRAINT FK_time_table_class_id FOREIGN KEY (class_id) REFERENCES class (id),
-  KEY FK_time_table_teacher_id (teacher_id),
-  CONSTRAINT FK_time_table_teacher_id FOREIGN KEY (teacher_id) REFERENCES employee (id),
-  KEY FK_time_table_subject_id (subject_id),
-  CONSTRAINT FK_time_table_subject_id FOREIGN KEY (subject_id) REFERENCES subject (id)
+  PRIMARY KEY (super_user_name, user_name),
+  KEY FK_user_super_user_school_id (school_id),
+  CONSTRAINT FK_user_super_user_school_id FOREIGN KEY (school_id) REFERENCES school (id),
+  KEY FK_user_super_user_name (super_user_name),
+  CONSTRAINT FK_user_super_user_name FOREIGN KEY (super_user_name) REFERENCES login (user_name)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 # --- !Downs

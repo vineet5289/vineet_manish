@@ -25,7 +25,7 @@ $(function () {
                 identifier: 'schoolName',
                 rules: [{
                     type: 'empty',
-                    prompt: 'Please enter a value'
+                    prompt: 'Please enter School Name'
                 }]
             },
 	     schoolRegistrationId: {
@@ -36,26 +36,75 @@ $(function () {
                     prompt: 'Please enter your School Registration Id'
                 }]
             },
-		 schoolAddress: {
-                identifier: 'schoolAddress',
+		 schoolAddressLine1: {
+                identifier: 'schoolAddressLine1',
                 rules: [{
                     type: 'empty',
                     prompt: 'Please enter your School Address'
                 }]
             },
-		 principalName: {
-                identifier: 'principalName',
+            schoolAddressLine2: {
+                identifier: 'schoolAddressLine2',
+                optional:true,
                 rules: [{
+                    
                     type: 'empty',
-                    prompt: 'Please enter your principal Name'
+                    prompt: 'Please enter your School Address'
                 }]
             },
-		contact: {
-                identifier: 'contact',
+             city: {
+                identifier: 'city',
                 rules: [{
-                    type: 'minLength[8]',
-                    prompt: 'Please enter your Contact Number'
+                    type: 'empty',
+                    prompt: 'Please enter City'
                 }]
+            },
+            
+            state: {
+                identifier: 'state',
+                rules: [{
+                    type: 'empty',
+                    prompt: 'Please enter State'
+                }]
+            },
+            
+             country: {
+                identifier: 'country',
+                rules: [{
+                    type: 'empty',
+                    prompt: 'Please enter City'
+                }]
+            },
+             pincode: {
+                identifier: 'pincode',
+                rules: [{
+                    type: 'empty',
+                    prompt: 'Please enter pincode'
+                }]
+            },
+            
+		 contactPersonName: {
+                identifier: 'contactPersonName',
+                rules: [{
+                    type: 'empty',
+                    prompt: 'Please enter your Name'
+                }]
+            },
+            
+            schoolEmail: {
+                identifier: 'schoolEmail',
+                rules: [{
+                    type: 'email',
+                    prompt: 'Please enter School email Id'
+                }]
+            },
+		schoolMobileNumber: {
+                identifier: 'schoolMobileNumber',
+                rules: [{
+                    type:'exactLength[10]',
+                    prompt: 'Mobile Number Shoud be of 10 Length'
+                }]
+                 
             },
 		query: {
                 identifier: 'query',
@@ -66,15 +115,15 @@ $(function () {
                 }]
             }
 	};
-
+    
 
 	// New School Request Form
 
-	$('#newSchoolRegistrationForm').form(validationObj, {
-		inline: false,
-		onSuccess: function(){
-			$('#newSchoolRequestPost').modal('show');
-		}
+	   $('#newSchoolRegistrationForm').form(validationObj, {
+		inline: true,
+		//onSuccess: function(){
+			//$('#newSchoolRequestPost').modal('show');
+		//}
 	});
 	
 	// For Main login form
@@ -94,10 +143,16 @@ $(function () {
     $('#completeSchoolRegistration').click(function(){
     $('#OTP-modal').modal('show');
     
-    });    
+    });  
+    
+    $('#RegisterSchoolButton').click(function(){
+     $('#RegisterSchoolModal').modal('show');
+    });  
     
     // captcha  code on otp form
     captchaCode();
+    
+    
 });
 
 
@@ -113,4 +168,6 @@ function captchaCode() {
         $("#captcha input").remove();
         $("#captcha").append("<span id='code'>" + Code+"  " + "</span><input type='button' onclick='captchaCode();'>");
    }
+   
+   
   

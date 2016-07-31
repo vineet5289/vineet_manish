@@ -5,7 +5,7 @@ import java.util.List;
 import actors.SchoolRequestActorProtocol.ApprovedSchool;
 import akka.actor.Props;
 import akka.actor.UntypedActor;
-import dao.SchoolRegistrationRequestDAO;
+import dao.AddNewSchoolRequestDAO;
 
 public class AlertActor  extends UntypedActor{
 
@@ -20,7 +20,7 @@ public class AlertActor  extends UntypedActor{
 	@Override
 	public void onReceive(Object message) throws Exception {
 		if(message != null && message instanceof String) {
-			SchoolRegistrationRequestDAO schoolRegistrationRequestDAO = new SchoolRegistrationRequestDAO();
+			AddNewSchoolRequestDAO schoolRegistrationRequestDAO = new AddNewSchoolRequestDAO();
 			try {
 //				List<ApprovedSchool> schools = schoolRegistrationRequestDAO.getAllApprovedSchoolNeedToBeinformed();
 //				if(schools != null && schools.size() > 0) {

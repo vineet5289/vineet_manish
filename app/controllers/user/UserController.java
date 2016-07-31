@@ -6,8 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import models.UserInfo;
 import controllers.CustomController;
+import models.UserInfo;
 import dao.UserFetchDAO;
 import enum_package.Role;
 import play.mvc.Result;

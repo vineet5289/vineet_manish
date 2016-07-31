@@ -1,11 +1,10 @@
-@(schoolForm:       Form[views.forms.SchoolFormData],
+@(schoolForm:       Form[views.forms.school.SchoolFormData],
   schoolBoard:      List[String],
   schoolCategory:   List[String],
-  schoolType:       List[String],
-  schoolCountry:    List[String],
-  state:      		List[String])
+  schoolType:       List[String])
 @main2("School Information"){
     <div class="ui container">
+      <h1> @schoolForm("schoolName").value</h1>
        <div class="ui centered stackable grid">
           <div class="six wide column"></div>
           <div class="ui vertical divider"></div>
@@ -16,54 +15,70 @@
                         <span class="ui header">Register<span>
                     </div>
                     <div class="ui segment">
-                       <form class="ui form" id="form1" action="@routes.RegistrationRequest.postSchoolRegistrationRequest" method="Post">
-                         <div class="field">
+                       <form class="ui form" id="form1" action="@routes.SchoolController.postSchoolRegistrationRequest" method="Post">
+                         <div class="fields">
+                              <div class="five wide field">
+                                 <div class="ui teal label">School Name:</div>
+                              </div>
+                              <div class="eleven wide field">  
+                                 <div class="ui label"><b>@schoolForm("schoolName").value</b></div>
+                             </div>
+                          </div>
+                          <div class="field">
+                              <label>Address:</label>
+                              <div class="two fields">
+                                 <div class="field">
+                                    <div class="ui label"><b>@schoolForm("schoolAddressLine1").value</b></div>
+                                 </div>
+                                 <div class="field">
+                                    <div class="ui label"><b>@schoolForm("schoolAddressLine2").value</b></div>
+                                 </div>
+                              </div>
+                          </div>
+							 <div class="field">
                                  <div class="ui left icon input">
-                                    <input type="text" name="schoolName" placeholder="schoolName">
+                                    <input type="text" name="schoolRegistrationId" placeholder="schoolRegistrationId">
                                     <i class="user icon"></i>
                                  </div>
                              </div>
-                             
-                             	 <div class="field">
-                                 <div class="ui left icon input">
-                                    <input type="text" name="schoolRegistration" placeholder="schoolRegistrationId">
-                                    <i class="user icon"></i>
-                                 </div>
-                             </div>
-                             
-                             <div class="field">
+							  <div class="field">
                                  <div class="ui left icon input">
                                     <input type="email" name="schoolEmail" placeholder="schoolEmail">
                                     <i class="mail icon"></i>
                                  </div>
                              </div>
-                             
-                             <div class="field">
-                                <div class="ui left icon input">
-                                    <input type="text" name="schoolMobileNumber" placeholder="School contact">
-                                    <i class="phone square icon"></i>
-                                </div>
-                            </div>
-                            
-                             <div class="field">
-                                <div class="ui left icon input">
-                                    <input type="text" name="schoolOfficeNumber" placeholder="School LANDLINE contact">
-                                    <i class="phone square icon"></i>
-                                </div>
-                            </div>
-                            
-                            
-                            
-                             <div class="field">
+							 
+							 <div class="field">
                                  <div class="ui left icon input">
-                                    <input type="text" name="addressLine1" placeholder="addressLine1">
+                                    <input type="text" name="contactPersonName" placeholder="Your Name (Who is Contacting)">
+                                    <i class="user icon"></i>
+                                 </div>
+                             </div>
+                             
+							<div class="field">
+                                <div class="ui left icon input">
+                                    <input type="text" name="schoolMobileNumber" placeholder="school Mobile Number">
+                                    <i class="phone square icon"></i>
+                                </div>
+                            </div>
+                            
+                            <div class="field">
+                                <div class="ui left icon input">
+                                    <input type="text" name="schoolAlternativeNumber" placeholder="Alternative  Mobile Number">
+                                    <i class="phone square icon"></i>
+                                </div>
+                            </div> 
+    
+							 <div class="field">
+                                 <div class="ui left icon input">
+                                    <input type="text" name="schoolAddressLine1" placeholder="schoolAddressLine1">
                                     <i class="home icon"></i>
                                  </div>
                              </div>
                              
                              <div class="field">
                                  <div class="ui left icon input">
-                                    <input type="text" name="addressLine2" placeholder="addressLine2">
+                                    <input type="text" name="schoolAddressLine2" placeholder="schoolAddressLine2">
                                     <i class="home icon"></i>
                                  </div>
                              </div>
@@ -92,7 +107,7 @@
                             
                              <div class="field">
                                  <div class="ui left icon input">
-                                    <input type="text" name="schoolCountry" placeholder="schoolCountry">
+                                    <input type="text" name="country" placeholder="Country">
                                     <i class="home icon"></i>
                                  </div>
                              </div>
@@ -101,6 +116,29 @@
                                  <div class="ui left icon input">
                                     <input type="text" name="pincode" placeholder="pincode">
                                     <i class="home icon"></i>
+                                 </div>
+                             </div>
+                             
+                            
+                             
+                             <div class="field">
+                                 <div class="ui left icon input">
+                                    <input type="text" name="schoolUserName" placeholder="schoolUserName">
+                                    <i class="user icon"></i>
+                                 </div>
+                             </div>
+                             
+                             <div class="field">
+                                 <div class="ui left icon input">
+                                    <input type="password" name="password" placeholder="Password" autocomplete="off">
+                                    <i class="user icon"></i>
+                                 </div>
+                             </div>
+                             
+                             <div class="field">
+                                 <div class="ui left icon input">
+                                    <input type="password" name="confirmPassword" placeholder="Confirm Password" autocomplete="off">
+                                    <i class="user icon"></i>
                                  </div>
                              </div>
                              
@@ -122,6 +160,10 @@
                                  </div>
                              </div>
                              
+                             
+                             
+                             
+                             
                              <div class="field">
                                  
                                     <select class="ui dropdown" name="schoolCategory">
@@ -138,27 +180,6 @@
                                            <option value="1">GOVERNMENT</option>
                                            <option value="2">PRIVATE</option>
                                     </select>
-                             </div>
-                             
-                             <div class="field">
-                                 <div class="ui left icon input">
-                                    <input type="text" name="schoolUserName" placeholder="schoolUserName" autocomplete="off">
-                                    <i class="user icon"></i>
-                                 </div>
-                             </div>
-                             
-                             <div class="field">
-                                 <div class="ui left icon input">
-                                    <input type="password" name="schoolPassword" placeholder="schoolPassword" autocomplete="off">
-                                    <i class="user icon"></i>
-                                 </div>
-                             </div>
-                             
-                             <div class="field">
-                                 <div class="ui left icon input">
-                                    <input type="password" name="schoolConfirmPassword" placeholder="schoolConfirmPassword" autocomplete="off">
-                                    <i class="user icon"></i>
-                                 </div>
                              </div>
                                                      
                             <button class="ui blue icon button" type="submit">Send Request <i class="sign in icon"></i></button>
