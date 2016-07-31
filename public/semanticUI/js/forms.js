@@ -78,9 +78,8 @@ $(function () {
              pincode: {
                 identifier: 'pincode',
                 rules: [{
-                    type: 'number',
-                    type:'exactLength[10]',
-                    prompt: 'Please enter City'
+                    type: 'empty',
+                    prompt: 'Please enter pincode'
                 }]
             },
             

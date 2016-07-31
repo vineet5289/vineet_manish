@@ -24,7 +24,7 @@ public class SchoolFormData {
 	private String country;
 	private String pincode;
 	private String schoolRegistrationId;
-	private String schoolUserName; //set to emial id
+	private String schoolUserName; //set to email id
 
 	//ask school to fill during registration 
 	private String password;
