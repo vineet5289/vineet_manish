@@ -1,18 +1,15 @@
 package models;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+
+import enum_package.StateEnum;
 
 
 public class State {
-	private static List<String> states =new ArrayList<String>();
+	public static Map<String, String> states =new HashMap<String, String>();
 	static {
-		states.add("Uttar Pradesh");
-		states.add("Madhya Pradesh");
-		states.add("Delhi");
-		states.add("Karnataka");
-	}
-
-	public static List<String> getStates() {
-		return states;
+		states.put(StateEnum.KARNATAKA.name(), "Karnataka");
+		states.put(StateEnum.GOA.name(), "Goa");
+		states.put(StateEnum.KERALA.name(), "Kerala");
 	}
 }

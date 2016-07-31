@@ -1,5 +1,5 @@
 @(schoolForm:       Form[views.forms.school.SchoolFormData],
-  schoolBoard:      List[String],
+  schoolBoard:      Map[String, String],
   schoolCategory:   List[String],
   schoolType:       Map[String, String])
 @main2("School Information"){
@@ -136,9 +136,9 @@
                                  <div class="ui left icon input">
                                    <select class="ui dropdown" name="schoolBoard">
                                            <option value="">school Board</option>
-                                           <option value="CBSE">CBSE</option>
-                                           <option value="ICSE">ICSE</option>
-                                           <option value="UPBOARD">UPBOARD</option>
+                                           @for((key,value) <- schoolBoard){
+                                           <option value="@key">@value</option>
+                                           }
                                     </select>
                                  </div>
                              </div>

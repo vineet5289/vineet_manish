@@ -3,13 +3,13 @@ package views.forms.school;
 import java.util.ArrayList;
 import java.util.List;
 
-import enum_package.SchoolTypeEnum;
 import lombok.Data;
-import models.SchoolType;
+import models.SchoolBoard;
 import play.data.validation.ValidationError;
 import utils.AddressFieldValidationUtils;
 import utils.SchoolSpecificFiledValidation;
 import utils.ValidateFields;
+import enum_package.SchoolTypeEnum;
 
 @Data
 public class SchoolFormData {
@@ -91,7 +91,7 @@ public class SchoolFormData {
 			errors.add(new ValidationError("password", "Invalid confirom password."));
 		}
 
-		if(!SchoolSpecificFiledValidation.isValidBoard(schoolBoard)) {
+		if(schoolBoard == null || SchoolBoard.getDisplayNameGivenAffiliatedTo(schoolBoard.trim().toUpperCase()) == null) {
 			errors.add(new ValidationError("schoolBoard", "Please enter valid school board without any special characters like @;$."));
 		}
 

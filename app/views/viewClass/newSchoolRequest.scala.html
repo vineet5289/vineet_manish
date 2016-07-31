@@ -1,6 +1,6 @@
 @(schoolRegister:Form[views.forms.school.AddNewSchoolRequest],
 schoolCountry:    List[String],
-state:            List[String])
+state:            Map[String, String])
 @main2("Register"){
 <div class="ui container">
         <div class="ui centered stackable grid">
@@ -54,13 +54,10 @@ state:            List[String])
                                  <div class="eight wide field">
                                    <select class="ui dropdown" name="state">
                                         <option value="">Select State</option>
-                                        <option value="u">Uttar Pradesh</option>
-                                        <option value="m">Madhya Pradesh</option>
-                                        <option value="d">Delhi</option>
-                                        <option value="r">Rajasthan</option>
-                                        <option value="o">Orissa</option>
-                                        <option value="w">West Bengal</option>
-                                   </select>
+                                        @for((key,value) <- state){
+                                        <option value="@key">@value</option>
+                                        }                            
+                                      </select>
                                 </div>
                                 
                              </div>

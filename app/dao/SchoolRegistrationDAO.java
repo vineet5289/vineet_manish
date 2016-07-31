@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import models.SchoolBoard;
 import models.SchoolType;
 import enum_package.PasswordState;
 import enum_package.RequestedStatus;
@@ -32,7 +33,7 @@ public class SchoolRegistrationDAO {
 	private String officeNumberField = "office_number";
 	private String noOfShiftField = "no_of_shift";
 	private String schoolCategoryField = "school_category";
-	private String schoolBoardField = "school_board";
+	private String schoolBoardField = "school_board_id";
 	private String schoolTypeField = "school_type";
 	private String isActiveField = "is_active";
 	private String accessRightsField = "access_rights";
@@ -133,7 +134,8 @@ public class SchoolRegistrationDAO {
 			schoolRegistrationPreparedStatement.setString(11, alternativeNumber); //officeNumber
 			
 			schoolRegistrationPreparedStatement.setString(12, schoolData.getCountry().trim()); //country
-			schoolRegistrationPreparedStatement.setString(13, schoolData.getSchoolBoard().trim()); //schoolBoard
+			Long boardId = SchoolBoard.getBoardIdGivenAffiliatedTo(schoolData.getSchoolBoard().trim());
+			schoolRegistrationPreparedStatement.setLong(13, boardId); //schoolBoard
 			schoolRegistrationPreparedStatement.setString(14, schoolData.getSchoolType().trim().toUpperCase()); //schoolType
 			schoolRegistrationPreparedStatement.setLong(15, registrationRequestId);
 			schoolRegistrationPreparedStatement.executeUpdate();

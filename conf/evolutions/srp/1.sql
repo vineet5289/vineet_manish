@@ -2,8 +2,10 @@
 
 CREATE TABLE IF NOT EXISTS board (
     id bigint(20) NOT NULL AUTO_INCREMENT,
-    board_code varchar(50)  ,
+    board_code varchar(50) NOT NULL,
     board_name varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+    board_display_name varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+    affiliated_to varchar(255) COLLATE utf8_unicode_ci NOT NULL,
     created_at timestamp DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
     UNIQUE KEY (board_code)
@@ -53,7 +55,7 @@ CREATE TABLE IF NOT EXISTS school (
   office_number varchar(20) COLLATE utf8_unicode_ci,
   no_of_shift int(3) NOT NULL DEFAULT 1,
   school_category enum('RESIDENCIAL', 'NON_RESIDENCIAL', 'BOTH'),
-  school_board varchar(225) COLLATE utf8_unicode_ci NOT NULL,
+  school_board_id bigint(20) COLLATE utf8_unicode_ci NOT NULL,
   school_type enum('GOVERMENT', 'PRIVATE') NOT NULL,
   created_at timestamp DEFAULT CURRENT_TIMESTAMP,
   updated_at timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -224,10 +226,12 @@ CREATE TABLE IF NOT EXISTS student_class (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 
-INSERT INTO board (board_code, board_name) VALUES ('CBSE', 'CBSE');
-INSERT INTO board (board_code, board_name) VALUES ('ICSE', 'ICSE');
-INSERT INTO board (board_code, board_name) VALUES ('UP BOARD', 'UP BOARD');
-INSERT INTO board (board_code, board_name) VALUES ('MP BOARD', 'MP BOARD');
+INSERT INTO board (board_code, board_name, board_display_name, affiliated_to) VALUES ('GBSHSE', 'Goa Board of Secondary & Higher Secondary Education', 'Goa Board', 'GOA');
+INSERT INTO board (board_code, board_name, board_display_name, affiliated_to) VALUES ('KSEEB', 'Karnataka Secondary Education Examination Board ', 'Karnataka Board', 'KARNATAKA');
+INSERT INTO board (board_code, board_name, board_display_name, affiliated_to) VALUES ('ICSE', 'Indian Certificate of Secondary Education', 'ICSE', 'ICSE');
+INSERT INTO board (board_code, board_name, board_display_name, affiliated_to) VALUES ('CBSE', 'Central Board of Secondary Education', 'CBSE', 'CBSE');
+INSERT INTO board (board_code, board_name, board_display_name, affiliated_to) VALUES ('IB', 'International Baccalaureate', 'IB', 'IB');
+
 
 # --- !Downs
 

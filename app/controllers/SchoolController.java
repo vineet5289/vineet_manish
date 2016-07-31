@@ -1,12 +1,13 @@
 package controllers;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import controllers.routes;
 import models.Country;
 import models.SchoolBoard;
 import models.SchoolCategory;
@@ -18,19 +19,16 @@ import play.mvc.Security;
 import security.SchoolRegisterRequestAuthenticator;
 import views.forms.OTPField;
 import views.forms.school.AddNewSchoolRequest;
-import views.forms.school.NewSchoolApprovedRequest;
 import views.forms.school.SchoolFormData;
-import views.html.newSchoolApproved;
 import views.html.viewClass.SchoolRegistration;
 import views.html.viewClass.newSchoolRequest;
 import views.html.viewClass.thanku;
 import actors.MessageActor;
-import actors.SchoolRequestActorProtocol.ApprovedSchool;
 import actors.SchoolRequestActorProtocol.NewSchoolRequest;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
-import dao.SchoolRegistrationDAO;
 import dao.AddNewSchoolRequestDAO;
+import dao.SchoolRegistrationDAO;
 import enum_package.SessionKey;
 
 
@@ -47,8 +45,7 @@ public class SchoolController extends CustomController {
 	public Result preAddNewSchoolRequest() {
 		Form<AddNewSchoolRequest> addNewSchoolRequest = Form.form(AddNewSchoolRequest.class);
 		List<String> countries = Country.getCountries();
-		List<String> states = State.getStates();
-		return ok(newSchoolRequest.render(addNewSchoolRequest, states, countries));
+		return ok(newSchoolRequest.render(addNewSchoolRequest, countries, State.states));
 	}
 
 	public Result postAddNewSchoolRequest() {
@@ -117,9 +114,17 @@ public class SchoolController extends CustomController {
 				session(SessionKey.OTP_KEY.name(), otp);
 
 				Form<SchoolFormData> schoolFormData = Form.form(SchoolFormData.class).fill(schoolData);
-				List<String> schoolBoards = SchoolBoard.getSchoolboardList();
+				Map<String, String> schoolBoards = new HashMap<String, String>();
+
+				schoolBoards.put("CBSE", "CBSE");
+				schoolBoards.put("ICSE", "ICSE");
+				schoolBoards.put("IB", "International Baccalaureate");
+				
+				String affiliatedTo = schoolData.getState().trim().toUpperCase();
+				String otherBoard = SchoolBoard.getDisplayNameGivenAffiliatedTo(affiliatedTo);
+				schoolBoards.put(affiliatedTo, otherBoard);
+
 				List<String> schoolCategory = SchoolCategory.getSchoolCategoryList();
-//				List<String> schoolType = SchoolType.getSchoolTypeList();				
 				return ok(SchoolRegistration.render(schoolFormData, schoolBoards, schoolCategory, SchoolType.schoolTypeToValue));
 			} else {
 				flash("error", "Your reference number or otp or email id is invalid. Please check and try again.");
