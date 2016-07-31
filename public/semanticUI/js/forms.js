@@ -45,8 +45,9 @@ $(function () {
             },
             schoolAddressLine2: {
                 identifier: 'schoolAddressLine2',
+                optional:true,
                 rules: [{
-                    optional:true,
+                    
                     type: 'empty',
                     prompt: 'Please enter your School Address'
                 }]
@@ -67,6 +68,21 @@ $(function () {
                 }]
             },
             
+             country: {
+                identifier: 'country',
+                rules: [{
+                    type: 'empty',
+                    prompt: 'Please enter City'
+                }]
+            },
+             pincode: {
+                identifier: 'pincode',
+                rules: [{
+                    type: 'empty',
+                    prompt: 'Please enter pincode'
+                }]
+            },
+            
 		 contactPersonName: {
                 identifier: 'contactPersonName',
                 rules: [{
@@ -74,12 +90,21 @@ $(function () {
                     prompt: 'Please enter your Name'
                 }]
             },
+            
+            schoolEmail: {
+                identifier: 'schoolEmail',
+                rules: [{
+                    type: 'email',
+                    prompt: 'Please enter School email Id'
+                }]
+            },
 		schoolMobileNumber: {
                 identifier: 'schoolMobileNumber',
                 rules: [{
-                    type: 'minLength[10]',
-                    prompt: 'Please enter your Contact Number'
+                    type:'exactLength[10]',
+                    prompt: 'Mobile Number Shoud be of 10 Length'
                 }]
+                 
             },
 		query: {
                 identifier: 'query',
@@ -95,7 +120,7 @@ $(function () {
 	// New School Request Form
 
 	   $('#newSchoolRegistrationForm').form(validationObj, {
-		inline: false,
+		inline: true,
 		//onSuccess: function(){
 			//$('#newSchoolRequestPost').modal('show');
 		//}

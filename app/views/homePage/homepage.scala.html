@@ -325,22 +325,24 @@
        <div class="header">Add Refrence Key and OTP sent on your Mobile</div>
        <div class="content">
              <form class="ui form" method="POST" action="/submitopt">
+                  
+                   <div class="field">
+                      <label>Email</label>
+                      <input name="emailId" placeholder="Enter Mail id entered at time of Registration request" type="text" >
+                  </div>
+                  
                   <div class="field">
                       <label>Reference Key</label>
                       <input name="referenceKey" placeholder="Enter Reference Key Received on Mobile" type="text" >
                   </div>
+                  
                   <div class="field">
                       <label>OTP</label>
                       <input name="otp" placeholder="Enter OTP" type="text" >
-                      
                   </div>
-                  <div class="field">
-                    <div class="ui blue big label" id="captcha"></div>
-                    <input type="text" placeholder="Enter Captcha" name="captcha" maxlength="4" size="4" class="captcha">
-                    
-                  </div>
+                  
                   <div class="actions">
-			         <button class="ui button approve green" type="submit">SEND</button>
+			         <button class="ui positive button">SEND</button>
 			         <div class="ui error message"></div>
 			      </div>
                   
