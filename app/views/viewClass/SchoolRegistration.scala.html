@@ -4,6 +4,7 @@
   schoolType:       List[String])
 @main2("School Information"){
     <div class="ui container">
+      <h1> @schoolForm("schoolName").value</h1>
        <div class="ui centered stackable grid">
           <div class="six wide column"></div>
           <div class="ui vertical divider"></div>
@@ -15,13 +16,25 @@
                     </div>
                     <div class="ui segment">
                        <form class="ui form" id="form1" action="@routes.SchoolController.postSchoolRegistrationRequest" method="Post">
-                         <div class="field">
-                                 <div class="ui left icon input">
-                                    <input type="text" name="schoolName" placeholder="schoolName">
-                                    <i class="user icon"></i>
-                                 </div>
+                         <div class="fields">
+                              <div class="five wide field">
+                                 <div class="ui teal label">School Name:</div>
+                              </div>
+                              <div class="eleven wide field">  
+                                 <div class="ui label"><b>@schoolForm("schoolName").value</b></div>
                              </div>
-                             
+                          </div>
+                          <div class="field">
+                              <label>Address:</label>
+                              <div class="two fields">
+                                 <div class="field">
+                                    <div class="ui label"><b>@schoolForm("schoolAddressLine1").value</b></div>
+                                 </div>
+                                 <div class="field">
+                                    <div class="ui label"><b>@schoolForm("schoolAddressLine2").value</b></div>
+                                 </div>
+                              </div>
+                          </div>
 							 <div class="field">
                                  <div class="ui left icon input">
                                     <input type="text" name="schoolRegistrationId" placeholder="schoolRegistrationId">
