@@ -3,11 +3,9 @@ package views.forms.employee;
 import java.util.ArrayList;
 import java.util.List;
 
-import play.data.validation.ValidationError;
-import utils.AddressFieldValidationUtils;
-import utils.SchoolSpecificFiledValidation;
-import utils.ValidateFields;
 import lombok.Data;
+import play.data.validation.ValidationError;
+import utils.ValidateFields;
 
 @Data
 public class AddEmployeeForm {
@@ -15,6 +13,7 @@ public class AddEmployeeForm {
 	//compulsory field
 	private String empName;
 	private String empPhoneNumber;
+	private String gender;
 
 	//optional field
 	private String empCode;
@@ -34,6 +33,10 @@ public class AddEmployeeForm {
 
 		if(empEmail != null && !ValidateFields.isValidEmailId(empEmail)) {
 			errors.add(new ValidationError("schoolEmail","Enter valid email id like abcd@xyz.com"));
+		}
+
+		if(gender != null && (gender.trim().equalsIgnoreCase("mail") || gender.trim().equalsIgnoreCase("femail"))) {
+			errors.add(new ValidationError("gender","Select valid gender Mail/Femail."));
 		}
 
 		if(errors.size() > 0)

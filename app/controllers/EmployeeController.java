@@ -33,19 +33,13 @@ public class EmployeeController extends CustomController {
 			flash("error", "Something parameter is missing or invalid in add employee request.");
 			return redirect(routes.SchoolController.preAddNewSchoolRequest()); // redirect to add employee page
 		}
-
-		Map<String, String> addEmployeeFormData = addEmployeeForm.data();
-		if(addEmployeeFormData == null || addEmployeeFormData.isEmpty()) {
-			flash("error", "Something parameter is missing or invalid in add employee request.");
-			return redirect(routes.SchoolController.preAddNewSchoolRequest()); // redirect to add employee page
-		}
-
+		AddEmployeeForm addEmployeeDetails= addEmployeeForm.get();
 		EmployesDAO employesDAO = new EmployesDAO();
 		boolean isEmpAdded = false;
 		try{
 			String reuestedPersonUserName = session().get(SessionKey.SUPER_USER_NAME.name());
 			String schoolId = session().get(SessionKey.SUPER_SCHOOL_ID.name());
-			isEmpAdded = employesDAO.addNewEmpRequest(addEmployeeFormData, reuestedPersonUserName, schoolId);
+			isEmpAdded = employesDAO.addNewEmpRequest(addEmployeeDetails, reuestedPersonUserName, schoolId);
 		} catch(Exception exception) {
 			exception.printStackTrace();
 		}

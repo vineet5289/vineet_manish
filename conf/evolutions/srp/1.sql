@@ -87,6 +87,7 @@ CREATE TABLE IF NOT EXISTS employee (
   school_id bigint(20) NOT NULL,
   gender enum('M', 'F') NOT NULL,
   phone_number varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  emp_code varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   alternative_number varchar(20) COLLATE utf8_unicode_ci,
   job_titles varchar(225) COLLATE utf8_unicode_ci,
   emp_email varchar(225) COLLATE utf8_unicode_ci,
