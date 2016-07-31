@@ -109,7 +109,11 @@ public class SchoolRegistrationDAO {
 			}
 
 			schoolRegistrationPreparedStatement.setString(1, schoolData.getSchoolName().trim());//schoolName
-			schoolRegistrationPreparedStatement.setString(2, schoolData.getSchoolRegistrationId().trim()); //schoolRegistrationId
+			String schoolRegistrationId = "";
+			if( schoolData.getSchoolRegistrationId() != null)
+				schoolRegistrationId = schoolData.getSchoolRegistrationId().trim();
+
+			schoolRegistrationPreparedStatement.setString(2, schoolRegistrationId); //schoolRegistrationId
 			schoolRegistrationPreparedStatement.setString(3, schoolData.getSchoolUserName().trim()); //schoolUserName
 			schoolRegistrationPreparedStatement.setString(4, schoolData.getSchoolEmail().trim()); //schooleEmail
 
