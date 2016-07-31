@@ -116,8 +116,7 @@ public class SchoolController extends CustomController {
 				session(SessionKey.REG_SCHOOL_REQUEST_NUMBER.name(), referenceKey);
 				session(SessionKey.OTP_KEY.name(), otp);
 
-				Form<SchoolFormData> schoolFormData = Form.form(SchoolFormData.class);
-				schoolFormData.fill(schoolData);
+				Form<SchoolFormData> schoolFormData = Form.form(SchoolFormData.class).fill(schoolData);
 				List<String> schoolBoards = SchoolBoard.getSchoolboardList();
 				List<String> schoolCategory = SchoolCategory.getSchoolCategoryList();
 				List<String> schoolType = SchoolType.getSchoolTypeList();				
