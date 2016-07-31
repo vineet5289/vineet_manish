@@ -9,7 +9,7 @@ public class ValidateFields {
 			+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
 	private static Pattern userNamePattern;
-	private static final String USERNAME_PATTERN = "^[a-z0-9@_-]{5,20}$";
+	private static final String USERNAME_PATTERN = "^[a-z0-9.@_-]{5,20}$";
 
 	private static final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$";
 	private static Pattern passwordPattern;
