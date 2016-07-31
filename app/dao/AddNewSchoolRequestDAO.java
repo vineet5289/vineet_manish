@@ -42,7 +42,7 @@ public class AddNewSchoolRequestDAO {
 	private String updatedAtField = "updated_at";
 	private String alertDoneField = "alert_done";
 	private String isActiveField = "is_active";
-	private String contractPersonNameField = "contract_person_name";
+	private String contactPersonNameField = "contact_person_name";
 
 	public String generateRequest(Map<String, String> addNewSchoolRequestDetails) throws Exception {
 		Connection connection = null;
@@ -51,7 +51,7 @@ public class AddNewSchoolRequestDAO {
 		String insertQuery = String.format("INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) VALUES (?, ?, ?, ?,"
 				+ "?, ?, ?, ?, ?, ?, ?, ?, ?, ?);", tableName, schoolNameField, schoolEmailField, mobileNumberField, alternativeNumberField,
 				schoolRegistrationIdField, queryField, schoolAddressLine1Field, schoolAddressLine2Field, cityField, stateField, 
-				countryField, pinCodeField, contractPersonNameField, requestNumberField);
+				countryField, pinCodeField, contactPersonNameField, requestNumberField);
 
 		String requestNumber = "";
 		try {
@@ -76,7 +76,7 @@ public class AddNewSchoolRequestDAO {
 			preparedStatement.setString(10, addNewSchoolRequestDetails.get("state").trim());
 			preparedStatement.setString(11, addNewSchoolRequestDetails.get("country").trim());
 			preparedStatement.setString(12, addNewSchoolRequestDetails.get("pincode").trim());
-			preparedStatement.setString(13, StringUtils.getValidStringValue(addNewSchoolRequestDetails.get("contractPersonName")));
+			preparedStatement.setString(13, StringUtils.getValidStringValue(addNewSchoolRequestDetails.get("contactPersonName")));
 			preparedStatement.setString(14, requestNumber);
 
 			preparedStatement.execute();
@@ -157,7 +157,7 @@ public class AddNewSchoolRequestDAO {
 		String selectQuery = String.format("SELECT %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s FROM %s WHERE %s=? AND %s=?;",
 				idField, schoolNameField, schoolEmailField, mobileNumberField, alternativeNumberField, queryField, schoolAddressLine1Field,
 				schoolAddressLine2Field, cityField, stateField, countryField, pinCodeField, statusField, requestNumberField, createdAtField,
-				updatedAtField, contractPersonNameField, tableName, statusField, isActiveField);
+				updatedAtField, contactPersonNameField, tableName, statusField, isActiveField);
 
 		try {
 			connection = DB.getDataSource("srp").getConnection();
@@ -184,7 +184,7 @@ public class AddNewSchoolRequestDAO {
 				newSchoolApprovedRequest.setReferenceNumber(resultSet.getString(requestNumberField));
 				newSchoolApprovedRequest.setRequestedAt(resultSet.getTimestamp(createdAtField));
 				newSchoolApprovedRequest.setStatusUpdatedAt(resultSet.getTimestamp(updatedAtField));
-				newSchoolApprovedRequest.setContractPersonName(resultSet.getString(contractPersonNameField));
+				newSchoolApprovedRequest.setContractPersonName(resultSet.getString(contactPersonNameField));
 				schools.add(newSchoolApprovedRequest);
 			}
 		} catch(Exception exception) {
