@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS school (
   phone_number varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   office_number varchar(20) COLLATE utf8_unicode_ci,
   no_of_shift int(3) NOT NULL DEFAULT 1,
-  school_category enum('RESIDENCIAL', 'NON_RESIDENCIAL', 'BOTH') NOT NULL,
+  school_category enum('RESIDENCIAL', 'NON_RESIDENCIAL', 'BOTH'),
   school_board varchar(225) COLLATE utf8_unicode_ci NOT NULL,
   school_type enum('GOVERMENT', 'PRIVATE') NOT NULL,
   created_at timestamp DEFAULT CURRENT_TIMESTAMP,

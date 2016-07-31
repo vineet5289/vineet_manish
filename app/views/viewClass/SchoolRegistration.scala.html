@@ -1,7 +1,7 @@
 @(schoolForm:       Form[views.forms.school.SchoolFormData],
   schoolBoard:      List[String],
   schoolCategory:   List[String],
-  schoolType:       List[String])
+  schoolType:       Map[String, String])
 @main2("School Information"){
     <div class="ui container">
       
@@ -130,19 +130,7 @@
                                             </div>
                                  </div>
                              </div>
-                              
-                             <div class="field">
-                                 <label>No Of Shift</label>
-                                 <div class="fields">
-                                    <div class="field">
-                                       <div class="ui left icon input">
-                                         <input type="text" name="noOfShift" value="1" placeholder="No of Shifts">
-                                         <i class="home icon"></i>
-                                       </div>
-                                     </div>  
-                                  </div>  
-                             </div>
-                             
+
                              <div class="field">
                                  <label>School Board</label>
                                  <div class="ui left icon input">
@@ -156,21 +144,11 @@
                              </div>
                              
                              <div class="field">
-                                  <label>School Category</label>
-                                    <select class="ui dropdown" name="schoolCategory">
-                                           <option value="">schoolCategory</option>
-                                           <option value="Day Scholar">Day Scholar</option>
-                                           <option value="Residential">Residential</option>
-                                           <option value="Both">Both (Residential & Day Scholar)</option>
-                                    </select>
-                            </div>
-                             
-                             <div class="field">
                                  <label>School Type</label>
                                       <select class="ui dropdown" name="schoolType">
-                                           <option value="">school Type</option>
-                                           <option value="GOVERNMENT">GOVERNMENT</option>
-                                           <option value="PRIVATE">PRIVATE</option>
+                                         @for((key,value)<- schoolType){
+                                           <option value="@key">@value</option>
+                                           }
                                     </select>
                              </div>
                                                      

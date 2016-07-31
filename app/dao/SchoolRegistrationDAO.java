@@ -6,9 +6,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import models.SchoolType;
 import enum_package.PasswordState;
 import enum_package.RequestedStatus;
 import enum_package.Role;
+import enum_package.SchoolTypeEnum;
 import play.db.DB;
 import utils.RandomGenerator;
 import utils.StringUtils;
@@ -63,10 +65,10 @@ public class SchoolRegistrationDAO {
 				loginTableName, loginUserNameField, loginEmailIdField, loginPasswordField, loginPasswordStateField, loginRoleField, 
 				accessRightsField, isActiveField, nameField, schoolIdField);
 
-		String insertSchoolRegistrationQuery = String.format("INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
-				+ " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);", schoolTableName, nameField, schoolRegistrationIdField, 
+		String insertSchoolRegistrationQuery = String.format("INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+				+ " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);", schoolTableName, nameField, schoolRegistrationIdField, 
 				schoolUserNameField, schooleEmailField, addressLine1Field, addressLine2Field, cityField, stateField, pincodeField, phoneNumberField,
-				officeNumberField, countryField, noOfShiftField, schoolCategoryField, schoolBoardField, schoolTypeField, addSchoolRequestIdField);
+				officeNumberField, countryField, schoolBoardField, schoolTypeField, addSchoolRequestIdField);
 
 		String selectSchoolRegistrationRequest = String.format("SELECT %s, %s, %s, %s FROM %s WHERE %s=? AND %s=? AND %s=? AND %s=? AND %s=?;",
 				idField, schoolNameField, schoolRegistrationIdField, isActiveField, schoolRegistrationRequestTableName,isActiveField,
@@ -109,11 +111,12 @@ public class SchoolRegistrationDAO {
 			}
 
 			schoolRegistrationPreparedStatement.setString(1, schoolData.getSchoolName().trim());//schoolName
+
 			String schoolRegistrationId = "";
 			if( schoolData.getSchoolRegistrationId() != null)
 				schoolRegistrationId = schoolData.getSchoolRegistrationId().trim();
-
 			schoolRegistrationPreparedStatement.setString(2, schoolRegistrationId); //schoolRegistrationId
+
 			schoolRegistrationPreparedStatement.setString(3, schoolData.getSchoolUserName().trim()); //schoolUserName
 			schoolRegistrationPreparedStatement.setString(4, schoolData.getSchoolEmail().trim()); //schooleEmail
 
@@ -124,13 +127,15 @@ public class SchoolRegistrationDAO {
 			schoolRegistrationPreparedStatement.setString(9, schoolData.getPincode().trim()); //pincode
 
 			schoolRegistrationPreparedStatement.setString(10, schoolData.getSchoolMobileNumber().trim()); //phoneNumber
-			schoolRegistrationPreparedStatement.setString(11, schoolData.getSchoolAlternativeNumber().trim()); //officeNumber
+			String alternativeNumber = "";
+			if( schoolData.getSchoolAlternativeNumber() != null)
+				schoolRegistrationId = schoolData.getSchoolAlternativeNumber().trim();
+			schoolRegistrationPreparedStatement.setString(11, alternativeNumber); //officeNumber
+			
 			schoolRegistrationPreparedStatement.setString(12, schoolData.getCountry().trim()); //country
-			schoolRegistrationPreparedStatement.setInt(13, schoolData.getNoOfShift());  //noOfShift  *****************************************
-			schoolRegistrationPreparedStatement.setString(14, schoolData.getSchoolCategory().trim()); //schoolCategory
-			schoolRegistrationPreparedStatement.setString(15, schoolData.getSchoolBoard().trim()); //schoolBoard
-			schoolRegistrationPreparedStatement.setString(16, schoolData.getSchoolType().trim()); //schoolType
-			schoolRegistrationPreparedStatement.setLong(17, registrationRequestId);
+			schoolRegistrationPreparedStatement.setString(13, schoolData.getSchoolBoard().trim()); //schoolBoard
+			schoolRegistrationPreparedStatement.setString(14, schoolData.getSchoolType().trim().toUpperCase()); //schoolType
+			schoolRegistrationPreparedStatement.setLong(15, registrationRequestId);
 			schoolRegistrationPreparedStatement.executeUpdate();
 			
 			resultSet = schoolRegistrationPreparedStatement.getGeneratedKeys();

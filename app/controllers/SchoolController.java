@@ -119,8 +119,8 @@ public class SchoolController extends CustomController {
 				Form<SchoolFormData> schoolFormData = Form.form(SchoolFormData.class).fill(schoolData);
 				List<String> schoolBoards = SchoolBoard.getSchoolboardList();
 				List<String> schoolCategory = SchoolCategory.getSchoolCategoryList();
-				List<String> schoolType = SchoolType.getSchoolTypeList();				
-				return ok(SchoolRegistration.render(schoolFormData, schoolBoards, schoolCategory, schoolType));
+//				List<String> schoolType = SchoolType.getSchoolTypeList();				
+				return ok(SchoolRegistration.render(schoolFormData, schoolBoards, schoolCategory, SchoolType.schoolTypeToValue));
 			} else {
 				flash("error", "Your reference number or otp or email id is invalid. Please check and try again.");
 				return redirect(controllers.login_logout.routes.LoginController.preLogin()); // check here for proper redirection
