@@ -27,6 +27,7 @@ POST     	/notification                              controllers.message.Notific
 GET      	/addnewschoolrequest                	   controllers.SchoolController.preAddNewSchoolRequest()
 POST     	/addnewschoolrequest                       controllers.SchoolController.postAddNewSchoolRequest()
 
+
 # schoole registration request
 POST      	/submitopt                            	   controllers.SchoolController.submitOTP()
 POST     	/registerschool            	           	   controllers.SchoolController.postSchoolRegistrationRequest()
