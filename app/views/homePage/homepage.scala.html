@@ -27,7 +27,7 @@
                                     <label>Remember Me</label>
                                 </div>
                             </div>
-                            <button class="ui inverted big fluid blue icon button" type="submit">Sign In <i class="sign in icon"></i></button>
+                            <button class="ui inverted big fluid blue icon button">Sign In <i class="sign in icon"></i></button>
                             <div class="ui error message"></div>
                         </form>
                           
@@ -324,7 +324,7 @@
       <div class="ui small modal" id="OTP-modal">
        <div class="header">Add Refrence Key and OTP sent on your Mobile</div>
        <div class="content">
-             <form class="ui form" method="POST" action="/submitopt">
+             <form class="ui form" id="completeSchoolRegistrationOTPForm" method="POST" action="/submitopt">
                   
                    <div class="field">
                       <label>Email</label>
@@ -342,13 +342,38 @@
                   </div>
                   
                   <div class="actions">
-			         <button class="ui positive button">SEND</button>
+			         <button type="submit" class="ui positive button">SEND</button>
 			         <div class="ui error message"></div>
 			      </div>
                   
                   
              </form>
         </div>
+         @if(flash.containsKey("success")) {
+     <div class="ui segment">
+  <div class="ui green success message" id="success-message">
+      <div class="header">
+        SUCCESSFULLY
+  </div>
+  <ul class="list">
+    <li> @flash.get("success")</li>
+  </ul>
+</div>
+</div>
+  }
+  @if(flash.containsKey("error")) {
+  <div class="ui segment">
+ 
+   <div class="ui red error message" id="error-message">
+      <div class="header">
+        ERROR
+  </div>
+  <ul class="list">
+    <li> @flash.get("error")</li>
+  </ul>
+</div>
+</div>
+ }
     </div>
     
    

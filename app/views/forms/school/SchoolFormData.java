@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Data;
+import models.SchoolBoard;
 import play.data.validation.ValidationError;
 import utils.AddressFieldValidationUtils;
 import utils.SchoolSpecificFiledValidation;
 import utils.ValidateFields;
+import enum_package.SchoolTypeEnum;
 
 @Data
 public class SchoolFormData {
@@ -29,9 +31,7 @@ public class SchoolFormData {
 	//ask school to fill during registration 
 	private String password;
 	private String confirmPassword;
-	private Integer noOfShift = 1;
 	private String schoolBoard;
-	private String schoolCategory;
 	private String schoolType;
 
 	/*
@@ -91,19 +91,11 @@ public class SchoolFormData {
 			errors.add(new ValidationError("password", "Invalid confirom password."));
 		}
 
-		if(noOfShift == null || noOfShift <= 0 || noOfShift > 3) {
-			errors.add(new ValidationError("noOfShift", "Please enter no of shift between 1 to 3."));
-		}
-
-		if(!SchoolSpecificFiledValidation.isValidBoard(schoolBoard)) {
+		if(schoolBoard == null || SchoolBoard.getDisplayNameGivenAffiliatedTo(schoolBoard.trim().toUpperCase()) == null) {
 			errors.add(new ValidationError("schoolBoard", "Please enter valid school board without any special characters like @;$."));
 		}
-		
-		if(!SchoolSpecificFiledValidation.isValidCategory(schoolCategory)) {
-			errors.add(new ValidationError("schoolCategory", "Please enter valid school category without any special characters like @;$."));
-		}
 
-		if(!SchoolSpecificFiledValidation.isValidSchoolType(schoolType)) {
+		if(schoolType == null || SchoolTypeEnum.valueOf(schoolType.trim().toUpperCase())  == null) {
 			errors.add(new ValidationError("schoolType", "Please enter valid school type without any special characters like @;$."));
 		}
 

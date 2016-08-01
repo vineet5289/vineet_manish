@@ -2,5 +2,8 @@ package enum_package;
 
 public enum SchoolTypeEnum {
 	GOVERMENT,
-	PRIVATE;
+	PRIVATE,
+	INTERNATIONALSCHOOL,
+	OPENSCHOOL,
+	SPECIALNEEDSCHOOL;
 }

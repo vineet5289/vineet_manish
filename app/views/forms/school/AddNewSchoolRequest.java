@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Data;
+import models.State;
 import play.data.validation.ValidationError;
 import utils.AddressFieldValidationUtils;
 import utils.SchoolSpecificFiledValidation;
@@ -63,7 +64,7 @@ public class AddNewSchoolRequest {
 			errors.add(new ValidationError("city", "City should not be empty. And should not contains any special characters except space."));
 		}
 
-		if(!AddressFieldValidationUtils.isValidState(state)) {
+		if(state == null || State.states.get(state.trim().toUpperCase()) == null) {
 			errors.add(new ValidationError("state", "State should not be empty. And should not contains any special characters except space."));
 		}
 
