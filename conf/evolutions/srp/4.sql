@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS school_shift_info (
   shift_week_end_time varchar(10) NOT NULL,
   shift_start_class_name varchar(10) NOT NULL,
   shift_end_class_name varchar(10) NOT NULL,
-  shift_attendence_type enum('ONCE_DAY', 'TWICE_DAY', 'EVERY_PERIOD') DEFAULT 'REQUESTED' NOT NULL,
+  shift_attendence_type enum('ONCE_DAY', 'TWICE_DAY', 'EVERY_PERIOD') DEFAULT 'ONCE_DAY' NOT NULL,
   school_id bigint(20) NOT NULL,
   PRIMARY KEY (id),
   KEY FK_school_shift_info_school_id (school_id),

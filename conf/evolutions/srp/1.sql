@@ -70,8 +70,8 @@ CREATE TABLE IF NOT EXISTS school (
   school_current_financial_year varchar(5),
   school_current_financial_start_month varchar(5),
   school_current_financial_end_month varchar(5),
-  school_website_url (255) COLLATE utf8_unicode_ci,
-  school_logo_url (255) COLLATE utf8_unicode_ci,
+  school_website_url varchar(255) COLLATE utf8_unicode_ci,
+  school_logo_url varchar(255) COLLATE utf8_unicode_ci,
   PRIMARY KEY (id),
   UNIQUE KEY (school_user_name)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -117,7 +117,7 @@ CREATE TABLE IF NOT EXISTS employee (
   created_at timestamp DEFAULT CURRENT_TIMESTAMP,
   updated_at timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   is_active tinyint(1) DEFAULT 1 NOT NULL,
-  requested_user_name (225) COLLATE utf8_unicode_ci NOT NULL,
+  requested_user_name varchar(225) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (id),
   KEY FK_employee_school_id (school_id),
   CONSTRAINT FK_employee_school_id FOREIGN KEY (school_id) REFERENCES school (id),
