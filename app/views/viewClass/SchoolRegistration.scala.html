@@ -17,20 +17,20 @@
                     <div class="ui segment">
                        <form class="ui form" id="form1" action="@routes.SchoolController.postSchoolRegistrationRequest" method="Post">
                         
-                         @if(schoolForm("schoolRegistrationId").value){
-							 <div class="field">
-							     <label>School Registration Id</label>
-                                 <div class="fields">
-                                    <div class="field">
-                                       <input type="text" name="schoolRegistrationId" value='@schoolForm("schoolRegistrationId").value' readonly>
-                                   </div>
-                                 </div>
-                             </div>
-                             }
-                        
-                        
-    
-                        
+                       <!-- Hidden fields on form -->
+                         <input type="hidden" name="schoolRegistrationId" value='@schoolForm("schoolRegistrationId").value' readonly>
+                         <input type="hidden" name="schoolAddressLine1" value='@schoolForm("schoolAddressLine1").value' readonly >
+                         <input type="hidden" name="schoolAddressLine2" value='@schoolForm("schoolAddressLine2").value' readonly >
+                         <input type="hidden" name="city" value='@schoolForm("city").value' readonly>
+                         <input type="hidden" name="state" value='@schoolForm("state").value' readonly>
+                         <input type="hidden" name="country" value='@schoolForm("country").value' readonly>
+                         <input type="hidden" name="pincode" value='@schoolForm("pincode").value' readonly>
+                         <input type="hidden" name="schoolAlternativeNumber" value='@schoolForm("schoolAlternativeNumber").value'>
+                         <input type="hidden" name="schoolEmail" value='@schoolForm("schoolEmail").value' readonly >
+                         
+                         
+                         
+                         
                         <div class="field">
                            <label>School Name</label>
                            <div class="fields">
@@ -41,69 +41,18 @@
                         </div>
   
                          
-                          <div class="field">
-                              <label>Address:</label>
-                              <div class="fields">
-                                 <div class="field">
-                                 <input type="text" name="schoolAddressLine1" value='@schoolForm("schoolAddressLine1").value' readonly >
-                                 </div>
-                                 <div class="field">
-                                  <input type="text" name="schoolAddressLine2" value='@schoolForm("schoolAddressLine2").value' readonly >
-                                </div>
-                              </div>
-                          </div>
                           
-                           <div class="two fields">
-                               <div class="field">
-                                 <label>City</label> 
-                                 <input type="text" name="city" value='@schoolForm("city").value' readonly>
-                               </div>
-                               
-                               <div class="field">
-                                  <label>State</label>
-                                  <input type="text" name="state" value='@schoolForm("state").value' readonly>
-                               </div>
-                             </div>
-                             
-                             
-                              <div class="two fields">
-                               <div class="field">
-                                 <label>Country</label> 
-                                  <input type="text" name="country" value='@schoolForm("country").value' readonly>
-                               </div>
-                               
-                               <div class="field">
-                                  <label>Pincode</label>
-                                  <input type="text" name="pincode" value='@schoolForm("pincode").value' readonly>
-                               </div>
-                             </div>
                              
                               <div class="two fields">
                                <div class="field">
                                  <label>School Mobile No.</label> 
                                   <input type="text" name="schoolMobileNumber" value='@schoolForm("schoolMobileNumber").value' readonly>
                                </div>
-                               @if(schoolForm("schoolAlternativeNumber").value){
-                               <div class="field">
-                                  <label>Alternative Mobile No.</label>
-                                  <input type="text" name="schoolAlternativeNumber" value='@schoolForm("schoolAlternativeNumber").value'>
-                               </div>
-                               }
+                               
                              </div>
                            
-                            
-                          <div class="field">
-                                   <label>School Email</label>
-                                     <div clas="fields"> 
-                                     <div class="field">
-                                       <input type="email" name="schoolEmail" value='@schoolForm("schoolEmail").value' readonly >
-                                     </div>
-                                     
-                                   </div>
-                             </div>
-                             
-                              <div class="field">
-                                   <label>School Email</label>
+                           <div class="field">
+                                   <label>UserName</label>
                                      <div clas="fields"> 
                                      <div class="field">
                                        <input type="email" name="schoolUserName" value='@schoolForm("schoolUserName").value' readonly >
@@ -146,6 +95,7 @@
                              <div class="field">
                                  <label>School Type</label>
                                       <select class="ui dropdown" name="schoolType">
+                                         <option value="">Selct School Type</option>
                                          @for((key,value)<- schoolType){
                                            <option value="@key">@value</option>
                                            }
@@ -153,8 +103,8 @@
                              </div>
                                                      
                             <button class="ui blue icon button" type="submit">Send Request <i class="sign in icon"></i></button>
-                              <div class="ui green reset button">Reset</div>
-							  <div class="ui black clear button">Clear</div>
+                               <div class="ui green reset button">Reset</div>
+							   <div class="ui black clear button">Clear</div>
 				               <div class="ui error message"></div> 
                        </form>
                     </div>
