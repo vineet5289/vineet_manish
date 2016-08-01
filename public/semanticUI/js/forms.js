@@ -10,17 +10,28 @@ $(function () {
                 }]
         },
         
+        
         password: {
-			identifier : 'password',
-			rules: [
-			{
-				type   : 'empty',
-				prompt : 'Please enter a password'
-			}
-			
-			]
-		},
-		
+                     identifier  : 'password',
+                      rules: [
+                      {
+                          type: 'empty',
+                          prompt: 'Please enter the password'
+                      }]
+                       
+          },
+                        
+         confirmPassword: {
+                        identifier  : 'confirmPassword',
+                        rules: [
+                         {
+                               type   : 'match[password]',
+                               prompt : 'Please enter the same value in both fields'
+                          }   ]
+             },
+        
+        
+       
 		schoolName: {
                 identifier: 'schoolName',
                 rules: [{
@@ -95,6 +106,10 @@ $(function () {
                 identifier: 'schoolEmail',
                 rules: [{
                     type: 'email',
+                    prompt: 'email Id Format is not correct'
+                },
+                {
+                    type: 'empty',
                     prompt: 'Please enter School email Id'
                 }]
             },
@@ -103,6 +118,10 @@ $(function () {
                 rules: [{
                     type:'exactLength[10]',
                     prompt: 'Mobile Number Shoud be of 10 Length'
+                },
+                {
+                    type:'empty',
+                    prompt: 'Please Enter proper Mobile Number'
                 }]
                  
             },
@@ -120,16 +139,20 @@ $(function () {
 	// New School Request Form
 
 	   $('#newSchoolRegistrationForm').form(validationObj, {
-		inline: true,
-		//onSuccess: function(){
-			//$('#newSchoolRequestPost').modal('show');
-		//}
+		on:'change',
+		inline:false
+	     
+		
 	});
+	
 	
 	// For Main login form
 	$('#loginform').form(validationObj, {
 		inline: false,
+		
 	
+	}).submit(function(event){
+	  event.preventDefault();
 	});
 	
 	// For adding new Class
@@ -145,15 +168,33 @@ $(function () {
     
     });  
     
+    //Register school Modal Yes or No
+    
     $('#RegisterSchoolButton').click(function(){
      $('#RegisterSchoolModal').modal('show');
     });  
     
+    //OTP modal submit
+    $('#completeSchoolRegistrationOTPForm').form(validationObj, {
+        on:'blur',
+		inline:true
+		
+	});
+    
     // captcha  code on otp form
     captchaCode();
     
-    
 });
+
+
+
+
+
+
+
+
+
+
 
 
 function captchaCode() {
