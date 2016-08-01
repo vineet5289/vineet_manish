@@ -141,6 +141,7 @@ public class SchoolController extends CustomController {
 	public Result postSchoolRegistrationRequest() {
 		Form<SchoolFormData> schoolForm = Form.form(SchoolFormData.class).bindFromRequest();
 		if(schoolForm == null || schoolForm.hasErrors()) {
+			System.out.println(schoolForm.errors());
 			flash("error", "Something parameter is missing or invalid in your registration request.");
 			return redirect(controllers.login_logout.routes.LoginController.preLogin());
 		}

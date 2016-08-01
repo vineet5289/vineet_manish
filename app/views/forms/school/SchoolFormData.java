@@ -5,6 +5,7 @@ import java.util.List;
 
 import lombok.Data;
 import models.SchoolBoard;
+import models.SchoolType;
 import play.data.validation.ValidationError;
 import utils.AddressFieldValidationUtils;
 import utils.SchoolSpecificFiledValidation;
@@ -95,7 +96,7 @@ public class SchoolFormData {
 			errors.add(new ValidationError("schoolBoard", "Please enter valid school board without any special characters like @;$."));
 		}
 
-		if(schoolType == null || SchoolTypeEnum.valueOf(schoolType.trim().toUpperCase())  == null) {
+		if(schoolType == null || SchoolType.schoolTypeToValue.get(schoolType.trim().toUpperCase())  == null) {
 			errors.add(new ValidationError("schoolType", "Please enter valid school type without any special characters like @;$."));
 		}
 
