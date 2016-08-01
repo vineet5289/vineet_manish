@@ -7,56 +7,119 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import play.db.DB;
 
+@Data
 public class SchoolBoard {
-	private static List<String> schoolBoards = new ArrayList<String>();
+	private static List<String> schoolBoardList = new ArrayList<String>();
+	private static Map<String, String> affiliatedToBoardName = new HashMap<String, String>();
+	private static Map<String, String> affiliatedToDisplayName = new HashMap<String, String>();
+	private static Map<String, Long> affiliatedToId = new HashMap<String, Long>();
 
-	@Getter @Setter
+	private static Map<String, String> boardCodeToBoardName = new HashMap<String, String>();
+	private static Map<String, String> boardCodeToDisplayName = new HashMap<String, String>();
+
 	private long id;
-
-	@Getter @Setter
 	private String boardName;
-
-	@Getter @Setter
 	private String boardCode;
+	private String boardDisplayName;
+	private String affiliatedTo;
 
-	public static List<String> getSchoolboardList() throws Exception {
-		if(schoolBoards == null || schoolBoards.isEmpty())
+	public static synchronized List<String> getSchoolboardList() {
+		if(schoolBoardList == null || schoolBoardList.isEmpty())
 			fetchBoardList();
 
-		return schoolBoards;
+		return schoolBoardList;
 	}
 
-	private static synchronized void fetchBoardList() throws Exception {
-		if(schoolBoards != null && !schoolBoards.isEmpty())
-			return;
+	public static synchronized String getDisplayNameGivenBoardCode(String boardCode) {
+		if(boardCodeToDisplayName == null || boardCodeToDisplayName.isEmpty())
+			fetchBoardList();
 
+		return boardCodeToDisplayName.get(boardCode);
+	}
+
+	public static synchronized String getBoardNameGivenBoardCode(String boardCode) {
+		if(boardCodeToBoardName == null || boardCodeToBoardName.isEmpty())
+			fetchBoardList();
+
+		return boardCodeToBoardName.get(boardCode);
+	}
+
+	public static synchronized String getDisplayNameGivenAffiliatedTo(String affiliatedTo){
+		if(affiliatedToDisplayName == null || affiliatedToDisplayName.isEmpty())
+			fetchBoardList();
+
+		return affiliatedToDisplayName.get(affiliatedTo);
+	}
+
+	public static synchronized String getBoardNameGivenAffiliatedTo(String affiliatedTo){
+		if(affiliatedToBoardName == null || affiliatedToBoardName.isEmpty())
+			fetchBoardList();
+
+		return affiliatedToBoardName.get(affiliatedTo);
+	}
+
+	public static synchronized Long getBoardIdGivenAffiliatedTo(String affiliatedTo){
+		if(affiliatedToId == null || affiliatedToId.isEmpty())
+			fetchBoardList();
+
+		return affiliatedToId.get(affiliatedTo);
+	}
+
+	private static synchronized void fetchBoardList(){
+		List<String> schoolBoardNameListTemp = new ArrayList<String>();
+
+		Map<String, String> affiliatedToBoardNameTemp = new HashMap<String, String>();
+		Map<String, Long> affiliatedToIdTemp = new HashMap<String, Long>();
+		Map<String, String> affiliatedToDisplayNameTemp = new HashMap<String, String>();
+
+		Map<String, String> boardCodeToBoardNameTemp = new HashMap<String, String>();
+		Map<String, String> boardCodeToDisplayNameTemp = new HashMap<String, String>();
+		
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
-		String query = "SELECT id, board_name FROM board;";
+		String query = "SELECT id, board_code, board_name, board_display_name, affiliated_to FROM board;";
 		try {
 			connection = DB.getDataSource("srp").getConnection();
 			preparedStatement = connection.prepareStatement(query);
 			resultSet = preparedStatement.executeQuery();
 			while(resultSet.next()) {
-				schoolBoards.add(resultSet.getString("board_name"));
+				schoolBoardNameListTemp.add(resultSet.getString("board_name"));
+
+				affiliatedToBoardNameTemp.put(resultSet.getString("affiliated_to"), resultSet.getString("board_name"));
+				affiliatedToDisplayNameTemp.put(resultSet.getString("affiliated_to"), resultSet.getString("board_display_name"));
+				affiliatedToIdTemp.put(resultSet.getString("affiliated_to"), resultSet.getLong("id"));
+				
+
+				boardCodeToBoardNameTemp.put(resultSet.getString("board_code"), resultSet.getString("board_name"));
+				boardCodeToDisplayNameTemp.put(resultSet.getString("board_code"), resultSet.getString("board_display_name"));
 			}
+			schoolBoardList = schoolBoardNameListTemp;
+			affiliatedToBoardName = affiliatedToBoardNameTemp;
+			affiliatedToDisplayName = affiliatedToDisplayNameTemp;
+			affiliatedToId = affiliatedToIdTemp;
+
+			boardCodeToBoardName = boardCodeToBoardNameTemp;
+			boardCodeToDisplayName = boardCodeToDisplayNameTemp;
 		} catch(Exception exception) {
 			exception.printStackTrace();
-			throw new Exception(exception);
 		} finally {
-			if(resultSet != null && !resultSet.isClosed())
-				resultSet.close();
-
-			if(preparedStatement != null && !preparedStatement.isClosed())
-				preparedStatement.close();
-
-			if(connection != null && !connection.isClosed())
-				connection.close();
+			try {
+				if(resultSet != null && !resultSet.isClosed())
+					resultSet.close();
+				
+				if(preparedStatement != null && !preparedStatement.isClosed())
+					preparedStatement.close();
+				
+				if(connection != null && !connection.isClosed())
+					connection.close();
+				
+			} catch(Exception exception) {
+				exception.printStackTrace();
+			}
 		}
 	}
 }

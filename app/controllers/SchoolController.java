@@ -1,5 +1,7 @@
 package controllers;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -43,8 +45,7 @@ public class SchoolController extends CustomController {
 	public Result preAddNewSchoolRequest() {
 		Form<AddNewSchoolRequest> addNewSchoolRequest = Form.form(AddNewSchoolRequest.class);
 		List<String> countries = Country.getCountries();
-		List<String> states = State.getStates();
-		return ok(newSchoolRequest.render(addNewSchoolRequest, states, countries));
+		return ok(newSchoolRequest.render(addNewSchoolRequest, countries, State.states));
 	}
 
 	public Result postAddNewSchoolRequest() {
@@ -112,12 +113,19 @@ public class SchoolController extends CustomController {
 				session(SessionKey.REG_SCHOOL_REQUEST_NUMBER.name(), referenceKey);
 				session(SessionKey.OTP_KEY.name(), otp);
 
-				Form<SchoolFormData> schoolFormData = Form.form(SchoolFormData.class);
-				schoolFormData.fill(schoolData);
-				List<String> schoolBoards = SchoolBoard.getSchoolboardList();
+				Form<SchoolFormData> schoolFormData = Form.form(SchoolFormData.class).fill(schoolData);
+				Map<String, String> schoolBoards = new HashMap<String, String>();
+
+				schoolBoards.put("CBSE", "CBSE");
+				schoolBoards.put("ICSE", "ICSE");
+				schoolBoards.put("IB", "International Baccalaureate");
+				
+				String affiliatedTo = schoolData.getState().trim().toUpperCase();
+				String otherBoard = SchoolBoard.getDisplayNameGivenAffiliatedTo(affiliatedTo);
+				schoolBoards.put(affiliatedTo, otherBoard);
+
 				List<String> schoolCategory = SchoolCategory.getSchoolCategoryList();
-				List<String> schoolType = SchoolType.getSchoolTypeList();				
-				return ok(SchoolRegistration.render(schoolFormData, schoolBoards, schoolCategory, schoolType));
+				return ok(SchoolRegistration.render(schoolFormData, schoolBoards, schoolCategory, SchoolType.schoolTypeToValue));
 			} else {
 				flash("error", "Your reference number or otp or email id is invalid. Please check and try again.");
 				return redirect(controllers.login_logout.routes.LoginController.preLogin()); // check here for proper redirection

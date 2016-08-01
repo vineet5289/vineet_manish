@@ -1,6 +1,6 @@
 @(schoolRegister:Form[views.forms.school.AddNewSchoolRequest],
 schoolCountry:    List[String],
-state:            List[String])
+state:            Map[String, String])
 @main2("Register"){
 <div class="ui container">
         <div class="ui centered stackable grid">
@@ -20,6 +20,9 @@ state:            List[String])
                                  <div class="ui left icon input">
                                     <input type="text" name="schoolName" placeholder="schoolName">
                                     <i class="user icon"></i>
+                                    <div class="ui corner label">
+                                       <i class="asterisk red icon"></i>
+                                    </div>
                                  </div>
                              </div>
                              
@@ -34,6 +37,9 @@ state:            List[String])
                                  <div class="ui left icon input">
                                     <input type="text" name="schoolAddressLine1" placeholder="schoolAddressLine1">
                                     <i class="home icon"></i>
+                                    <div class="ui corner label">
+                                       <i class="asterisk red icon"></i>
+                                    </div>
                                  </div>
                              </div>
                              
@@ -49,18 +55,18 @@ state:            List[String])
                                    <div class="ui left icon input">
                                      <input type="text" name="city" placeholder="city">
                                      <i class="home icon"></i>
+                                     <div class="ui corner label">
+                                       <i class="asterisk red icon"></i>
+                                    </div>
                                    </div>
                                  </div>
                                  <div class="eight wide field">
                                    <select class="ui dropdown" name="state">
                                         <option value="">Select State</option>
-                                        <option value="u">Uttar Pradesh</option>
-                                        <option value="m">Madhya Pradesh</option>
-                                        <option value="d">Delhi</option>
-                                        <option value="r">Rajasthan</option>
-                                        <option value="o">Orissa</option>
-                                        <option value="w">West Bengal</option>
-                                   </select>
+                                        @for((key,value) <- state){
+                                        <option value="@key">@value</option>
+                                        }                            
+                                      </select>
                                 </div>
                                 
                              </div>
@@ -74,12 +80,18 @@ state:            List[String])
                                   <div class="ui left icon input">
                                     <input type="text" name="country" placeholder="Country">
                                     <i class="home icon"></i>
+                                    <div class="ui corner label">
+                                       <i class="asterisk red icon"></i>
+                                    </div>
                                  </div>
                                </div>
                                <div class="eight wide field">
                                  <div class="ui left icon input">
                                     <input type="text" name="pincode" placeholder="pincode">
                                     <i class="home icon"></i>
+                                    <div class="ui corner label">
+                                       <i class="asterisk red icon"></i>
+                                    </div>
                                  </div>
                                </div>
                               </div> 
@@ -91,6 +103,9 @@ state:            List[String])
                                  <div class="ui left icon input">
                                     <input type="email" name="schoolEmail" placeholder="schoolEmail">
                                     <i class="mail icon"></i>
+                                    <div class="ui corner label">
+                                       <i class="asterisk red icon"></i>
+                                    </div>
                                  </div>
                              </div>
 							 
@@ -98,6 +113,10 @@ state:            List[String])
                                  <div class="ui left icon input">
                                     <input type="text" name="contactPersonName" placeholder="Your Name (Who is Contacting)">
                                     <i class="user icon"></i>
+                                    <div class="ui corner label">
+                                       <i class="asterisk red icon"></i>
+                                    </div>
+                                    
                                  </div>
                              </div>
                              
@@ -125,11 +144,12 @@ state:            List[String])
                                 </div>
                             </div>
                             
-                            <button class="ui blue icon button" type="submit">Send Request <i class="sign in icon"></i></button>
+                            <button class="ui blue icon button" >Send Request <i class="sign in icon"></i></button>
                             
 							  <div class="ui green reset button">Reset</div>
 							  <div class="ui black clear button">Clear</div>
 				               <div class="ui error message"></div> 
+				                
   
                         </form>
                         

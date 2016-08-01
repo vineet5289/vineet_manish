@@ -1,190 +1,110 @@
 @(schoolForm:       Form[views.forms.school.SchoolFormData],
-  schoolBoard:      List[String],
+  schoolBoard:      Map[String, String],
   schoolCategory:   List[String],
-  schoolType:       List[String])
+  schoolType:       Map[String, String])
 @main2("School Information"){
     <div class="ui container">
-      <h1> @schoolForm("schoolName").value</h1>
+      
        <div class="ui centered stackable grid">
-          <div class="six wide column"></div>
-          <div class="ui vertical divider"></div>
-          <div class="no"></div>
-            <div class="six wide column">
-                 <div class="ui segments" align="center">
+          
+          
+          
+            <div class="ten wide column">
+                 <div class="ui segments">
                     <div class="ui inverted blue padded segment">
                         <span class="ui header">Register<span>
                     </div>
                     <div class="ui segment">
                        <form class="ui form" id="form1" action="@routes.SchoolController.postSchoolRegistrationRequest" method="Post">
-                         <div class="fields">
-                              <div class="five wide field">
-                                 <div class="ui teal label">School Name:</div>
-                              </div>
-                              <div class="eleven wide field">  
-                                 <div class="ui label"><b>@schoolForm("schoolName").value</b></div>
-                             </div>
-                          </div>
-                          <div class="field">
-                              <label>Address:</label>
+                        
+                       <!-- Hidden fields on form -->
+                         <input type="hidden" name="schoolRegistrationId" value='@schoolForm("schoolRegistrationId").value' readonly>
+                         <input type="hidden" name="schoolAddressLine1" value='@schoolForm("schoolAddressLine1").value' readonly >
+                         <input type="hidden" name="schoolAddressLine2" value='@schoolForm("schoolAddressLine2").value' readonly >
+                         <input type="hidden" name="city" value='@schoolForm("city").value' readonly>
+                         <input type="hidden" name="state" value='@schoolForm("state").value' readonly>
+                         <input type="hidden" name="country" value='@schoolForm("country").value' readonly>
+                         <input type="hidden" name="pincode" value='@schoolForm("pincode").value' readonly>
+                         <input type="hidden" name="schoolAlternativeNumber" value='@schoolForm("schoolAlternativeNumber").value'>
+                         <input type="hidden" name="schoolEmail" value='@schoolForm("schoolEmail").value' readonly >
+                         
+                         
+                         
+                         
+                        <div class="field">
+                           <label>School Name</label>
+                           <div class="fields">
+                                <div class="field">
+                                    <input type="text" name="schoolName" value='@schoolForm("schoolName").value' readonly >
+                                </div>
+                           </div>
+                        </div>
+  
+                         
+                          
+                             
                               <div class="two fields">
-                                 <div class="field">
-                                    <div class="ui label"><b>@schoolForm("schoolAddressLine1").value</b></div>
-                                 </div>
-                                 <div class="field">
-                                    <div class="ui label"><b>@schoolForm("schoolAddressLine2").value</b></div>
-                                 </div>
-                              </div>
-                          </div>
-							 <div class="field">
-                                 <div class="ui left icon input">
-                                    <input type="text" name="schoolRegistrationId" placeholder="schoolRegistrationId">
-                                    <i class="user icon"></i>
-                                 </div>
+                               <div class="field">
+                                 <label>School Mobile No.</label> 
+                                  <input type="text" name="schoolMobileNumber" value='@schoolForm("schoolMobileNumber").value' readonly>
+                               </div>
+                               
                              </div>
-							  <div class="field">
-                                 <div class="ui left icon input">
-                                    <input type="email" name="schoolEmail" placeholder="schoolEmail">
-                                    <i class="mail icon"></i>
-                                 </div>
-                             </div>
-							 
-							 <div class="field">
-                                 <div class="ui left icon input">
-                                    <input type="text" name="contactPersonName" placeholder="Your Name (Who is Contacting)">
-                                    <i class="user icon"></i>
-                                 </div>
-                             </div>
-                             
-							<div class="field">
-                                <div class="ui left icon input">
-                                    <input type="text" name="schoolMobileNumber" placeholder="school Mobile Number">
-                                    <i class="phone square icon"></i>
-                                </div>
-                            </div>
-                            
-                            <div class="field">
-                                <div class="ui left icon input">
-                                    <input type="text" name="schoolAlternativeNumber" placeholder="Alternative  Mobile Number">
-                                    <i class="phone square icon"></i>
-                                </div>
-                            </div> 
-    
-							 <div class="field">
-                                 <div class="ui left icon input">
-                                    <input type="text" name="schoolAddressLine1" placeholder="schoolAddressLine1">
-                                    <i class="home icon"></i>
-                                 </div>
-                             </div>
-                             
-                             <div class="field">
-                                 <div class="ui left icon input">
-                                    <input type="text" name="schoolAddressLine2" placeholder="schoolAddressLine2">
-                                    <i class="home icon"></i>
-                                 </div>
-                             </div>
-                             
-                             <div class="field">
-                                 <div class="ui left icon input">
-                                    <input type="text" name="city" placeholder="city">
-                                    <i class="home icon"></i>
-                                 </div>
-                             </div>
-                             
                            
-                            
-                            <div class="field">
-                                 
-                                  <select class="ui dropdown" name="state">
-                                        <option value="">Select State</option>
-                                        <option value="u">Uttar Pradesh</option>
-                                        <option value="m">Madhya Pradesh</option>
-                                        <option value="d">Delhi</option>
-                                        <option value="r">Rajasthan</option>
-                                        <option value="o">Orissa</option>
-                                        <option value="w">West Bengal</option>
-                                  </select>
+                           <div class="field">
+                                   <label>UserName</label>
+                                     <div clas="fields"> 
+                                     <div class="field">
+                                       <input type="email" name="schoolUserName" value='@schoolForm("schoolUserName").value' readonly >
+                                     </div>
+                                     
+                                   </div>
                              </div>
-                            
-                             <div class="field">
+                             
+                             
+                             <div class="two fields">
+                               <div class="field">
+                                 <label>Password</label> 
+                                  <div class="ui left icon input">
+                                          <input type="password" name="password" placeholder="Password" autocomplete="off">
+                                          <i class="key icon"></i>
+                                  </div>
+                               </div>
+                               
+                               <div class="field">
+                                  <label>Confirm Password</label>
                                  <div class="ui left icon input">
-                                    <input type="text" name="country" placeholder="Country">
-                                    <i class="home icon"></i>
+                                             <input type="password" name="confirmPassword" placeholder="Confirm Password" autocomplete="off">
+                                             <i class="key icon"></i>
+                                            </div>
                                  </div>
                              </div>
-                             
+
                              <div class="field">
-                                 <div class="ui left icon input">
-                                    <input type="text" name="pincode" placeholder="pincode">
-                                    <i class="home icon"></i>
-                                 </div>
-                             </div>
-                             
-                            
-                             
-                             <div class="field">
-                                 <div class="ui left icon input">
-                                    <input type="text" name="schoolUserName" placeholder="schoolUserName">
-                                    <i class="user icon"></i>
-                                 </div>
-                             </div>
-                             
-                             <div class="field">
-                                 <div class="ui left icon input">
-                                    <input type="password" name="password" placeholder="Password" autocomplete="off">
-                                    <i class="user icon"></i>
-                                 </div>
-                             </div>
-                             
-                             <div class="field">
-                                 <div class="ui left icon input">
-                                    <input type="password" name="confirmPassword" placeholder="Confirm Password" autocomplete="off">
-                                    <i class="user icon"></i>
-                                 </div>
-                             </div>
-                             
-                             <div class="field">
-                                 <div class="ui left icon input">
-                                    <input type="text" name="noOfShift" value="1" placeholder="No of Shifts">
-                                    <i class="home icon"></i>
-                                 </div>
-                             </div>
-                             
-                             <div class="field">
+                                 <label>School Board</label>
                                  <div class="ui left icon input">
                                    <select class="ui dropdown" name="schoolBoard">
                                            <option value="">school Board</option>
-                                           <option value="1">CBSE</option>
-                                           <option value="2">ICSE</option>
-                                           <option value="3">UPBOARD</option>
+                                           @for((key,value) <- schoolBoard){
+                                           <option value="@key">@value</option>
+                                           }
                                     </select>
                                  </div>
                              </div>
                              
-                             
-                             
-                             
-                             
                              <div class="field">
-                                 
-                                    <select class="ui dropdown" name="schoolCategory">
-                                           <option value="">schoolCategory</option>
-                                           <option value="1">Day Scholar</option>
-                                           <option value="2">Residential</option>
-                                           <option value="3">Both (Residential & Day Scholar)</option>
-                                    </select>
-                            </div>
-                             
-                             <div class="field">
+                                 <label>School Type</label>
                                       <select class="ui dropdown" name="schoolType">
-                                           <option value="">school Type</option>
-                                           <option value="1">GOVERNMENT</option>
-                                           <option value="2">PRIVATE</option>
+                                         <option value="">Selct School Type</option>
+                                         @for((key,value)<- schoolType){
+                                           <option value="@key">@value</option>
+                                           }
                                     </select>
                              </div>
                                                      
                             <button class="ui blue icon button" type="submit">Send Request <i class="sign in icon"></i></button>
-                              <div class="ui green reset button">Reset</div>
-							  <div class="ui black clear button">Clear</div>
+                               <div class="ui green reset button">Reset</div>
+							   <div class="ui black clear button">Clear</div>
 				               <div class="ui error message"></div> 
                        </form>
                     </div>

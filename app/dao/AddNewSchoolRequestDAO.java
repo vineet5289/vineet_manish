@@ -72,9 +72,9 @@ public class AddNewSchoolRequestDAO {
 			preparedStatement.setString(6, StringUtils.getValidStringValue(addNewSchoolRequestDetails.get("query")));
 			preparedStatement.setString(7, StringUtils.getValidStringValue(addNewSchoolRequestDetails.get("schoolAddressLine1")));
 			preparedStatement.setString(8, StringUtils.getValidStringValue(addNewSchoolRequestDetails.get("schoolAddressLine2"))); 
-			preparedStatement.setString(9, addNewSchoolRequestDetails.get("city").trim());
-			preparedStatement.setString(10, addNewSchoolRequestDetails.get("state").trim());
-			preparedStatement.setString(11, addNewSchoolRequestDetails.get("country").trim());
+			preparedStatement.setString(9, addNewSchoolRequestDetails.get("city").trim().toUpperCase());
+			preparedStatement.setString(10, addNewSchoolRequestDetails.get("state").trim().toUpperCase());
+			preparedStatement.setString(11, addNewSchoolRequestDetails.get("country").trim().toUpperCase());
 			preparedStatement.setString(12, addNewSchoolRequestDetails.get("pincode").trim());
 			preparedStatement.setString(13, StringUtils.getValidStringValue(addNewSchoolRequestDetails.get("contactPersonName")));
 			preparedStatement.setString(14, requestNumber);
