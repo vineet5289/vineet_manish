@@ -10,7 +10,6 @@ import play.data.validation.ValidationError;
 import utils.AddressFieldValidationUtils;
 import utils.SchoolSpecificFiledValidation;
 import utils.ValidateFields;
-import enum_package.SchoolTypeEnum;
 
 @Data
 public class SchoolFormData {

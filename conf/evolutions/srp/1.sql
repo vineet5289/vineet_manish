@@ -67,7 +67,7 @@ CREATE TABLE IF NOT EXISTS school (
   school_end_time varchar(10),
   school_financial_start_date date,
   school_financial_end_date date,
-  school_current_financial_year varchar(5),
+  school_current_financial_year varchar(10),
   school_current_financial_start_month varchar(5),
   school_current_financial_end_month varchar(5),
   school_website_url varchar(255) COLLATE utf8_unicode_ci,
