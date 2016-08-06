@@ -18,9 +18,9 @@ public class EmployesDAO {
 		PreparedStatement empInsertPS = null;
 		PreparedStatement empSelectPS = null;
 
-		String loginQ = String.format("INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s, %s) VALUES (?, ?, ?, ?, ?, ?, ?, ?);", Tables.LoginTable.table,
-				Tables.LoginTable.userName, Tables.LoginTable.password, Tables.LoginTable.passwordState, Tables.LoginTable.role, Tables.LoginTable.name,
-				Tables.LoginTable.emailId, Tables.LoginTable.accessRights, Tables.LoginTable.schoolId);
+		String loginQ = String.format("INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s, %s) VALUES (?, ?, ?, ?, ?, ?, ?, ?);", Tables.Login.table,
+				Tables.Login.userName, Tables.Login.password, Tables.Login.passwordState, Tables.Login.role, Tables.Login.name,
+				Tables.Login.emailId, Tables.Login.accessRights, Tables.Login.schoolId);
 
 		String empInsertQ = String.format("INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);", Tables.Employee.table,
 				Tables.Employee.name, Tables.Employee.userName, Tables.Employee.schoolId, Tables.Employee.gender, Tables.Employee.phoneNumber, Tables.Employee.empCode,

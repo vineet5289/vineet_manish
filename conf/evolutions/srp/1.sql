@@ -94,6 +94,7 @@ CREATE TABLE IF NOT EXISTS login (
   access_rights longtext COLLATE utf8_unicode_ci,
   is_active tinyint(1) DEFAULT 1 NOT NULL,
   name varchar(150) COLLATE utf8_unicode_ci NOT NULL,
+  type enum('GENERAL', 'GUARDIAN', 'STUDENT', 'SCHOOL', 'EMP') DEFAULT 'GENERAL' NOT NULL,
   school_id bigint(20),
   PRIMARY KEY (id),
   UNIQUE KEY (user_name)

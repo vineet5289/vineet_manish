@@ -47,13 +47,8 @@ public class LoginController extends CustomController {
 				if(schoolId != null && schoolId != 0) {
 					session(SessionKey.SCHOOL_ID.name(), Long.toString(schoolId));
 				}
-//
-//
-//				String superUserAccessRight = loginDetails.getAccessRight();
-//				if(superUserAccessRight != null) {
-//					session(SessionKey.USER_ACCESSRIGHT.name(), superUserAccessRight);
-//				}
-//
+				session(SessionKey.LOGIN_TYPE.name(), loginDetails.getType());
+
 //				Long superUserSchoolId = loginDetails.getSchoolId();
 //				if(superUserSchoolId != null && superUserSchoolId > 0) {
 //					session(SessionKey.SCHOOL_ID.name(), superUserSchoolId.toString());

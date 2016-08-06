@@ -81,7 +81,7 @@ public class Tables {
 		public static String noOfBranch = "no_of_branch";
 	}
 
-	public static class LoginTable{
+	public static class Login{
 		public static String table = "login";
 		//mandatory field
 		public static String id = "id";
@@ -92,6 +92,7 @@ public class Tables {
 		public static String name = "name";
 		
 		//optional field
+		public static String type  = "type";
 		public static String emailId = "email_id";
 		public static String createdAt = "created_at";
 		public static String updatedAt = "updated_at";

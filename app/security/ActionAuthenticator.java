@@ -13,7 +13,7 @@ public class ActionAuthenticator extends Security.Authenticator{
 	@Override
 	public String getUsername(Http.Context ctx) {
 		Map<String, String> userHeaderCredential = getSessionKeyFromRequest(ctx);
-		if(userHeaderCredential == null || userHeaderCredential.size() < 2) {
+		if(userHeaderCredential == null || userHeaderCredential.size() < 3) {
 			return null;
 		}
 
@@ -62,7 +62,7 @@ public class ActionAuthenticator extends Security.Authenticator{
 		if(userAccessRights != null && !userAccessRights.trim().isEmpty())
 			userHeaderCredential.put(SessionKey.USER_ACCESSRIGHT.name(), userAccessRights.trim());
 
-		if(!userHeaderCredential.isEmpty() && userHeaderCredential.size() >= 2)
+		if(!userHeaderCredential.isEmpty() && userHeaderCredential.size() >= 3)
 			return userHeaderCredential;
 
 		return null;

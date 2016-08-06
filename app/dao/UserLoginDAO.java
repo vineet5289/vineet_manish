@@ -21,10 +21,7 @@ import enum_package.Role;
 
 public class UserLoginDAO {
 	private String idField = "id";
-	private String emailIdField = "email_id";
 	private String userNameField = "user_name";
-	private String passwordField = "password";
-	private String passwordStateField = "password_state";
 	private String roleField = "role";
 	private String accessRightsField = "access_rights";
 	private String isActiveField = "is_active";
@@ -32,7 +29,7 @@ public class UserLoginDAO {
 	private String schoolIdField = "school_id";
 	private String superUserNameField = "super_user_name";
 
-	private String loginTableName = "login"; 
+	private String loginTableName = "login";
 	private String userSuperUserTableName = "user_super_user";
 
 	public LoginDetails isValidUserCredentials(String userName, String password) throws SQLException {
@@ -41,9 +38,9 @@ public class UserLoginDAO {
 		PreparedStatement loginPreparedStatement = null;
 		ResultSet loginResultSet = null;
 
-		String loginSelectQuery = String.format("SELECT %s, %s, %s, %s, %s, %s, %s, %s, %s FROM %s WHERE %s=? AND %s=?;", idField,
-				userNameField, emailIdField, passwordField, passwordStateField, roleField, accessRightsField, nameField, schoolIdField,
-				loginTableName, userNameField, isActiveField);
+		String loginSelectQuery = String.format("SELECT %s, %s, %s, %s, %s, %s, %s, %s, %s FROM %s WHERE %s=? AND %s=?;", Tables.Login.id,
+				Tables.Login.userName, Tables.Login.emailId, Tables.Login.password, Tables.Login.passwordState, Tables.Login.role,
+				Tables.Login.accessRights, Tables.Login.name, Tables.Login.schoolId, Tables.Login.table, Tables.Login.userName, Tables.Login.isActive);
 
 		boolean isFieldSet = true;
 		try {
@@ -53,7 +50,7 @@ public class UserLoginDAO {
 			loginPreparedStatement.setBoolean(2, true);
 			loginResultSet = loginPreparedStatement.executeQuery();
 
-			if(!loginResultSet.next() || !isPasswordMatch(password, loginResultSet.getString(passwordField))) {
+			if(!loginResultSet.next() || !isPasswordMatch(password, loginResultSet.getString(Tables.Login.password))) {
 				loginDetails.setError("UserName/Password is invalid. Please Try again");
 				return loginDetails;
 			}
@@ -62,18 +59,16 @@ public class UserLoginDAO {
 			if(authToken == null || authToken.isEmpty())
 				isFieldSet = false;
 
-			loginDetails.setRole(Role.valueOf(loginResultSet.getString(roleField)));
+			loginDetails.setRole(loginResultSet.getString(Tables.Login.role));
 			loginDetails.setUserName(userName);
 			loginDetails.setError("");
-			loginDetails.setName(loginResultSet.getString(nameField));
-			loginDetails.setEmailId(loginResultSet.getString(emailIdField));
 			loginDetails.setAuthToken(authToken);
-			loginDetails.setAccessRight(loginResultSet.getString(accessRightsField));
-			Long superUserSchoolId = loginResultSet.getLong(schoolIdField);
+			loginDetails.setAccessRight(loginResultSet.getString(Tables.Login.accessRights));
+			Long superUserSchoolId = loginResultSet.getLong(Tables.Login.schoolId);
 			if( superUserSchoolId != null && superUserSchoolId > 0) {
 				loginDetails.setSchoolId(superUserSchoolId);
 			}
-
+			loginDetails.setType(loginResultSet.getString(Tables.Login.type));
 		} catch(Exception exception) {
 			loginDetails.setError("Server Problem occure. Please try after some time");
 			exception.printStackTrace();
@@ -114,8 +109,7 @@ public class UserLoginDAO {
 
 				LoginDetails userDetail = new LoginDetails();
 				userDetail.setAuthToken(userAuthToken);
-				userDetail.setName(userSuperUserResultSet.getString(nameField));
-				userDetail.setRole(Role.STUDENT);
+				userDetail.setRole(Role.STUDENT.name());
 				userDetail.setUserName(userSuperUserResultSet.getString(userNameField));
 				userDetail.setSchoolId(userSuperUserResultSet.getLong(schoolIdField));
 				userDetails.add(userDetail);

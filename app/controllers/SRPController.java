@@ -4,18 +4,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import dao.UserLoginDAO;
 import models.LoginDetails;
 import play.mvc.Result;
 import play.mvc.Security;
 import security.ActionAuthenticator;
-import views.html.viewClass.dashboard;
 import views.html.homePage.schoolRequestHomepage;
-import views.html.parent.parentHome;
-import views.html.teacher.teacherHome;
-import views.html.student.studentHome;
+import views.html.viewClass.dashboard;
+import dao.UserLoginDAO;
+import enum_package.LoginTypeEnum;
 import enum_package.RegisterUserType;
-import enum_package.Role;
 import enum_package.SessionKey;
 
 public class SRPController extends CustomController {
@@ -24,9 +21,10 @@ public class SRPController extends CustomController {
 	public Result index() {
 		String userName = session().get(SessionKey.USER_NAME.name());
 		String userAuthKey = session().get(SessionKey.AUTH_TOKEN.name());
+		String type = session().get(SessionKey.LOGIN_TYPE.name());
 
 		
-		if(true) {
+		if(type.equalsIgnoreCase(LoginTypeEnum.SCHOOL.name())) {
 			return ok(dashboard.render(session().get(SessionKey.USER_NAME.name()), "SUPERADMIN"));
 		}
 
