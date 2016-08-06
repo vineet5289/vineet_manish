@@ -20,8 +20,8 @@ public class SchoolInfoController extends ClassController {
 		SchoolGeneralInfoFrom schoolGeneralInfo = null;
 		try{
 			SchoolProfileInfoDAO schoolProfileInfoDAO = new SchoolProfileInfoDAO();
-			schoolHeaderInfo = schoolProfileInfoDAO.getSchoolHeaderInfoForm();
-			schoolGeneralInfo = schoolProfileInfoDAO.getSchoolGeneralInfoFrom();
+			schoolHeaderInfo = schoolProfileInfoDAO.getSchoolHeaderInfoForm(1l);
+			schoolGeneralInfo = schoolProfileInfoDAO.getSchoolGeneralInfoFrom(1l);
 		} catch(Exception exception) {
 			System.out.println("some error happen");
 		}
@@ -44,8 +44,8 @@ public class SchoolInfoController extends ClassController {
 		SchoolShiftAndClassTimingInfoForm schoolShiftAndClassTimingInfo = null;
 		try{
 			SchoolProfileInfoDAO schoolProfileInfoDAO = new SchoolProfileInfoDAO();
-			schoolHeaderInfo = schoolProfileInfoDAO.getSchoolHeaderInfoForm();
-			schoolShiftAndClassTimingInfo = schoolProfileInfoDAO.getSchoolShiftAndClassTimingInfoForm();
+			schoolHeaderInfo = schoolProfileInfoDAO.getSchoolHeaderInfoForm(1l);
+			schoolShiftAndClassTimingInfo = schoolProfileInfoDAO.getSchoolShiftAndClassTimingInfoForm(1l);
 		} catch(Exception exception) {
 			System.out.println("some error happen");
 		}

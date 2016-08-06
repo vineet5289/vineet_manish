@@ -37,6 +37,8 @@ public class Tables {
 		public static String isActiveField = "is_active";
 		public static String contractPersonNameField = "contract_person_name";
 		public static String approvalUserName = "approval_user_name";
+		public static String groupOfSchool = "group_of_school";
+		public static String noOfBranch = "no_of_branch";
 	}
 
 	public static class School {
@@ -74,7 +76,9 @@ public class Tables {
 		public static String schoolWebsiteUrl = "school_website_url";
 		public static String schoolLogoUrl = "school_logo_url";
 		public static String schoolPreferedName = "school_prefered_name";
-		public static String schoolAlternativeEmail = "school_alternative_email";		
+		public static String schoolAlternativeEmail = "school_alternative_email";
+		public static String groupOfSchool = "group_of_school";
+		public static String noOfBranch = "no_of_branch";
 	}
 
 	public static class LoginTable{

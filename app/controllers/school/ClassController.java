@@ -28,8 +28,8 @@ public class ClassController extends CustomController {
 			return redirect(controllers.login_logout.routes.LoginController.preLogin()); // check for correct redirection
 		}
 		else {
-			String userName = session().get(SessionKey.CURRENT_USER_NAME.name()); // random set will change
-			String schoolIdFromSession = session().get(SessionKey.CURRENT_SCHOOL_ID.name()); // random set will change
+			String userName = session().get(SessionKey.USER_NAME.name()); // random set will change
+			String schoolIdFromSession = session().get(SessionKey.SCHOOL_ID.name()); // random set will change
 			ClassForm classFormDetails = classForm.get();
 			long schoolId = -1l;
 			try {

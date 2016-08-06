@@ -34,6 +34,8 @@ CREATE TABLE IF NOT EXISTS school_registration_request (
   updated_at timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   is_active tinyint(1) DEFAULT 1 NOT NULL,
   alert_done tinyint(1) DEFAULT 0 NOT NULL,
+  group_of_school enum('SINGLE', 'MULTI_BRANCH') DEFAULT 'SINGLE' NOT NULL,
+  no_of_branch int NOT NULL DEFAULT 1,
   approval_user_name varchar(255) COLLATE utf8_unicode_ci,
   PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -74,7 +76,8 @@ CREATE TABLE IF NOT EXISTS school (
   school_current_financial_end_month varchar(5),
   school_website_url varchar(255) COLLATE utf8_unicode_ci,
   school_logo_url varchar(255) COLLATE utf8_unicode_ci,
-  status enum('REQUESTED', 'REJECTED', 'APPROVED', 'REGISTERED') DEFAULT 'REQUESTED' NOT NULL,
+  group_of_school enum('SINGLE', 'MULTI_BRANCH') DEFAULT 'SINGLE' NOT NULL,
+  no_of_branch int NOT NULL DEFAULT 1,
   PRIMARY KEY (id),
   UNIQUE KEY (school_user_name)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

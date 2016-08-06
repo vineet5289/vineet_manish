@@ -18,7 +18,6 @@ import enum_package.SessionKey;
 public class LoginController extends CustomController {
 
 	public Result postLogin(String phone) {
-		System.out.println("==================");
 		Form<LoginForm> loginForm = Form.form(LoginForm.class).bindFromRequest();
 		if (loginForm == null || loginForm.hasErrors()) {
 			flash("error", "Login credentials not valid.");
@@ -30,6 +29,7 @@ public class LoginController extends CustomController {
 			UserLoginDAO userLoginDAO = new UserLoginDAO();
 			String userName = userDetails.get("userName");
 			String password = userDetails.get("password");
+
 			try {
 				LoginDetails loginDetails = userLoginDAO.isValidUserCredentials(userName, password);
 				if(!loginDetails.getError().isEmpty()) {
@@ -37,32 +37,27 @@ public class LoginController extends CustomController {
 					return redirect(controllers.login_logout.routes.LoginController.preLogin());
 				}
 
-				session(SessionKey.SUPER_USER_NAME.name(), userName);
-				session(SessionKey.CURRENT_USER_NAME.name(), userName);
-
-				String superUserRole = loginDetails.getRole().name();
-				if(superUserRole != null) {
-					session(SessionKey.SUPER_USER_ROLE.name(), superUserRole);
-					session(SessionKey.CURRENT_USER_ROLE.name(), superUserRole);
+				session(SessionKey.USER_NAME.name(), userName);
+				String authToken = loginDetails.getAuthToken();
+				if(authToken != null) {
+					session(SessionKey.AUTH_TOKEN.name(), authToken);
 				}
 
-				String superAuthToken = loginDetails.getAuthToken();
-				if(superAuthToken != null) {
-					session(SessionKey.SUPER_AUTH_TOKEN.name(), superAuthToken);
-					session(SessionKey.CURRENT_AUTH_TOKEN.name(), superAuthToken);
+				Long schoolId = loginDetails.getSchoolId();
+				if(schoolId != null && schoolId != 0) {
+					session(SessionKey.SCHOOL_ID.name(), Long.toString(schoolId));
 				}
-
-				String superUserAccessRight = loginDetails.getAccessRight();
-				if(superUserAccessRight != null) {
-					session(SessionKey.SUPER_USER_ACCESSRIGHT.name(), superUserAccessRight);
-					session(SessionKey.CURRENT_USER_ACCESSRIGHT.name(), superUserAccessRight);
-				}
-
-				Long superUserSchoolId = loginDetails.getSchoolId();
-				if(superUserSchoolId != null && superUserSchoolId > 0) {
-					session(SessionKey.SUPER_SCHOOL_ID.name(), superUserSchoolId.toString());
-					session(SessionKey.CURRENT_SCHOOL_ID.name(), superUserSchoolId.toString());
-				}
+//
+//
+//				String superUserAccessRight = loginDetails.getAccessRight();
+//				if(superUserAccessRight != null) {
+//					session(SessionKey.USER_ACCESSRIGHT.name(), superUserAccessRight);
+//				}
+//
+//				Long superUserSchoolId = loginDetails.getSchoolId();
+//				if(superUserSchoolId != null && superUserSchoolId > 0) {
+//					session(SessionKey.SCHOOL_ID.name(), superUserSchoolId.toString());
+//				}
 			} catch (Exception exception){
 				flash("error", "Server problem occur. Please try after some time");
 				session().clear();
