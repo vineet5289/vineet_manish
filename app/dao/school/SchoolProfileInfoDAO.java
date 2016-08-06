@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import models.SchoolBoard;
 import dao.Tables;
@@ -11,6 +13,7 @@ import play.db.DB;
 import views.forms.school.SchoolGeneralInfoFrom;
 import views.forms.school.SchoolHeaderInfoForm;
 import views.forms.school.SchoolShiftAndClassTimingInfoForm;
+import views.forms.school.SchoolShiftAndClassTimingInfoForm.Shift;
 
 public class SchoolProfileInfoDAO {
 
@@ -120,16 +123,41 @@ public class SchoolProfileInfoDAO {
 		return schoolHeaderInfoForm;
 	}
 
-	public SchoolShiftAndClassTimingInfoForm getSchoolShiftAndClassTimingInfoForm()
-			throws SQLException {
+	public SchoolShiftAndClassTimingInfoForm getSchoolShiftAndClassTimingInfoForm(Long schoolId) throws SQLException {
 		Connection connection = null;
 		PreparedStatement selectStatement = null;
 		ResultSet resultSet = null;
 		SchoolShiftAndClassTimingInfoForm schoolShiftAndClassTimingInfoForm = null;
-		String selectQuery = String.format("", "");
+		String selectQuery = String.format("SELECT %s, %s, %s, %s, %s, %s, %s, %s FROM %s WHERE %s=? AND %s=?;", Tables.SchoolShiftInfo.shiftName,
+				Tables.SchoolShiftInfo.shiftClassStartTime, Tables.SchoolShiftInfo.shiftClassEndTime, Tables.SchoolShiftInfo.shiftWeekStartDay,
+				Tables.SchoolShiftInfo.shiftWeekEndDay, Tables.SchoolShiftInfo.shiftStartClassName, Tables.SchoolShiftInfo.shiftEndClassName,
+				Tables.SchoolShiftInfo.shiftAttendenceType, Tables.SchoolShiftInfo.table, Tables.SchoolShiftInfo.isActive, Tables.SchoolShiftInfo.schoolId);
 		try {
 			connection = DB.getDataSource("srp").getConnection();
-			schoolShiftAndClassTimingInfoForm = new SchoolShiftAndClassTimingInfoForm();
+			selectStatement = connection.prepareStatement(selectQuery, ResultSet.TYPE_FORWARD_ONLY);
+			selectStatement.setBoolean(1, true);
+			selectStatement.setLong(2, schoolId);
+			resultSet = selectStatement.executeQuery();
+			int numberOfShift = 0;
+			List<SchoolShiftAndClassTimingInfoForm.Shift> shifts = new ArrayList<SchoolShiftAndClassTimingInfoForm.Shift>();
+			while(resultSet.next()) {
+				SchoolShiftAndClassTimingInfoForm.Shift shift = new SchoolShiftAndClassTimingInfoForm.Shift();
+				shift.setShiftName(resultSet.getString(Tables.SchoolShiftInfo.shiftName));
+				shift.setShiftClassStartTime(resultSet.getString(Tables.SchoolShiftInfo.shiftClassStartTime));
+				shift.setShiftClassEndTime(resultSet.getString(Tables.SchoolShiftInfo.shiftClassEndTime));
+				shift.setShiftWeekStartDay(resultSet.getString(Tables.SchoolShiftInfo.shiftWeekStartDay));
+				shift.setShiftWeekEndDay(resultSet.getString(Tables.SchoolShiftInfo.shiftWeekEndDay));
+				shift.setShiftStartClassName(resultSet.getString(Tables.SchoolShiftInfo.shiftStartClassName));
+				shift.setShiftEndClassName(resultSet.getString(Tables.SchoolShiftInfo.shiftEndClassName));
+				shift.setShiftAttendenceType(resultSet.getString(Tables.SchoolShiftInfo.shiftAttendenceType));
+				numberOfShift++;
+			}
+
+			if(numberOfShift > 0) {				
+				schoolShiftAndClassTimingInfoForm = new SchoolShiftAndClassTimingInfoForm();
+				schoolShiftAndClassTimingInfoForm.setNumberOfShift(numberOfShift);
+				schoolShiftAndClassTimingInfoForm.setShifts(shifts);
+			}
 		} catch (Exception exception) {
 			System.out.println("connection exception happen");
 			exception.printStackTrace();
