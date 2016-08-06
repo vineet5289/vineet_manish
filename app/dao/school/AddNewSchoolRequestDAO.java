@@ -1,4 +1,4 @@
-package dao;
+package dao.school;
 
 import java.security.SecureRandom;
 import java.sql.Connection;
@@ -253,13 +253,13 @@ public class AddNewSchoolRequestDAO {
 		return schoolFormData;
 	}
 
-	private String getRequestNumber(String schooleName) {
+	private static String getRequestNumber(String schooleName) {
 		RandomGenerator randomGenerator = new RandomGenerator(); 
 		SecureRandom secureRandom = new SecureRandom();
 		String referenceNumber = randomGenerator.getReferenceNumber(30, secureRandom);
 
 		StringBuilder sb = new StringBuilder();
-		String[] charSeq = schooleName.trim().split("([ \t]+)");
+		String[] charSeq = schooleName.replaceAll("([ \t.&]+)", " ").trim().split("([ \t.&]+)");
 		int nameLength = charSeq.length;
 		if(nameLength == 1) {
 			if(charSeq[0].length() < 3)

@@ -42,9 +42,11 @@ CREATE TABLE IF NOT EXISTS school_registration_request (
 CREATE TABLE IF NOT EXISTS school (
   id bigint(20) NOT NULL AUTO_INCREMENT,
   name varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  school_prefered_name varchar(255) COLLATE utf8_unicode_ci,
   school_registration_id varchar(225) COLLATE utf8_unicode_ci,
   school_user_name varchar(225) COLLATE utf8_unicode_ci NOT NULL,
   school_email varchar(225) COLLATE utf8_unicode_ci,
+  school_alternative_email varchar(15) COLLATE utf8_unicode_ci,
   address_line1 varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   address_line2 varchar(255) COLLATE utf8_unicode_ci,
   city varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -72,6 +74,7 @@ CREATE TABLE IF NOT EXISTS school (
   school_current_financial_end_month varchar(5),
   school_website_url varchar(255) COLLATE utf8_unicode_ci,
   school_logo_url varchar(255) COLLATE utf8_unicode_ci,
+  status enum('REQUESTED', 'REJECTED', 'APPROVED', 'REGISTERED') DEFAULT 'REQUESTED' NOT NULL,
   PRIMARY KEY (id),
   UNIQUE KEY (school_user_name)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -96,6 +99,7 @@ CREATE TABLE IF NOT EXISTS login (
 CREATE TABLE IF NOT EXISTS employee (
   id bigint(20) NOT NULL AUTO_INCREMENT,
   name varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  emp_prefered_name varchar(255) COLLATE utf8_unicode_ci,
   user_name varchar(225) COLLATE utf8_unicode_ci NOT NULL,
   school_id bigint(20) NOT NULL,
   gender enum('M', 'F') NOT NULL,
@@ -104,6 +108,7 @@ CREATE TABLE IF NOT EXISTS employee (
   alternative_number varchar(20) COLLATE utf8_unicode_ci,
   job_titles varchar(225) COLLATE utf8_unicode_ci,
   emp_email varchar(225) COLLATE utf8_unicode_ci,
+  emp_alternative_email varchar(15) COLLATE utf8_unicode_ci,
   joining_date date,
   leaving_date date,
   departments varchar(255) COLLATE utf8_unicode_ci,

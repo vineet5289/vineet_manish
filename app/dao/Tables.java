@@ -73,6 +73,8 @@ public class Tables {
 		public static String schoolCurrentFinancialEndMonth = "school_current_financial_end_month";
 		public static String schoolWebsiteUrl = "school_website_url";
 		public static String schoolLogoUrl = "school_logo_url";
+		public static String schoolPreferedName = "school_prefered_name";
+		public static String schoolAlternativeEmail = "school_alternative_email";		
 	}
 
 	public static class LoginTable{
@@ -107,6 +109,8 @@ public class Tables {
 		public static String empCode = "emp_code";
 
 		//optional field
+		public static String empPreferedName = "emp_prefered_name";
+		public static String empAlternativeEmail = "emp_alternative_email";
 		public static String alternativeNumber = "alternative_number";
 		public static String jobTitles = "job_titles";
 		public static String empEmail = "emp_email";

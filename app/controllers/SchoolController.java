@@ -1,6 +1,5 @@
 package controllers;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,8 +26,8 @@ import actors.MessageActor;
 import actors.SchoolRequestActorProtocol.NewSchoolRequest;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
-import dao.AddNewSchoolRequestDAO;
-import dao.SchoolRegistrationDAO;
+import dao.school.AddNewSchoolRequestDAO;
+import dao.school.SchoolRegistrationDAO;
 import enum_package.SessionKey;
 
 

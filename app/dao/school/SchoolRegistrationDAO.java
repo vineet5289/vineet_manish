@@ -1,4 +1,4 @@
-package dao;
+package dao.school;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,15 +7,13 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import models.SchoolBoard;
-import models.SchoolType;
-import enum_package.PasswordState;
-import enum_package.RequestedStatus;
-import enum_package.Role;
-import enum_package.SchoolTypeEnum;
 import play.db.DB;
 import utils.RandomGenerator;
 import utils.StringUtils;
 import views.forms.school.SchoolFormData;
+import enum_package.PasswordState;
+import enum_package.RequestedStatus;
+import enum_package.Role;
 
 public class SchoolRegistrationDAO {
 	private String idField = "id";

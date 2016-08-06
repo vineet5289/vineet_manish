@@ -23,14 +23,18 @@ GET     	/listeningWS                     		   controllers.message.NotificationL
 # Notification Controller
 POST     	/notification                              controllers.message.NotificationController.notification()
 
-# add new schoole request
+# add new school request
 GET      	/addnewschoolrequest                	   controllers.SchoolController.preAddNewSchoolRequest()
 POST     	/addnewschoolrequest                       controllers.SchoolController.postAddNewSchoolRequest()
 
 
-# schoole registration request
+# school registration request
 POST      	/submitopt                            	   controllers.SchoolController.submitOTP()
 POST     	/registerschool            	           	   controllers.SchoolController.postSchoolRegistrationRequest()
+
+#school info and edit
+GET			/school/show/general					   controllers.school.SchoolInfoController.getGeneralInfo()
+GET			/school/show/shift						   controllers.school.SchoolInfoController.getShiftInfo()
 
 # employee registration request
 GET			/addemp									   controllers.EmployeeController.preAddEmployeeRequest()

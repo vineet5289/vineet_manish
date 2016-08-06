@@ -14,7 +14,7 @@ public class SchoolSpecificFiledValidation {
 	private static final String SCHOOL_TYPE_PATTERN = "^([ \t]*[a-z ]+[ \t]*)+$";
 
 	private static Pattern schoolNamePatter;
-	private static final String SCHOOL_NAME_PATTERN = "^[a-z]{1,}[a-z0-9 ._-[\\(.+\\)]\t]*$";
+	private static final String SCHOOL_NAME_PATTERN = "^[a-z]{1,}[a-z0-9 ._-[\\(.+\\)]\t&]*$";
 
 	static {
 		schoolNamePatter = Pattern.compile(SCHOOL_NAME_PATTERN, Pattern.CASE_INSENSITIVE);
