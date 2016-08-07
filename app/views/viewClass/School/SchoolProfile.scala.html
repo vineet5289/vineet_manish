@@ -1,14 +1,23 @@
 @(schoolGeneralForm:Form[views.forms.school.SchoolGeneralInfoFrom] ,
 schoolHeaderForm:Form[views.forms.school.SchoolHeaderInfoForm])
-@viewClass.main3("Profile | Info")(""){
+@viewClass.main4("Profile | Info")(""){
+<style type="text/css">
+ #edit-details{
+    padding-left: 220px;
+    font-size: 1rem;
+    position: relative;
+
+ }
+</style>
 
 <div class="ui horizontal segment">
             <div class="container">
                 <div class="introduction">
 
                     <h3 class="ui dividing header">
-                        PROFILE
-                    </h3>
+                       PROFILE    <a href="#" id="edit-details"><i class="edit icon">edit</i></a>  </h3>
+                   
+                
                     <div class="ui grid ">
 					    
 						  <div class="three wide column">
@@ -140,11 +149,13 @@ schoolHeaderForm:Form[views.forms.school.SchoolHeaderInfoForm])
 
                                     <div class="content">
                                         <h4 class="ui blue header">Address</h4>
-                                        @schoolGeneralForm("schoolAddressLine1").value
-                                        @schoolGeneralForm("schoolAddressLine2").value
-                                        @schoolGeneralForm("city").value
-                                        @schoolGeneralForm("state").value
-                                        @schoolGeneralForm("country").value
+                                        @schoolGeneralForm("schoolAddressLine1").value ,
+                                        @schoolGeneralForm("schoolAddressLine2").value ,
+                                        @schoolGeneralForm("city").value,
+                                        @schoolGeneralForm("state").value,
+                                        @schoolGeneralForm("country").value,
+                                        <label>pincode :</label>@schoolGeneralForm("pincode").value
+                                    </div>
                                     </div>
                                 </div>
 
