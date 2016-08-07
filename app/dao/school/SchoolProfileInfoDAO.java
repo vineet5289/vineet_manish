@@ -235,12 +235,60 @@ public class SchoolProfileInfoDAO {
 		return !(rowUpdated == 0);
 	}
 
-	public boolean updateSchoolHeaderInfo(SchoolHeaderInfoForm schoolHeaderInfo) throws SQLException {
-		return true;
+	public boolean updateSchoolHeaderInfo(SchoolHeaderInfoForm schoolHeaderInfo, Long schoolId) throws SQLException {
+		Connection connection = null;
+		PreparedStatement updateStatement = null;
+		ResultSet resultSet = null;
+		String updateQuery = String.format("UPDATE %s SET %s=?, %s=?, %s=?, %s=?, %s=? WHERE %s=? AND %s=?;", Tables.School.table, Tables.School.name, Tables.School.phoneNumber,
+				Tables.School.schoolPreferedName, Tables.School.schoolWebsiteUrl, Tables.School.schoolLogoUrl, Tables.School.isActive, Tables.School.id);
+
+		int rowUpdated = 0;
+		try {
+			connection = DB.getDataSource("srp").getConnection();
+			updateStatement = connection.prepareStatement(updateQuery);
+
+			updateStatement.setString(1, schoolHeaderInfo.getSchoolName());
+			updateStatement.setString(2, schoolHeaderInfo.getSchoolMobileNumber());
+			updateStatement.setString(3, schoolHeaderInfo.getSchoolPreferedName());
+			updateStatement.setString(4, schoolHeaderInfo.getSchoolWebsiteUrl());
+			updateStatement.setString(5, schoolHeaderInfo.getSchoolLogoUrl());
+			updateStatement.setBoolean(6, true);
+			updateStatement.setLong(7, schoolId);
+			rowUpdated = updateStatement.executeUpdate();
+		} catch(Exception exception) {
+			exception.printStackTrace();
+		} finally {
+			if(resultSet != null)
+				resultSet.close();
+			if(updateStatement != null)
+				updateStatement.close();
+			if(connection != null)
+				connection.close();
+		}
+
+		return !(rowUpdated == 0);
 	}
 
 	public boolean updateSchoolShiftAndClassTimingInfo(SchoolShiftAndClassTimingInfoForm schoolShiftAndClassTimingInfo) throws SQLException {
-		return true;
+		Connection connection = null;
+		PreparedStatement updateStatement = null;
+		ResultSet resultSet = null;
+		String updateQuery = String.format("UPDATE %s SET %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=? "
+				+ "WHERE %s=? AND %s=?;", Tables.School.table, Tables.School.schoolRegistrationId, Tables.School.schoolAlternativeEmail, Tables.School.officeNumber,
+				Tables.School.addressLine1, Tables.School.addressLine2, Tables.School.city, Tables.School.pinCode, Tables.School.schoolCategory, Tables.School.schoolClassFrom,
+				Tables.School.schoolClassTo, Tables.School.schoolOfficeStartTime, Tables.School.schoolOfficeEndTime, Tables.School.schoolOfficeWeekStartDay, Tables.School.schoolOfficeEndTime,
+				Tables.School.schoolCurrentFinancialYear, Tables.School.schoolFinancialStartDate, Tables.School.schoolFinancialEndDate, Tables.School.isActive, Tables.School.id);
+
+		int rowUpdated = 0;
+		try {
+			
+		} catch(Exception exception) {
+			
+		} finally {
+			
+		}
+
+		return !(rowUpdated == 0);
 	}
 
 	private String getString(String string) {

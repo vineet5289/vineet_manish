@@ -28,7 +28,7 @@ public class SchoolInfoController extends ClassController {
 		} catch(Exception exception) {
 			System.out.println("some error happen");
 		}
-		if(schoolHeaderInfo == null || schoolGeneralInfo == null || schoolShiftAndClassTimingInfo) {
+		if(schoolHeaderInfo == null || schoolGeneralInfo == null || schoolShiftAndClassTimingInfo == null) {
 			// return to some error page
 		}
 		Form<SchoolGeneralInfoFrom> schoolGeneralInfoForm = Form.form(SchoolGeneralInfoFrom.class).fill(schoolGeneralInfo);
@@ -46,13 +46,13 @@ public class SchoolInfoController extends ClassController {
 		Form<SchoolGeneralInfoFrom> schoolGeneralInfoFrom = Form.form(SchoolGeneralInfoFrom.class).bindFromRequest();
 		if (schoolGeneralInfoFrom == null || schoolGeneralInfoFrom.hasErrors()) {
 			flash("error", "Error during school info update.");
-			return redirect(controllers.school.routes.SchoolInfoController.getGeneralInfo());
+			return redirect(controllers.school.routes.SchoolInfoController.getProfileInfo());
 		}
 
 		SchoolGeneralInfoFrom schoolGeneralInfo = schoolGeneralInfoFrom.get();
 		if (schoolGeneralInfo == null) {
 			flash("error", "Error during school info update.");
-			return redirect(controllers.school.routes.SchoolInfoController.getGeneralInfo());
+			return redirect(controllers.school.routes.SchoolInfoController.getProfileInfo());
 		}
 		
 		String schoolId = session().get(SessionKey.SCHOOL_ID.name());
@@ -71,7 +71,7 @@ public class SchoolInfoController extends ClassController {
 		} else {
 			flash("success", "Successfully updated school info.");
 		}
-		return redirect(controllers.school.routes.SchoolInfoController.getGeneralInfo());
+		return redirect(controllers.school.routes.SchoolInfoController.getProfileInfo());
 	}
 
 	public Result updateShiftInfo() {
@@ -84,7 +84,7 @@ public class SchoolInfoController extends ClassController {
 		SchoolShiftAndClassTimingInfoForm schoolShiftAndClassTimingInfo = schoolShiftAndClassTimingInfoForm.get();
 		if (schoolShiftAndClassTimingInfo == null) {
 			flash("error", "Error during school info update.");
-			return redirect(controllers.school.routes.SchoolInfoController.getGeneralInfo());
+			return redirect(controllers.school.routes.SchoolInfoController.getProfileInfo());
 		}
 
 		boolean isUpdated = false;
@@ -101,26 +101,27 @@ public class SchoolInfoController extends ClassController {
 		} else {
 			flash("success", "Successfully updated school info.");
 		}
-		return redirect(controllers.school.routes.SchoolInfoController.getGeneralInfo());
+		return redirect(controllers.school.routes.SchoolInfoController.getProfileInfo());
 	}
 
 	public Result updateHeaderInfo() {
 		Form<SchoolHeaderInfoForm> schoolHeaderInfoForm = Form.form(SchoolHeaderInfoForm.class).bindFromRequest();
 		if (schoolHeaderInfoForm == null || schoolHeaderInfoForm.hasErrors()) {
 			flash("error", "Error during school info update.");
-			return redirect(controllers.school.routes.SchoolInfoController.getGeneralInfo());
+			return redirect(controllers.school.routes.SchoolInfoController.getProfileInfo());
 		}
 
 		SchoolHeaderInfoForm schoolHeaderInfo = schoolHeaderInfoForm.get();
 		if (schoolHeaderInfo == null) {
 			flash("error", "Error during school info update.");
-			return redirect(controllers.school.routes.SchoolInfoController.getGeneralInfo());
+			return redirect(controllers.school.routes.SchoolInfoController.getProfileInfo());
 		}
 
+		String schoolId = session().get(SessionKey.SCHOOL_ID.name());
 		boolean isUpdated = false;
 		try {
 			SchoolProfileInfoDAO schoolProfileInfoDAO = new SchoolProfileInfoDAO();
-			isUpdated = schoolProfileInfoDAO.updateSchoolHeaderInfo(schoolHeaderInfo);
+			isUpdated = schoolProfileInfoDAO.updateSchoolHeaderInfo(schoolHeaderInfo, Long.valueOf(schoolId));
 		} catch(Exception exception) {
 			isUpdated = false;
 			exception.printStackTrace();
@@ -131,6 +132,6 @@ public class SchoolInfoController extends ClassController {
 		} else {
 			flash("success", "Successfully updated school info.");
 		}
-		return redirect(controllers.school.routes.SchoolInfoController.getGeneralInfo());
+		return redirect(controllers.school.routes.SchoolInfoController.getProfileInfo());
 	}
 }
