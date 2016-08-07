@@ -149,12 +149,19 @@ schoolHeaderForm:Form[views.forms.school.SchoolHeaderInfoForm])
                                 </div>
 
                                 <div class="item">
-
+                                    @if(schoolGeneralForm("category").value){
                                     <div class="content">
+                                        <h4 class="ui blue header">Categoryr</h4>
+                                         @schoolGeneralForm("category").value
+                                        
+                                    </div> }else {
+
+                                    @if(!schoolGeneralForm("category").value){
+                                          <div class="content">
                                         <h4 class="ui blue header">Category </h4>
-                                        @schoolGeneralForm("schoolCategory").value
-                                       
-                                    </div>
+                                        <input type="text" placeholder=" NOT ENTERED " disabled="true"/>
+                                        
+                                    </div> } }
                                 </div>
 
 
