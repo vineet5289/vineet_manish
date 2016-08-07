@@ -149,11 +149,13 @@ schoolHeaderForm:Form[views.forms.school.SchoolHeaderInfoForm])
 
                                     <div class="content">
                                         <h4 class="ui blue header">Address</h4>
-                                        @schoolGeneralForm("schoolAddressLine1").value
-                                        @schoolGeneralForm("schoolAddressLine2").value
-                                        @schoolGeneralForm("city").value
-                                        @schoolGeneralForm("state").value
-                                        @schoolGeneralForm("country").value
+                                        @schoolGeneralForm("schoolAddressLine1").value ,
+                                        @schoolGeneralForm("schoolAddressLine2").value ,
+                                        @schoolGeneralForm("city").value,
+                                        @schoolGeneralForm("state").value,
+                                        @schoolGeneralForm("country").value,
+                                        <label>pincode :</label>@schoolGeneralForm("pincode").value
+                                    </div>
                                     </div>
                                 </div>
 
