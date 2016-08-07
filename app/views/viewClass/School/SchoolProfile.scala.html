@@ -1,0 +1,184 @@
+@(schoolGeneralForm:Form[views.forms.school.SchoolGeneralInfoFrom] ,
+schoolHeaderForm:Form[views.forms.school.SchoolHeaderInfoForm])
+@viewClass.main3("Profile | Info")(""){
+
+<div class="ui horizontal segment">
+            <div class="container">
+                <div class="introduction">
+
+                    <h3 class="ui dividing header">
+                        PROFILE
+                    </h3>
+                    <div class="ui grid ">
+					    
+						  <div class="three wide column">
+                             
+                              <!--<img style="margin-bottom: 10px" class="ui medium rounded image" src="http://icons.indats.com/sewlong/justin.jpg"> -->
+                              <img class="ui circular medium image" align="center" src="@routes.Assets.versioned("images/ID.jpg")">
+                                
+                          </div>
+						      <div class="ten wide column">
+                            <div class="ui  list">
+                                <div class="item">
+                                    
+                                    <div class="content">
+                                        <h4 class="ui blue header">School Name</h4>
+                                        
+                                         @schoolHeaderForm("schoolName").value
+                                    </div>
+                                </div>
+
+                                <div class="item">
+								    <div class="content">
+									  <h4 class="ui blue header">School UserName</h4>
+                                      @schoolHeaderForm("schoolUserName").value
+                                         
+									</div>
+                                </div>
+								
+                                <div class="item">
+
+                                    <div class="content">
+                                        <h4 class="ui blue header">E-Mail</h4>
+                                        @schoolHeaderForm("schoolEmail").value
+                                        
+                                    </div>
+                                </div>
+                                <div class="item">
+
+                                    <div class="content">
+                                        <h4 class="ui blue header">Contact</h4>
+                                        @schoolHeaderForm("schoolMobileNumber").value
+                                        
+                                    </div>
+                                </div>
+                                 
+                                 <div class="item">
+
+                                    <div class="content">
+                                        <h4 class="ui blue header">Website </h4>
+                                        @schoolHeaderForm("schoolWebsiteUrl").value
+                                        
+                                    </div>
+                                </div>
+
+                                
+
+                            </div>
+                        
+						</div>
+                        
+						
+                    
+                    </div>
+
+                </div>
+                
+
+            </div>
+        </div>
+		<div class="main container">
+		<div class="peek">
+		 <div class="ui secondary pointing vertical demo menu" id="profile-settings">
+			     <a class="active item" data-tab="generalInfoProfile">
+                  General
+                </a>
+                 <a class="item" data-tab="timings">
+                  Timings
+                </a>
+                <a class="item" data-tab="shift">
+                  Shift
+                </a>
+				
+				 <a class="item" data-tab="PasswordChange">
+                  Password
+                </a>
+			  </div>
+			  
+	    </div>
+		<!--<div class="example"> -->
+
+		   <div class="ui active tab segment" data-tab="generalInfoProfile">
+            <h2 class="ui dividing header">General</h2>
+
+		   	 <div class="ui  list">
+                                
+
+                                <div class="item">
+                                    <div class="content">
+                                      <h4 class="ui blue header">School Type</h4>
+                                      @schoolGeneralForm("schoolType").value
+                                         
+                                    </div>
+                                </div>
+                                
+                                <div class="item">
+
+                                    <div class="content">
+                                        <h4 class="ui blue header">Board Name</h4>
+                                        @schoolGeneralForm("schoolBoardName").value
+                                        
+                                    </div>
+                                </div>
+                                <div class="item">
+
+                                    <div class="content">
+                                        <h4 class="ui blue header">Registratrion ID</h4>
+                                        @schoolGeneralForm("schoolRegistrationId").value
+                                        
+                                    </div>
+                                </div>
+                                 
+                                 <div class="item">
+
+                                    <div class="content">
+                                        <h4 class="ui blue header">Address</h4>
+                                        @schoolGeneralForm("schoolAddressLine1").value
+                                        @schoolGeneralForm("schoolAddressLine2").value
+                                        @schoolGeneralForm("city").value
+                                        @schoolGeneralForm("state").value
+                                        @schoolGeneralForm("country").value
+                                    </div>
+                                </div>
+
+                                <div class="item">
+
+                                    <div class="content">
+                                        <h4 class="ui blue header">Category </h4>
+                                        @schoolGeneralForm("schoolCategory").value
+                                       
+                                    </div>
+                                </div>
+
+                                
+
+                            </div>
+           </div>		
+		
+		
+			  
+            <div class="ui tab segment" data-tab="timings">
+            	<h2 class="ui dividing header">Timings</h2>
+            	Timings Info goes Here</div>
+         
+         
+         
+               <div class="ui tab segment" data-tab="shift">
+                 <h2 class="ui dividing header">Shift</h2>
+            	Shift Information Goes here</div> 
+         
+         
+         
+            <div class="ui tab segment" data-tab="PasswordChange">
+                <h2 class="ui dividing header">Password Change</h2>
+            	Passsword Change fields Goes here</div> 
+		 <!--</div> -->	  
+
+		</div>
+		
+		
+		
+		
+		
+		
+}

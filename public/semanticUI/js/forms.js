@@ -148,8 +148,9 @@ $(function () {
 	
 	// For Main login form
 	$('#loginform').form(validationObj, {
-		inline: false,
-		
+		inline : true,
+    	on     : 'blur',
+    	transition: 'fade down'
 	
 	}).submit(function(event){
 	  event.preventDefault();
@@ -173,6 +174,11 @@ $(function () {
     $('#RegisterSchoolButton').click(function(){
      $('#RegisterSchoolModal').modal('show');
     });  
+	
+	$('#cancel-OTP-Send').click(function(){
+		$('#RegisterSchoolModal').modal('show');
+		$('#OTP-modal').modal('hide');		
+	});	
     
     //OTP modal submit
     $('#completeSchoolRegistrationOTPForm').form(validationObj, {

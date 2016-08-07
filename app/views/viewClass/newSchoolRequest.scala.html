@@ -1,190 +1,214 @@
-@(schoolRegister:Form[views.forms.school.AddNewSchoolRequest],
-schoolCountry:    List[String],
-state:            Map[String, String])
-@main2("Register"){
-<div class="ui container">
-        <div class="ui centered stackable grid">
-        <div class="three wide column">
-           
-        </div>
-        <div class="ui vertical divider"></div>
-        <div class="no"></div>
-            <div class="eight wide column">
-                <div class="ui segments" align="center">
-                    <div class="ui inverted blue padded segment">
-                        <span class="ui header">Register<span>
-                    </div>
-                    <div class="ui segment">
-                        <form id="newSchoolRegistrationForm" class="ui form" method="Post" action="@routes.SchoolController.postAddNewSchoolRequest()">
-                                <div class="field">
-                                 <div class="ui left icon input">
-                                    <input type="text" name="schoolName" placeholder="schoolName">
-                                    <i class="user icon"></i>
-                                    <div class="ui corner label">
-                                       <i class="asterisk red icon"></i>
-                                    </div>
-                                 </div>
-                             </div>
-                             
-							 <div class="field">
-                                 <div class="ui left icon input">
-                                    <input type="text" name="schoolRegistrationId" placeholder="schoolRegistrationId">
-                                    <i class="user icon"></i>
-                                 </div>
-                             </div>
-							 
-							 <div class="field">
-                                 <div class="ui left icon input">
-                                    <input type="text" name="schoolAddressLine1" placeholder="schoolAddressLine1">
-                                    <i class="home icon"></i>
-                                    <div class="ui corner label">
-                                       <i class="asterisk red icon"></i>
-                                    </div>
-                                 </div>
-                             </div>
-                             
-                             <div class="field">
-                                 <div class="ui left icon input">
-                                    <input type="text" name="schoolAddressLine2" placeholder="schoolAddressLine2">
-                                    <i class="home icon"></i>
-                                 </div>
-                             </div>
-                             
-                             <div class="fields">
-                                 <div class="eight wide field">
-                                   <div class="ui left icon input">
-                                     <input type="text" name="city" placeholder="city">
-                                     <i class="home icon"></i>
-                                     <div class="ui corner label">
-                                       <i class="asterisk red icon"></i>
-                                    </div>
-                                   </div>
-                                 </div>
-                                 <div class="eight wide field">
-                                   <select class="ui dropdown" name="state">
-                                        <option value="">Select State</option>
-                                        @for((key,value) <- state){
-                                        <option value="@key">@value</option>
-                                        }                            
-                                      </select>
-                                </div>
-                                
-                             </div>
-                             
-                           
-                            
-                            
-                            
-                             <div class="fields">
-                                <div class="eight wide field">
-                                  <div class="ui left icon input">
-                                    <input type="text" name="country" placeholder="Country">
-                                    <i class="home icon"></i>
-                                    <div class="ui corner label">
-                                       <i class="asterisk red icon"></i>
-                                    </div>
-                                 </div>
-                               </div>
-                               <div class="eight wide field">
-                                 <div class="ui left icon input">
-                                    <input type="text" name="pincode" placeholder="pincode">
-                                    <i class="home icon"></i>
-                                    <div class="ui corner label">
-                                       <i class="asterisk red icon"></i>
-                                    </div>
-                                 </div>
-                               </div>
-                              </div> 
-                              
-                             
-                             
-                             
-                             <div class="field">
-                                 <div class="ui left icon input">
-                                    <input type="email" name="schoolEmail" placeholder="schoolEmail">
-                                    <i class="mail icon"></i>
-                                    <div class="ui corner label">
-                                       <i class="asterisk red icon"></i>
-                                    </div>
-                                 </div>
-                             </div>
-							 
-							 <div class="field">
-                                 <div class="ui left icon input">
-                                    <input type="text" name="contactPersonName" placeholder="Your Name (Who is Contacting)">
-                                    <i class="user icon"></i>
-                                    <div class="ui corner label">
-                                       <i class="asterisk red icon"></i>
-                                    </div>
-                                    
-                                 </div>
-                             </div>
-                             
-							<div class="field">
-							    
-                                  <div class="ui left icon input">
-                                    <input type="text" name="schoolMobileNumber" placeholder="school Mobile Number">
-                                    <i class="phone square icon"></i>
-                                   </div> 
-                                
-                            </div>
-                            
-                            <div class="field">
-                                <div class="ui left icon input">
-                                    <input type="text" name="schoolAlternativeNumber" placeholder="Alternative  Mobile Number">
-                                    <i class="phone square icon"></i>
-                                </div>
-                            </div> 
-                            
-                            <div class="field">
-                                <div class="ui left icon input">
-                                    <input type="text" name="query" placeholder="query" help="Please Enter Your Query">
-                                    
-                                    <i class="comment icon"></i>
-                                </div>
-                            </div>
-                            
-                            <button class="ui blue icon button" >Send Request <i class="sign in icon"></i></button>
-                            
-							  <div class="ui green reset button">Reset</div>
-							  <div class="ui black clear button">Clear</div>
-				               <div class="ui error message"></div> 
-				                
-  
-                        </form>
-                        
-                        
-                    </div>
-                    </div>
-            </div>
-        </div>
-    </div>
-       
-    @if(flash.containsKey("success")) {
-     <div class="ui segment">
-  <div class="ui green success message" id="success-message">
-      <div class="header">
-        SUCCESSFULLY
-  </div>
-  <ul class="list">
-    <li> @flash.get("success")</li>
-  </ul>
-</div>
-</div>
-  }
-  @if(flash.containsKey("error")) {
-  <div class="ui segment">
- 
-   <div class="ui red error message" id="error-message">
-      <div class="header">
-        ERROR
-  </div>
-  <ul class="list">
-    <li> @flash.get("error")</li>
-  </ul>
-</div>
-</div>
- }
+@(schoolRegister:Form[views.forms.school.AddNewSchoolRequest], schoolCountry:
+List[String], state: Map[String, String])
+ @main3("Register")("index"){
 
-    
-  }
+<div class="main container">
+    <div class="ui page grid">
+        <div class="column">
+            <h2 class="ui center aligned icon header">
+                <i class="circular emphasized users icon"></i>
+                <div class="content">Request for Your School Registration
+                    <div class="sub header"></div>
+                </div>
+            </h2>
+
+            <div class="ui horizontal divider">
+                <i class="circular heart icon"></i>
+            </div>
+            <div class="item">
+                  <div class="image">
+                    <!--  New School request  -->
+                    <label>field marked with * are mandatory</label>
+                    <form
+                        id="newSchoolRegistrationForm"
+                        class="ui green form segment"
+                        method="Post"
+                        action="@routes.SchoolController.postAddNewSchoolRequest()">
+
+                        <div class="inline field">
+                           <label>*SCHOOL NAME</label> 
+                           
+                            <div class="ui left icon input">
+                                <input
+                                    type="text"
+                                    name="schoolName"
+                                    placeholder="schoolName"
+                                    style="text-transform:uppercase">
+                                <i class="user icon"></i>
+                            </div>
+                        
+                    </div>
+
+                        <div class="inline field">
+                            
+                            <!--<div class="ui basic blue label">SCHOOL REGISTRATION ID</div> -->
+                            <label>SCHOOL REGISTRATION ID</label>
+                            <div class="ui left icon input">
+                                <input type="text" name="schoolRegistrationId" placeholder="Registration Id">
+                                <i class="user icon"></i>
+                            </div>
+                        
+                    </div>
+
+                        <div class="field">
+                            <div class="ui label pointing below">*ADDRESS</div>
+                            <div class="ui left icon input">
+                                <input type="text" name="schoolAddressLine1" placeholder="*LINE 1">
+                                <i class="home icon"></i>
+
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <div class="ui left icon input">
+                                <input type="text" name="schoolAddressLine2" placeholder="Address Line2">
+                                <i class="home icon"></i>
+                            </div>
+                        </div>
+
+                        <div class="two fields">
+
+                            <div class="field">
+                                <div class="ui label pointing below">*CITY</div>
+                                <div class="ui left icon input">
+                                    <input type="text" name="city" placeholder="city">
+                                    <i class="home icon"></i>
+
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="ui label pointing below">*STATE</div>
+                                <div class="ui fluid selection state dropdown">
+                                    <div class="text">Select</div>
+                                    <i class="dropdown icon"></i>
+                                    <input name="state" type="hidden">
+                                    <div class="menu">
+                                        @for((key,value)<- state){ <div class="item" data-value="@key">@value</div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="two fields">
+                        <div class="field">
+                            <div class="ui label pointing below">*COUNTRY</div>
+                            <div class="ui left icon input">
+                                <input type="text" name="country" placeholder="Country">
+                                <i class="home icon"></i>
+
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui label pointing below">*PINCODE</div>
+                            <div class="ui left icon input">
+                                <input type="text" name="pincode" placeholder="pincode">
+                                <i class="home icon"></i>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <div class="ui label pointing below ">*SCHOOL E-MAIL</div>
+                        <div class="ui left icon input">
+                            <input type="email" name="schoolEmail" placeholder="schoolEmail">
+                            <i class="mail icon"></i>
+
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <div class="ui label pointing below ">*YOUR NAME</div>
+                        <div class="ui left icon input">
+                            <input
+                                type="text"
+                                name="contactPersonName"
+                                placeholder="Your Name (Who is Contacting)">
+                            <i class="user icon"></i>
+                        </div>
+                    </div>
+
+                    <div class="two fields">
+                        <div class="field">
+                            <div class="ui label pointing below ">*MOBILE NO.</div>
+                            <div class="ui left icon input">
+                                <input type="text" name="schoolMobileNumber" placeholder="school Mobile Number">
+                                <i class="phone square icon"></i>
+                            </div>
+
+                        </div>
+
+                        <div class="field">
+                            <div class="ui label pointing below ">*SCHOOL ALTERNATIVE NO.</div>
+                            <div class="ui left icon input">
+                                <input
+                                    type="text"
+                                    name="schoolAlternativeNumber"
+                                    placeholder="Alternative  Mobile Number">
+                                <i class="phone square icon"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="ui label pointing below">QUERY</div>
+                        <div class="ui left icon input">
+                            <input
+                                type="text"
+                                name="query"
+                                placeholder="query"
+                                help="Please Enter Your Query">
+
+                            <i class="comment icon"></i>
+                        </div>
+                    </div>
+
+                    <div class="two fields">
+                        <div class="field">
+                            <button class="ui green fluid left floated button" id="New-schoolRequest-submit">Send Request</button>
+                        </div>
+                        <div class="field">
+                            <div class="ui teal reset fluid right floated button">Reset</div>
+                        </div>
+                    </div>
+
+                    <div class="ui error message"></div>
+
+                </form>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+</div>
+
+@if(flash.containsKey("success")) {
+<div class="ui segment">
+<div class="ui green success message" id="success-message">
+    <div class="header">
+        SUCCESSFULLY
+    </div>
+    <ul class="list">
+        <li>
+            @flash.get("success")</li>
+    </ul>
+</div>
+</div>
+} @if(flash.containsKey("error")) {
+<div class="ui segment">
+
+<div class="ui red error message" id="error-message">
+    <div class="header">
+        ERROR
+    </div>
+    <ul class="list">
+        <li>
+            @flash.get("error")</li>
+    </ul>
+</div>
+</div>
+}
+}
