@@ -6,7 +6,7 @@ import play.mvc.Result;
 import views.forms.school.SchoolGeneralInfoFrom;
 import views.forms.school.SchoolHeaderInfoForm;
 import views.forms.school.SchoolShiftAndClassTimingInfoForm;
-
+import views.html.viewClass.School.SchoolProfile;
 public class SchoolInfoController extends ClassController {
 
 	/*
@@ -30,7 +30,7 @@ public class SchoolInfoController extends ClassController {
 		}
 		Form<SchoolGeneralInfoFrom> schoolGeneralInfoForm = Form.form(SchoolGeneralInfoFrom.class).fill(schoolGeneralInfo);
 		Form<SchoolHeaderInfoForm> schoolHeaderInfoForm = Form.form(SchoolHeaderInfoForm.class).fill(schoolHeaderInfo);
-		return ok("comming from general info");
+		return ok(SchoolProfile.render(schoolGeneralInfoForm, schoolHeaderInfoForm));
 	}
 
 	/*
