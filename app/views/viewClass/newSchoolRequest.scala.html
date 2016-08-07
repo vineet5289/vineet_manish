@@ -1,6 +1,7 @@
 @(schoolRegister:Form[views.forms.school.AddNewSchoolRequest], schoolCountry:
 List[String], state: Map[String, String])
  @main3("Register")("index"){
+ 
 
 <div class="main container">
     <div class="ui page grid">
@@ -23,12 +24,14 @@ List[String], state: Map[String, String])
                         id="newSchoolRegistrationForm"
                         class="ui green form segment"
                         method="Post"
-                        action="@routes.SchoolController.postAddNewSchoolRequest()">
+                        action="@routes.SchoolController.postAddNewSchoolRequest()" autocomplete='off'>
 
-                        <div class="inline field">
-                           <label>*SCHOOL NAME</label> 
+                        
+                        <div class="field">
+                            
+                               <div><label>*SCHOOL NAME</label></div>
                            
-                            <div class="ui left icon input">
+                                <div class="ui left icon input">
                                 <input
                                     type="text"
                                     name="schoolName"
@@ -36,19 +39,19 @@ List[String], state: Map[String, String])
                                     style="text-transform:uppercase">
                                 <i class="user icon"></i>
                             </div>
-                        
-                    </div>
+                        </div>
+                   
 
-                        <div class="inline field">
+                        <div class="field">
                             
                             <!--<div class="ui basic blue label">SCHOOL REGISTRATION ID</div> -->
-                            <label>SCHOOL REGISTRATION ID</label>
+                            <div><label>SCHOOL REGISTRATION ID</label></div>
                             <div class="ui left icon input">
                                 <input type="text" name="schoolRegistrationId" placeholder="Registration Id">
                                 <i class="user icon"></i>
                             </div>
                         
-                    </div>
+                        </div>
 
                         <div class="field">
                             <div class="ui label pointing below">*ADDRESS</div>

@@ -1,5 +1,6 @@
 @(schoolGeneralForm:Form[views.forms.school.SchoolGeneralInfoFrom] ,
-schoolHeaderForm:Form[views.forms.school.SchoolHeaderInfoForm])
+schoolHeaderForm:Form[views.forms.school.SchoolHeaderInfoForm],
+shiftAndTimingForm:Form[views.forms.school.SchoolShiftAndClassTimingInfoForm])
 @viewClass.main4("Profile | Info")(""){
 <style type="text/css">
  #edit-details{
@@ -15,7 +16,7 @@ schoolHeaderForm:Form[views.forms.school.SchoolHeaderInfoForm])
                 <div class="introduction">
 
                     <h3 class="ui dividing header">
-                       PROFILE    <a href="#" id="edit-details"><i class="edit icon">edit</i></a>  </h3>
+                       PROFILE    <a href="@routes.Assets.at("editSchoolGeneralInfo.scala.html")" id="edit-details"><i class="edit icon">edit</i></a>  </h3>
                    
                 
                     <div class="ui grid ">
@@ -57,7 +58,7 @@ schoolHeaderForm:Form[views.forms.school.SchoolHeaderInfoForm])
 
                                     <div class="content">
                                         <h4 class="ui blue header">Contact</h4>
-                                        @schoolHeaderForm("schoolMobileNumber").value
+                                        +91-@schoolHeaderForm("schoolMobileNumber").value
                                         
                                     </div>
                                 </div>
@@ -110,7 +111,7 @@ schoolHeaderForm:Form[views.forms.school.SchoolHeaderInfoForm])
 		   <div class="ui active tab segment" data-tab="generalInfoProfile">
             <h2 class="ui dividing header">General</h2>
 
-		   	 <div class="ui  list">
+		   	              <div class="ui  list">
                                 
 
                                 <div class="item">
@@ -154,20 +155,97 @@ schoolHeaderForm:Form[views.forms.school.SchoolHeaderInfoForm])
                                         @schoolGeneralForm("city").value,
                                         @schoolGeneralForm("state").value,
                                         @schoolGeneralForm("country").value,
-                                        <label>pincode :</label>@schoolGeneralForm("pincode").value
+                                        <label>pincode- </label>@schoolGeneralForm("pincode").value
                                     </div>
                                     </div>
-                                </div>
+                                
 
                                 <div class="item">
-                                    @if(schoolGeneralForm("category").value){
+
                                     <div class="content">
-                                        <h4 class="ui blue header">Categoryr</h4>
-                                         @schoolGeneralForm("category").value
+                                        <h4 class="ui blue header">Class From</h4>
+                                        @schoolGeneralForm("schoolClassFrom").value --
+                                        @schoolGeneralForm("schoolClassTo").value 
+                                       
+                                    </div>
+                                    </div>
+                                
+
+                                <div class="item">
+                                    @if(schoolGeneralForm("schoolOfficeStartTime").value){
+                                    <div class="content">
+                                        <h4 class="ui blue header">Start Time</h4>
+                                         @schoolGeneralForm("schoolOfficeStartTime").value
                                         
                                     </div> }else {
 
-                                    @if(!schoolGeneralForm("category").value){
+                                    @if(!schoolGeneralForm("schoolOfficeStartTime").value){
+                                          <div class="content">
+                                        <h4 class="ui blue header">Start Time </h4>
+                                        <input type="text" placeholder=" NOT ENTERED " disabled="true"/>
+                                        
+                                    </div> } }
+                                </div>
+
+                                <div class="item">
+                                    @if(schoolGeneralForm("schoolOfficeEndTime").value){
+                                    <div class="content">
+                                        <h4 class="ui blue header">End Time</h4>
+                                         @schoolGeneralForm("schoolOfficeEndTime").value
+                                        
+                                    </div> }else {
+
+                                    @if(!schoolGeneralForm("schoolOfficeEndTime").value){
+                                          <div class="content">
+                                        <h4 class="ui blue header">End Time </h4>
+                                        <input type="text" placeholder=" NOT ENTERED " disabled="true"/>
+                                        
+                                    </div> } }
+                                </div>
+
+                                <div class="item">
+                                    @if(schoolGeneralForm("schoolOfficeWeekStartDay").value){
+                                    <div class="content">
+                                        <h4 class="ui blue header">Week Starts</h4>
+                                         @schoolGeneralForm("schoolOfficeWeekStartDay").value
+                                        
+                                    </div> }else {
+
+                                    @if(!schoolGeneralForm("schoolOfficeWeekStartDay").value){
+                                          <div class="content">
+                                        <h4 class="ui blue header">Week Starts </h4>
+                                        <input type="text" placeholder=" NOT ENTERED " disabled="true"/>
+                                        
+                                    </div> } }
+                                </div>
+
+                                 <div class="item">
+                                    @if(schoolGeneralForm("schoolOfficeWeekEndDay").value){
+                                    <div class="content">
+                                        <h4 class="ui blue header">Week Ends</h4>
+                                         @schoolGeneralForm("schoolOfficeWeekEndDay").value
+                                        
+                                    </div> }else {
+
+                                    @if(!schoolGeneralForm("schoolOfficeWeekEndDay").value){
+                                          <div class="content">
+                                        <h4 class="ui blue header">Week Ends </h4>
+                                        <input type="text" placeholder=" NOT ENTERED " disabled="true"/>
+                                        
+                                    </div> } }
+                                </div>
+
+
+
+                                <div class="item">
+                                    @if(schoolGeneralForm("SchoolCategory").value){
+                                    <div class="content">
+                                        <h4 class="ui blue header">Categoryr</h4>
+                                         @schoolGeneralForm("Schoolcategory").value
+                                        
+                                    </div> }else {
+
+                                    @if(!schoolGeneralForm("SchoolCategory").value){
                                           <div class="content">
                                         <h4 class="ui blue header">Category </h4>
                                         <input type="text" placeholder=" NOT ENTERED " disabled="true"/>
@@ -192,72 +270,8 @@ schoolHeaderForm:Form[views.forms.school.SchoolHeaderInfoForm])
                                     </div> } }
                                 </div>
 
+                                
                                 <div class="item">
-                                    @if(schoolGeneralForm("schoolCurrentFinancialStartMonth").value){
-                                    <div class="content">
-                                        <h4 class="ui blue header">Current Financial Start Month</h4>
-                                         @schoolGeneralForm("schoolCurrentFinancialStartMonth").value
-                                        
-                                    </div> }else {
-
-                                    @if(!schoolGeneralForm("schoolCurrentFinancialStartMonth").value){
-                                          <div class="content">
-                                        <h4 class="ui blue header">Current Financial Start Month </h4>
-                                        <input type="text" placeholder=" NOT ENTERED " disabled="true"/>
-                                        
-                                    </div> } }
-                                </div>
-
-                                <div class="item">
-                                    @if(schoolGeneralForm("schoolCurrentFinancialEndMonth").value){
-                                    <div class="content">
-                                        <h4 class="ui blue header">Current Financial End Month</h4>
-                                         @schoolGeneralForm("schoolCurrentFinancialEndMonth").value
-                                        
-                                    </div> }else {
-
-                                    @if(!schoolGeneralForm("schoolCurrentFinancialEndMonth").value){
-                                          <div class="content">
-                                        <h4 class="ui blue header">Current Financial End Month </h4>
-                                        <input type="text" placeholder=" NOT ENTERED " disabled="true"/>
-                                        
-                                    </div> } }
-                                </div>
-
-
-                                <div class="item">
-                                    @if(schoolGeneralForm("schoolStartClass").value){
-                                    <div class="content">
-                                        <h4 class="ui blue header">Start Class</h4>
-                                         @schoolGeneralForm("schoolStartClass").value
-                                        
-                                    </div> }else {
-
-                                    @if(!schoolGeneralForm("schoolStartClass").value){
-                                          <div class="content">
-                                        <h4 class="ui blue header">Start Class </h4>
-                                        <input type="text" placeholder=" NOT ENTERED " disabled="true"/>
-                                        
-                                    </div> } }
-                                </div>
-
-                                <div class="item">
-                                    @if(schoolGeneralForm("schoolEndClass").value){
-                                    <div class="content">
-                                        <h4 class="ui blue header">End Class</h4>
-                                         @schoolGeneralForm("schoolEndClass").value
-                                        
-                                    </div> }else {
-
-                                    @if(!schoolGeneralForm("schoolEndClass").value){
-                                          <div class="content">
-                                        <h4 class="ui blue header">End Class </h4>
-                                        <input type="text" placeholder=" NOT ENTERED " disabled="true"/>
-                                        
-                                    </div> } }
-                                </div>
-
-                                 <div class="item">
                                     @if(schoolGeneralForm("Financial Start Date").value){
                                     <div class="content">
                                         <h4 class="ui blue header">Financial Start Date</h4>
