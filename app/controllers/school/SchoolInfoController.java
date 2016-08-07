@@ -50,7 +50,7 @@ public class SchoolInfoController extends ClassController {
 			flash("error", "Error during school information update.");
 			return redirect(controllers.school.routes.SchoolInfoController.getProfileInfo());
 		}
-		ok(SchoolProfile.render(schoolGeneralInfoForm, schoolHeaderInfoForm, schoolShiftAndClassTimingInfoForm));
+		return ok("");
 	}
 
 	//auth + only superadmin, schoolId must present
@@ -92,7 +92,7 @@ public class SchoolInfoController extends ClassController {
 			flash("error", "Error during school class and shift information update.");
 			return redirect(controllers.school.routes.SchoolInfoController.getProfileInfo());
 		}
-		return redirect(controllers.school.routes.SchoolInfoController.getProfileInfo());
+		return ok("");
 	}
 
 	public Result updateShiftInfo() {
@@ -131,7 +131,7 @@ public class SchoolInfoController extends ClassController {
 			flash("error", "Error during school ionformation update.");
 			return redirect(controllers.school.routes.SchoolInfoController.getProfileInfo());
 		}
-		return redirect(controllers.school.routes.SchoolInfoController.getProfileInfo());
+		return ok("");
 	}
 
 	public Result updateHeaderInfo() {
@@ -193,7 +193,7 @@ public class SchoolInfoController extends ClassController {
 			return redirect(controllers.school.routes.SchoolInfoController.getSchoolMandInfo());
 		} else {
 			flash("success", "School informations updated successfully.");
-			return redirect(routes.SRPController.index());
+			return redirect("");
 		}
 	}
 }
