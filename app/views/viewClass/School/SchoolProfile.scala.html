@@ -121,12 +121,19 @@ schoolHeaderForm:Form[views.forms.school.SchoolHeaderInfoForm])
                                     </div>
                                 </div>
                                 <div class="item">
-
+                                    @if(schoolGeneralForm("schoolRegistrationId").value){
                                     <div class="content">
                                         <h4 class="ui blue header">Registratrion ID</h4>
-                                        @schoolGeneralForm("schoolRegistrationId").value
+                                         @schoolGeneralForm("schoolRegistrationId").value
                                         
-                                    </div>
+                                    </div> }else {
+
+                                    @if(!schoolGeneralForm("schoolRegistrationId").value){
+                                          <div class="content">
+                                        <h4 class="ui blue header">Registratrion ID</h4>
+                                        <input type="text" placeholder=" " disabled="true"/>
+                                        
+                                    </div> } }
                                 </div>
                                  
                                  <div class="item">
@@ -148,6 +155,120 @@ schoolHeaderForm:Form[views.forms.school.SchoolHeaderInfoForm])
                                         @schoolGeneralForm("schoolCategory").value
                                        
                                     </div>
+                                </div>
+
+
+                                <div class="item">
+                                    @if(schoolGeneralForm("schoolCurrentFinancialYear").value){
+                                    <div class="content">
+                                        <h4 class="ui blue header">Current Financial Year</h4>
+                                         @schoolGeneralForm("schoolCurrentFinancialYear").value
+                                        
+                                    </div> }else {
+
+                                    @if(!schoolGeneralForm("schoolCurrentFinancialYear").value){
+                                          <div class="content">
+                                        <h4 class="ui blue header">Current Financial Year </h4>
+                                        <input type="text" placeholder=" NOT ENTERED " disabled="true"/>
+                                        
+                                    </div> } }
+                                </div>
+
+                                <div class="item">
+                                    @if(schoolGeneralForm("schoolCurrentFinancialStartMonth").value){
+                                    <div class="content">
+                                        <h4 class="ui blue header">Current Financial Start Month</h4>
+                                         @schoolGeneralForm("schoolCurrentFinancialStartMonth").value
+                                        
+                                    </div> }else {
+
+                                    @if(!schoolGeneralForm("schoolCurrentFinancialStartMonth").value){
+                                          <div class="content">
+                                        <h4 class="ui blue header">Current Financial Start Month </h4>
+                                        <input type="text" placeholder=" NOT ENTERED " disabled="true"/>
+                                        
+                                    </div> } }
+                                </div>
+
+                                <div class="item">
+                                    @if(schoolGeneralForm("schoolCurrentFinancialEndMonth").value){
+                                    <div class="content">
+                                        <h4 class="ui blue header">Current Financial End Month</h4>
+                                         @schoolGeneralForm("schoolCurrentFinancialEndMonth").value
+                                        
+                                    </div> }else {
+
+                                    @if(!schoolGeneralForm("schoolCurrentFinancialEndMonth").value){
+                                          <div class="content">
+                                        <h4 class="ui blue header">Current Financial End Month </h4>
+                                        <input type="text" placeholder=" NOT ENTERED " disabled="true"/>
+                                        
+                                    </div> } }
+                                </div>
+
+
+                                <div class="item">
+                                    @if(schoolGeneralForm("schoolStartClass").value){
+                                    <div class="content">
+                                        <h4 class="ui blue header">Start Class</h4>
+                                         @schoolGeneralForm("schoolStartClass").value
+                                        
+                                    </div> }else {
+
+                                    @if(!schoolGeneralForm("schoolStartClass").value){
+                                          <div class="content">
+                                        <h4 class="ui blue header">Start Class </h4>
+                                        <input type="text" placeholder=" NOT ENTERED " disabled="true"/>
+                                        
+                                    </div> } }
+                                </div>
+
+                                <div class="item">
+                                    @if(schoolGeneralForm("schoolEndClass").value){
+                                    <div class="content">
+                                        <h4 class="ui blue header">End Class</h4>
+                                         @schoolGeneralForm("schoolEndClass").value
+                                        
+                                    </div> }else {
+
+                                    @if(!schoolGeneralForm("schoolEndClass").value){
+                                          <div class="content">
+                                        <h4 class="ui blue header">End Class </h4>
+                                        <input type="text" placeholder=" NOT ENTERED " disabled="true"/>
+                                        
+                                    </div> } }
+                                </div>
+
+                                 <div class="item">
+                                    @if(schoolGeneralForm("Financial Start Date").value){
+                                    <div class="content">
+                                        <h4 class="ui blue header">Financial Start Date</h4>
+                                         @schoolGeneralForm("schoolFinancialStartDate").value
+                                        
+                                    </div> }else {
+
+                                    @if(!schoolGeneralForm("schoolFinancialStartDate").value){
+                                          <div class="content">
+                                        <h4 class="ui blue header">Financial Start Date </h4>
+                                        <input type="text" placeholder=" NOT ENTERED " disabled="true"/>
+                                        
+                                    </div> } }
+                                </div>
+
+                                 <div class="item">
+                                    @if(schoolGeneralForm("Financial End Date").value){
+                                    <div class="content">
+                                        <h4 class="ui blue header">Financial End Date</h4>
+                                         @schoolGeneralForm("schoolFinancialEndDate").value
+                                        
+                                    </div> }else {
+
+                                    @if(!schoolGeneralForm("schoolFinancialEndDate").value){
+                                          <div class="content">
+                                        <h4 class="ui blue header">Financial End Date </h4>
+                                        <input type="text" placeholder=" NOT ENTERED " disabled="true"/>
+                                        
+                                    </div> } }
                                 </div>
 
                                 
