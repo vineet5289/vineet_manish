@@ -1,3 +1,4 @@
+// For Profile Page Tab and Menu
 $(document).ready(function(){
 	
 	 $('.ui .item').on('click', function() {
