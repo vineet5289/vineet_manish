@@ -47,7 +47,12 @@ public class SchoolProfileInfoDAO {
 				schoolGeneralInfoFrom.setState(getString(resultSet.getString(Tables.School.state)));
 				schoolGeneralInfoFrom.setCountry(getString(resultSet.getString(Tables.School.country)));
 				schoolGeneralInfoFrom.setPincode(getString(resultSet.getString(Tables.School.pinCode)));
-				schoolGeneralInfoFrom.setSchoolBoardName(SchoolBoard.getBoardNameGivenBoardCode(resultSet.getString(Tables.School.schoolBoardId)));// get borad name
+				StringBuilder sb = new StringBuilder();
+				sb.append(SchoolBoard.getBoardNameGivenId(resultSet.getLong(Tables.School.schoolBoardId)));
+				sb.append("(");
+				sb.append(SchoolBoard.getBoardCodeGivenId(resultSet.getLong(Tables.School.schoolBoardId)));
+				sb.append(")");
+				schoolGeneralInfoFrom.setSchoolBoardName(sb.toString());// get borad name
 				schoolGeneralInfoFrom.setSchoolType(getString(resultSet.getString(Tables.School.schoolType)));
 				schoolGeneralInfoFrom.setSchoolCurrentFinancialYear(getString(resultSet.getString(Tables.School.schoolCurrentFinancialYear)));
 				schoolGeneralInfoFrom.setSchoolCurrentFinancialStartMonth(getString(resultSet.getString(Tables.School.schoolCurrentFinancialStartMonth)));
@@ -175,7 +180,27 @@ public class SchoolProfileInfoDAO {
 	}
 
 	public boolean updateSchoolGeneralInfo(SchoolGeneralInfoFrom schoolGeneralInfo) throws SQLException {
-		return true;
+		Connection connection = null;
+		PreparedStatement selectStatement = null;
+		ResultSet resultSet = null;
+		String updateQuery = String.format("UPDATE %s SET %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, "
+				+ "%s=?, %s=?, %s=?, %s=? WHERE %s=? AND %s=?", "");
+		boolean isUpdated = false;
+		try {
+			
+		} catch(Exception exception) {
+			exception.printStackTrace();
+			isUpdated = false;
+		} finally {
+			if(resultSet != null)
+				resultSet.close();
+			if(selectStatement != null)
+				selectStatement.close();
+			if(connection != null)
+				connection.close();
+		}
+
+		return isUpdated;
 	}
 
 	public boolean updateSchoolHeaderInfo(SchoolHeaderInfoForm schoolHeaderInfo) throws SQLException {

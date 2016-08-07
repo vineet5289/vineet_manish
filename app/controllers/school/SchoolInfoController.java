@@ -30,6 +30,8 @@ public class SchoolInfoController extends ClassController {
 		}
 		Form<SchoolGeneralInfoFrom> schoolGeneralInfoForm = Form.form(SchoolGeneralInfoFrom.class).fill(schoolGeneralInfo);
 		Form<SchoolHeaderInfoForm> schoolHeaderInfoForm = Form.form(SchoolHeaderInfoForm.class).fill(schoolHeaderInfo);
+		System.out.println("schoolGeneralInfoForm=> " + schoolGeneralInfoForm);
+		System.out.println("schoolHeaderInfoForm=> " + schoolHeaderInfoForm);
 		return ok(SchoolProfile.render(schoolGeneralInfoForm, schoolHeaderInfoForm));
 	}
 

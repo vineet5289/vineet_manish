@@ -21,18 +21,27 @@ public class SRPController extends CustomController {
 		String type = session().get(SessionKey.LOGIN_TYPE.name());
 		String role = session().get(SessionKey.USER_ROLE.name());
 
+		boolean shouldLogout = true;
 		try {
 			UserLoginDAO userLoginDAO = new UserLoginDAO();
 			LoginDetails loginDetails = userLoginDAO.refreshUserUsingUserName(userName);
-			Long schoolId = loginDetails.getSchoolId();
-			if(schoolId != null && schoolId != 0) {
-				session(SessionKey.SCHOOL_ID.name(), Long.toString(schoolId));
+			if(loginDetails.getError().isEmpty()) {
+				Long schoolId = loginDetails.getSchoolId();
+				if(schoolId != null && schoolId != 0) {
+					session(SessionKey.SCHOOL_ID.name(), Long.toString(schoolId));
+				}
+				session(SessionKey.LOGIN_TYPE.name(), loginDetails.getType());
+				session(SessionKey.USER_ROLE.name(), loginDetails.getRole().trim());
+				shouldLogout = false;
 			}
-			session(SessionKey.LOGIN_TYPE.name(), loginDetails.getType());
-			session(SessionKey.USER_ROLE.name(), loginDetails.getRole().trim());
 		} catch(Exception exception) {
 			exception.printStackTrace();
 			flash("error", "Server problem occur during refresh.");
+		}
+
+		if(shouldLogout) {
+			session().clear();
+			return redirect(controllers.login_logout.routes.LoginController.preLogin());
 		}
 
 		if(type.equalsIgnoreCase(LoginTypeEnum.SCHOOL.name()) && role.equalsIgnoreCase("SUPERADMIN")) {

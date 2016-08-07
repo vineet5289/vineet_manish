@@ -90,7 +90,7 @@ public class UserLoginDAO {
 	}
 
 	public LoginDetails refreshUserUsingUserName(String userName) throws SQLException {
-		LoginDetails loginDetails = new LoginDetails();
+		LoginDetails loginDetails = null;
 		Connection connection = null;
 		PreparedStatement loginPreparedStatement = null;
 		ResultSet loginResultSet = null;
@@ -99,27 +99,29 @@ public class UserLoginDAO {
 				Tables.Login.userName, Tables.Login.emailId, Tables.Login.role, Tables.Login.accessRights, Tables.Login.name,
 				Tables.Login.schoolId, Tables.Login.type, Tables.Login.table, Tables.Login.userName, Tables.Login.isActive);
 
-		boolean isFieldSet = true;
 		try {
 			connection = DB.getDataSource("srp").getConnection();
 			loginPreparedStatement = connection.prepareStatement(loginSelectQuery, ResultSet.TYPE_FORWARD_ONLY);
 			loginPreparedStatement.setString(1, userName);
 			loginPreparedStatement.setBoolean(2, true);
 			loginResultSet = loginPreparedStatement.executeQuery();
-			
-			loginDetails.setUserName(userName);
-			loginDetails.setRole(loginResultSet.getString(Tables.Login.role));
-			loginDetails.setError("");
-			loginDetails.setAccessRight(loginResultSet.getString(Tables.Login.accessRights));
-			Long superUserSchoolId = loginResultSet.getLong(Tables.Login.schoolId);
-			if( superUserSchoolId != null && superUserSchoolId > 0) {
-				loginDetails.setSchoolId(superUserSchoolId);
+			loginDetails = new LoginDetails();
+			if(loginResultSet.next()) {
+				loginDetails.setUserName(userName);
+				loginDetails.setRole(loginResultSet.getString(Tables.Login.role));
+				loginDetails.setError("");
+				loginDetails.setAccessRight(loginResultSet.getString(Tables.Login.accessRights));
+				Long superUserSchoolId = loginResultSet.getLong(Tables.Login.schoolId);
+				if( superUserSchoolId != null && superUserSchoolId > 0) {
+					loginDetails.setSchoolId(superUserSchoolId);
+				}
+				loginDetails.setType(loginResultSet.getString(Tables.Login.type));
+			} else {
+				loginDetails.setError("Inactive User");
 			}
-			loginDetails.setType(loginResultSet.getString(Tables.Login.type));
 		} catch(Exception exception) {
-			loginDetails.setError("Server Problem occure. Please try after some time");
 			exception.printStackTrace();
-			isFieldSet = false;
+			loginDetails = new LoginDetails();
 		} finally {
 			if(loginResultSet != null)
 				loginResultSet.close();
@@ -128,9 +130,6 @@ public class UserLoginDAO {
 			if(connection != null)
 				connection.close();
 		}
-
-		if(!isFieldSet)
-			return null;
 
 		return loginDetails;
 	}
