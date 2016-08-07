@@ -8,7 +8,6 @@ import lombok.Data;
 import models.SchoolType;
 import play.data.validation.ValidationError;
 import utils.AddressFieldValidationUtils;
-import utils.SchoolSpecificFiledValidation;
 import utils.ValidateFields;
 
 @Data
@@ -20,8 +19,7 @@ public class SchoolGeneralInfoFrom {
 		private String schoolBoardName; // set by board id
 		private String schoolType;
 		private String schoolCurrentFinancialYear;
-		private String schoolCurrentFinancialStartMonth;
-		private String schoolCurrentFinancialEndMonth;
+		private int noOfShift;
 
 		//editable
 		private String schoolRegistrationId;
@@ -33,11 +31,12 @@ public class SchoolGeneralInfoFrom {
 		private String pincode;
 
 		private String schoolCategory;
-		private int noOfShift;
-		private String schoolStartClass;
-		private String schoolEndClass;
-		private String schoolStartTime;
-		private String schoolEndTime;
+		private String schoolClassFrom;
+		private String schoolClassTo;
+		private String schoolOfficeStartTime;
+		private String schoolOfficeEndTime;
+		private String schoolOfficeWeekStartDay;
+		private String schoolOfficeWeekEndDay;
 		private Date schoolFinancialStartDate;
 		private Date schoolFinancialEndDate;
 

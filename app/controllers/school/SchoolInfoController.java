@@ -1,6 +1,7 @@
 package controllers.school;
 
 import dao.school.SchoolProfileInfoDAO;
+import enum_package.SessionKey;
 import play.data.Form;
 import play.mvc.Result;
 import views.forms.school.SchoolGeneralInfoFrom;
@@ -60,7 +61,7 @@ public class SchoolInfoController extends ClassController {
 		return ok("comming from shift info");
 	}
 
-	//auth + only superadmin
+	//auth + only superadmin, schoolId must present
 	public Result updateGeneralInfo() {
 		Form<SchoolGeneralInfoFrom> schoolGeneralInfoFrom = Form.form(SchoolGeneralInfoFrom.class).bindFromRequest();
 		if (schoolGeneralInfoFrom == null || schoolGeneralInfoFrom.hasErrors()) {
@@ -73,11 +74,13 @@ public class SchoolInfoController extends ClassController {
 			flash("error", "Error during school info update.");
 			return redirect(controllers.school.routes.SchoolInfoController.getGeneralInfo());
 		}
+		
+		String schoolId = session().get(SessionKey.SCHOOL_ID.name());
 
 		boolean isUpdated = false;
 		try {
 			SchoolProfileInfoDAO schoolProfileInfoDAO = new SchoolProfileInfoDAO();
-			isUpdated = schoolProfileInfoDAO.updateSchoolGeneralInfo(schoolGeneralInfo);
+			isUpdated = schoolProfileInfoDAO.updateSchoolGeneralInfo(schoolGeneralInfo, Long.valueOf(schoolId));
 		} catch(Exception exception) {
 			isUpdated = false;
 			exception.printStackTrace();
