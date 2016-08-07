@@ -49,6 +49,7 @@ public class SchoolController extends CustomController {
 
 	public Result postAddNewSchoolRequest() {
 		Form<AddNewSchoolRequest> addNewSchoolRequest = Form.form(AddNewSchoolRequest.class).bindFromRequest();
+		System.out.println(addNewSchoolRequest);
 		if(addNewSchoolRequest == null || addNewSchoolRequest.hasErrors()) {
 			flash("error", "Something parameter is missing or invalid in your registration request.");
 			return redirect(routes.SchoolController.preAddNewSchoolRequest());

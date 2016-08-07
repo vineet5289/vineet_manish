@@ -35,6 +35,9 @@ POST     	/registerschool            	           	   controllers.SchoolControlle
 #school info and edit
 GET			/school/show/general					   controllers.school.SchoolInfoController.getGeneralInfo()
 GET			/school/show/shift						   controllers.school.SchoolInfoController.getShiftInfo()
+POST		/school/edit/general					   controllers.school.SchoolInfoController.updateGeneralInfo()
+POST		/school/edit/shift						   controllers.school.SchoolInfoController.updateShiftInfo()
+POST		/school/edit/header						   controllers.school.SchoolInfoController.updateHeaderInfo()
 
 # employee registration request
 GET			/addemp									   controllers.EmployeeController.preAddEmployeeRequest()

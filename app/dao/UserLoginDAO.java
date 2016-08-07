@@ -38,9 +38,10 @@ public class UserLoginDAO {
 		PreparedStatement loginPreparedStatement = null;
 		ResultSet loginResultSet = null;
 
-		String loginSelectQuery = String.format("SELECT %s, %s, %s, %s, %s, %s, %s, %s, %s FROM %s WHERE %s=? AND %s=?;", Tables.Login.id,
+		String loginSelectQuery = String.format("SELECT %s, %s, %s, %s, %s, %s, %s, %s, %s, %s FROM %s WHERE %s=? AND %s=?;", Tables.Login.id,
 				Tables.Login.userName, Tables.Login.emailId, Tables.Login.password, Tables.Login.passwordState, Tables.Login.role,
-				Tables.Login.accessRights, Tables.Login.name, Tables.Login.schoolId, Tables.Login.table, Tables.Login.userName, Tables.Login.isActive);
+				Tables.Login.accessRights, Tables.Login.name, Tables.Login.schoolId, Tables.Login.type, Tables.Login.table, Tables.Login.userName,
+				Tables.Login.isActive);
 
 		boolean isFieldSet = true;
 		try {
@@ -63,6 +64,52 @@ public class UserLoginDAO {
 			loginDetails.setUserName(userName);
 			loginDetails.setError("");
 			loginDetails.setAuthToken(authToken);
+			loginDetails.setAccessRight(loginResultSet.getString(Tables.Login.accessRights));
+			Long superUserSchoolId = loginResultSet.getLong(Tables.Login.schoolId);
+			if( superUserSchoolId != null && superUserSchoolId > 0) {
+				loginDetails.setSchoolId(superUserSchoolId);
+			}
+			loginDetails.setType(loginResultSet.getString(Tables.Login.type));
+		} catch(Exception exception) {
+			loginDetails.setError("Server Problem occure. Please try after some time");
+			exception.printStackTrace();
+			isFieldSet = false;
+		} finally {
+			if(loginResultSet != null)
+				loginResultSet.close();
+			if(loginPreparedStatement != null)
+				loginPreparedStatement.close();
+			if(connection != null)
+				connection.close();
+		}
+
+		if(!isFieldSet)
+			return null;
+
+		return loginDetails;
+	}
+
+	public LoginDetails refreshUserUsingUserName(String userName) throws SQLException {
+		LoginDetails loginDetails = new LoginDetails();
+		Connection connection = null;
+		PreparedStatement loginPreparedStatement = null;
+		ResultSet loginResultSet = null;
+
+		String loginSelectQuery = String.format("SELECT %s, %s, %s, %s, %s, %s, %s, %s FROM %s WHERE %s=? AND %s=?;", Tables.Login.id,
+				Tables.Login.userName, Tables.Login.emailId, Tables.Login.role, Tables.Login.accessRights, Tables.Login.name,
+				Tables.Login.schoolId, Tables.Login.type, Tables.Login.table, Tables.Login.userName, Tables.Login.isActive);
+
+		boolean isFieldSet = true;
+		try {
+			connection = DB.getDataSource("srp").getConnection();
+			loginPreparedStatement = connection.prepareStatement(loginSelectQuery, ResultSet.TYPE_FORWARD_ONLY);
+			loginPreparedStatement.setString(1, userName);
+			loginPreparedStatement.setBoolean(2, true);
+			loginResultSet = loginPreparedStatement.executeQuery();
+			
+			loginDetails.setUserName(userName);
+			loginDetails.setRole(loginResultSet.getString(Tables.Login.role));
+			loginDetails.setError("");
 			loginDetails.setAccessRight(loginResultSet.getString(Tables.Login.accessRights));
 			Long superUserSchoolId = loginResultSet.getLong(Tables.Login.schoolId);
 			if( superUserSchoolId != null && superUserSchoolId > 0) {

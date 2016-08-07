@@ -23,6 +23,9 @@ public class SchoolSpecificFiledValidation {
 		schoolTypePatter = Pattern.compile(SCHOOL_TYPE_PATTERN, Pattern.CASE_INSENSITIVE);
 	}
 
+	public static void main(String[] args) {
+		System.out.println(isValidSchoolName("manish"));
+	}
 	public static boolean isValidBoard(String board) {
 		if(board == null)
 			return false;
