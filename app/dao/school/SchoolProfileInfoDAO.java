@@ -26,13 +26,13 @@ public class SchoolProfileInfoDAO {
 		ResultSet resultSet = null;
 		SchoolGeneralInfoFrom schoolGeneralInfoFrom = null;
 		
-		String selectQuery = String.format("SELECT %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, "
-				+ "%s, %s, %s FROM %s WHERE %s=? AND %s=?", Tables.School.schoolRegistrationId, Tables.School.schoolAlternativeEmail, 
-				Tables.School.officeNumber, Tables.School.addressLine1, Tables.School.addressLine2, Tables.School.city, Tables.School.state,
-				Tables.School.country, Tables.School.pinCode, Tables.School.schoolBoardId, Tables.School.schoolType, Tables.School.schoolCurrentFinancialYear,
-				Tables.School.schoolCategory, Tables.School.noOfShift, Tables.School.schoolClassFrom, Tables.School.schoolClassTo,
-				Tables.School.schoolOfficeStartTime, Tables.School.schoolOfficeEndTime, Tables.School.schoolFinancialStartDate, Tables.School.schoolFinancialEndDate,
-				Tables.School.table, Tables.School.isActive, Tables.School.id);
+		String selectQuery = String.format("SELECT %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s FROM %s "
+				+ "WHERE %s=? AND %s=?", Tables.School.schoolRegistrationId, Tables.School.schoolAlternativeEmail, Tables.School.officeNumber,
+				Tables.School.addressLine1, Tables.School.addressLine2, Tables.School.city, Tables.School.state, Tables.School.country,
+				Tables.School.pinCode, Tables.School.schoolBoardId, Tables.School.schoolType, Tables.School.schoolCurrentFinancialYear,
+				Tables.School.isHostelFacilitiesAvailable, Tables.School.isHostelCompulsory, Tables.School.noOfShift, Tables.School.schoolClassFrom,
+				Tables.School.schoolClassTo, Tables.School.schoolOfficeStartTime, Tables.School.schoolOfficeEndTime, Tables.School.schoolFinancialStartDate,
+				Tables.School.schoolFinancialEndDate, Tables.School.table, Tables.School.isActive, Tables.School.id);
 		try {
 			connection = DB.getDataSource("srp").getConnection();
 			selectStatement = connection.prepareStatement(selectQuery, ResultSet.TYPE_FORWARD_ONLY);
@@ -59,7 +59,8 @@ public class SchoolProfileInfoDAO {
 				schoolGeneralInfoFrom.setSchoolBoardName(sb.toString());// get borad name
 				schoolGeneralInfoFrom.setSchoolType(getString(resultSet.getString(Tables.School.schoolType)));
 				schoolGeneralInfoFrom.setSchoolCurrentFinancialYear(getString(resultSet.getString(Tables.School.schoolCurrentFinancialYear)));
-				schoolGeneralInfoFrom.setSchoolCategory(getString(resultSet.getString(Tables.School.schoolCategory)));
+				schoolGeneralInfoFrom.setHostelFacilitiesAvailable(resultSet.getBoolean(Tables.School.isHostelFacilitiesAvailable));
+				schoolGeneralInfoFrom.setHostelCompulsory(resultSet.getBoolean(Tables.School.isHostelCompulsory));
 				schoolGeneralInfoFrom.setNoOfShift(resultSet.getInt(Tables.School.noOfShift));
 				schoolGeneralInfoFrom.setSchoolClassFrom(getString(resultSet.getString(Tables.School.schoolClassFrom)));
 				schoolGeneralInfoFrom.setSchoolClassTo(getString(resultSet.getString(Tables.School.schoolClassTo)));
@@ -185,11 +186,12 @@ public class SchoolProfileInfoDAO {
 		Connection connection = null;
 		PreparedStatement updateStatement = null;
 		ResultSet resultSet = null;
-		String updateQuery = String.format("UPDATE %s SET %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=? "
+		String updateQuery = String.format("UPDATE %s SET %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=? "
 				+ "WHERE %s=? AND %s=?;", Tables.School.table, Tables.School.schoolRegistrationId, Tables.School.schoolAlternativeEmail, Tables.School.officeNumber,
-				Tables.School.addressLine1, Tables.School.addressLine2, Tables.School.city, Tables.School.pinCode, Tables.School.schoolCategory, Tables.School.schoolClassFrom,
-				Tables.School.schoolClassTo, Tables.School.schoolOfficeStartTime, Tables.School.schoolOfficeEndTime, Tables.School.schoolOfficeWeekStartDay, Tables.School.schoolOfficeEndTime,
-				Tables.School.schoolCurrentFinancialYear, Tables.School.schoolFinancialStartDate, Tables.School.schoolFinancialEndDate, Tables.School.isActive, Tables.School.id);
+				Tables.School.addressLine1, Tables.School.addressLine2, Tables.School.city, Tables.School.pinCode, Tables.School.isHostelFacilitiesAvailable, Tables.School.isHostelCompulsory,
+				Tables.School.schoolClassFrom, Tables.School.schoolClassTo, Tables.School.schoolOfficeStartTime, Tables.School.schoolOfficeEndTime, Tables.School.schoolOfficeWeekStartDay,
+				Tables.School.schoolOfficeEndTime, Tables.School.schoolCurrentFinancialYear, Tables.School.schoolFinancialStartDate, Tables.School.schoolFinancialEndDate, Tables.School.isActive,
+				Tables.School.id);
 
 		int rowUpdated = 0;
 		try {
@@ -207,18 +209,19 @@ public class SchoolProfileInfoDAO {
 			updateStatement.setString(5, getString(schoolGeneralInfo.getSchoolAddressLine2()));
 			updateStatement.setString(6, getString(schoolGeneralInfo.getCity()));
 			updateStatement.setString(7, getString(schoolGeneralInfo.getPincode()));
-			updateStatement.setString(8, getString(schoolGeneralInfo.getSchoolCategory()));
-			updateStatement.setString(9, getString(schoolGeneralInfo.getSchoolClassFrom()));
-			updateStatement.setString(10, getString(schoolGeneralInfo.getSchoolClassTo()));
-			updateStatement.setString(11, getString(schoolGeneralInfo.getSchoolOfficeStartTime()));
-			updateStatement.setString(12, getString(schoolGeneralInfo.getSchoolOfficeEndTime()));
-			updateStatement.setString(13, getString(schoolGeneralInfo.getSchoolOfficeWeekStartDay()).toUpperCase());
-			updateStatement.setString(14, getString(schoolGeneralInfo.getSchoolOfficeWeekEndDay()).toUpperCase());
-			updateStatement.setString(15, getString(currentFinancial));
-			updateStatement.setDate(16, new java.sql.Date(startDate.getTime()));
-			updateStatement.setDate(17, new java.sql.Date(endDate.getTime()));
-			updateStatement.setBoolean(18, true);
-			updateStatement.setLong(19, schoolId);
+			updateStatement.setBoolean(8, schoolGeneralInfo.isHostelFacilitiesAvailable());
+			updateStatement.setBoolean(9, schoolGeneralInfo.isHostelCompulsory());
+			updateStatement.setString(10, getString(schoolGeneralInfo.getSchoolClassFrom()));
+			updateStatement.setString(11, getString(schoolGeneralInfo.getSchoolClassTo()));
+			updateStatement.setString(12, getString(schoolGeneralInfo.getSchoolOfficeStartTime()));
+			updateStatement.setString(13, getString(schoolGeneralInfo.getSchoolOfficeEndTime()));
+			updateStatement.setString(14, getString(schoolGeneralInfo.getSchoolOfficeWeekStartDay()).toUpperCase());
+			updateStatement.setString(15, getString(schoolGeneralInfo.getSchoolOfficeWeekEndDay()).toUpperCase());
+			updateStatement.setString(16, getString(currentFinancial));
+			updateStatement.setDate(17, new java.sql.Date(startDate.getTime()));
+			updateStatement.setDate(18, new java.sql.Date(endDate.getTime()));
+			updateStatement.setBoolean(19, true);
+			updateStatement.setLong(20, schoolId);
 
 			rowUpdated = updateStatement.executeUpdate();
 		} catch(Exception exception) {
@@ -275,7 +278,7 @@ public class SchoolProfileInfoDAO {
 		ResultSet resultSet = null;
 		String updateQuery = String.format("UPDATE %s SET %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=? "
 				+ "WHERE %s=? AND %s=?;", Tables.School.table, Tables.School.schoolRegistrationId, Tables.School.schoolAlternativeEmail, Tables.School.officeNumber,
-				Tables.School.addressLine1, Tables.School.addressLine2, Tables.School.city, Tables.School.pinCode, Tables.School.schoolCategory, Tables.School.schoolClassFrom,
+				Tables.School.addressLine1, Tables.School.addressLine2, Tables.School.city, Tables.School.pinCode, Tables.School.schoolClassFrom,
 				Tables.School.schoolClassTo, Tables.School.schoolOfficeStartTime, Tables.School.schoolOfficeEndTime, Tables.School.schoolOfficeWeekStartDay, Tables.School.schoolOfficeEndTime,
 				Tables.School.schoolCurrentFinancialYear, Tables.School.schoolFinancialStartDate, Tables.School.schoolFinancialEndDate, Tables.School.isActive, Tables.School.id);
 

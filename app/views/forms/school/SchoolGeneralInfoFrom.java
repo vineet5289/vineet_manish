@@ -30,7 +30,8 @@ public class SchoolGeneralInfoFrom {
 		private String city;
 		private String pincode;
 
-		private String schoolCategory;
+		private boolean isHostelFacilitiesAvailable;
+		private boolean isHostelCompulsory;
 		private String schoolClassFrom;
 		private String schoolClassTo;
 		private String schoolOfficeStartTime;

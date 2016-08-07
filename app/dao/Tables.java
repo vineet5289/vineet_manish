@@ -56,7 +56,8 @@ public class Tables {
 		public static String pinCode = "pin_code";
 		public static String phoneNumber = "phone_number";
 		public static String officeNumber = "office_number";
-		public static String schoolCategory = "school_category";
+		public static String isHostelFacilitiesAvailable = "is_hostel_facilities_available";
+		public static String isHostelCompulsory = "is_hostel_compulsory";
 		public static String schoolBoardId = "school_board_id";
 		public static String schoolType = "school_type";
 		public static String createdAt = "created_at";
