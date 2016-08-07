@@ -16,49 +16,29 @@ public class SchoolInfoController extends ClassController {
 	 * userType=School
 	 * 
 	 * */
-	public Result getGeneralInfo() {
+	public Result getProfileInfo() {
 		SchoolHeaderInfoForm schoolHeaderInfo = null;
 		SchoolGeneralInfoFrom schoolGeneralInfo = null;
-		try{
-			SchoolProfileInfoDAO schoolProfileInfoDAO = new SchoolProfileInfoDAO();
-			schoolHeaderInfo = schoolProfileInfoDAO.getSchoolHeaderInfoForm(1l);
-			schoolGeneralInfo = schoolProfileInfoDAO.getSchoolGeneralInfoFrom(1l);
-		} catch(Exception exception) {
-			System.out.println("some error happen");
-		}
-		if(schoolHeaderInfo == null || schoolGeneralInfo == null) {
-			// return to some error page
-		}
-		Form<SchoolGeneralInfoFrom> schoolGeneralInfoForm = Form.form(SchoolGeneralInfoFrom.class).fill(schoolGeneralInfo);
-		Form<SchoolHeaderInfoForm> schoolHeaderInfoForm = Form.form(SchoolHeaderInfoForm.class).fill(schoolHeaderInfo);
-		System.out.println("schoolGeneralInfoForm=> " + schoolGeneralInfoForm);
-		System.out.println("schoolHeaderInfoForm=> " + schoolHeaderInfoForm);
-		return ok(SchoolProfile.render(schoolGeneralInfoForm, schoolHeaderInfoForm));
-	}
-
-	/*
-	 * check username and auth key validation
-	 * current shift
-	 * userType=School
-	 * 
-	 * */
-	public Result getShiftInfo() {
-		SchoolHeaderInfoForm schoolHeaderInfo = null;
 		SchoolShiftAndClassTimingInfoForm schoolShiftAndClassTimingInfo = null;
 		try{
 			SchoolProfileInfoDAO schoolProfileInfoDAO = new SchoolProfileInfoDAO();
 			schoolHeaderInfo = schoolProfileInfoDAO.getSchoolHeaderInfoForm(1l);
+			schoolGeneralInfo = schoolProfileInfoDAO.getSchoolGeneralInfoFrom(1l);
 			schoolShiftAndClassTimingInfo = schoolProfileInfoDAO.getSchoolShiftAndClassTimingInfoForm(1l);
 		} catch(Exception exception) {
 			System.out.println("some error happen");
 		}
-
-		if(schoolHeaderInfo == null || schoolHeaderInfo == null) {
+		if(schoolHeaderInfo == null || schoolGeneralInfo == null || schoolShiftAndClassTimingInfo) {
 			// return to some error page
 		}
+		Form<SchoolGeneralInfoFrom> schoolGeneralInfoForm = Form.form(SchoolGeneralInfoFrom.class).fill(schoolGeneralInfo);
 		Form<SchoolHeaderInfoForm> schoolHeaderInfoForm = Form.form(SchoolHeaderInfoForm.class).fill(schoolHeaderInfo);
 		Form<SchoolShiftAndClassTimingInfoForm> schoolShiftAndClassTimingInfoForm = Form.form(SchoolShiftAndClassTimingInfoForm.class).fill(schoolShiftAndClassTimingInfo);
-		return ok("comming from shift info");
+
+		System.out.println("schoolGeneralInfoForm=> " + schoolGeneralInfoForm);
+		System.out.println("schoolHeaderInfoForm=> " + schoolHeaderInfoForm);
+		System.out.println("schoolShiftAndClassTimingInfoForm=> " + schoolShiftAndClassTimingInfoForm);
+		return ok(SchoolProfile.render(schoolGeneralInfoForm, schoolHeaderInfoForm, schoolShiftAndClassTimingInfoForm));
 	}
 
 	//auth + only superadmin, schoolId must present

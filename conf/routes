@@ -33,8 +33,7 @@ POST      	/submitopt                            	   controllers.SchoolControlle
 POST     	/registerschool            	           	   controllers.SchoolController.postSchoolRegistrationRequest()
 
 #school info and edit
-GET			/school/show/general					   controllers.school.SchoolInfoController.getGeneralInfo()
-GET			/school/show/shift						   controllers.school.SchoolInfoController.getShiftInfo()
+GET			/school/show/profile					   controllers.school.SchoolInfoController.getProfileInfo()
 POST		/school/edit/general					   controllers.school.SchoolInfoController.updateGeneralInfo()
 POST		/school/edit/shift						   controllers.school.SchoolInfoController.updateShiftInfo()
 POST		/school/edit/header						   controllers.school.SchoolInfoController.updateHeaderInfo()
