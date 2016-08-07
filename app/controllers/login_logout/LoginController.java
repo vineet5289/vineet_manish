@@ -47,17 +47,8 @@ public class LoginController extends CustomController {
 				if(schoolId != null && schoolId != 0) {
 					session(SessionKey.SCHOOL_ID.name(), Long.toString(schoolId));
 				}
-//
-//
-//				String superUserAccessRight = loginDetails.getAccessRight();
-//				if(superUserAccessRight != null) {
-//					session(SessionKey.USER_ACCESSRIGHT.name(), superUserAccessRight);
-//				}
-//
-//				Long superUserSchoolId = loginDetails.getSchoolId();
-//				if(superUserSchoolId != null && superUserSchoolId > 0) {
-//					session(SessionKey.SCHOOL_ID.name(), superUserSchoolId.toString());
-//				}
+				session(SessionKey.USER_ROLE.name(), loginDetails.getRole().trim());
+				session(SessionKey.LOGIN_TYPE.name(), loginDetails.getType());
 			} catch (Exception exception){
 				flash("error", "Server problem occur. Please try after some time");
 				session().clear();

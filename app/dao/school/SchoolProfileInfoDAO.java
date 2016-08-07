@@ -8,12 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import models.SchoolBoard;
-import dao.Tables;
 import play.db.DB;
 import views.forms.school.SchoolGeneralInfoFrom;
 import views.forms.school.SchoolHeaderInfoForm;
 import views.forms.school.SchoolShiftAndClassTimingInfoForm;
-import views.forms.school.SchoolShiftAndClassTimingInfoForm.Shift;
+import dao.Tables;
 
 public class SchoolProfileInfoDAO {
 
@@ -173,6 +172,18 @@ public class SchoolProfileInfoDAO {
 				connection.close();
 		}
 		return schoolShiftAndClassTimingInfoForm;
+	}
+
+	public boolean updateSchoolGeneralInfo(SchoolGeneralInfoFrom schoolGeneralInfo) throws SQLException {
+		return true;
+	}
+
+	public boolean updateSchoolHeaderInfo(SchoolHeaderInfoForm schoolHeaderInfo) throws SQLException {
+		return true;
+	}
+
+	public boolean updateSchoolShiftAndClassTimingInfo(SchoolShiftAndClassTimingInfoForm schoolShiftAndClassTimingInfo) throws SQLException {
+		return true;
 	}
 
 	private String getString(String string) {

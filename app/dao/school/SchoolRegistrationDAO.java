@@ -6,11 +6,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import dao.Tables;
 import models.SchoolBoard;
 import play.db.DB;
 import utils.RandomGenerator;
 import utils.StringUtils;
 import views.forms.school.SchoolFormData;
+import enum_package.LoginTypeEnum;
 import enum_package.PasswordState;
 import enum_package.RequestedStatus;
 import enum_package.Role;
@@ -47,7 +49,6 @@ public class SchoolRegistrationDAO {
 	private String schoolNameField = "school_name";
 	private String requestNumberField = "request_number";
 
-	private String loginTableName = "login";
 	private String schoolTableName = "school";
 	private String schoolRegistrationRequestTableName = "school_registration_request";
 
@@ -60,9 +61,9 @@ public class SchoolRegistrationDAO {
 		PreparedStatement updateRegistrationRequestPreparedStatement = null;
 		ResultSet resultSet = null;
 		ResultSet selectResultSet = null;
-		String insertLoginQuery = String.format("INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s, %s, %s) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);", 
-				loginTableName, loginUserNameField, loginEmailIdField, loginPasswordField, loginPasswordStateField, loginRoleField, 
-				accessRightsField, isActiveField, nameField, schoolIdField);
+		String insertLoginQuery = String.format("INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);", 
+				Tables.Login.table, loginUserNameField, loginEmailIdField, loginPasswordField, loginPasswordStateField, loginRoleField, 
+				accessRightsField, isActiveField, nameField, schoolIdField, Tables.Login.type);
 
 		String insertSchoolRegistrationQuery = String.format("INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
 				+ " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);", schoolTableName, nameField, schoolRegistrationIdField, 
@@ -156,6 +157,7 @@ public class SchoolRegistrationDAO {
 			schoolLoginPreparedStatement.setBoolean(7, true);
 			schoolLoginPreparedStatement.setString(8, schoolData.getSchoolName().trim());
 			schoolLoginPreparedStatement.setLong(9, generatedSchoolId);
+			schoolLoginPreparedStatement.setString(10, LoginTypeEnum.SCHOOL.name());
 			schoolLoginPreparedStatement.execute();
 			connection.commit();
 			isSuccessfull = true;

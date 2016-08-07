@@ -1,21 +1,16 @@
 package controllers;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
-import dao.UserLoginDAO;
 import models.LoginDetails;
 import play.mvc.Result;
 import play.mvc.Security;
 import security.ActionAuthenticator;
-import views.html.viewClass.dashboard;
 import views.html.homePage.schoolRequestHomepage;
-import views.html.parent.parentHome;
-import views.html.teacher.teacherHome;
-import views.html.student.studentHome;
+import views.html.viewClass.dashboard;
+import dao.UserLoginDAO;
+import enum_package.LoginTypeEnum;
 import enum_package.RegisterUserType;
-import enum_package.Role;
 import enum_package.SessionKey;
 
 public class SRPController extends CustomController {
@@ -23,33 +18,29 @@ public class SRPController extends CustomController {
 	@Security.Authenticated(ActionAuthenticator.class)
 	public Result index() {
 		String userName = session().get(SessionKey.USER_NAME.name());
-		String userAuthKey = session().get(SessionKey.AUTH_TOKEN.name());
+		String type = session().get(SessionKey.LOGIN_TYPE.name());
+		String role = session().get(SessionKey.USER_ROLE.name());
 
-		
-		if(true) {
+		try {
+			UserLoginDAO userLoginDAO = new UserLoginDAO();
+			LoginDetails loginDetails = userLoginDAO.refreshUserUsingUserName(userName);
+			Long schoolId = loginDetails.getSchoolId();
+			if(schoolId != null && schoolId != 0) {
+				session(SessionKey.SCHOOL_ID.name(), Long.toString(schoolId));
+			}
+			session(SessionKey.LOGIN_TYPE.name(), loginDetails.getType());
+			session(SessionKey.USER_ROLE.name(), loginDetails.getRole().trim());
+		} catch(Exception exception) {
+			exception.printStackTrace();
+			flash("error", "Server problem occur during refresh.");
+		}
+
+		if(type.equalsIgnoreCase(LoginTypeEnum.SCHOOL.name()) && role.equalsIgnoreCase("SUPERADMIN")) {
 			return ok(dashboard.render(session().get(SessionKey.USER_NAME.name()), "SUPERADMIN"));
 		}
 
-		UserLoginDAO userLoginDAO = new UserLoginDAO();
 		List<LoginDetails> userDetails = null;
-		try {
-			userDetails = userLoginDAO.getAllUserRelatedToCurrentUser(userName);
-		} catch (SQLException exception) {
-			exception.printStackTrace();
-			userDetails = new ArrayList<LoginDetails>();
-		}
 		System.out.println("====>" + userDetails);
-
-//		if(superUserRole.equalsIgnoreCase(Role.TEACHER.name())) {
-//			return ok(teacherHome.render(session().get(SessionKey.USER_NAME.name()), session().get(SessionKey.USER_ROLE.name()), userDetails));
-//		}
-//
-//		if(superUserRole.equalsIgnoreCase(Role.GUARDIAN.name())) {
-//			return ok(parentHome.render(session().get(SessionKey.USER_NAME.name()), session().get(SessionKey.USER_ROLE.name()), userDetails));
-//		}
-//		if(superUserRole.equalsIgnoreCase(Role.STUDENT.name())) {
-//			return ok(studentHome.render(session().get(SessionKey.USER_NAME.name()), session().get(SessionKey.USER_ROLE.name()), userDetails));
-//		}
 
 		return ok(dashboard.render(session().get(SessionKey.USER_NAME.name()), session().get(SessionKey.USER_ROLE.name())));
 	}
