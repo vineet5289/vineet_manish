@@ -78,7 +78,7 @@ public class SchoolInfoController extends ClassController {
 		Form<SchoolShiftAndClassTimingInfoForm> schoolShiftAndClassTimingInfoForm = Form.form(SchoolShiftAndClassTimingInfoForm.class).bindFromRequest();
 		if (schoolShiftAndClassTimingInfoForm == null || schoolShiftAndClassTimingInfoForm.hasErrors()) {
 			flash("error", "Error during school info update.");
-			return redirect(controllers.school.routes.SchoolInfoController.getGeneralInfo());
+			return redirect(controllers.school.routes.SchoolInfoController.getProfileInfo());
 		}
 
 		SchoolShiftAndClassTimingInfoForm schoolShiftAndClassTimingInfo = schoolShiftAndClassTimingInfoForm.get();
