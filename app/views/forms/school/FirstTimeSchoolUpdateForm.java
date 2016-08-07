@@ -24,7 +24,10 @@ public class FirstTimeSchoolUpdateForm {
 	public List<ValidationError> validate() {
 		List<ValidationError> errors = new ArrayList<>();
 		
-		
+		if(numberOfShift < 0) {
+			errors.add(new ValidationError("numberOfShift", "Number Of Shift should be greater then one."));
+		}
+
 		if(errors.size() > 0)
 			return errors;
 		return null;

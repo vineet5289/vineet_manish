@@ -4,6 +4,7 @@ import dao.school.SchoolProfileInfoDAO;
 import enum_package.SessionKey;
 import play.data.Form;
 import play.mvc.Result;
+import views.forms.school.FirstTimeSchoolUpdateForm;
 import views.forms.school.SchoolGeneralInfoFrom;
 import views.forms.school.SchoolHeaderInfoForm;
 import views.forms.school.SchoolShiftAndClassTimingInfoForm;
@@ -24,7 +25,8 @@ public class SchoolInfoController extends ClassController {
 			SchoolProfileInfoDAO schoolProfileInfoDAO = new SchoolProfileInfoDAO();
 			schoolHeaderInfo = schoolProfileInfoDAO.getSchoolHeaderInfoForm(1l);
 			schoolGeneralInfo = schoolProfileInfoDAO.getSchoolGeneralInfoFrom(1l);
-			schoolShiftAndClassTimingInfo = schoolProfileInfoDAO.getSchoolShiftAndClassTimingInfoForm(1l);
+			schoolShiftAndClassTimingInfo = new SchoolShiftAndClassTimingInfoForm();
+//			schoolShiftAndClassTimingInfo = schoolProfileInfoDAO.getSchoolShiftAndClassTimingInfoForm(1l);
 		} catch(Exception exception) {
 			System.out.println("some error happen");
 		}
@@ -39,6 +41,16 @@ public class SchoolInfoController extends ClassController {
 		System.out.println("schoolHeaderInfoForm=> " + schoolHeaderInfoForm);
 		System.out.println("schoolShiftAndClassTimingInfoForm=> " + schoolShiftAndClassTimingInfoForm);
 		return ok(SchoolProfile.render(schoolGeneralInfoForm, schoolHeaderInfoForm, schoolShiftAndClassTimingInfoForm));
+	}
+
+	//auth + only superadmin, schoolId must present
+	public Result getGeneralInfo() {
+		Form<SchoolGeneralInfoFrom> schoolGeneralInfoFrom = Form.form(SchoolGeneralInfoFrom.class).bindFromRequest();
+		if (schoolGeneralInfoFrom == null || schoolGeneralInfoFrom.hasErrors()) {
+			flash("error", "Error during school information update.");
+			return redirect(controllers.school.routes.SchoolInfoController.getProfileInfo());
+		}
+		ok(SchoolProfile.render(schoolGeneralInfoForm, schoolHeaderInfoForm, schoolShiftAndClassTimingInfoForm));
 	}
 
 	//auth + only superadmin, schoolId must present
@@ -74,6 +86,15 @@ public class SchoolInfoController extends ClassController {
 		return redirect(controllers.school.routes.SchoolInfoController.getProfileInfo());
 	}
 
+	public Result getShiftInfo() {
+		Form<SchoolShiftAndClassTimingInfoForm> schoolShiftAndClassTimingInfoForm = Form.form(SchoolShiftAndClassTimingInfoForm.class).bindFromRequest();
+		if (schoolShiftAndClassTimingInfoForm == null || schoolShiftAndClassTimingInfoForm.hasErrors()) {
+			flash("error", "Error during school class and shift information update.");
+			return redirect(controllers.school.routes.SchoolInfoController.getProfileInfo());
+		}
+		return redirect(controllers.school.routes.SchoolInfoController.getProfileInfo());
+	}
+
 	public Result updateShiftInfo() {
 		Form<SchoolShiftAndClassTimingInfoForm> schoolShiftAndClassTimingInfoForm = Form.form(SchoolShiftAndClassTimingInfoForm.class).bindFromRequest();
 		if (schoolShiftAndClassTimingInfoForm == null || schoolShiftAndClassTimingInfoForm.hasErrors()) {
@@ -100,6 +121,15 @@ public class SchoolInfoController extends ClassController {
 			flash("error", "Error during school info update.");
 		} else {
 			flash("success", "Successfully updated school info.");
+		}
+		return redirect(controllers.school.routes.SchoolInfoController.getProfileInfo());
+	}
+
+	public Result getHeaderInfo() {
+		Form<SchoolHeaderInfoForm> schoolHeaderInfoForm = Form.form(SchoolHeaderInfoForm.class).bindFromRequest();
+		if (schoolHeaderInfoForm == null || schoolHeaderInfoForm.hasErrors()) {
+			flash("error", "Error during school ionformation update.");
+			return redirect(controllers.school.routes.SchoolInfoController.getProfileInfo());
 		}
 		return redirect(controllers.school.routes.SchoolInfoController.getProfileInfo());
 	}
@@ -133,5 +163,37 @@ public class SchoolInfoController extends ClassController {
 			flash("success", "Successfully updated school info.");
 		}
 		return redirect(controllers.school.routes.SchoolInfoController.getProfileInfo());
+	}
+
+	//session validation
+	public Result getSchoolMandInfo() {
+		return ok("inside get mand info");
+	}
+
+	//session validation
+	public Result updateSchoolMandInfo() {
+		Form<FirstTimeSchoolUpdateForm> firstTimeSchoolUpdateForm = Form.form(FirstTimeSchoolUpdateForm.class).bindFromRequest();
+		if (firstTimeSchoolUpdateForm == null || firstTimeSchoolUpdateForm.hasErrors()) {
+			flash("error", "Some parameters are missing.");
+			return redirect(controllers.school.routes.SchoolInfoController.getSchoolMandInfo());
+		}
+
+		FirstTimeSchoolUpdateForm firstTimeSchoolUpdate = firstTimeSchoolUpdateForm.get();
+		boolean isUpdated = false;
+		try {
+			SchoolProfileInfoDAO schoolProfileInfoDAO = new SchoolProfileInfoDAO();
+			// write db code
+		} catch(Exception exception) {
+			flash("error", "Some problem occur during update.");
+			exception.printStackTrace();
+			return redirect(controllers.school.routes.SchoolInfoController.getSchoolMandInfo());
+		}
+		if(!isUpdated) {
+			flash("error", "Please check values of all mandatory fields.");
+			return redirect(controllers.school.routes.SchoolInfoController.getSchoolMandInfo());
+		} else {
+			flash("success", "School informations updated successfully.");
+			return redirect(routes.SRPController.index());
+		}
 	}
 }

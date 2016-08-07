@@ -34,10 +34,15 @@ POST     	/registerschool            	           	   controllers.SchoolControlle
 
 #school info and edit
 GET			/school/show/profile					   controllers.school.SchoolInfoController.getProfileInfo()
+GET			/school/edit/general					   controllers.school.SchoolInfoController.getGeneralInfo()
 POST		/school/edit/general					   controllers.school.SchoolInfoController.updateGeneralInfo()
+GET			/school/edit/shift						   controllers.school.SchoolInfoController.getShiftInfo()
 POST		/school/edit/shift						   controllers.school.SchoolInfoController.updateShiftInfo()
+GET			/school/edit/header						   controllers.school.SchoolInfoController.getHeaderInfo()
 POST		/school/edit/header						   controllers.school.SchoolInfoController.updateHeaderInfo()
 
+GET			/school/mand_info						   controllers.school.SchoolInfoController.getSchoolMandInfo()
+POST		/school/mand_info						   controllers.school.SchoolInfoController.updateSchoolMandInfo()
 # employee registration request
 GET			/addemp									   controllers.EmployeeController.preAddEmployeeRequest()
 GET			/addemp									   controllers.EmployeeController.postAddEmployeeRequest()
