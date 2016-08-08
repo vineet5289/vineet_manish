@@ -10,16 +10,16 @@ import lombok.Data;
 @Data
 public class FirstTimeSchoolUpdateForm {
 	private int numberOfShift;
-	public boolean isHostelFacilitiesAvailable;
-	public boolean isHostelCompulsory;
-	public static String schoolOfficeWeekStartDay;
-	public static String schoolOfficeWeekEndDay;
-	public static String schoolClassFrom;
-	public static String schoolClassTo;
-	public static String schoolOfficeStartTime;
-	public static String schoolOfficeEndTime;
-	public static Date schoolFinancialStartDate;
-	public static Date schoolFinancialEndDate;
+	private boolean isHostelFacilitiesAvailable;
+	private boolean isHostelCompulsory;
+	private String schoolOfficeWeekStartDay;
+	private String schoolOfficeWeekEndDay;
+	private String schoolClassFrom;
+	private String schoolClassTo;
+	private String schoolOfficeStartTime;
+	private String schoolOfficeEndTime;
+	private Date schoolFinancialStartDate;
+	private Date schoolFinancialEndDate;
 
 	public List<ValidationError> validate() {
 		List<ValidationError> errors = new ArrayList<>();

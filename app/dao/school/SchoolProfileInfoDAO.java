@@ -13,6 +13,7 @@ import java.util.TimeZone;
 import models.SchoolBoard;
 import play.db.DB;
 import utils.DateUtiles;
+import views.forms.school.FirstTimeSchoolUpdateForm;
 import views.forms.school.SchoolGeneralInfoFrom;
 import views.forms.school.SchoolHeaderInfoForm;
 import views.forms.school.SchoolShiftAndClassTimingInfoForm;
@@ -272,15 +273,14 @@ public class SchoolProfileInfoDAO {
 		return !(rowUpdated == 0);
 	}
 
-	public boolean updateSchoolShiftAndClassTimingInfo(SchoolShiftAndClassTimingInfoForm schoolShiftAndClassTimingInfo) throws SQLException {
+	public boolean updateSchoolShiftAndClassTimingInfo(SchoolShiftAndClassTimingInfoForm schoolShiftAndClassTimingInfo, Long schoolId) throws SQLException {
 		Connection connection = null;
 		PreparedStatement updateStatement = null;
 		ResultSet resultSet = null;
-		String updateQuery = String.format("UPDATE %s SET %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=? "
-				+ "WHERE %s=? AND %s=?;", Tables.School.table, Tables.School.schoolRegistrationId, Tables.School.schoolAlternativeEmail, Tables.School.officeNumber,
-				Tables.School.addressLine1, Tables.School.addressLine2, Tables.School.city, Tables.School.pinCode, Tables.School.schoolClassFrom,
-				Tables.School.schoolClassTo, Tables.School.schoolOfficeStartTime, Tables.School.schoolOfficeEndTime, Tables.School.schoolOfficeWeekStartDay, Tables.School.schoolOfficeEndTime,
-				Tables.School.schoolCurrentFinancialYear, Tables.School.schoolFinancialStartDate, Tables.School.schoolFinancialEndDate, Tables.School.isActive, Tables.School.id);
+		String updateQuery = String.format("UPDATE %s SET %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=? WHERE %s=? AND %s=?;", Tables.School.table,
+				Tables.School.noOfShift, Tables.School.isHostelFacilitiesAvailable, Tables.School.isHostelCompulsory, Tables.School.schoolOfficeWeekStartDay,
+				Tables.School.schoolOfficeWeekEndDay, Tables.School.schoolClassFrom, Tables.School.schoolClassTo, Tables.School.schoolOfficeStartTime, Tables.School.schoolOfficeEndTime,
+				Tables.School.schoolFinancialStartDate, Tables.School.schoolFinancialEndDate, Tables.School.isActive, Tables.School.id);
 
 		int rowUpdated = 0;
 		try {
@@ -291,6 +291,45 @@ public class SchoolProfileInfoDAO {
 			
 		}
 
+		return !(rowUpdated == 0);
+	}
+
+	public boolean updateSchoolMandInfo(FirstTimeSchoolUpdateForm firstTimeSchoolUpdate, Long schoolId) throws SQLException {
+		Connection connection = null;
+		PreparedStatement updateStatement = null;
+		ResultSet resultSet = null;
+		String updateQuery = String.format("UPDATE %s SET %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=? WHERE %s=? AND %s=?;", Tables.School.table,
+				Tables.School.noOfShift, Tables.School.isHostelFacilitiesAvailable, Tables.School.isHostelCompulsory, Tables.School.schoolOfficeWeekStartDay,
+				Tables.School.schoolOfficeWeekEndDay, Tables.School.schoolClassFrom, Tables.School.schoolClassTo, Tables.School.schoolOfficeStartTime, Tables.School.schoolOfficeEndTime,
+				Tables.School.schoolFinancialStartDate, Tables.School.schoolFinancialEndDate, Tables.School.isActive, Tables.School.id);
+
+		int rowUpdated = 0;
+		try {
+			connection = DB.getDataSource("srp").getConnection();
+			updateStatement = connection.prepareStatement(updateQuery);
+			updateStatement.setInt(1, firstTimeSchoolUpdate.getNumberOfShift());
+			updateStatement.setBoolean(2, firstTimeSchoolUpdate.isHostelFacilitiesAvailable());
+			updateStatement.setBoolean(3, firstTimeSchoolUpdate.isHostelCompulsory());
+			updateStatement.setString(4, firstTimeSchoolUpdate.getSchoolOfficeWeekStartDay().trim());
+			updateStatement.setString(5, firstTimeSchoolUpdate.getSchoolOfficeWeekEndDay().trim());
+			updateStatement.setString(6, firstTimeSchoolUpdate.getSchoolClassFrom().trim());
+			updateStatement.setString(7, firstTimeSchoolUpdate.getSchoolClassTo().trim());
+			updateStatement.setString(8, firstTimeSchoolUpdate.getSchoolOfficeStartTime());
+			updateStatement.setString(9, firstTimeSchoolUpdate.getSchoolOfficeEndTime());
+			updateStatement.setDate(10, new java.sql.Date(firstTimeSchoolUpdate.getSchoolFinancialStartDate().getTime()));
+			updateStatement.setDate(11, new java.sql.Date(firstTimeSchoolUpdate.getSchoolFinancialEndDate().getTime()));
+			updateStatement.setBoolean(12, true);
+			updateStatement.setLong(13, schoolId);
+			rowUpdated = updateStatement.executeUpdate();
+		} catch(Exception exception) {
+			exception.printStackTrace();
+			rowUpdated = 0;
+		} finally {
+			if(updateStatement != null)
+				updateStatement.close();
+			if(connection != null)
+				connection.close();
+		}
 		return !(rowUpdated == 0);
 	}
 

@@ -1,5 +1,6 @@
 package controllers.school;
 
+import controllers.routes;
 import dao.school.SchoolProfileInfoDAO;
 import enum_package.SessionKey;
 import play.data.Form;
@@ -118,10 +119,11 @@ public class SchoolInfoController extends ClassController {
 			return redirect(controllers.school.routes.SchoolInfoController.getProfileInfo());
 		}
 
+		String schoolId = session().get(SessionKey.SCHOOL_ID.name());
 		boolean isUpdated = false;
 		try {
 			SchoolProfileInfoDAO schoolProfileInfoDAO = new SchoolProfileInfoDAO();
-			isUpdated = schoolProfileInfoDAO.updateSchoolShiftAndClassTimingInfo(schoolShiftAndClassTimingInfo);
+			isUpdated = schoolProfileInfoDAO.updateSchoolShiftAndClassTimingInfo(schoolShiftAndClassTimingInfo, Long.valueOf(schoolId));
 		} catch(Exception exception) {
 			isUpdated = false;
 			exception.printStackTrace();
@@ -188,11 +190,12 @@ public class SchoolInfoController extends ClassController {
 			return redirect(controllers.school.routes.SchoolInfoController.getSchoolMandInfo());
 		}
 
+		String schoolId = session().get(SessionKey.SCHOOL_ID.name());
 		FirstTimeSchoolUpdateForm firstTimeSchoolUpdate = firstTimeSchoolUpdateForm.get();
 		boolean isUpdated = false;
 		try {
 			SchoolProfileInfoDAO schoolProfileInfoDAO = new SchoolProfileInfoDAO();
-			// write db code
+			isUpdated = schoolProfileInfoDAO.updateSchoolMandInfo(firstTimeSchoolUpdate, Long.valueOf(schoolId));
 		} catch(Exception exception) {
 			flash("error", "Some problem occur during update.");
 			exception.printStackTrace();
@@ -203,7 +206,7 @@ public class SchoolInfoController extends ClassController {
 			return redirect(controllers.school.routes.SchoolInfoController.getSchoolMandInfo());
 		} else {
 			flash("success", "School informations updated successfully.");
-			return redirect("");
+			return redirect(routes.SRPController.index());
 		}
 	}
 }
