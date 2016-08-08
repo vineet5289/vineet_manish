@@ -75,8 +75,18 @@
                                         >
                                 </div>
 
-                                <div class="ui segment">
-                                  <h4 class="ui dividing header">Address</h4>
+                                 <div class="field">
+                                    <label>Category</label>
+                                    <input
+                                        name="schoolCategory"
+                                        type="text"
+                                        value='@schoolGeneralForm("schoolCategory").value'
+                                        >
+                                </div>
+
+                                <h4 class="ui top attached header">Address</h4>
+                                <div class="ui attached segment">
+                                  
                                    <div class="two fields">
                                   
                                     <div class="field">
@@ -101,11 +111,8 @@
                                 </div>
                               </div>
 
-
-                              </div>
-
-                                
-                               <div class="field">
+                              <div class="two fields"> 
+                                <div class="field">
                                     <label>City</label>
                                     <input
                                         name="city"
@@ -114,8 +121,7 @@
                                         >
                                 </div>
 
-
-                                 <div class="field">
+                                <div class="field">
                                     <label>Pincode</label>
                                     <input
                                         name="schoolAlternativeNumber"
@@ -124,18 +130,22 @@
                                         >
                                 </div>
 
-                                <div class="field">
-                                    <label>Category</label>
-                                    <input
-                                        name="schoolCategory"
-                                        type="text"
-                                        value='@schoolGeneralForm("schoolCategory").value'
-                                        >
-                                </div>
+                              </div>
+                              
+
+                              </div> </br>
+
+                                
+                               
 
 
-                                <div class="ui segment">
-                                    <h4 class="ui dividing header">School From</h4>
+                                 
+
+                               
+
+                                <h4 class="ui top attached header">School From</h4>
+                                <div class="ui attached segment">
+                                    
                                 <div class="two fields">
                                     
                                     <div class="field">
@@ -157,9 +167,12 @@
                                         >
                                 </div>
                               </div>
-                                </div>
-                                
-                              <div class="two fields">
+                                </div></br>
+
+
+                            <h4 class="ui top attached header">School Week</h4>
+                               <div class="ui attached segment">
+                                   <div class="two fields">
                               <div class="field">
 
                                  <label>School Start Time</label>
@@ -193,30 +206,46 @@
                                    
                                 </div>
                             </div>
+      
 
-                                <div class="field">
-                                    <label>School Week Start</label>
+                               </div></br>
+                                
+                              
+
+                            <h4 class="ui top attached header">School Week</h4>
+                               <div class="ui attached segment">
+                                 <div class="two fields">
+                                   <div class="field">
+                                    <label>Start</label>
                                     <input
                                         name="schoolOfficeWeekStartDay"
                                         type="text"
                                         value='@schoolGeneralForm("schoolOfficeWeekStartDay").value'
                                         >
-                                </div>
+                                    </div>
 
-                                <div class="field">
-                                    <label>School Week End</label>
+                                    <div class="field">
+                                    <label>End</label>
                                     <input
                                         name="schoolOfficeWeekEndDay"
                                         type="text"
                                         value='@schoolGeneralForm("schoolOfficeWeekEndDay").value'
                                         >
+                                     </div>
                                 </div>
+                               </div></br>
+
+                                
+                                
+
+                                
 
 
-
-                               <div class="two fields">
-      <div class="field">
-        <label>school Financial Year Start</label>
+                               <h4 class="ui top attached header">School Financial Year</h4>
+                               <div class="ui attached segment">
+                                     <div class="two fields">
+                                    <div class="field">
+                                       <label>Start</label>
         <div class="ui calendar" id="rangestart">
           <div class="ui input left icon">
             <i class="calendar icon"></i>
@@ -225,7 +254,7 @@
         </div>
       </div>
       <div class="field">
-        <label>school Financial Year End</label>
+        <label>End</label>
         <div class="ui calendar" id="rangeend">
           <div class="ui input left icon">
             <i class="calendar icon"></i>
@@ -239,6 +268,8 @@
         </div>
       </div>
     </div>
+                               </div></br>
+                               
 
 
 
