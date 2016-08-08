@@ -64,15 +64,6 @@ public class SchoolGeneralInfoFrom {
 				errors.add(new ValidationError("schoolAddressLine1", "Address should not be empty."));
 			}
 
-//			private String schoolCategory;
-//			private int noOfShift;
-//			private String schoolStartClass;
-//			private String schoolEndClass;
-//			private String schoolStartTime;
-//			private String schoolEndTime;
-//			private Date schoolFinancialStartDate;
-//			private Date schoolFinancialEndDate;
-
 			// validation of non editable feild
 			if(!AddressFieldValidationUtils.isValidState(state)) {
 				errors.add(new ValidationError("state", "State should not be empty. And should not contains any special characters except space."));
