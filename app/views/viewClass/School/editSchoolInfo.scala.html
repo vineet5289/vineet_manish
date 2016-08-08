@@ -1,95 +1,17 @@
-@(schoolGeneralForm:Form[views.forms.school.SchoolGeneralInfoFrom] ,
-schoolHeaderForm:Form[views.forms.school.SchoolHeaderInfoForm],
-shiftAndTimingForm:Form[views.forms.school.SchoolShiftAndClassTimingInfoForm])
-@viewClass.main4("Profile | Info")(""){
+@(schoolGeneralForm:Form[views.forms.school.SchoolGeneralInfoFrom])
+@viewClass.main5("Profile | Edit")(""){
 <style type="text/css">
- #edit-details{
-    padding-left: 220px;
-    font-size: 1rem;
-    position: relative;
+ 
 
- }
 </style>
 
-<div class="ui horizontal segment">
-            <div class="container">
-                <div class="introduction">
 
-                    <h3 class="ui dividing header">
-                       PROFILE      </h3>
-                   
-                
-                    <div class="ui grid ">
-                        
-                          <div class="three wide column">
-                             
-                              <!--<img style="margin-bottom: 10px" class="ui medium rounded image" src="http://icons.indats.com/sewlong/justin.jpg"> -->
-                              <img class="ui circular medium image" align="center" src="@routes.Assets.versioned("images/ID.jpg")">
-                                
-                          </div>
-                              <div class="ten wide column">
-                            <div class="ui  list">
-                                <div class="item">
-                                    
-                                    <div class="content">
-                                        <h4 class="ui blue header">School Name</h4>
-                                        
-                                         @schoolHeaderForm("schoolName").value
-                                    </div>
-                                </div>
+         <div class="ui horizontal segment">
 
-                                <div class="item">
-                                    <div class="content">
-                                      <h4 class="ui blue header">School UserName</h4>
-                                      @schoolHeaderForm("schoolUserName").value
-                                         
-                                    </div>
-                                </div>
-                                
-                                <div class="item">
-
-                                    <div class="content">
-                                        <h4 class="ui blue header">E-Mail</h4>
-                                        @schoolHeaderForm("schoolEmail").value
-                                        
-                                    </div>
-                                </div>
-                                <div class="item">
-
-                                    <div class="content">
-                                        <h4 class="ui blue header">Contact</h4>
-                                        +91-@schoolHeaderForm("schoolMobileNumber").value
-                                        
-                                    </div>
-                                </div>
-                                 
-                                 <div class="item">
-
-                                    <div class="content">
-                                        <h4 class="ui blue header">Website </h4>
-                                        @schoolHeaderForm("schoolWebsiteUrl").value
-                                        
-                                    </div>
-                                </div>
-
-                                
-
-                            </div>
-                        
-                        </div>
-                        
-                        
-                    
-                    </div>
-
-                </div>
-                
-
-            </div>
-        </div>
+         </div>
         <div class="main container">
         <div class="peek">
-         <div class="ui secondary pointing vertical demo menu" id="profile-settings">
+         <div class="ui secondary pointing vertical profile menu" id="menu">
                  <a class="active item" data-tab="generalInfoProfile">
                   General
                 </a>
@@ -108,27 +30,22 @@ shiftAndTimingForm:Form[views.forms.school.SchoolShiftAndClassTimingInfoForm])
         </div>
         <!--<div class="example"> -->
 
-           <div class="ui active tab segment" data-tab="generalInfoProfile">
+           <div class="ui active tab " data-tab="generalInfoProfile">
             <h2 class="ui dividing header">General</h2>
 
 
 
                <div class="item">
-                                  <div class="image">
+                                  <div class="ui grid">
+
+                                    <div class="eight wide left column">
                             <form
                                 class="ui fluid form"
                                 id="form1"
                                 action="/school/edit/general"
                                 method="Post">
 
-                                <div class="field">
-                                    <label>School Registration Id</label>
-                                    <input
-                                        name="schoolRegistrationId"
-                                        type="text"
-                                        value='@schoolGeneralForm("schoolRegistrationId").value'
-                                        readonly>
-                                </div>
+                               
 
                                 <div class="field">
                                     <label>School Registration Id</label>
@@ -158,8 +75,10 @@ shiftAndTimingForm:Form[views.forms.school.SchoolShiftAndClassTimingInfoForm])
                                         >
                                 </div>
 
-                                 <div class="two fields">
-                                  <label>Address</label>
+                                <div class="ui segment">
+                                  <h4 class="ui dividing header">Address</h4>
+                                   <div class="two fields">
+                                  
                                     <div class="field">
                                     
                                     <input
@@ -172,16 +91,20 @@ shiftAndTimingForm:Form[views.forms.school.SchoolShiftAndClassTimingInfoForm])
                                 
 
                                 <div class="field">
-                                    <label></label>
+                                    
                                     <input
-                                        name="schoolAddressLine1"
+                                        name="schoolAddressLine2"
                                         type="text"
-                                        value='@schoolGeneralForm("schoolAddressLine1").value'
-                                        placeholder="Address Line 1" >
+                                        value='@schoolGeneralForm("schoolAddressLine2").value'
+                                        placeholder="Address Line 2" >
                                         
                                 </div>
                               </div>
 
+
+                              </div>
+
+                                
                                <div class="field">
                                     <label>City</label>
                                     <input
@@ -211,9 +134,12 @@ shiftAndTimingForm:Form[views.forms.school.SchoolShiftAndClassTimingInfoForm])
                                 </div>
 
 
-                                <div class="two inline fields">
-                                    <label>school From</label>
+                                <div class="ui segment">
+                                    <h4 class="ui dividing header">School From</h4>
+                                <div class="two fields">
+                                    
                                     <div class="field">
+                                        <label>From</label>
                                     <input
                                         name="schoolClassFrom"
                                         type="text"
@@ -223,7 +149,7 @@ shiftAndTimingForm:Form[views.forms.school.SchoolShiftAndClassTimingInfoForm])
 
 
                                   <div class="field">
-                                    
+                                    <label>To</label>
                                     <input
                                         name="schoolClassTo"
                                         type="text"
@@ -231,24 +157,42 @@ shiftAndTimingForm:Form[views.forms.school.SchoolShiftAndClassTimingInfoForm])
                                         >
                                 </div>
                               </div>
-
+                                </div>
+                                
+                              <div class="two fields">
                               <div class="field">
-                                    <label>School Start Time</label>
-                                    <input
+
+                                 <label>School Start Time</label>
+                                 <div class="ui calendar" id="example3">
+                                      <div class="ui input left icon">
+                                      <i class="time icon"></i>
+                                      <input
                                         name="schoolOfficeStartTime"
                                         type="text"
                                         value='@schoolGeneralForm("schoolOfficeStartTime").value'
                                         >
+                                      </div>
+                                 </div>
+
+                                   
                                 </div>
 
                                 <div class="field">
-                                    <label>School End Time</label>
-                                    <input
+                                       <label>School End Time</label>
+                                      <div class="ui calendar" id="endtime">
+                                         <div class="ui input left icon">
+                                          <i class="time icon"></i>
+                                          <input
                                         name="schoolOfficeEndTime"
                                         type="text"
                                         value='@schoolGeneralForm("schoolOfficeEndTime").value'
                                         >
+                                        </div>
+                                      </div>
+
+                                   
                                 </div>
+                            </div>
 
                                 <div class="field">
                                     <label>School Week Start</label>
@@ -268,24 +212,47 @@ shiftAndTimingForm:Form[views.forms.school.SchoolShiftAndClassTimingInfoForm])
                                         >
                                 </div>
 
-                                <div class="field">
-                                    <label>school Financial Year Start</label>
-                                    <input
-                                        name="schoolFinancialStartDate"
-                                        type="text"
-                                        value='@schoolGeneralForm("schoolFinancialStartDate").value'
-                                        >
-                                </div>
 
-                                 <div class="field">
-                                    <label>school Financial Year End</label>
-                                    <input
+
+                               <div class="two fields">
+      <div class="field">
+        <label>school Financial Year Start</label>
+        <div class="ui calendar" id="rangestart">
+          <div class="ui input left icon">
+            <i class="calendar icon"></i>
+            <input name="schoolFinancialStartDate" type="text"  value='@schoolGeneralForm("schoolFinancialStartDate").value'>
+          </div>
+        </div>
+      </div>
+      <div class="field">
+        <label>school Financial Year End</label>
+        <div class="ui calendar" id="rangeend">
+          <div class="ui input left icon">
+            <i class="calendar icon"></i>
+            <input
                                         name="schoolFinancialEndDate"
                                         type="text"
                                         value='@schoolGeneralForm("schoolFinancialEndDate").value'
 
                                         >
-                                </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+                                 
+
+                                 <div class="field">
+                                 
+                                 <button
+                        type="submit"
+                        id="updateGeneralInfoSubmit"
+                        class="ui green inverted submit fluid button">
+                        <i class="icon edit"></i>SAVE</button>
+
+                                 </div>
 
 
 
@@ -297,11 +264,11 @@ shiftAndTimingForm:Form[views.forms.school.SchoolShiftAndClassTimingInfoForm])
 
 
 
-                              </form>
+                              </form> </div>
 
                             </div>
                           </div>       
-        
+        </div>
         
               
             <div class="ui tab segment" data-tab="timings">

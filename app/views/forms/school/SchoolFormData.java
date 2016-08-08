@@ -59,7 +59,7 @@ public class SchoolFormData {
 		}
 
 		if (schoolAlternativeNumber != null && !schoolAlternativeNumber.trim().isEmpty()
-				&& (ValidateFields.isValidMobileNumber(schoolAlternativeNumber) || ValidateFields.isValidAlternativeNumber(schoolAlternativeNumber))) {
+				&& !(ValidateFields.isValidMobileNumber(schoolAlternativeNumber) || ValidateFields.isValidAlternativeNumber(schoolAlternativeNumber))) {
 			errors.add(new ValidationError("schoolAlternativeNumber", "Alternative number should be valid."));
 		}
 
