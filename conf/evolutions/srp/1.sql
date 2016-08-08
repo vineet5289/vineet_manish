@@ -88,7 +88,7 @@ CREATE TABLE IF NOT EXISTS login (
   user_name varchar(150) COLLATE utf8_unicode_ci NOT NULL,
   email_id varchar(255) COLLATE utf8_unicode_ci,
   password varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  password_state enum('FIRST_TIME', 'RESET', 'BLOCKED', 'CORRECT_PASSWORD') NOT NULL,
+  password_state enum('firststate', 'blockedstate', 'redirectstate', 'finalstate') DEFAULT 'firststate' NOT NULL,
   created_at timestamp DEFAULT CURRENT_TIMESTAMP,
   updated_at timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   role varchar(255) COLLATE utf8_unicode_ci NOT NULL,

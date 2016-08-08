@@ -12,6 +12,7 @@ import views.html.homePage.homepage;
 import controllers.CustomController;
 import controllers.routes;
 import dao.UserLoginDAO;
+import enum_package.LoginStatus;
 import enum_package.SessionKey;
 
 
@@ -32,17 +33,17 @@ public class LoginController extends CustomController {
 
 			try {
 				LoginDetails loginDetails = userLoginDAO.isValidUserCredentials(userName, password);
-				if(!loginDetails.getError().isEmpty()) {
-					flash("error",  "Login credentials not valid.");
+				if(loginDetails.getLoginStatus() != LoginStatus.validuser) {
+					flash("error",  LoginStatus.of(loginDetails.getLoginStatus()));
 					return redirect(controllers.login_logout.routes.LoginController.preLogin());
 				}
 
 				session(SessionKey.USER_NAME.name(), userName);
+				session(SessionKey.LOGIN_STATE.name(), loginDetails.getPasswordState());
 				String authToken = loginDetails.getAuthToken();
 				if(authToken != null) {
 					session(SessionKey.AUTH_TOKEN.name(), authToken);
 				}
-
 				Long schoolId = loginDetails.getSchoolId();
 				if(schoolId != null && schoolId != 0) {
 					session(SessionKey.SCHOOL_ID.name(), Long.toString(schoolId));

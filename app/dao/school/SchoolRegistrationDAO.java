@@ -151,7 +151,7 @@ public class SchoolRegistrationDAO {
 			schoolLoginPreparedStatement.setString(1, schoolData.getSchoolUserName().trim());
 			schoolLoginPreparedStatement.setString(2, schoolData.getSchoolEmail().trim());
 			schoolLoginPreparedStatement.setString(3, bCryptPassword);
-			schoolLoginPreparedStatement.setString(4, PasswordState.CORRECT_PASSWORD.name());
+			schoolLoginPreparedStatement.setString(4, PasswordState.redirectstate.name());
 			schoolLoginPreparedStatement.setString(5, Role.SUPERADMIN.name());
 			schoolLoginPreparedStatement.setString(6, "ALL=1");
 			schoolLoginPreparedStatement.setBoolean(7, true);

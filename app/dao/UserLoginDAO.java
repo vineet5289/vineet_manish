@@ -17,6 +17,7 @@ import utils.ParseString;
 import utils.RandomGenerator;
 import utils.ValidateFields;
 import views.forms.AccessRightsForm;
+import enum_package.LoginStatus;
 import enum_package.Role;
 
 public class UserLoginDAO {
@@ -43,7 +44,6 @@ public class UserLoginDAO {
 				Tables.Login.accessRights, Tables.Login.name, Tables.Login.schoolId, Tables.Login.type, Tables.Login.table, Tables.Login.userName,
 				Tables.Login.isActive);
 
-		boolean isFieldSet = true;
 		try {
 			connection = DB.getDataSource("srp").getConnection();
 			loginPreparedStatement = connection.prepareStatement(loginSelectQuery, ResultSet.TYPE_FORWARD_ONLY);
@@ -52,17 +52,18 @@ public class UserLoginDAO {
 			loginResultSet = loginPreparedStatement.executeQuery();
 
 			if(!loginResultSet.next() || !isPasswordMatch(password, loginResultSet.getString(Tables.Login.password))) {
-				loginDetails.setError("UserName/Password is invalid. Please Try again");
+				loginDetails.setLoginStatus(LoginStatus.invaliduser);
 				return loginDetails;
 			}
 
 			String authToken = geterateAuthToken();
-			if(authToken == null || authToken.isEmpty())
-				isFieldSet = false;
+			if(authToken == null || authToken.isEmpty()) {
+				loginDetails.setLoginStatus(LoginStatus.servererror);
+				return loginDetails;
+			}
 
 			loginDetails.setRole(loginResultSet.getString(Tables.Login.role));
 			loginDetails.setUserName(userName);
-			loginDetails.setError("");
 			loginDetails.setAuthToken(authToken);
 			loginDetails.setAccessRight(loginResultSet.getString(Tables.Login.accessRights));
 			Long superUserSchoolId = loginResultSet.getLong(Tables.Login.schoolId);
@@ -70,10 +71,11 @@ public class UserLoginDAO {
 				loginDetails.setSchoolId(superUserSchoolId);
 			}
 			loginDetails.setType(loginResultSet.getString(Tables.Login.type));
+			loginDetails.setPasswordState(Tables.Login.passwordState);
+			loginDetails.setLoginStatus(LoginStatus.validuser);
 		} catch(Exception exception) {
-			loginDetails.setError("Server Problem occure. Please try after some time");
+			loginDetails.setLoginStatus(LoginStatus.servererror);
 			exception.printStackTrace();
-			isFieldSet = false;
 		} finally {
 			if(loginResultSet != null)
 				loginResultSet.close();
@@ -83,45 +85,42 @@ public class UserLoginDAO {
 				connection.close();
 		}
 
-		if(!isFieldSet)
-			return null;
-
 		return loginDetails;
 	}
 
 	public LoginDetails refreshUserUsingUserName(String userName) throws SQLException {
-		LoginDetails loginDetails = null;
 		Connection connection = null;
 		PreparedStatement loginPreparedStatement = null;
 		ResultSet loginResultSet = null;
 
-		String loginSelectQuery = String.format("SELECT %s, %s, %s, %s, %s, %s, %s, %s FROM %s WHERE %s=? AND %s=?;", Tables.Login.id,
+		String loginSelectQuery = String.format("SELECT %s, %s, %s, %s, %s, %s, %s, %s, %s FROM %s WHERE %s=? AND %s=?;", Tables.Login.id,
 				Tables.Login.userName, Tables.Login.emailId, Tables.Login.role, Tables.Login.accessRights, Tables.Login.name,
-				Tables.Login.schoolId, Tables.Login.type, Tables.Login.table, Tables.Login.userName, Tables.Login.isActive);
+				Tables.Login.schoolId, Tables.Login.type, Tables.Login.passwordState, Tables.Login.table, Tables.Login.userName, Tables.Login.isActive);
 
+		LoginDetails loginDetails = new LoginDetails();;
 		try {
 			connection = DB.getDataSource("srp").getConnection();
 			loginPreparedStatement = connection.prepareStatement(loginSelectQuery, ResultSet.TYPE_FORWARD_ONLY);
 			loginPreparedStatement.setString(1, userName);
 			loginPreparedStatement.setBoolean(2, true);
 			loginResultSet = loginPreparedStatement.executeQuery();
-			loginDetails = new LoginDetails();
 			if(loginResultSet.next()) {
 				loginDetails.setUserName(userName);
 				loginDetails.setRole(loginResultSet.getString(Tables.Login.role));
-				loginDetails.setError("");
 				loginDetails.setAccessRight(loginResultSet.getString(Tables.Login.accessRights));
+				loginDetails.setPasswordState(loginResultSet.getString(Tables.Login.passwordState));
 				Long superUserSchoolId = loginResultSet.getLong(Tables.Login.schoolId);
 				if( superUserSchoolId != null && superUserSchoolId > 0) {
 					loginDetails.setSchoolId(superUserSchoolId);
 				}
 				loginDetails.setType(loginResultSet.getString(Tables.Login.type));
+				loginDetails.setLoginStatus(LoginStatus.validuser);
 			} else {
-				loginDetails.setError("Inactive User");
+				loginDetails.setLoginStatus(LoginStatus.invaliduser);
 			}
 		} catch(Exception exception) {
 			exception.printStackTrace();
-			loginDetails = new LoginDetails();
+			loginDetails.setLoginStatus(LoginStatus.servererror);
 		} finally {
 			if(loginResultSet != null)
 				loginResultSet.close();

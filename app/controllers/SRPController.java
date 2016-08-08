@@ -9,7 +9,9 @@ import security.ActionAuthenticator;
 import views.html.homePage.schoolRequestHomepage;
 import views.html.viewClass.dashboard;
 import dao.UserLoginDAO;
+import enum_package.LoginStatus;
 import enum_package.LoginTypeEnum;
+import enum_package.PasswordState;
 import enum_package.RegisterUserType;
 import enum_package.SessionKey;
 
@@ -18,38 +20,43 @@ public class SRPController extends CustomController {
 	@Security.Authenticated(ActionAuthenticator.class)
 	public Result index() {
 		String userName = session().get(SessionKey.USER_NAME.name());
-		String type = session().get(SessionKey.LOGIN_TYPE.name());
-		String role = session().get(SessionKey.USER_ROLE.name());
-
+		LoginDetails loginDetails = null;
 		boolean shouldLogout = true;
 		try {
 			UserLoginDAO userLoginDAO = new UserLoginDAO();
-			LoginDetails loginDetails = userLoginDAO.refreshUserUsingUserName(userName);
-			if(loginDetails.getError().isEmpty()) {
-				Long schoolId = loginDetails.getSchoolId();
-				if(schoolId != null && schoolId != 0) {
-					session(SessionKey.SCHOOL_ID.name(), Long.toString(schoolId));
-				}
-				session(SessionKey.LOGIN_TYPE.name(), loginDetails.getType());
-				session(SessionKey.USER_ROLE.name(), loginDetails.getRole().trim());
-				shouldLogout = false;
-			}
+			loginDetails = userLoginDAO.refreshUserUsingUserName(userName);
+			shouldLogout = false;
 		} catch(Exception exception) {
 			exception.printStackTrace();
 			flash("error", "Server problem occur during refresh.");
 		}
 
-		if(shouldLogout) {
+		if(shouldLogout || loginDetails == null || loginDetails.getLoginStatus() != LoginStatus.validuser) {
 			session().clear();
 			return redirect(controllers.login_logout.routes.LoginController.preLogin());
 		}
 
+		String passwordState = loginDetails.getPasswordState();
+		session(SessionKey.LOGIN_STATE.name(), passwordState);
+
+		String type = loginDetails.getType();
+		session(SessionKey.LOGIN_TYPE.name(), type);
+
+		String role = loginDetails.getRole();
+		session(SessionKey.USER_ROLE.name(), role);
+
+		Long schoolId = loginDetails.getSchoolId();
+		if(schoolId != null && schoolId != 0) {
+			session(SessionKey.SCHOOL_ID.name(), Long.toString(schoolId));
+		}
+
 		if(type.equalsIgnoreCase(LoginTypeEnum.SCHOOL.name()) && role.equalsIgnoreCase("SUPERADMIN")) {
+			if(passwordState.equalsIgnoreCase(PasswordState.redirectstate.name()))
+				return ok(dashboard.render(session().get(SessionKey.USER_NAME.name()), "SUPERADMIN"));
 			return ok(dashboard.render(session().get(SessionKey.USER_NAME.name()), "SUPERADMIN"));
 		}
 
 		List<LoginDetails> userDetails = null;
-		System.out.println("====>" + userDetails);
 
 		return ok(dashboard.render(session().get(SessionKey.USER_NAME.name()), session().get(SessionKey.USER_ROLE.name())));
 	}

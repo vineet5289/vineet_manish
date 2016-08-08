@@ -192,11 +192,12 @@ public class SchoolInfoController extends ClassController {
 		}
 
 		String schoolId = session().get(SessionKey.SCHOOL_ID.name());
+		String userName = session().get(SessionKey.USER_NAME.name());
 		FirstTimeSchoolUpdateForm firstTimeSchoolUpdate = firstTimeSchoolUpdateForm.get();
 		boolean isUpdated = false;
 		try {
 			SchoolProfileInfoDAO schoolProfileInfoDAO = new SchoolProfileInfoDAO();
-			isUpdated = schoolProfileInfoDAO.updateSchoolMandInfo(firstTimeSchoolUpdate, Long.valueOf(schoolId));
+			isUpdated = schoolProfileInfoDAO.updateSchoolMandInfo(firstTimeSchoolUpdate, Long.valueOf(schoolId), userName);
 		} catch(Exception exception) {
 			flash("error", "Some problem occur during update.");
 			exception.printStackTrace();

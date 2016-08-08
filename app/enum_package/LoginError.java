@@ -1,8 +1,0 @@
-package enum_package;
-
-public enum LoginError {
-	USERNAME_INVALID,
-	USERNAME_FORMAT_INVALID,
-	PASSWORD_INVALID,
-	PASSWORD_FORMAT_INVALID;
-}
