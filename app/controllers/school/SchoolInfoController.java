@@ -9,6 +9,7 @@ import views.forms.school.SchoolGeneralInfoFrom;
 import views.forms.school.SchoolHeaderInfoForm;
 import views.forms.school.SchoolShiftAndClassTimingInfoForm;
 import views.html.viewClass.School.SchoolProfile;
+import views.html.viewClass.School.editSchoolInfo;
 public class SchoolInfoController extends ClassController {
 
 	/*
@@ -45,12 +46,21 @@ public class SchoolInfoController extends ClassController {
 
 	//auth + only superadmin, schoolId must present
 	public Result getGeneralInfo() {
-		Form<SchoolGeneralInfoFrom> schoolGeneralInfoFrom = Form.form(SchoolGeneralInfoFrom.class).bindFromRequest();
-		if (schoolGeneralInfoFrom == null || schoolGeneralInfoFrom.hasErrors()) {
+		SchoolGeneralInfoFrom schoolGeneralInfo = null;
+		try{
+			SchoolProfileInfoDAO schoolProfileInfoDAO = new SchoolProfileInfoDAO();
+			schoolGeneralInfo = schoolProfileInfoDAO.getSchoolGeneralInfoFrom(1l);
+		} catch(Exception exception) {
+			System.out.println("some error happen");
+		}
+		if(schoolGeneralInfo == null) {
 			flash("error", "Error during school information update.");
 			return redirect(controllers.school.routes.SchoolInfoController.getProfileInfo());
 		}
-		return ok("");
+
+		Form<SchoolGeneralInfoFrom> schoolGeneralInfoFrom = Form.form(SchoolGeneralInfoFrom.class).fill(schoolGeneralInfo);
+		System.out.println("general Form errors ******" + schoolGeneralInfoFrom);
+		return ok(editSchoolInfo.render(schoolGeneralInfoFrom));
 	}
 
 	//auth + only superadmin, schoolId must present

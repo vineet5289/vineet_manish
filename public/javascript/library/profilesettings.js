@@ -6,5 +6,5 @@ $(document).ready(function(){
         $(this).addClass('active');
     });
 
-	  $('.demo.menu .item').tab({history:false});
+	  $('.profile.menu .item').tab({history:false});
 });
