@@ -40,10 +40,10 @@
                
                 action="/school/mand_info" >
 
-               <div class="ui segment">
+              
 
 
-   <div class="field">
+                  <div class="field">
                         <label>Shift</label>
                         <input
                             name="numberOfShift"
@@ -52,7 +52,9 @@
                             placeholder="School Shift">
                     </div>
 
-            <div class="required inline fields">
+                     <h4 class="ui top attached header">Hostel</h4>
+                <div class="ui attached segment">
+                    <div class="inline fields">
     <label>Is Hostel Facilty Available in Your Institute?</label>
     <div class="field">
       <div class="ui radio">
@@ -68,9 +70,9 @@
     </div>
     
   </div>
-  
-  
-  <div class="required inline fields">
+
+
+   <div class="required inline fields">
     <label>Is Hostel Compulsory in Your Institute?</label>
     <div class="field">
       <div class="ui radio">
@@ -86,7 +88,14 @@
     </div>
     
   </div>
-  </div>
+
+                </div>
+
+            
+  
+  
+ 
+  
 
 
                 <h4 class="ui top attached header">School Week</h4>
@@ -175,10 +184,26 @@
             </div>
 
         </div>
+
+        
     
 
     <h4 class="ui top attached header">School Financial Year</h4>
-    <div class="ui attached segment">
+    <div class="ui attached grey tertiary inverted segment">
+        <div class="field">
+            <label>Choose Date Format</label>
+    <div class="ui fluid selection dropdown">
+      <div class="text">Select</div>
+      <i class="dropdown icon"></i>
+      <input name="dateFormat" type="hidden">
+      <div class="menu">
+        <div class="item" data-value="dd/mm/yyyy">DD/MM/YYYY</div>
+        <div class="item" data-value="dd-mm-yyyy">DD/MM/YYYY</div>
+        <div class="item" data-value="mm/dd/yyyy">MM/DD/YYYY</div>
+        <div class="item" data-value="mm-dd-yyyy">MM/DD/YYYY</div>
+      </div>
+    </div>
+        </div>
         <div class="two fields">
             <div class="field">
                 <label>Start</label>
@@ -187,7 +212,7 @@
                         <i class="calendar icon"></i>
                         <input
                             name="schoolFinancialStartDate"
-                            type="date"
+                            type="text"
                             value=''
                             placeholder="Financial Year Starts">
                     </div>
@@ -200,7 +225,7 @@
                         <i class="calendar icon"></i>
                         <input
                             name="schoolFinancialEndDate"
-                            type="date"
+                            type="text"
                             value=''
                             placeholder="Financial Year Ends">
                     </div>
