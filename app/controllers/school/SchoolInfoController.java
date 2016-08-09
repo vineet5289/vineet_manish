@@ -8,6 +8,7 @@ import views.forms.school.SchoolHeaderInfoForm;
 import views.forms.school.SchoolShiftAndClassTimingInfoForm;
 import views.html.viewClass.School.SchoolProfile;
 import views.html.viewClass.School.editSchoolInfo;
+import views.html.viewClass.School.schoolMandataryInfo;
 import controllers.routes;
 import dao.school.SchoolProfileInfoDAO;
 import enum_package.SessionKey;
@@ -179,13 +180,14 @@ public class SchoolInfoController extends ClassController {
 
 	//session validation
 	public Result getSchoolMandInfo() {
-		Form<FirstTimeSchoolUpdateForm> loginForm = Form.form(FirstTimeSchoolUpdateForm.class);
-		return ok("inside get mand info");
+		Form<FirstTimeSchoolUpdateForm> firstTimeUpdateForm = Form.form(FirstTimeSchoolUpdateForm.class);
+		return ok(schoolMandataryInfo.render(firstTimeUpdateForm));
 	}
 
 	//session validation
 	public Result updateSchoolMandInfo() {
 		Form<FirstTimeSchoolUpdateForm> firstTimeSchoolUpdateForm = Form.form(FirstTimeSchoolUpdateForm.class).bindFromRequest();
+		System.out.println("************firstTimeSchoolUpdateForm$$$$$$$$" + firstTimeSchoolUpdateForm);
 		if (firstTimeSchoolUpdateForm == null || firstTimeSchoolUpdateForm.hasErrors()) {
 			flash("error", "Some parameters are missing.");
 			return redirect(controllers.school.routes.SchoolInfoController.getSchoolMandInfo());

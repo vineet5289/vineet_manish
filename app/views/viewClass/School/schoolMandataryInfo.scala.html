@@ -1,0 +1,257 @@
+@(firstTimeUpdateForm:Form[views.forms.school.FirstTimeSchoolUpdateForm])
+@viewClass.main6("UPDATE | INFO")("index"){
+
+<div class="main container">
+    <div class="ui page grid">
+        <div class="column">
+            <div class="ui green Segment">
+            
+
+            <h3>
+        <img
+            src="https://googledrive.com/host/0BxdPBs9gGL-DfnVZYkN1MkJKRWFOcnFqa2dpYkxsQ3JBM2UxN2dSYWJxYzRKSGZZZTVUNDQ/logotype-white.png"
+            alt="PaperCut"/>
+        Smart Stuff
+    </h3>
+    
+    <div class="header">
+        <div class="profile-image">
+            <img
+                class="ui avatar image"
+                src="//semantic-ui.com/images/avatar/small/jenny.jpg">
+        </div>
+        <strong>Mellisa,</strong>
+        <br/>Please Update Just a little bit more Info
+    </div>
+               
+            
+    
+    
+     
+    <div class="item">
+       
+
+        <form
+
+               class="ui segment form"
+                
+                id="MandatoryUpdateForm"
+                method="POST"
+               
+                action="/school/mand_info" >
+
+               <div class="ui segment">
+
+
+   <div class="field">
+                        <label>Shift</label>
+                        <input
+                            name="numberOfShift"
+                            type="text"
+                            value=''
+                            placeholder="School Shift">
+                    </div>
+
+            <div class="required inline fields">
+    <label>Is Hostel Facilty Available in Your Institute?</label>
+    <div class="field">
+      <div class="ui radio">
+        <input type="radio" name="isHostelFacilitiesAvailable" value="true">
+        <label>Yes</label>
+      </div>
+    </div>
+    <div class="field">
+      <div class="ui radio">
+        <input type="radio" name="isHostelFacilitiesAvailable" value="false">
+        <label>No</label>
+      </div>
+    </div>
+    
+  </div>
+  
+  
+  <div class="required inline fields">
+    <label>Is Hostel Compulsory in Your Institute?</label>
+    <div class="field">
+      <div class="ui radio">
+        <input type="radio" name="isHostelCompulsory" value="true">
+        <label>Yes</label>
+      </div>
+    </div>
+    <div class="field">
+      <div class="ui radio">
+        <input type="radio" name="isHostelCompulsory" value="false">
+        <label>No</label>
+      </div>
+    </div>
+    
+  </div>
+  </div>
+
+
+                <h4 class="ui top attached header">School Week</h4>
+                <div class="ui attached segment">
+                    <div class="two fields">
+                        <div class="field">
+                            <label>Start</label>
+                            <input
+                                name="schoolOfficeWeekStartDay"
+                                type="text"
+                                value=''
+                                placeholder="School Week End Day">
+                        </div>
+
+                        <div class="field">
+                            <label>End</label>
+                            <input
+                                name="schoolOfficeWeekEndDay"
+                                type="text"
+                                value=''
+                                placeholder="School Week Start Day">
+                        </div>
+                    </div>
+                </div>
+           
+
+            <h4 class="ui top attached header">School From</h4>
+            <div class="ui attached segment">
+
+                <div class="two fields">
+
+                    <div class="field">
+                        <label>From</label>
+                        <input
+                            name="schoolClassFrom"
+                            type="text"
+                            value=''
+                            placeholder="School Class Minimum">
+                    </div>
+
+                    <div class="field">
+                        <label>To</label>
+                        <input
+                            name="schoolClassTo"
+                            type="text"
+                            value=''
+                            placeholder="School Class Maximum">
+                    </div>
+                </div>
+            </div>
+        
+
+        <h4 class="ui top attached header">School Timing</h4>
+        <div class="ui attached segment">
+            <div class="two fields">
+                <div class="field">
+
+                    <label>School Start Time</label>
+                    <div class="ui calendar" id="example3">
+                        <div class="ui input left icon">
+                            <i class="time icon"></i>
+                            <input
+                                name="schoolOfficeStartTime"
+                                type="text"
+                                value=''
+                                placeholder="School Start Time">
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="field">
+                    <label>School End Time</label>
+                    <div class="ui calendar" id="endtime">
+                        <div class="ui input left icon">
+                            <i class="time icon"></i>
+                            <input
+                                name="schoolOfficeEndTime"
+                                type="text"
+                                value=''
+                                placeholder="School End Time">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    
+
+    <h4 class="ui top attached header">School Financial Year</h4>
+    <div class="ui attached segment">
+        <div class="two fields">
+            <div class="field">
+                <label>Start</label>
+                <div class="ui calendar" id="rangestart">
+                    <div class="ui input left icon">
+                        <i class="calendar icon"></i>
+                        <input
+                            name="schoolFinancialStartDate"
+                            type="date"
+                            value=''
+                            placeholder="Financial Year Starts">
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                <label>End</label>
+                <div class="ui calendar" id="rangeend">
+                    <div class="ui input left icon">
+                        <i class="calendar icon"></i>
+                        <input
+                            name="schoolFinancialEndDate"
+                            type="date"
+                            value=''
+                            placeholder="Financial Year Ends">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div></br>
+
+
+<div class="field">
+<button type="submit" class="ui green fluid button">Let's get started</buttons>
+</div>
+
+</form>
+</div>
+</div>
+
+        </div>
+    </div>
+
+    
+        @if(flash.containsKey("success")) {
+                        <div class="ui segment">
+                            <div class="ui green success message" id="success-message">
+                                <div class="header">
+                                    SUCCESSFULLY
+                                </div>
+                                <ul class="list">
+                                    <li>
+                                        @flash.get("success")</li>
+                                </ul>
+                            </div>
+                        </div>
+}
+        @if(flash.containsKey("error")) {
+                        <div class="ui segment">
+
+                            <div class="ui red error message" id="error-message">
+                                <div class="header">
+                                    ERROR
+                                </div>
+                                <ul class="list">
+                                    <li>
+                                        @flash.get("error")</li>
+                                </ul>
+                            </div>
+                        </div>
+}
+    </div>
+
+    
+
+     
+}
