@@ -29,13 +29,13 @@ public class SchoolProfileInfoDAO {
 		ResultSet resultSet = null;
 		SchoolGeneralInfoFrom schoolGeneralInfoFrom = null;
 		
-		String selectQuery = String.format("SELECT %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s FROM %s "
-				+ "WHERE %s=? AND %s=?", Tables.School.schoolRegistrationId, Tables.School.schoolAlternativeEmail, Tables.School.officeNumber,
-				Tables.School.addressLine1, Tables.School.addressLine2, Tables.School.city, Tables.School.state, Tables.School.country,
-				Tables.School.pinCode, Tables.School.schoolBoardId, Tables.School.schoolType, Tables.School.schoolCurrentFinancialYear,
-				Tables.School.isHostelFacilitiesAvailable, Tables.School.isHostelCompulsory, Tables.School.noOfShift, Tables.School.schoolClassFrom,
-				Tables.School.schoolClassTo, Tables.School.schoolOfficeStartTime, Tables.School.schoolOfficeEndTime, Tables.School.schoolFinancialStartDate,
-				Tables.School.schoolFinancialEndDate, Tables.School.table, Tables.School.isActive, Tables.School.id);
+		String selectQuery = String.format("SELECT %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s FROM %s "
+				+ "WHERE %s=? AND %s=?", Tables.School.schoolRegistrationId, Tables.School.schoolAlternativeEmail, Tables.School.officeNumber, Tables.School.addressLine1,
+				Tables.School.addressLine2, Tables.School.city, Tables.School.state, Tables.School.country, Tables.School.pinCode, Tables.School.schoolBoardId,
+				Tables.School.schoolType, Tables.School.schoolCurrentFinancialYear, Tables.School.isHostelFacilitiesAvailable, Tables.School.isHostelCompulsory,
+				Tables.School.noOfShift, Tables.School.schoolClassFrom, Tables.School.schoolClassTo, Tables.School.schoolOfficeStartTime, Tables.School.schoolOfficeEndTime,
+				Tables.School.schoolFinancialStartDay, Tables.School.schoolFinancialEndDay, Tables.School.schoolFinancialStartMonth, Tables.School.schoolFinancialEndMonth,
+				Tables.School.schoolFinancialStartYear, Tables.School.schoolFinancialEndYear, Tables.School.table, Tables.School.isActive, Tables.School.id);
 		try {
 			connection = DB.getDataSource("srp").getConnection();
 			selectStatement = connection.prepareStatement(selectQuery, ResultSet.TYPE_FORWARD_ONLY);
@@ -69,8 +69,19 @@ public class SchoolProfileInfoDAO {
 				schoolGeneralInfoFrom.setSchoolClassTo(getString(resultSet.getString(Tables.School.schoolClassTo)));
 				schoolGeneralInfoFrom.setSchoolOfficeStartTime(getString(resultSet.getString(Tables.School.schoolOfficeStartTime)));
 				schoolGeneralInfoFrom.setSchoolOfficeEndTime(getString(resultSet.getString(Tables.School.schoolOfficeEndTime)));
-				schoolGeneralInfoFrom.setSchoolFinancialStartDate(resultSet.getDate(Tables.School.schoolFinancialStartDate));
-				schoolGeneralInfoFrom.setSchoolFinancialEndDate(resultSet.getDate(Tables.School.schoolFinancialEndDate));
+
+				int startDay = resultSet.getInt(Tables.School.schoolFinancialStartDay);
+				int startMonth = resultSet.getInt(Tables.School.schoolFinancialStartMonth);
+				int startYear = resultSet.getInt(Tables.School.schoolFinancialStartYear);
+
+				int endDay = resultSet.getInt(Tables.School.schoolFinancialEndDay);
+				int endMonth = resultSet.getInt(Tables.School.schoolFinancialEndMonth);
+				int endYear = resultSet.getInt(Tables.School.schoolFinancialEndYear);
+				String schoolStratDate = DateUtiles.getDate(startDay, startMonth, startYear);
+				String schoolEndDate = DateUtiles.getDate(endDay, endMonth, endYear);
+
+				schoolGeneralInfoFrom.setSchoolFinancialStartDate(schoolStratDate);
+				schoolGeneralInfoFrom.setSchoolFinancialEndDate(schoolEndDate);
 			}
 
 		} catch (Exception exception) {
@@ -189,22 +200,33 @@ public class SchoolProfileInfoDAO {
 		Connection connection = null;
 		PreparedStatement updateStatement = null;
 		ResultSet resultSet = null;
-		String updateQuery = String.format("UPDATE %s SET %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=? "
-				+ "WHERE %s=? AND %s=?;", Tables.School.table, Tables.School.schoolRegistrationId, Tables.School.schoolAlternativeEmail, Tables.School.officeNumber,
+		String updateQuery = String.format("UPDATE %s SET %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, "
+				+ "%s=?, %s=?, %s=?, %s=? WHERE %s=? AND %s=?;", Tables.School.table, Tables.School.schoolRegistrationId, Tables.School.schoolAlternativeEmail, Tables.School.officeNumber,
 				Tables.School.addressLine1, Tables.School.addressLine2, Tables.School.city, Tables.School.pinCode, Tables.School.isHostelFacilitiesAvailable, Tables.School.isHostelCompulsory,
 				Tables.School.schoolClassFrom, Tables.School.schoolClassTo, Tables.School.schoolOfficeStartTime, Tables.School.schoolOfficeEndTime, Tables.School.schoolOfficeWeekStartDay,
-				Tables.School.schoolOfficeEndTime, Tables.School.schoolCurrentFinancialYear, Tables.School.schoolFinancialStartDate, Tables.School.schoolFinancialEndDate, Tables.School.isActive,
-				Tables.School.id);
+				Tables.School.schoolOfficeEndTime, Tables.School.schoolCurrentFinancialYear, Tables.School.schoolFinancialStartDay, Tables.School.schoolFinancialEndDay,
+				Tables.School.schoolFinancialStartMonth, Tables.School.schoolFinancialEndMonth, Tables.School.schoolFinancialStartYear, Tables.School.schoolFinancialEndYear,
+				Tables.School.isActive, Tables.School.id);
 
 		int rowUpdated = 0;
 		try {
+			String[] startDate = DateUtiles.parseDate(schoolGeneralInfo.getSchoolFinancialStartDate());
+			String[] endDate = DateUtiles.parseDate(schoolGeneralInfo.getSchoolFinancialEndDate());
+			if(startDate == null || endDate == null) {
+				System.out.println("Please cselect correct date range");
+				return false;
+			}
+			int startMonth = DateUtiles.getMonth(startDate[0]);
+			int endMonth = DateUtiles.getMonth(endDate[0]);
+			int startDay = Integer.parseInt(startDate[1]);
+			int endDay = Integer.parseInt(endDate[1]);
+			int startYear = Integer.parseInt(startDate[2]);
+			int endYear = Integer.parseInt(endDate[2]);
+			String schoolCurrentFinancialYear = DateUtiles.getFinancialYear(startDate[0], startYear, endDate[0], endYear);
+
 			connection = DB.getDataSource("srp").getConnection();
 			updateStatement = connection.prepareStatement(updateQuery);
-
-			Date startDate = schoolGeneralInfo.getSchoolFinancialStartDate();
-			Date endDate = schoolGeneralInfo.getSchoolFinancialEndDate();
-			String currentFinancial = DateUtiles.getFinancialYear(startDate, endDate);
-
+			
 			updateStatement.setString(1, getString(schoolGeneralInfo.getSchoolRegistrationId()));
 			updateStatement.setString(2, getString(schoolGeneralInfo.getSchoolAlternativeEmail()));
 			updateStatement.setString(3, getString(schoolGeneralInfo.getSchoolAlternativeNumber()));
@@ -220,11 +242,15 @@ public class SchoolProfileInfoDAO {
 			updateStatement.setString(13, getString(schoolGeneralInfo.getSchoolOfficeEndTime()));
 			updateStatement.setString(14, getString(schoolGeneralInfo.getSchoolOfficeWeekStartDay()).toUpperCase());
 			updateStatement.setString(15, getString(schoolGeneralInfo.getSchoolOfficeWeekEndDay()).toUpperCase());
-			updateStatement.setString(16, getString(currentFinancial));
-			updateStatement.setDate(17, new java.sql.Date(startDate.getTime()));
-			updateStatement.setDate(18, new java.sql.Date(endDate.getTime()));
-			updateStatement.setBoolean(19, true);
-			updateStatement.setLong(20, schoolId);
+			updateStatement.setString(16, getString(schoolCurrentFinancialYear));
+			updateStatement.setInt(17, startDay);
+			updateStatement.setInt(18, endDay);
+			updateStatement.setInt(19, startMonth);
+			updateStatement.setInt(20, endMonth);
+			updateStatement.setInt(21, startYear);
+			updateStatement.setInt(22, endYear);
+			updateStatement.setBoolean(23, true);
+			updateStatement.setLong(24, schoolId);
 
 			rowUpdated = updateStatement.executeUpdate();
 		} catch(Exception exception) {
@@ -282,7 +308,7 @@ public class SchoolProfileInfoDAO {
 		String updateQuery = String.format("UPDATE %s SET %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=? WHERE %s=? AND %s=?;", Tables.School.table,
 				Tables.School.noOfShift, Tables.School.isHostelFacilitiesAvailable, Tables.School.isHostelCompulsory, Tables.School.schoolOfficeWeekStartDay,
 				Tables.School.schoolOfficeWeekEndDay, Tables.School.schoolClassFrom, Tables.School.schoolClassTo, Tables.School.schoolOfficeStartTime, Tables.School.schoolOfficeEndTime,
-				Tables.School.schoolFinancialStartDate, Tables.School.schoolFinancialEndDate, Tables.School.isActive, Tables.School.id);
+				Tables.School.schoolFinancialStartDay, Tables.School.schoolFinancialEndDay, Tables.School.isActive, Tables.School.id);
 
 		int rowUpdated = 0;
 		try {
@@ -302,19 +328,36 @@ public class SchoolProfileInfoDAO {
 		PreparedStatement updateLogin = null;
 		String updateLoginQuery = String.format("UPDATE %s SET %s=? WHERE %s=? AND %s=? AND %s=? AND %s=?;", Tables.Login.table, Tables.Login.passwordState,
 				Tables.Login.isActive, Tables.Login.userName, Tables.Login.passwordState, Tables.Login.type);
-		String updateQuery = String.format("UPDATE %s SET %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=? WHERE %s=? AND %s=?;", Tables.School.table,
-				Tables.School.noOfShift, Tables.School.isHostelFacilitiesAvailable, Tables.School.isHostelCompulsory, Tables.School.schoolOfficeWeekStartDay,
+		String updateQuery = String.format("UPDATE %s SET %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=? WHERE %s=? AND %s=?;",
+				Tables.School.table, Tables.School.noOfShift, Tables.School.isHostelFacilitiesAvailable, Tables.School.isHostelCompulsory, Tables.School.schoolOfficeWeekStartDay,
 				Tables.School.schoolOfficeWeekEndDay, Tables.School.schoolClassFrom, Tables.School.schoolClassTo, Tables.School.schoolOfficeStartTime, Tables.School.schoolOfficeEndTime,
-				Tables.School.schoolFinancialStartDate, Tables.School.schoolFinancialEndDate, Tables.School.isActive, Tables.School.id);
+				Tables.School.schoolFinancialStartDay, Tables.School.schoolFinancialEndDay, Tables.School.schoolFinancialStartMonth, Tables.School.schoolFinancialEndMonth,
+				Tables.School.schoolFinancialStartYear, Tables.School.schoolFinancialEndYear, Tables.School.schoolCurrentFinancialYear, Tables.School.isActive, Tables.School.id);
 
 		int rowSchoolInfoUpdated = 0;
 		int rowLoginUpdated = 0;
 		try {
+
+			String[] startDate = DateUtiles.parseDate(firstTimeSchoolUpdate.getSchoolFinancialStartDate());
+			String[] endDate = DateUtiles.parseDate(firstTimeSchoolUpdate.getSchoolFinancialEndDate());
+			if(startDate == null || endDate == null) {
+				System.out.println("Please cselect correct date range");
+				return false;
+			}
+			int startMonth = DateUtiles.getMonth(startDate[0]);
+			int endMonth = DateUtiles.getMonth(endDate[0]);
+			int startDay = Integer.parseInt(startDate[1]);
+			int endDay = Integer.parseInt(endDate[1]);
+			int startYear = Integer.parseInt(startDate[2]);
+			int endYear = Integer.parseInt(endDate[2]);
+			String schoolCurrentFinancialYear = DateUtiles.getFinancialYear(startDate[0], startYear, endDate[0], endYear);
+
 			connection = DB.getDataSource("srp").getConnection();
 			connection.setAutoCommit(false);
 			updateStmtSchoolMadInfo = connection.prepareStatement(updateQuery);
 			updateLogin = connection.prepareStatement(updateLoginQuery);
-
+			
+			
 			updateLogin.setString(1, PasswordState.finalstate.name());
 			updateLogin.setBoolean(2, true);
 			updateLogin.setString(3, userName.trim());
@@ -330,10 +373,15 @@ public class SchoolProfileInfoDAO {
 			updateStmtSchoolMadInfo.setString(7, firstTimeSchoolUpdate.getSchoolClassTo().trim());
 			updateStmtSchoolMadInfo.setString(8, firstTimeSchoolUpdate.getSchoolOfficeStartTime());
 			updateStmtSchoolMadInfo.setString(9, firstTimeSchoolUpdate.getSchoolOfficeEndTime());
-			updateStmtSchoolMadInfo.setDate(10, new java.sql.Date(firstTimeSchoolUpdate.getSchoolFinancialStartDate().getTime()));
-			updateStmtSchoolMadInfo.setDate(11, new java.sql.Date(firstTimeSchoolUpdate.getSchoolFinancialEndDate().getTime()));
-			updateStmtSchoolMadInfo.setBoolean(12, true);
-			updateStmtSchoolMadInfo.setLong(13, schoolId);
+			updateStmtSchoolMadInfo.setInt(10, startDay);
+			updateStmtSchoolMadInfo.setInt(11, endDay);
+			updateStmtSchoolMadInfo.setInt(12, startMonth);
+			updateStmtSchoolMadInfo.setInt(13, endMonth);
+			updateStmtSchoolMadInfo.setInt(14, startYear);
+			updateStmtSchoolMadInfo.setInt(15, endYear);
+			updateStmtSchoolMadInfo.setString(16, schoolCurrentFinancialYear);
+			updateStmtSchoolMadInfo.setBoolean(17, true);
+			updateStmtSchoolMadInfo.setLong(18, schoolId);
 
 			rowSchoolInfoUpdated = updateStmtSchoolMadInfo.executeUpdate();
 			rowLoginUpdated = updateLogin.executeUpdate();

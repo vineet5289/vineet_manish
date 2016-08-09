@@ -1,11 +1,10 @@
 package views.forms.school;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import play.data.validation.ValidationError;
 import lombok.Data;
+import play.data.validation.ValidationError;
 
 @Data
 public class FirstTimeSchoolUpdateForm {
@@ -18,8 +17,9 @@ public class FirstTimeSchoolUpdateForm {
 	private String schoolClassTo;
 	private String schoolOfficeStartTime;
 	private String schoolOfficeEndTime;
-	private Date schoolFinancialStartDate;
-	private Date schoolFinancialEndDate;
+	private String schoolFinancialStartDate;
+	private String schoolFinancialEndDate;
+	private String DateFormat;
 
 	public List<ValidationError> validate() {
 		List<ValidationError> errors = new ArrayList<>();

@@ -38,8 +38,8 @@ public class SchoolGeneralInfoFrom {
 		private String schoolOfficeEndTime;
 		private String schoolOfficeWeekStartDay;
 		private String schoolOfficeWeekEndDay;
-		private Date schoolFinancialStartDate;
-		private Date schoolFinancialEndDate;
+		private String schoolFinancialStartDate;
+		private String schoolFinancialEndDate;
 
 		public List<ValidationError> validate() {
 			List<ValidationError> errors = new ArrayList<>();

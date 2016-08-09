@@ -71,8 +71,14 @@ public class Tables {
 		public static String schoolClassTo = "school_class_to";
 		public static String schoolOfficeStartTime = "school_office_start_time";
 		public static String schoolOfficeEndTime = "school_office_end_time";
-		public static String schoolFinancialStartDate = "school_financial_start_date";
-		public static String schoolFinancialEndDate = "school_financial_end_date";
+		public static String schoolFinancialStartDay = "school_financial_start_day";
+		public static String schoolFinancialEndDay = "school_financial_end_day";
+		public static String schoolFinancialStartMonth = "school_financial_start_month";
+		public static String schoolFinancialEndMonth = "school_financial_end_month";
+		public static String schoolFinancialStartYear = "school_financial_start_year";
+		public static String schoolFinancialEndYear = "school_financial_end_year";
+		public static String schoolDateFormat = "school_date_format";
+
 		public static String schoolCurrentFinancialYear = "school_current_financial_year";
 		public static String schoolWebsiteUrl = "school_website_url";
 		public static String schoolLogoUrl = "school_logo_url";
