@@ -1,6 +1,8 @@
 package enum_package;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public enum WeekDayEnum {
@@ -13,9 +15,11 @@ public enum WeekDayEnum {
 	Saturday(7);
 
 	private static final Map<Integer, WeekDayEnum> weekDayValueMapping = new HashMap<Integer, WeekDayEnum>(WeekDayEnum.values().length);
+	private static final List<String> displayName = new ArrayList<String>(WeekDayEnum.values().length);
 	static {
 		for(WeekDayEnum wd : WeekDayEnum.values()) {
 			weekDayValueMapping.put(wd.dayValue, wd);
+			displayName.add(wd.name());
 		}
 	}
 
@@ -31,5 +35,9 @@ public enum WeekDayEnum {
 			throw new IllegalArgumentException("No Week day exits for given int value = " + dayValue);
 		}
 		return result;
+	}
+
+	public static List<String> getWeekDisplayName() {
+		return displayName;
 	}
 }

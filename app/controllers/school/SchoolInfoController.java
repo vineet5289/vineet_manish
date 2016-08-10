@@ -188,7 +188,7 @@ public class SchoolInfoController extends ClassController {
 	//session validation
 	public Result getSchoolMandInfo() {
 		Form<FirstTimeSchoolUpdateForm> firstTimeUpdateForm = Form.form(FirstTimeSchoolUpdateForm.class);
-		List<WeekDayEnum> weekList = new ArrayList<WeekDayEnum>(EnumSet.allOf(WeekDayEnum.class));
+		List<String> weekList = WeekDayEnum.getWeekDisplayName();
 		List<String> classList = SchoolClassEnum.getClassDisplayName();
 		return ok(schoolMandataryInfo.render(firstTimeUpdateForm, weekList, classList));
 	}
