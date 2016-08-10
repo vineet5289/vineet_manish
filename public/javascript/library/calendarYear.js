@@ -12,6 +12,8 @@ $('#endtime').calendar({
   type: 'time'
 });
 
+
+
 $('#rangestart').calendar({
   type: 'date',
   endCalendar: $('#rangeend')

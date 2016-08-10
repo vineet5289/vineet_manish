@@ -1,279 +1,225 @@
-@(firstTimeUpdateForm:Form[views.forms.school.FirstTimeSchoolUpdateForm])
+@(firstTimeUpdateForm:Form[views.forms.school.FirstTimeSchoolUpdateForm],
+weekDay:List[String],
+Classes:List[String])
 @viewClass.main6("UPDATE | INFO")("index"){
 
 <div class="main container">
-    <div class="ui page grid">
-        <div class="column">
-            <div class="ui green Segment">
-            
-
+   <div class="ui page grid">
+      <div class="column">
+         <div class="ui green Segment">
             <h3>
-        
-        ABC Public School
-    </h3>
-    
-    <div class="header">
-        <div class="profile-image">
-            <img
-                class="ui avatar image"
-                src="//semantic-ui.com/images/avatar/small/jenny.jpg">
-        </div>
-        <strong>Mellisa,</strong>
-        <br/>Please Update Just a little bit more Info
-    </div></br>
-               
-            
-    
-    
-     
-    <div class="item">
-       
-
-        <form
-
-               class="ui green segment  form"
-                
-                id="MandatoryUpdateForm"
-                method="POST"
-               
-                action="/school/mand_info" >
-
-              
-
-
+               ABC Public School
+            </h3>
+            <div class="header">
+               <div class="profile-image">
+                  <img class="ui avatar image" src="//semantic-ui.com/images/avatar/small/jenny.jpg">
+               </div>
+               <strong>Mellisa,</strong>
+               <br/>Please Update Just a little bit more Info
+            </div>
+            </br>
+            <div class="item">
+               <form class="ui green segment  form" id="MandatoryUpdateForm" method="POST" action="/school/mand_info">
                   <div class="field">
-                        <label class="ui  teal header" >Shift</label>
-                        <input
-                            name="numberOfShift"
-                            type="text"
-                            value=''
-                            placeholder="School Shift">
-                    </div>
-
-                     <h4 class="ui top attached teal inverted header">Hostel</h4>
-                <div class="ui attached tertiary grey inverted segment">
-                    <div class="inline fields">
-     <label >Is Hostel Facilty Available in Your Institute?</label>
-    <div class="field">
-      <div class="ui radio">
-        <input type="radio" name="isHostelFacilitiesAvailable" value="true">
-        <label>Yes</label>
-      </div>
-    </div>
-    <div class="field">
-      <div class="ui radio">
-        <input type="radio" name="isHostelFacilitiesAvailable" value="false">
-        <label>No</label>
-      </div>
-    </div>
-    
-  </div>
-
-
-   <div class="required inline fields">
-    <label>Is Hostel Compulsory in Your Institute?</label>
-    <div class="field">
-      <div class="ui radio">
-        <input type="radio" name="isHostelCompulsory" value="true">
-        <label>Yes</label>
-      </div>
-    </div>
-    <div class="field">
-      <div class="ui radio">
-        <input type="radio" name="isHostelCompulsory" value="false">
-        <label>No</label>
-      </div>
-    </div>
-    
-  </div>
-
-                </div>
-
-            
-  
-  
- 
-  
-
-
-                <h4 class="ui top attached  teal inverted header">School Week</h4>
-                <div class="ui attached tertiary grey inverted segment">
-                    <div class="two fields">
+                     <label class="ui  teal header">Shift</label>
+                     <input name="numberOfShift" type="text" value='' placeholder="School Shift">
+                  </div>
+                  <h4 class="ui top attached teal inverted header">Hostel</h4>
+                  <div class="ui attached tertiary grey inverted segment">
+                     <div class="inline fields">
+                        <label>Is Hostel Facilty Available in Your Institute?</label>
                         <div class="field">
-                            <label>Start</label>
-                            <input
-                                name="schoolOfficeWeekStartDay"
-                                type="text"
-                                value=''
-                                placeholder="School Week End Day">
+                           <div class="ui radio checkbox">
+                              <input type="radio" name="isHostelFacilitiesAvailable" value="true">
+                              <label>Yes</label>
+                           </div>
                         </div>
-
                         <div class="field">
-                            <label>End</label>
-                            <input
-                                name="schoolOfficeWeekEndDay"
-                                type="text"
-                                value=''
-                                placeholder="School Week Start Day">
+                           <div class="ui radio checkbox">
+                              <input type="radio" name="isHostelFacilitiesAvailable" value="false" checked/>
+                              <label>No</label>
+                           </div>
                         </div>
-                    </div>
-                </div>
-           
-
-            <h4 class="ui top attached  teal inverted header">School From</h4>
-            <div class="ui attached tertiary grey inverted segment">
-
-                <div class="two fields">
-
-                    <div class="field">
-                        <label>From</label>
-                        <input
-                            name="schoolClassFrom"
-                            type="text"
-                            value=''
-                            placeholder="School Class Minimum">
-                    </div>
-
-                    <div class="field">
-                        <label>To</label>
-                        <input
-                            name="schoolClassTo"
-                            type="text"
-                            value=''
-                            placeholder="School Class Maximum">
-                    </div>
-                </div>
+                     </div>
+                     <div class="required inline fields">
+                        <label>Is Hostel Compulsory in Your Institute?</label>
+                        <div class="field">
+                           <div class="ui radio">
+                              <input type="radio" name="isHostelCompulsory" value="true">
+                              <label>Yes</label>
+                           </div>
+                        </div>
+                        <div class="field">
+                           <div class="ui radio">
+                              <input type="radio" name="isHostelCompulsory" value="false" checked/>
+                              <label>No</label>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <h4 class="ui top attached  teal inverted header">School Week</h4>
+                  <div class="ui attached tertiary grey inverted segment">
+                     <div class="two fields">
+                        <div class="field">
+                           <label>Start</label>
+                           <div class="ui fluid selection dropdown">
+                              <div class="text">Select</div>
+                              <i class="dropdown icon"></i>
+                              <input name="schoolOfficeWeekStartDay" type="hidden">
+                              <div class="menu">
+                                 @for(value
+                                 <- weekDay){ 
+                                 <div class="item" data-value="@value">@value</div>
+                                 }
+                              </div>
+                           </div>
+                        </div>
+                        <div class="field">
+                           <label>End</label>
+                           <div class="ui fluid selection dropdown">
+                              <div class="text">Select</div>
+                              <i class="dropdown icon"></i>
+                              <input name="schoolOfficeWeekEndDay" type="hidden">
+                              <div class="menu">
+                                 @for(value
+                                 <- weekDay){ 
+                                 <div class="item" data-value="@value">@value</div>
+                                 }
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <h4 class="ui top attached  teal inverted header">School From</h4>
+                  <div class="ui attached tertiary grey inverted segment">
+                     <div class="two fields">
+                        <div class="field">
+                           <label>From</label>
+                           <div class="ui fluid selection dropdown">
+                              <div class="text">Select</div>
+                              <i class="dropdown icon"></i>
+                              <input name="schoolClassFrom" type="hidden">
+                              <div class="menu">
+                                 @for(value
+                                 <- Classes){ 
+                                 <div class="item" data-value="@value">@value</div>
+                                 }
+                              </div>
+                           </div>
+                        </div>
+                        <div class="field">
+                           <label>To</label>
+                           <div class="ui fluid selection dropdown">
+                              <div class="text">Select</div>
+                              <i class="dropdown icon"></i>
+                              <input name="schoolClassTo" type="hidden">
+                              <div class="menu">
+                                 @for(value
+                                 <- Classes){ 
+                                 <div class="item" data-value="@value">@value</div>
+                                 }
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <h4 class="ui top attached  teal inverted inverted header">School Timing</h4>
+                  <div class="ui attached tertiary grey inverted segment">
+                     <div class="two fields">
+                        <div class="field">
+                           <label>School Start Time</label>
+                           <div class="ui calendar" id="example3">
+                              <div class="ui input left icon">
+                                 <i class="time icon"></i>
+                                 <input name="schoolOfficeStartTime" type="text" value='' placeholder="School Start Time">
+                              </div>
+                           </div>
+                        </div>
+                        <div class="field">
+                           <label>School End Time</label>
+                           <div class="ui calendar" id="endtime">
+                              <div class="ui input left icon">
+                                 <i class="time icon"></i>
+                                 <input name="schoolOfficeEndTime" type="text" value='' placeholder="School End Time">
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <h4 class="ui top attached  teal inverted header">School Financial Year</h4>
+                  <div class="ui attached tertiary grey inverted segment">
+                     <div class="green field">
+                        <label>Choose Date Format</label>
+                        <div class="ui fluid selection dropdown">
+                           <div class="text">Select</div>
+                           <i class="dropdown icon"></i>
+                           <input name="dateFormat" type="hidden">
+                           <div class="menu">
+                              <div class="item" data-value="dd/mm/yyyy">DD/MM/YYYY</div>
+                              <div class="item" data-value="dd-mm-yyyy">DD/MM/YYYY</div>
+                              <div class="item" data-value="mm/dd/yyyy">MM/DD/YYYY</div>
+                              <div class="item" data-value="mm-dd-yyyy">MM/DD/YYYY</div>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="two fields">
+                        <div class="field">
+                           <label>Start</label>
+                           <div class="ui calendar" id="rangestart">
+                              <div class="ui input left icon">
+                                 <i class="calendar icon"></i>
+                                 <input name="schoolFinancialStartDate" type="text" value='' placeholder="Financial Year Starts">
+                              </div>
+                           </div>
+                        </div>
+                        <div class="field">
+                           <label>End</label>
+                           <div class="ui calendar" id="rangeend">
+                              <div class="ui input left icon">
+                                 <i class="calendar icon"></i>
+                                 <input name="schoolFinancialEndDate" type="text" value='' placeholder="Financial Year Ends">
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  </br>
+                  <div class="field">
+                     <button type="submit" class="ui green fluid button">Let's get started</buttons>
+                  </div>
+               </form>
             </div>
-        
-
-        <h4 class="ui top attached  teal inverted inverted header">School Timing</h4>
-        <div class="ui attached tertiary grey inverted segment">
-            <div class="two fields">
-                <div class="field">
-
-                    <label>School Start Time</label>
-                    <div class="ui calendar" id="example3">
-                        <div class="ui input left icon">
-                            <i class="time icon"></i>
-                            <input
-                                name="schoolOfficeStartTime"
-                                type="text"
-                                value=''
-                                placeholder="School Start Time">
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="field">
-                    <label>School End Time</label>
-                    <div class="ui calendar" id="endtime">
-                        <div class="ui input left icon">
-                            <i class="time icon"></i>
-                            <input
-                                name="schoolOfficeEndTime"
-                                type="text"
-                                value=''
-                                placeholder="School End Time">
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-        </div>
-
-        
-    
-
-    <h4 class="ui top attached  teal inverted header">School Financial Year</h4>
-    <div class="ui attached tertiary grey inverted segment">
-        <div class="green field">
-            <label>Choose Date Format</label>
-    <div class="ui fluid selection dropdown">
-      <div class="text">Select</div>
-      <i class="dropdown icon"></i>
-      <input name="dateFormat" type="hidden">
-      <div class="menu">
-        <div class="item" data-value="dd/mm/yyyy">DD/MM/YYYY</div>
-        <div class="item" data-value="dd-mm-yyyy">DD/MM/YYYY</div>
-        <div class="item" data-value="mm/dd/yyyy">MM/DD/YYYY</div>
-        <div class="item" data-value="mm-dd-yyyy">MM/DD/YYYY</div>
+         </div>
       </div>
-    </div>
-        </div>
-        <div class="two fields">
-            <div class="field">
-                <label>Start</label>
-                <div class="ui calendar" id="rangestart">
-                    <div class="ui input left icon">
-                        <i class="calendar icon"></i>
-                        <input
-                            name="schoolFinancialStartDate"
-                            type="text"
-                            value=''
-                            placeholder="Financial Year Starts">
-                    </div>
-                </div>
-            </div>
-            <div class="field">
-                <label>End</label>
-                <div class="ui calendar" id="rangeend">
-                    <div class="ui input left icon">
-                        <i class="calendar icon"></i>
-                        <input
-                            name="schoolFinancialEndDate"
-                            type="text"
-                            value=''
-                            placeholder="Financial Year Ends">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div></br>
-
-
-<div class="field">
-<button type="submit" class="ui green fluid button">Let's get started</buttons>
-</div>
-
-</form>
-</div>
-</div>
-
-        </div>
-    </div>
-
-    
-        @if(flash.containsKey("success")) {
-                        <div class="ui segment">
-                            <div class="ui green success message" id="success-message">
-                                <div class="header">
-                                    SUCCESSFULLY
-                                </div>
-                                <ul class="list">
-                                    <li>
-                                        @flash.get("success")</li>
-                                </ul>
-                            </div>
-                        </div>
-}
-        @if(flash.containsKey("error")) {
-                        <div class="ui segment">
-
-                            <div class="ui red error message" id="error-message">
-                                <div class="header">
-                                    ERROR
-                                </div>
-                                <ul class="list">
-                                    <li>
-                                        @flash.get("error")</li>
-                                </ul>
-                            </div>
-                        </div>
-}
-    </div>
-
+   </div>
+   @if(flash.containsKey("success")) {
+   <div class="ui segment">
+      <div class="ui green success message" id="success-message">
+         <div class="header">
+            SUCCESSFULLY
+         </div>
+         <ul class="list">
+            <li>
+               @flash.get("success")
+            </li>
+         </ul>
+      </div>
+   </div>
+   } @if(flash.containsKey("error")) {
+   <div class="ui segment">
+      <div class="ui red error message" id="error-message">
+         <div class="header">
+            ERROR
+         </div>
+         <ul class="list">
+            <li>
+               @flash.get("error")
+            </li>
+         </ul>
+      </div>
+   </div>
+   }
+</div
     
 
      

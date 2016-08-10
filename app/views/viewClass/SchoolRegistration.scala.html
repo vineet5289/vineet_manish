@@ -1,197 +1,183 @@
 @(schoolForm:       Form[views.forms.school.SchoolFormData],
-  schoolBoard:      Map[String, String],
-  schoolCategory:   List[String],
-  schoolType:       Map[String, String])
+schoolBoard:      Map[String, String],
+schoolCategory:   List[String],
+schoolType:       Map[String, String])
 @main3("index")("School Information"){
-    <div class="main container">
-            <div class="ui page grid">
-                <div class="column">
-                    <h2 class="ui center aligned icon header">
-                        <i class="circular emphasized users icon"></i>
-                        <div class="content">Complete Your School Registration
-                            <div class="sub header"></div>
-                        </div>
-                    </h2>
-
-                    <div class="ui horizontal divider">
-                        <i class="circular heart icon"></i>
-                    </div>
-                    <!-- <div class="ui stackable grid" data-demo="true"> -->
-                       <!-- <div class="ui column"> -->
-                            <!--  New School request  -->
-                            <div class="item">
-                                  <div class="image">
-                            <form
-                                class="ui fluid form"
-                                id="form1"
-                                action="@routes.SchoolController.postSchoolRegistrationRequest"
-                                method="Post">
-
-                                <!-- Hidden fields on form -->
-                                <input
-                                    type="hidden"
-                                    name="schoolRegistrationId"
-                                    value='@schoolForm("schoolRegistrationId").value'
-                                    readonly>
-                                <input
-                                    type="hidden"
-                                    name="schoolAddressLine1"
-                                    value='@schoolForm("schoolAddressLine1").value'
-                                    readonly>
-                                <input
-                                    type="hidden"
-                                    name="schoolAddressLine2"
-                                    value='@schoolForm("schoolAddressLine2").value'
-                                    readonly>
-
-                                <input type="hidden" name="city" value='@schoolForm("city").value' readonly>
-                                <input type="hidden" name="state" value='@schoolForm("state").value' readonly>
-                                <input
-                                    type="hidden"
-                                    name="country"
-                                    value='@schoolForm("country").value'
-                                    readonly>
-                                <input
-                                    type="hidden"
-                                    name="pincode"
-                                    value='@schoolForm("pincode").value'
-                                    readonly>
-                                <input
-                                    type="hidden"
-                                    name="schoolAlternativeNumber"
-                                    value='@schoolForm("schoolAlternativeNumber").value'>
-                                <input
-                                    type="hidden"
-                                    name="schoolEmail"
-                                    value='@schoolForm("schoolEmail").value'
-                                    readonly>
-
-                                <div class="field">
-                                    <label>School Name</label>
-                                    <input
-                                        name="schoolName"
-                                        type="text"
-                                        value='@schoolForm("schoolName").value'
-                                        readonly>
-                                </div>
-
-                                <div class="field">
-                                    <label>School Mobile No.</label>
-                                    <input
-                                        type="text"
-                                        name="schoolMobileNumber"
-                                        value='@schoolForm("schoolMobileNumber").value'
-                                        readonly>
-                                </div>
-
-                                <div class="field">
-                                    <label>UserName</label>
-                                    <input
-                                        type="email"
-                                        name="schoolUserName"
-                                        value='@schoolForm("schoolUserName").value'
-                                        readonly>
-                                </div>
-
-                                <div class="two fields">
-                                    <div class="field">
-                                        <label>Password</label>
-                                        <div class="ui left icon input">
-                                            <input
-                                                type="password"
-                                                name="password"
-                                                placeholder="Password"
-                                                autocomplete="off">
-                                            <i class="key icon"></i>
-                                        </div>
-                                    </div>
-
-                                    <div class="field">
-                                        <label>Confirm Password</label>
-                                        <div class="ui left icon input">
-                                            <input
-                                                type="password"
-                                                name="confirmPassword"
-                                                placeholder="Confirm Password"
-                                                autocomplete="off">
-                                            <i class="key icon"></i>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="two fields">
-                                    <div class="field">
-                                        <label>School Type</label>
-                                        <div class="ui fluid selection dropdown">
-                                            <div class="text">Select</div>
-                                            <i class="dropdown icon"></i>
-                                            <input name="schoolType" type="hidden">
-                                            <div class="menu">
-                                                @for((key,value)<- schoolType){ <div class="item" data-value="@key">@value</div>
-                                            }
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="field">
-                                    <label>School Board</label>
-                                    <div class="ui fluid selection dropdown">
-                                        <div class="text">Select</div>
-                                        <i class="dropdown icon"></i>
-                                        <input name="schoolBoard" type="hidden">
-                                        <div class="menu">
-                                            @for((key,value)<- schoolBoard){ <div class="item" data-value="@key">@value</div>
-                                        }
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="two fields">
-                            <div class="field">
-                                <button class="ui green fluid left floated button" type="submit">Send Request</button>
-                            </div>
-                            <div class="field">
-                                <div class="ui teal reset fluid right floated button">Reset</div>
-                            </div>
-                        </div>
-
-                        <div class="ui error message"></div>
-                    </form>
-                </div>
+<div class="main container">
+   <div class="ui page grid">
+      <div class="column">
+         <h2 class="ui center aligned icon header">
+            <i class="circular emphasized users icon"></i>
+            <div class="content">
+               Complete Your School Registration
+               <div class="sub header"></div>
             </div>
-                <!--</div> -->
-
-            <!-- </div> -->
-
-        </div>
-    </div>
-
-</div>    
-    @if(flash.containsKey("success")) {
-     <div class="ui segment">
-  <div class="ui green success message" id="success-message">
+         </h2>
+         <div class="ui horizontal divider">
+            <i class="circular heart icon"></i>
+         </div>
+         <!-- <div class="ui stackable grid" data-demo="true"> -->
+         <!-- <div class="ui column"> -->
+         <!--  New School request  -->
+         <div class="item">
+            <div class="image">
+               <form
+                  class="ui fluid form"
+                  id="form1"
+                  action="@routes.SchoolController.postSchoolRegistrationRequest"
+                  method="Post">
+                  <!-- Hidden fields on form -->
+                  <input
+                     type="hidden"
+                     name="schoolRegistrationId"
+                     value='@schoolForm("schoolRegistrationId").value'
+                     readonly>
+                  <input
+                     type="hidden"
+                     name="schoolAddressLine1"
+                     value='@schoolForm("schoolAddressLine1").value'
+                     readonly>
+                  <input
+                     type="hidden"
+                     name="schoolAddressLine2"
+                     value='@schoolForm("schoolAddressLine2").value'
+                     readonly>
+                  <input type="hidden" name="city" value='@schoolForm("city").value' readonly>
+                  <input type="hidden" name="state" value='@schoolForm("state").value' readonly>
+                  <input
+                     type="hidden"
+                     name="country"
+                     value='@schoolForm("country").value'
+                     readonly>
+                  <input
+                     type="hidden"
+                     name="pincode"
+                     value='@schoolForm("pincode").value'
+                     readonly>
+                  <input
+                     type="hidden"
+                     name="schoolAlternativeNumber"
+                     value='@schoolForm("schoolAlternativeNumber").value'>
+                  <input
+                     type="hidden"
+                     name="schoolEmail"
+                     value='@schoolForm("schoolEmail").value'
+                     readonly>
+                  <div class="field">
+                     <label>School Name</label>
+                     <input
+                        name="schoolName"
+                        type="text"
+                        value='@schoolForm("schoolName").value'
+                        readonly>
+                  </div>
+                  <div class="field">
+                     <label>School Mobile No.</label>
+                     <input
+                        type="text"
+                        name="schoolMobileNumber"
+                        value='@schoolForm("schoolMobileNumber").value'
+                        readonly>
+                  </div>
+                  <div class="field">
+                     <label>UserName</label>
+                     <input
+                        type="email"
+                        name="schoolUserName"
+                        value='@schoolForm("schoolUserName").value'
+                        readonly>
+                  </div>
+                  <div class="two fields">
+                     <div class="field">
+                        <label>Password</label>
+                        <div class="ui left icon input">
+                           <input
+                              type="password"
+                              name="password"
+                              placeholder="Password"
+                              autocomplete="off">
+                           <i class="key icon"></i>
+                        </div>
+                     </div>
+                     <div class="field">
+                        <label>Confirm Password</label>
+                        <div class="ui left icon input">
+                           <input
+                              type="password"
+                              name="confirmPassword"
+                              placeholder="Confirm Password"
+                              autocomplete="off">
+                           <i class="key icon"></i>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="two fields">
+                     <div class="field">
+                        <label>School Type</label>
+                        <div class="ui fluid selection dropdown">
+                           <div class="text">Select</div>
+                           <i class="dropdown icon"></i>
+                           <input name="schoolType" type="hidden">
+                           <div class="menu">
+                              @for((key,value)<- schoolType){ 
+                              <div class="item" data-value="@key">@value</div>
+                              }
+                           </div>
+                        </div>
+                     </div>
+                     <div class="field">
+                        <label>School Board</label>
+                        <div class="ui fluid selection dropdown">
+                           <div class="text">Select</div>
+                           <i class="dropdown icon"></i>
+                           <input name="schoolBoard" type="hidden">
+                           <div class="menu">
+                              @for((key,value)<- schoolBoard){ 
+                              <div class="item" data-value="@key">@value</div>
+                              }
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="two fields">
+                     <div class="field">
+                        <button class="ui green fluid left floated button" type="submit">Send Request</button>
+                     </div>
+                     <div class="field">
+                        <div class="ui teal reset fluid right floated button">Reset</div>
+                     </div>
+                  </div>
+                  <div class="ui error message"></div>
+               </form>
+            </div>
+         </div>
+         <!--</div> -->
+         <!-- </div> -->
+      </div>
+   </div>
+</div>
+@if(flash.containsKey("success")) {
+<div class="ui segment">
+   <div class="ui green success message" id="success-message">
       <div class="header">
-        SUCCESSFULLY
-  </div>
-  <ul class="list">
-    <li> @flash.get("success")</li>
-  </ul>
+         SUCCESSFULLY
+      </div>
+      <ul class="list">
+         <li> @flash.get("success")</li>
+      </ul>
+   </div>
 </div>
-</div>
-  }
-  @if(flash.containsKey("error")) {
-  <div class="ui segment">
- 
+}
+@if(flash.containsKey("error")) {
+<div class="ui segment">
    <div class="ui red error message" id="error-message">
       <div class="header">
-        ERROR
-  </div>
-  <ul class="list">
-    <li> @flash.get("error")</li>
-  </ul>
+         ERROR
+      </div>
+      <ul class="list">
+         <li> @flash.get("error")</li>
+      </ul>
+   </div>
 </div>
-</div>
- }
-
+}
 }

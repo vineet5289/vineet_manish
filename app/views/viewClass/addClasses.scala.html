@@ -1,88 +1,76 @@
 @(classForm : Form[views.forms.school.ClassForm])
 @mainDashboard("Add Class"){
-  
-    <div class="sixteen wide column" id="content">
-    <h2><i class="signal icon"></i> Classes</h2>
-         <div class="ui divider"></div>
-          <div class="ui grid container">
-	 <div class="four wide column">
-			   <div class="ui cards">
-			      <div class="create-action card">
-                       <div class="content" style="opacity: 0.5;">
-                           <i class="right floated mail icon teal" style="font-size: 30px;"></i>
-
-                <div class="header">
-                   Add New Classes
-                </div>
-     
+<div class="sixteen wide column" id="content">
+  <h2><i class="signal icon"></i> Classes</h2>
+  <div class="ui divider"></div>
+  <div class="ui grid container">
+    <div class="four wide column">
+      <div class="ui cards">
+        <div class="create-action card">
+          <div class="content" style="opacity: 0.5;">
+            <i class="right floated mail icon teal" style="font-size: 30px;"></i>
+            <div class="header">
+              Add New Classes
+            </div>
+          </div>
+          <div class="ui attached bottom button" style=""  id="addNewClass">
+            Click To Add New Class
+          </div>
+        </div>
+      </div>
     </div>
-    
-    <div class="ui attached bottom button" style=""  id="addNewClass">
-     Click To Add New Class
+    <div class="four wide column">
+      <div class="ui cards">
+        <div class="create-action card">
+          <div class="content" style="opacity: 0.5;">
+            <i class="right floated mail icon teal" style="font-size: 30px;"></i>
+            <div class="header">
+              Add New Classes
+            </div>
+          </div>
+          <div class="ui attached bottom button" style=""  id="addNewClass">
+            Click To Add New Class
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="four wide column">C</div>
+    <div class="four wide column">D</div>
+  </div>
+  <div class="ui modal addSchool-modal"id="addSchool_modal">
+    <div class="header" style="">Add New Class</div>
+    <div class="content">
+      <form class="ui form" method="POST" action="@school.routes.ClassController.postAddClass()">
+        <div class="field">
+          <label>class Name</label>
+          <input name="className" placeholder="className" type="text" >
+        </div>
+        <div class="field">
+          <label>Start Time</label>
+          <input name="classStartTime" placeholder="classStartTime" type="text" >
+        </div>
+        <div class="field">
+          <label>End Time</label>
+          <input name="classEndTime" placeholder="classEndTime" type="text" >
+        </div>
+        <div class="field">
+          <label>Total Number Period</label>
+          <input name="noOfPeriod" placeholder="noOfPeriod" type="text" >
+        </div>
+        <div class="field">
+          <label>Add Sections</label>
+          <input name="nameOfSection" placeholder="nameOfSection" type="text" >
+        </div>
+        <div class="actions">
+          <button class="ui black deny button">
+          Cancel
+          </button>
+          <button class="ui positive right labeled icon button" type="submit">
+          Save
+          </button>
+        </div>
+      </form>
     </div>
   </div>
-			   </div>
-	</div>
-             <div class="four wide column">
-               			   <div class="ui cards">
-			      <div class="create-action card">
-                       <div class="content" style="opacity: 0.5;">
-                           <i class="right floated mail icon teal" style="font-size: 30px;"></i>
-
-                <div class="header">
-                   Add New Classes
-                </div>
-     
-       </div>
-    
-         <div class="ui attached bottom button" style=""  id="addNewClass">
-                Click To Add New Class
-        </div>
-        </div>
-	 </div>
-             </div>
-             <div class="four wide column">C</div>
-             <div class="four wide column">D</div>
-            																														        
-        </div>
-          
-          <div class="ui modal addSchool-modal"id="addSchool_modal">
-              <div class="header" style="">Add New Class</div>
-              <div class="content">
-                  <form class="ui form" method="POST" action="@school.routes.ClassController.postAddClass()">
-                  <div class="field">
-                      <label>class Name</label>
-                      <input name="className" placeholder="className" type="text" >
-                  </div>
-                  <div class="field">
-                      <label>Start Time</label>
-                      <input name="classStartTime" placeholder="classStartTime" type="text" >
-                  </div>
-                  <div class="field">
-                      <label>End Time</label>
-                      <input name="classEndTime" placeholder="classEndTime" type="text" >
-                  </div>
-                  <div class="field">
-                      <label>Total Number Period</label>
-                      <input name="noOfPeriod" placeholder="noOfPeriod" type="text" >
-                  </div>
-                  <div class="field">
-                      <label>Add Sections</label>
-                      <input name="nameOfSection" placeholder="nameOfSection" type="text" >
-                  </div>
-                  
-                  <div class="actions">
-			         <button class="ui black deny button">
-				           Cancel
-			        </button>
-			        <button class="ui positive right labeled icon button" type="submit">
-			              Save
-			        </button>
-		          </div>
-		      </form>
-           </div>
-        </div>
-          
-        
-    </div>
+</div>
 }

@@ -1,7 +1,5 @@
 @(loginForm:Form[views.forms.LoginForm])
-
- @viewClass.main3("login")("index"){
-
+@viewClass.main3("login")("index"){
 <div class="stripe">
     <div class="ui page grid">
         <div class="ui column">
@@ -24,7 +22,6 @@
                         <div class="visible content">Register Your School Here</div>
                         <a class="hidden content" id="RegisterSchoolButton">Click Now</a>
                     </div>
-
                 </div>
                 <div class="column">
                     <form
@@ -53,18 +50,13 @@
                         </div>
                         <button class="ui inverted big fluid blue icon button" id="login-submit">Sign In
                         </button>
-                        
                     </form>
                 </div>
-
             </div>
         </div>
     </div>
 </div>
-
-
 <!-- Registration Request Modal -->
-
 <div class="ui basic modal" id="RegisterSchoolModal">
     <i class="close icon"></i>
     <div class="header" align="center">
@@ -72,130 +64,100 @@
     </div>
     <div class="content">
         <div class="description">
-           
             <h3>Have you Already registered Your School and received your OTP and Reference key</h3>
         </div>
     </div>
-
     <div class="actions">
         <div class="two fluid ui inverted buttons">
             <a
                 class="ui teal inverted button"
                 href="@routes.SchoolController.preAddNewSchoolRequest()">
-                <i class="plus icon"></i>FIRST TIME SCHOOL REGISTRATION</a>
-
+            <i class="plus icon"></i>FIRST TIME SCHOOL REGISTRATION</a>
             <div class="ui green inverted button" id="completeSchoolRegistration">
-                <i class="checkmark icon"></i>ALREADY REGISTERED ? ENTER OTP</div>
+                <i class="checkmark icon"></i>ALREADY REGISTERED ? ENTER OTP
+            </div>
         </div>
     </div>
 </div>
-
 <!-- MODAL FOR OTP-->
-
 <div class="ui basic modal" id="OTP-modal">
-            <i class="close icon"></i>
-            <div class="header" align="center">
-                Add Refrence Key and OTP sent on your Mobile
+    <i class="close icon"></i>
+    <div class="header" align="center">
+        Add Refrence Key and OTP sent on your Mobile
+    </div>
+    <div class="image content">
+        <div class="description">
+            <div class="ui header">Enter:</div>
+            <form
+            class="ui form segment"
+            id="completeSchoolRegistrationOTPForm"
+            method="POST"
+            <!-- action="/submitopt"> -->
+            action="@routes.SchoolController.preAddNewSchoolRequest()"
+            <div class="field">
+                <div class="ui label pointing below teal">*E-Mail</div>
+                <input
+                    name="emailId"
+                    placeholder="Enter Mail id entered at time of Registration request"
+                    type="text">
             </div>
-            <div class="image content">
-
-                <div class="description">
-                    <div class="ui header">Enter:</div>
-                    <form
-                        class="ui form segment"
-                        id="completeSchoolRegistrationOTPForm"
-                        method="POST"
-                        <!-- action="/submitopt"> -->
-                        action="@routes.SchoolController.preAddNewSchoolRequest()"
-
-                        <div class="field">
-                            <div class="ui label pointing below teal">*E-Mail</div>
-                            <input
-                                name="emailId"
-                                placeholder="Enter Mail id entered at time of Registration request"
-                                type="text">
-                        </div>
-
-                        <div class="field">
-                            <div class="ui label pointing below orange">
-                            *Reference Key</div>
-                            <input
-                                name="referenceKey"
-                                placeholder="Enter Reference Key Received on Mobile"
-                                type="text">
-                        </div>
-
-                        <div class="field">
-                            <div class="ui label pointing below inverted red">*OTP(One Time Password)</div>
-                            <input name="otp" placeholder="Enter OTP" type="password">
-                        </div>
-
-                         <div class="actions">
+            <div class="field">
+                <div class="ui label pointing below orange">
+                    *Reference Key
+                </div>
+                <input
+                    name="referenceKey"
+                    placeholder="Enter Reference Key Received on Mobile"
+                    type="text">
+            </div>
+            <div class="field">
+                <div class="ui label pointing below inverted red">*OTP(One Time Password)</div>
+                <input name="otp" placeholder="Enter OTP" type="password">
+            </div>
+            <div class="actions">
                 <div class="two fluid ui inverted buttons">
                     <div class="ui red inverted button" id="cancel-OTP-Send">
-                        <i class="chevron left icon"></i>Back To Previous Page</div>
+                        <i class="chevron left icon"></i>Back To Previous Page
+                    </div>
                     <button
                         type="submit"
                         id="sendSchoolRegistrationOTPForm"
                         class="ui green inverted button">
-                        <i class="checkmark icon"></i>SUBMIT</button>
-
-                    
+                    <i class="checkmark icon"></i>SUBMIT</button>
                 </div>
-
             </div>
             </form>
-  
-                    
-
-                </div>
-            </div>
-           
-
         </div>
-
+    </div>
+</div>
 <!--  Starts from here Modal form-->
-
-      
-
-
 <!--  ends Here -->
-
-
-
-
-
-
-        @if(flash.containsKey("success")) {
-                        <div class="ui segment">
-                            <div class="ui green success message" id="success-message">
-                                <div class="header">
-                                    SUCCESSFULLY
-                                </div>
-                                <ul class="list">
-                                    <li>
-                                        @flash.get("success")</li>
-                                </ul>
-                            </div>
-                        </div>
+@if(flash.containsKey("success")) {
+<div class="ui segment">
+    <div class="ui green success message" id="success-message">
+        <div class="header">
+            SUCCESSFULLY
+        </div>
+        <ul class="list">
+            <li>
+                @flash.get("success")
+            </li>
+        </ul>
+    </div>
+</div>
 }
-        @if(flash.containsKey("error")) {
-                        <div class="ui segment">
-
-                            <div class="ui red error message" id="error-message">
-                                <div class="header">
-                                    ERROR
-                                </div>
-                                <ul class="list">
-                                    <li>
-                                        @flash.get("error")</li>
-                                </ul>
-                            </div>
-                        </div>
+@if(flash.containsKey("error")) {
+<div class="ui segment">
+    <div class="ui red error message" id="error-message">
+        <div class="header">
+            ERROR
+        </div>
+        <ul class="list">
+            <li>
+                @flash.get("error")
+            </li>
+        </ul>
+    </div>
+</div>
 }
-
-                        
- 
-
-
 }
