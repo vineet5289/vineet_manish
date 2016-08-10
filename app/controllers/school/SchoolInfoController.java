@@ -1,5 +1,9 @@
 package controllers.school;
 
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.List;
+
 import play.data.Form;
 import play.mvc.Result;
 import views.forms.school.FirstTimeSchoolUpdateForm;
@@ -11,7 +15,9 @@ import views.html.viewClass.School.editSchoolInfo;
 import views.html.viewClass.School.schoolMandataryInfo;
 import controllers.routes;
 import dao.school.SchoolProfileInfoDAO;
+import enum_package.SchoolClassEnum;
 import enum_package.SessionKey;
+import enum_package.WeekDayEnum;
 public class SchoolInfoController extends ClassController {
 
 	/*
@@ -68,6 +74,7 @@ public class SchoolInfoController extends ClassController {
 	//auth + only superadmin, schoolId must present
 	public Result updateGeneralInfo() {
 		Form<SchoolGeneralInfoFrom> schoolGeneralInfoFrom = Form.form(SchoolGeneralInfoFrom.class).bindFromRequest();
+		System.out.println("inside update => " + schoolGeneralInfoFrom);
 		if (schoolGeneralInfoFrom == null || schoolGeneralInfoFrom.hasErrors()) {
 			flash("error", "Error during school info update.");
 			return redirect(controllers.school.routes.SchoolInfoController.getProfileInfo());
@@ -181,7 +188,9 @@ public class SchoolInfoController extends ClassController {
 	//session validation
 	public Result getSchoolMandInfo() {
 		Form<FirstTimeSchoolUpdateForm> firstTimeUpdateForm = Form.form(FirstTimeSchoolUpdateForm.class);
-		return ok(schoolMandataryInfo.render(firstTimeUpdateForm));
+		List<WeekDayEnum> weekList = new ArrayList<WeekDayEnum>(EnumSet.allOf(WeekDayEnum.class));
+		List<String> classList = SchoolClassEnum.getClassDisplayName();
+		return ok(schoolMandataryInfo.render(firstTimeUpdateForm, weekList, classList));
 	}
 
 	//session validation
