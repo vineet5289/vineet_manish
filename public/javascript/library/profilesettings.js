@@ -7,4 +7,6 @@ $(document).ready(function(){
     });
 
 	  $('.profile.menu .item').tab({history:false});
+
+	  $('.ui.dropdown').dropdown();
 });

@@ -207,7 +207,7 @@ $(function () {
        
 
       
-       
+     $('.ui.dropdown').dropdown();  
     
     
     // For Main login form

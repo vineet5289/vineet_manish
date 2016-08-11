@@ -22,7 +22,18 @@ Classes:List[String])
                <form class="ui green segment  form" id="MandatoryUpdateForm" method="POST" action="/school/mand_info">
                   <div class="field">
                      <label class="ui  teal header">Shift</label>
-                     <input name="numberOfShift" type="text" value='' placeholder="School Shift">
+                     <div class="ui fluid selection dropdown">
+                        <div class="text">Select</div>
+                              <i class="dropdown icon"></i>
+                              <input name="numberOfShift" type="hidden">
+                              <div class="menu">
+                                   <div class="item" data-value="1">1 Shift Per Day</div>
+                                   <div class="item" data-value="2">2 Shift Per Day</div>
+                                   <div class="item" data-value="3">3 Shift Per Day</div>
+                                   <div class="item" data-value="4">4 Shift Per Day</div>
+                              </div>
+                        </div>
+                     
                   </div>
                   <h4 class="ui top attached teal inverted header">Hostel</h4>
                   <div class="ui attached tertiary grey inverted segment">
@@ -67,8 +78,7 @@ Classes:List[String])
                               <i class="dropdown icon"></i>
                               <input name="schoolOfficeWeekStartDay" type="hidden">
                               <div class="menu">
-                                 @for(value
-                                 <- weekDay){ 
+                                 @for(value<- weekDay){ 
                                  <div class="item" data-value="@value">@value</div>
                                  }
                               </div>
@@ -81,8 +91,7 @@ Classes:List[String])
                               <i class="dropdown icon"></i>
                               <input name="schoolOfficeWeekEndDay" type="hidden">
                               <div class="menu">
-                                 @for(value
-                                 <- weekDay){ 
+                                 @for(value<- weekDay){ 
                                  <div class="item" data-value="@value">@value</div>
                                  }
                               </div>
@@ -100,8 +109,7 @@ Classes:List[String])
                               <i class="dropdown icon"></i>
                               <input name="schoolClassFrom" type="hidden">
                               <div class="menu">
-                                 @for(value
-                                 <- Classes){ 
+                                 @for(value<- Classes){ 
                                  <div class="item" data-value="@value">@value</div>
                                  }
                               </div>
@@ -114,8 +122,7 @@ Classes:List[String])
                               <i class="dropdown icon"></i>
                               <input name="schoolClassTo" type="hidden">
                               <div class="menu">
-                                 @for(value
-                                 <- Classes){ 
+                                 @for(value<- Classes){ 
                                  <div class="item" data-value="@value">@value</div>
                                  }
                               </div>
@@ -185,7 +192,7 @@ Classes:List[String])
                   </div>
                   </br>
                   <div class="field">
-                     <button type="submit" class="ui green fluid button">Let's get started</buttons>
+                     <button type="submit" class="ui green fluid button">Let's get started</button>
                   </div>
                </form>
             </div>
@@ -219,7 +226,7 @@ Classes:List[String])
       </div>
    </div>
    }
-</div
+</div>
     
 
      
