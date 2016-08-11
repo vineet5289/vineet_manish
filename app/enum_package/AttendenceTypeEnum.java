@@ -45,4 +45,12 @@ public enum AttendenceTypeEnum {
 	public static List<String> getAttendenceTypeDisplayName() {
 		return attendenceTypeDisplayName;
 	}
+
+	public static boolean contain(String key) {
+		AttendenceTypeEnum result = displayNameToAttendenceType.get(key.trim());
+		if(result == null) {
+			return false;
+		}
+		return true;
+	}
 }

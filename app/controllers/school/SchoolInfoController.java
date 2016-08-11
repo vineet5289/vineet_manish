@@ -15,6 +15,7 @@ import views.html.viewClass.School.editSchoolInfo;
 import views.html.viewClass.School.schoolMandataryInfo;
 import controllers.routes;
 import dao.school.SchoolProfileInfoDAO;
+import enum_package.AttendenceTypeEnum;
 import enum_package.SchoolClassEnum;
 import enum_package.SessionKey;
 import enum_package.WeekDayEnum;
@@ -190,7 +191,8 @@ public class SchoolInfoController extends ClassController {
 		Form<FirstTimeSchoolUpdateForm> firstTimeUpdateForm = Form.form(FirstTimeSchoolUpdateForm.class);
 		List<String> weekList = WeekDayEnum.getWeekDisplayName();
 		List<String> classList = SchoolClassEnum.getClassDisplayName();
-		return ok(schoolMandataryInfo.render(firstTimeUpdateForm, weekList, classList));
+		List<String> attendenceType = AttendenceTypeEnum.getAttendenceTypeDisplayName();
+		return ok(schoolMandataryInfo.render(firstTimeUpdateForm, weekList, classList, attendenceType));
 	}
 
 	//session validation
