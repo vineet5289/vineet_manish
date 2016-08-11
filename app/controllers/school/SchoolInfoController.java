@@ -35,13 +35,12 @@ public class SchoolInfoController extends ClassController {
 			SchoolProfileInfoDAO schoolProfileInfoDAO = new SchoolProfileInfoDAO();
 			schoolHeaderInfo = schoolProfileInfoDAO.getSchoolHeaderInfoForm(1l);
 			schoolGeneralInfo = schoolProfileInfoDAO.getSchoolGeneralInfoFrom(1l);
-			schoolShiftAndClassTimingInfo = new SchoolShiftAndClassTimingInfoForm();
-//			schoolShiftAndClassTimingInfo = schoolProfileInfoDAO.getSchoolShiftAndClassTimingInfoForm(1l);
+			schoolShiftAndClassTimingInfo = schoolProfileInfoDAO.getSchoolShiftAndClassTimingInfoForm(1l);
 		} catch(Exception exception) {
 			System.out.println("some error happen");
 		}
 		if(schoolHeaderInfo == null || schoolGeneralInfo == null || schoolShiftAndClassTimingInfo == null) {
-			// return to some error page
+			System.out.println("any of the value is null");
 		}
 		Form<SchoolGeneralInfoFrom> schoolGeneralInfoForm = Form.form(SchoolGeneralInfoFrom.class).fill(schoolGeneralInfo);
 		Form<SchoolHeaderInfoForm> schoolHeaderInfoForm = Form.form(SchoolHeaderInfoForm.class).fill(schoolHeaderInfo);

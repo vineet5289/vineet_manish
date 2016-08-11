@@ -15,7 +15,7 @@ public enum AttendenceTypeEnum {
 	private final static List<String> attendenceTypeDisplayName = new ArrayList<String>(AttendenceTypeEnum.values().length);
 	static {
 		for(AttendenceTypeEnum ate : AttendenceTypeEnum.values()) {
-			attendenceTypeDisplayName.add(ate.name());
+			attendenceTypeDisplayName.add(ate.value);
 			attendenceTypeToDisplayName.put(ate, ate.value);
 			displayNameToAttendenceType.put(ate.value, ate);
 		}

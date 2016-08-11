@@ -13,6 +13,7 @@ import java.util.TimeZone;
 import models.SchoolBoard;
 import play.db.DB;
 import utils.DateUtiles;
+import utils.ShiftGenerator;
 import views.forms.school.FirstTimeSchoolUpdateForm;
 import views.forms.school.SchoolGeneralInfoFrom;
 import views.forms.school.SchoolHeaderInfoForm;
@@ -173,6 +174,7 @@ public class SchoolProfileInfoDAO {
 				shift.setShiftStartClassFrom(resultSet.getString(Tables.SchoolShiftInfo.shiftStartClassFrom));
 				shift.setShiftEndClassTo(resultSet.getString(Tables.SchoolShiftInfo.shiftEndClassTo));
 				shift.setShiftAttendenceType(resultSet.getString(Tables.SchoolShiftInfo.shiftAttendenceType));
+				shifts.add(shift);
 				numberOfShift++;
 			}
 
@@ -180,6 +182,10 @@ public class SchoolProfileInfoDAO {
 				schoolShiftAndClassTimingInfoForm = new SchoolShiftAndClassTimingInfoForm();
 				schoolShiftAndClassTimingInfoForm.setNumberOfShift(numberOfShift);
 				schoolShiftAndClassTimingInfoForm.setShifts(shifts);
+				if(numberOfShift == 1)
+					schoolShiftAndClassTimingInfoForm.setTabDisplayName("Class & Timining Info");
+				else
+					schoolShiftAndClassTimingInfoForm.setTabDisplayName("Shiftwise Class & Timining Info");
 			}
 		} catch (Exception exception) {
 			System.out.println("connection exception happen");
@@ -328,24 +334,26 @@ public class SchoolProfileInfoDAO {
 		Connection connection = null;
 		PreparedStatement updateStmtSchoolMadInfo = null;
 		PreparedStatement updateLogin = null;
+		PreparedStatement insertShiftInfo = null;
 		String updateLoginQuery = String.format("UPDATE %s SET %s=? WHERE %s=? AND %s=? AND %s=? AND %s=?;", Tables.Login.table, Tables.Login.passwordState,
 				Tables.Login.isActive, Tables.Login.userName, Tables.Login.passwordState, Tables.Login.type);
 		String updateQuery = String.format("UPDATE %s SET %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=? WHERE %s=? AND %s=?;",
 				Tables.School.table, Tables.School.noOfShift, Tables.School.isHostelFacilitiesAvailable, Tables.School.isHostelCompulsory, Tables.School.schoolOfficeWeekStartDay,
 				Tables.School.schoolOfficeWeekEndDay, Tables.School.schoolClassFrom, Tables.School.schoolClassTo, Tables.School.schoolOfficeStartTime, Tables.School.schoolOfficeEndTime,
 				Tables.School.schoolFinancialStartDay, Tables.School.schoolFinancialEndDay, Tables.School.schoolFinancialStartMonth, Tables.School.schoolFinancialEndMonth,
-				Tables.School.schoolFinancialStartYear, Tables.School.schoolFinancialEndYear, Tables.School.schoolCurrentFinancialYear, Tables.School.schoolDateFormat,Tables.School.isActive, Tables.School.id);
+				Tables.School.schoolFinancialStartYear, Tables.School.schoolFinancialEndYear, Tables.School.schoolCurrentFinancialYear, Tables.School.schoolDateFormat,Tables.School.isActive,
+				Tables.School.id);
 		
-		String shiftUpdateQuery = String.format("UPDATE %s SET %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=? WHERE %s=? AND %s=?;", Tables.School.table,
-				Tables.School.noOfShift, Tables.School.isHostelFacilitiesAvailable, Tables.School.isHostelCompulsory, Tables.School.schoolOfficeWeekStartDay,
-				Tables.School.schoolOfficeWeekEndDay, Tables.School.schoolClassFrom, Tables.School.schoolClassTo, Tables.School.schoolOfficeStartTime, Tables.School.schoolOfficeEndTime,
-				Tables.School.schoolFinancialStartDay, Tables.School.schoolFinancialEndDay, Tables.School.isActive, Tables.School.id);
+		String shiftInsertQuery = String.format("INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s, %s, %s) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);", Tables.SchoolShiftInfo.table,
+				Tables.SchoolShiftInfo.shiftName, Tables.SchoolShiftInfo.shiftClassStartTime, Tables.SchoolShiftInfo.shiftClassEndTime, Tables.SchoolShiftInfo.shiftWeekStartDay,
+				Tables.SchoolShiftInfo.shiftWeekEndDay, Tables.SchoolShiftInfo.shiftStartClassFrom, Tables.SchoolShiftInfo.shiftEndClassTo, Tables.SchoolShiftInfo.shiftAttendenceType,
+				Tables.SchoolShiftInfo.schoolId);
 
 
 		int rowSchoolInfoUpdated = 0;
 		int rowLoginUpdated = 0;
 		try {
-
+			SchoolShiftAndClassTimingInfoForm schoolShiftAndClassTimingInfoForm = ShiftGenerator.generateShift(firstTimeSchoolUpdate);
 			String[] startDate = DateUtiles.parseDate(firstTimeSchoolUpdate.getSchoolFinancialStartDate());
 			String[] endDate = DateUtiles.parseDate(firstTimeSchoolUpdate.getSchoolFinancialEndDate());
 			if(startDate == null || endDate == null) {
@@ -364,8 +372,21 @@ public class SchoolProfileInfoDAO {
 			connection.setAutoCommit(false);
 			updateStmtSchoolMadInfo = connection.prepareStatement(updateQuery);
 			updateLogin = connection.prepareStatement(updateLoginQuery);
+			insertShiftInfo = connection.prepareStatement(shiftInsertQuery);
 			
-			
+			for(int i = 0; i < schoolShiftAndClassTimingInfoForm.getNumberOfShift(); i++) {
+				insertShiftInfo.setString(1, schoolShiftAndClassTimingInfoForm.getShifts().get(i).getShiftName());
+				insertShiftInfo.setString(2, schoolShiftAndClassTimingInfoForm.getShifts().get(i).getShiftClassStartTime());
+				insertShiftInfo.setString(3, schoolShiftAndClassTimingInfoForm.getShifts().get(i).getShiftClassEndTime());
+				insertShiftInfo.setString(4, schoolShiftAndClassTimingInfoForm.getShifts().get(i).getShiftWeekStartDay());
+				insertShiftInfo.setString(5, schoolShiftAndClassTimingInfoForm.getShifts().get(i).getShiftWeekEndDay());
+				insertShiftInfo.setString(6, schoolShiftAndClassTimingInfoForm.getShifts().get(i).getShiftStartClassFrom());
+				insertShiftInfo.setString(7, schoolShiftAndClassTimingInfoForm.getShifts().get(i).getShiftEndClassTo());
+				insertShiftInfo.setString(8, schoolShiftAndClassTimingInfoForm.getShifts().get(i).getShiftAttendenceType());
+				insertShiftInfo.setLong(9, schoolId);
+				insertShiftInfo.addBatch();
+			}
+
 			updateLogin.setString(1, PasswordState.finalstate.name());
 			updateLogin.setBoolean(2, true);
 			updateLogin.setString(3, userName.trim());
@@ -392,6 +413,7 @@ public class SchoolProfileInfoDAO {
 			updateStmtSchoolMadInfo.setBoolean(18, true);
 			updateStmtSchoolMadInfo.setLong(19, schoolId);
 
+			int[] batchUpdateResult = insertShiftInfo.executeBatch();
 			rowSchoolInfoUpdated = updateStmtSchoolMadInfo.executeUpdate();
 			rowLoginUpdated = updateLogin.executeUpdate();
 
@@ -399,9 +421,14 @@ public class SchoolProfileInfoDAO {
 		} catch(Exception exception) {
 			exception.printStackTrace();
 			rowSchoolInfoUpdated = 0;
+			connection.rollback();
 		} finally {
 			if(updateStmtSchoolMadInfo != null)
 				updateStmtSchoolMadInfo.close();
+
+			if(insertShiftInfo != null)
+				insertShiftInfo.close();
+
 			if(connection != null)
 				connection.close();
 		}
@@ -411,7 +438,6 @@ public class SchoolProfileInfoDAO {
 	private String getString(String string) {
 		if(string == null)
 			return "";
-		
 		return string.replaceAll(";", "");
 	}
 }

@@ -8,6 +8,7 @@ import lombok.Data;
 @Data
 public class SchoolShiftAndClassTimingInfoForm {
 	private int numberOfShift;
+	private String tabDisplayName;
 	private List<Shift> shifts = new ArrayList<Shift>();
 
 	@Data
