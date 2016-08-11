@@ -15,10 +15,12 @@ public enum WeekDayEnum {
 	Saturday(7);
 
 	private static final Map<Integer, WeekDayEnum> weekDayValueMapping = new HashMap<Integer, WeekDayEnum>(WeekDayEnum.values().length);
+	private static final Map<String, WeekDayEnum> displayNameToWeekDayMapping = new HashMap<String, WeekDayEnum>(WeekDayEnum.values().length);
 	private static final List<String> displayName = new ArrayList<String>(WeekDayEnum.values().length);
 	static {
 		for(WeekDayEnum wd : WeekDayEnum.values()) {
 			weekDayValueMapping.put(wd.dayValue, wd);
+			displayNameToWeekDayMapping.put(wd.name().toLowerCase(), wd);
 			displayName.add(wd.name());
 		}
 	}
@@ -35,6 +37,22 @@ public enum WeekDayEnum {
 			throw new IllegalArgumentException("No Week day exits for given int value = " + dayValue);
 		}
 		return result;
+	}
+
+	public static WeekDayEnum of(String displayName) {
+		WeekDayEnum result = displayNameToWeekDayMapping.get(displayName.trim().toLowerCase());
+		if(result == null) {
+			throw new IllegalArgumentException("No Week day exits for given int value = " + displayName);
+		}
+		return result;
+	}
+
+	public static boolean contains(String displayName) {
+		WeekDayEnum result = displayNameToWeekDayMapping.get(displayName.trim().toLowerCase());
+		if(result == null) {
+			return false;
+		}
+		return true;
 	}
 
 	public static List<String> getWeekDisplayName() {

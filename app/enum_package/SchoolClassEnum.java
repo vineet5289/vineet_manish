@@ -54,6 +54,14 @@ public enum SchoolClassEnum {
 		return result;
 	}
 
+	public static boolean contains(String displayName) {
+		SchoolClassEnum result = displayNameClassEnumMapping.get(displayName);
+		if(result == null) {
+			return false;
+		}
+		return true;
+	}
+
 	public static List<String> getClassDisplayName() {
 		return classDisplayName;
 	}
