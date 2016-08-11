@@ -3,6 +3,7 @@ package views.forms.school;
 import java.util.ArrayList;
 import java.util.List;
 
+import enum_package.AttendenceTypeEnum;
 import enum_package.SchoolClassEnum;
 import enum_package.WeekDayEnum;
 import lombok.Data;
@@ -23,10 +24,10 @@ public class FirstTimeSchoolUpdateForm {
 	private String schoolOfficeEndTime;
 	private String schoolFinancialStartDate;
 	private String schoolFinancialEndDate;
-	private String DateFormat;
 	private boolean isHostelFacilitiesAvailable;
 	private boolean isHostelCompulsory;
 	private String schoolDateFormat;
+	private String attendenceType;
 
 	public List<ValidationError> validate() {
 		List<ValidationError> errors = new ArrayList<>();
@@ -83,6 +84,10 @@ public class FirstTimeSchoolUpdateForm {
 
 		if(!ValidateFields.isValidDateFormat(schoolDateFormat)) {
 			errors.add(new ValidationError("schoolDateFormat", "Please select correct date format."));
+		}
+
+		if(attendenceType == null || !AttendenceTypeEnum.contain(attendenceType)) {
+			errors.add(new ValidationError("attendenceType", "Please select correct attendence type."));
 		}
 
 		if(errors.size() > 0)
