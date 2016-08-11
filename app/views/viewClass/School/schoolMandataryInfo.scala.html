@@ -1,6 +1,6 @@
 @(firstTimeUpdateForm:Form[views.forms.school.FirstTimeSchoolUpdateForm],
 weekDay:List[String],
-Classes:List[String],
+classes:List[String],
 attendenceType:List[String])
 
 @viewClass.main6("UPDATE | INFO")("index"){
@@ -37,6 +37,22 @@ attendenceType:List[String])
                         </div>
                      
                   </div>
+
+                    <div class="field">
+                     <label class="ui  teal header">Attendance Type</label>
+                     <div class="ui fluid selection dropdown">
+                        <div class="text">Select</div>
+                              <i class="dropdown icon"></i>
+                              <input name="attendenceType" type="hidden">
+                              <div class="menu">
+                                   @for(value<- attendenceType){ 
+                                   <div class="item" data-value="@value">@value</div>
+                                   }
+                              </div>
+                        </div>
+                     
+                  </div>
+
                   <h4 class="ui top attached teal inverted header">Hostel</h4>
                   <div class="ui attached  segment">
                      <div class="inline fields">
