@@ -72,7 +72,6 @@ public class DateUtiles {
 	}
 
 	public static String[] parseDate(String date) {
-		System.out.println("********* date" + date);
 		if(date == null || date.trim().isEmpty())
 			return null;
 		String[] value = date.trim().replaceAll("[\t,]", " ").replaceAll("( )+", " ").split("[ ]");

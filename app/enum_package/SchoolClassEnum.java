@@ -33,13 +33,13 @@ public enum SchoolClassEnum {
 	static {
 		for(SchoolClassEnum sce : SchoolClassEnum.values()) {
 			classEnumToDisplayNameMapping.put(sce, sce.value);
-			displayNameClassEnumMapping.put(sce.value, sce);
+			displayNameClassEnumMapping.put(sce.value.toLowerCase(), sce);
 			classDisplayName.add(sce.value);
 		}
 	}
 
 	public static SchoolClassEnum of(String className) {
-		SchoolClassEnum result = displayNameClassEnumMapping.get(className);
+		SchoolClassEnum result = displayNameClassEnumMapping.get(className.trim().toLowerCase());
 		if(result == null) {
 			throw new IllegalArgumentException("No Class exits for given value = " + className);
 		}
@@ -55,7 +55,7 @@ public enum SchoolClassEnum {
 	}
 
 	public static boolean contains(String displayName) {
-		SchoolClassEnum result = displayNameClassEnumMapping.get(displayName);
+		SchoolClassEnum result = displayNameClassEnumMapping.get(displayName.trim().toLowerCase());
 		if(result == null) {
 			return false;
 		}

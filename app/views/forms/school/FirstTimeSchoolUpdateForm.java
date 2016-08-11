@@ -7,6 +7,8 @@ import enum_package.SchoolClassEnum;
 import enum_package.WeekDayEnum;
 import lombok.Data;
 import play.data.validation.ValidationError;
+import utils.TimeUtiles;
+import utils.ValidateFields;
 
 @Data
 public class FirstTimeSchoolUpdateForm {
@@ -24,6 +26,7 @@ public class FirstTimeSchoolUpdateForm {
 	private String DateFormat;
 	private boolean isHostelFacilitiesAvailable;
 	private boolean isHostelCompulsory;
+	private String schoolDateFormat;
 
 	public List<ValidationError> validate() {
 		List<ValidationError> errors = new ArrayList<>();
@@ -62,11 +65,11 @@ public class FirstTimeSchoolUpdateForm {
 			errors.add(new ValidationError("schoolClassTo", "Please select end class from drop down"));
 		}
 
-		if(schoolOfficeStartTime == null || schoolOfficeStartTime.trim().isEmpty()) {
+		if(!(TimeUtiles.isValidTime(schoolOfficeStartTime))) {
 			errors.add(new ValidationError("schoolOfficeStartTime", "Please select office open time."));
 		}
 
-		if(schoolOfficeEndTime == null || schoolOfficeEndTime.trim().isEmpty()) {
+		if(!(TimeUtiles.isValidTime(schoolOfficeEndTime))) {
 			errors.add(new ValidationError("schoolOfficeEndTime", "Please select closing time."));
 		}
 
@@ -77,6 +80,11 @@ public class FirstTimeSchoolUpdateForm {
 		if(schoolFinancialEndDate == null || schoolFinancialEndDate.trim().isEmpty()) {
 			errors.add(new ValidationError("schoolFinancialEndDate", "Please select financial year end date."));
 		}
+
+		if(!ValidateFields.isValidDateFormat(schoolDateFormat)) {
+			errors.add(new ValidationError("schoolDateFormat", "Please select correct date format."));
+		}
+
 		if(errors.size() > 0)
 			return errors;
 		return null;

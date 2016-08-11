@@ -20,6 +20,8 @@ import views.forms.school.SchoolShiftAndClassTimingInfoForm;
 import dao.Tables;
 import enum_package.LoginTypeEnum;
 import enum_package.PasswordState;
+import enum_package.SchoolClassEnum;
+import enum_package.WeekDayEnum;
 
 public class SchoolProfileInfoDAO {
 
@@ -367,10 +369,10 @@ public class SchoolProfileInfoDAO {
 			updateStmtSchoolMadInfo.setInt(1, firstTimeSchoolUpdate.getNumberOfShift());
 			updateStmtSchoolMadInfo.setBoolean(2, firstTimeSchoolUpdate.isHostelFacilitiesAvailable());
 			updateStmtSchoolMadInfo.setBoolean(3, firstTimeSchoolUpdate.isHostelCompulsory());
-			updateStmtSchoolMadInfo.setString(4, firstTimeSchoolUpdate.getSchoolOfficeWeekStartDay().trim());
-			updateStmtSchoolMadInfo.setString(5, firstTimeSchoolUpdate.getSchoolOfficeWeekEndDay().trim());
-			updateStmtSchoolMadInfo.setString(6, firstTimeSchoolUpdate.getSchoolClassFrom().trim());
-			updateStmtSchoolMadInfo.setString(7, firstTimeSchoolUpdate.getSchoolClassTo().trim());
+			updateStmtSchoolMadInfo.setString(4, WeekDayEnum.of(firstTimeSchoolUpdate.getSchoolOfficeWeekStartDay()).name());
+			updateStmtSchoolMadInfo.setString(5, WeekDayEnum.of(firstTimeSchoolUpdate.getSchoolOfficeWeekEndDay()).name());
+			updateStmtSchoolMadInfo.setString(6, SchoolClassEnum.of(firstTimeSchoolUpdate.getSchoolClassFrom()).name());
+			updateStmtSchoolMadInfo.setString(7, SchoolClassEnum.of(firstTimeSchoolUpdate.getSchoolClassTo()).name());
 			updateStmtSchoolMadInfo.setString(8, firstTimeSchoolUpdate.getSchoolOfficeStartTime());
 			updateStmtSchoolMadInfo.setString(9, firstTimeSchoolUpdate.getSchoolOfficeEndTime());
 			updateStmtSchoolMadInfo.setInt(10, startDay);
