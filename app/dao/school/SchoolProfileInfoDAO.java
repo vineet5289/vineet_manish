@@ -153,7 +153,7 @@ public class SchoolProfileInfoDAO {
 		SchoolShiftAndClassTimingInfoForm schoolShiftAndClassTimingInfoForm = null;
 		String selectQuery = String.format("SELECT %s, %s, %s, %s, %s, %s, %s, %s FROM %s WHERE %s=? AND %s=?;", Tables.SchoolShiftInfo.shiftName,
 				Tables.SchoolShiftInfo.shiftClassStartTime, Tables.SchoolShiftInfo.shiftClassEndTime, Tables.SchoolShiftInfo.shiftWeekStartDay,
-				Tables.SchoolShiftInfo.shiftWeekEndDay, Tables.SchoolShiftInfo.shiftStartClassName, Tables.SchoolShiftInfo.shiftEndClassName,
+				Tables.SchoolShiftInfo.shiftWeekEndDay, Tables.SchoolShiftInfo.shiftStartClassFrom, Tables.SchoolShiftInfo.shiftEndClassTo,
 				Tables.SchoolShiftInfo.shiftAttendenceType, Tables.SchoolShiftInfo.table, Tables.SchoolShiftInfo.isActive, Tables.SchoolShiftInfo.schoolId);
 		try {
 			connection = DB.getDataSource("srp").getConnection();
@@ -170,8 +170,8 @@ public class SchoolProfileInfoDAO {
 				shift.setShiftClassEndTime(resultSet.getString(Tables.SchoolShiftInfo.shiftClassEndTime));
 				shift.setShiftWeekStartDay(resultSet.getString(Tables.SchoolShiftInfo.shiftWeekStartDay));
 				shift.setShiftWeekEndDay(resultSet.getString(Tables.SchoolShiftInfo.shiftWeekEndDay));
-				shift.setShiftStartClassName(resultSet.getString(Tables.SchoolShiftInfo.shiftStartClassName));
-				shift.setShiftEndClassName(resultSet.getString(Tables.SchoolShiftInfo.shiftEndClassName));
+				shift.setShiftStartClassFrom(resultSet.getString(Tables.SchoolShiftInfo.shiftStartClassFrom));
+				shift.setShiftEndClassTo(resultSet.getString(Tables.SchoolShiftInfo.shiftEndClassTo));
 				shift.setShiftAttendenceType(resultSet.getString(Tables.SchoolShiftInfo.shiftAttendenceType));
 				numberOfShift++;
 			}
@@ -330,11 +330,17 @@ public class SchoolProfileInfoDAO {
 		PreparedStatement updateLogin = null;
 		String updateLoginQuery = String.format("UPDATE %s SET %s=? WHERE %s=? AND %s=? AND %s=? AND %s=?;", Tables.Login.table, Tables.Login.passwordState,
 				Tables.Login.isActive, Tables.Login.userName, Tables.Login.passwordState, Tables.Login.type);
-		String updateQuery = String.format("UPDATE %s SET %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=? WHERE %s=? AND %s=?;",
+		String updateQuery = String.format("UPDATE %s SET %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=? WHERE %s=? AND %s=?;",
 				Tables.School.table, Tables.School.noOfShift, Tables.School.isHostelFacilitiesAvailable, Tables.School.isHostelCompulsory, Tables.School.schoolOfficeWeekStartDay,
 				Tables.School.schoolOfficeWeekEndDay, Tables.School.schoolClassFrom, Tables.School.schoolClassTo, Tables.School.schoolOfficeStartTime, Tables.School.schoolOfficeEndTime,
 				Tables.School.schoolFinancialStartDay, Tables.School.schoolFinancialEndDay, Tables.School.schoolFinancialStartMonth, Tables.School.schoolFinancialEndMonth,
-				Tables.School.schoolFinancialStartYear, Tables.School.schoolFinancialEndYear, Tables.School.schoolCurrentFinancialYear, Tables.School.isActive, Tables.School.id);
+				Tables.School.schoolFinancialStartYear, Tables.School.schoolFinancialEndYear, Tables.School.schoolCurrentFinancialYear, Tables.School.schoolDateFormat,Tables.School.isActive, Tables.School.id);
+		
+		String shiftUpdateQuery = String.format("UPDATE %s SET %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=? WHERE %s=? AND %s=?;", Tables.School.table,
+				Tables.School.noOfShift, Tables.School.isHostelFacilitiesAvailable, Tables.School.isHostelCompulsory, Tables.School.schoolOfficeWeekStartDay,
+				Tables.School.schoolOfficeWeekEndDay, Tables.School.schoolClassFrom, Tables.School.schoolClassTo, Tables.School.schoolOfficeStartTime, Tables.School.schoolOfficeEndTime,
+				Tables.School.schoolFinancialStartDay, Tables.School.schoolFinancialEndDay, Tables.School.isActive, Tables.School.id);
+
 
 		int rowSchoolInfoUpdated = 0;
 		int rowLoginUpdated = 0;
@@ -382,8 +388,9 @@ public class SchoolProfileInfoDAO {
 			updateStmtSchoolMadInfo.setInt(14, startYear);
 			updateStmtSchoolMadInfo.setInt(15, endYear);
 			updateStmtSchoolMadInfo.setString(16, schoolCurrentFinancialYear);
-			updateStmtSchoolMadInfo.setBoolean(17, true);
-			updateStmtSchoolMadInfo.setLong(18, schoolId);
+			updateStmtSchoolMadInfo.setString(17, firstTimeSchoolUpdate.getSchoolDateFormat());
+			updateStmtSchoolMadInfo.setBoolean(18, true);
+			updateStmtSchoolMadInfo.setLong(19, schoolId);
 
 			rowSchoolInfoUpdated = updateStmtSchoolMadInfo.executeUpdate();
 			rowLoginUpdated = updateLogin.executeUpdate();

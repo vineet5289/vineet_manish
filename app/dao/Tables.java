@@ -149,8 +149,8 @@ public class Tables {
 		public static String shiftClassEndTime = "shift_class_end_time";
 		public static String shiftWeekStartDay = "shift_week_start_time";
 		public static String shiftWeekEndDay = "shift_week_end_time";
-		public static String shiftStartClassName = "shift_start_class_name";
-		public static String shiftEndClassName = "shift_end_class_name";
+		public static String shiftStartClassFrom = "shift_start_class_from";
+		public static String shiftEndClassTo = "shift_end_class_To";
 		public static String shiftAttendenceType = "shift_attendence_type";
 		public static String schoolId = "school_id";
 		public static String createdAt = "created_at";
