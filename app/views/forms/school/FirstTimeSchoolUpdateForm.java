@@ -27,13 +27,17 @@ public class FirstTimeSchoolUpdateForm {
 	private boolean isHostelFacilitiesAvailable;
 	private boolean isHostelCompulsory;
 	private String schoolDateFormat;
-	private String attendenceType;
+	private List<SchoolShiftAndClassTimingInfoForm.Shift> shifts;
 
 	public List<ValidationError> validate() {
 		List<ValidationError> errors = new ArrayList<>();
 		
 		if(numberOfShift < 0) {
 			errors.add(new ValidationError("numberOfShift", "Number Of Shift should be greater then one."));
+		}
+
+		if(shifts == null || shifts.size() != numberOfShift) {
+			errors.add(new ValidationError("shifts", "Please enter shif or class info."));
 		}
 
 		if(hostelFacilitiesIsAvailable == null || !(hostelFacilitiesIsAvailable.trim().equalsIgnoreCase("true")
@@ -84,10 +88,6 @@ public class FirstTimeSchoolUpdateForm {
 
 		if(!ValidateFields.isValidDateFormat(schoolDateFormat)) {
 			errors.add(new ValidationError("schoolDateFormat", "Please select correct date format."));
-		}
-
-		if(attendenceType == null || !AttendenceTypeEnum.contain(attendenceType)) {
-			errors.add(new ValidationError("attendenceType", "Please select correct attendence type."));
 		}
 
 		if(errors.size() > 0)
