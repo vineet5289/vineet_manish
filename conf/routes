@@ -23,26 +23,26 @@ GET     	/listeningWS                     		   controllers.message.NotificationL
 # Notification Controller
 POST     	/notification                              controllers.message.NotificationController.notification()
 
-# add new school request
-GET      	/addnewschoolrequest                	   controllers.institute.NewInstituteRequestController.preAddNewInstituteRequest()
-POST     	/addnewschoolrequest                       controllers.institute.NewInstituteRequestController.postAddNewInstituteRequest()
+# add new institute request
+GET      	/newinstituterequest                	   controllers.institute.NewInstituteRequestController.preAddNewInstituteRequest()
+POST     	/newinstiturerequest                       controllers.institute.NewInstituteRequestController.postAddNewInstituteRequest()
 
 
 # school registration request
 POST      	/submitopt                            	   controllers.institute.InstituteRegistrationController.submitOTP()
-POST     	/registerschool            	           	   controllers.institute.InstituteRegistrationController.postInstituteRegistrationRequest()
+POST     	/registerinstitute            	           controllers.institute.InstituteRegistrationController.postInstituteRegistrationRequest()
 
 #school info and edit
-GET			/school/show/profile					   controllers.institute.InstituteInfoController.getProfileInfo()
-GET			/school/edit/general					   controllers.institute.InstituteInfoController.getGeneralInfo()
-POST		/school/edit/general					   controllers.institute.InstituteInfoController.updateGeneralInfo()
-GET			/school/edit/shift						   controllers.institute.InstituteInfoController.getShiftInfo()
-POST		/school/edit/shift						   controllers.institute.InstituteInfoController.updateShiftInfo()
-GET			/school/edit/header						   controllers.institute.InstituteInfoController.getHeaderInfo()
-POST		/school/edit/header						   controllers.institute.InstituteInfoController.updateHeaderInfo()
+GET			/institute/show/profile					   controllers.institute.InstituteInfoController.getProfileInfo()
+GET			/institute/edit/general					   controllers.institute.InstituteInfoController.getGeneralInfo()
+POST		/institute/edit/general					   controllers.institute.InstituteInfoController.updateGeneralInfo()
+GET			/institute/edit/shift					   controllers.institute.InstituteInfoController.getShiftInfo()
+POST		/institute/edit/shift					   controllers.institute.InstituteInfoController.updateShiftInfo()
+GET			/institute/edit/header					   controllers.institute.InstituteInfoController.getHeaderInfo()
+POST		/institute/edit/header					   controllers.institute.InstituteInfoController.updateHeaderInfo()
 
-GET			/school/mand_info						   controllers.institute.InstituteInfoController.getInstituteMandInfo()
-POST		/school/mand_info						   controllers.institute.InstituteInfoController.updateInstituteMandInfo()
+GET			/institute/mand_info					   controllers.institute.InstituteInfoController.getInstituteMandInfo()
+POST		/institute/mand_info					   controllers.institute.InstituteInfoController.updateInstituteMandInfo()
 # employee registration request
 GET			/addemp									   controllers.EmployeeController.preAddEmployeeRequest()
 GET			/addemp									   controllers.EmployeeController.postAddEmployeeRequest()
