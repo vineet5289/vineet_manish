@@ -1,7 +1,9 @@
 @(firstTimeUpdateForm:Form[views.forms.institute.FirstTimeInstituteUpdateForm],
 weekDay:List[String],
 classes:List[String],
-attendenceType:List[String])
+attendenceType:List[String],
+instituteBoard:      Map[String, String],
+instituteType:       Map[String, String])
 
 @viewClass.main6("UPDATE | INFO")("index"){
 <script type="text/javascript">
@@ -46,21 +48,37 @@ attendenceType:List[String])
                      
                   </div>
 
-                    <!--<div class="field">
-                     <label class="ui  teal header">Attendance Type</label>
+                    <div class="two fields">
+                     <div class="field">
+                       <label class="ui  teal header">Institute Board</label>
                      <div class="ui fluid selection dropdown">
                         <div class="text">Select</div>
                               <i class="dropdown icon"></i>
-                              <input name="attendenceType" type="hidden">
+                              <input name="instituteBoard" type="hidden">
                               <div class="menu">
-                                   @for(value<- attendenceType){ 
-                                   <div class="item" data-value="@value">@value</div>
-                                   }
-                              </div>
+                              @for((key,value)<- instituteBoard){ 
+                              <div class="item" data-value="@key">@value</div>
+                              }
+                           </div>
+                        </div>
+                    </div>
+                    <div class="field">
+                     <label class="ui  teal header">Institute Type</label>
+                     <div class="ui fluid selection dropdown">
+                        <div class="text">Select</div>
+                              <i class="dropdown icon"></i>
+                              <input name="instituteType" type="hidden">
+                              <div class="menu">
+                              @for((key,value)<- instituteType){ 
+                              <div class="item" data-value="@key">@value</div>
+                              }
+                           </div>
                         </div>
                      
-                  </div> -->
+                  </div> 
 
+                    </div>
+                    
                   
 
                   <h4 class="ui top attached teal inverted header">Hostel</h4>
@@ -104,7 +122,7 @@ attendenceType:List[String])
                            <div class="ui fluid selection dropdown">
                               <div class="text">Select</div>
                               <i class="dropdown icon"></i>
-                              <input name="schoolOfficeWeekStartDay" type="hidden">
+                              <input name="instituteOfficeWeekStartDay" type="hidden">
                               <div class="menu">
                                  @for(value<- weekDay){ 
                                  <div class="item" data-value="@value">@value</div>
@@ -117,7 +135,7 @@ attendenceType:List[String])
                            <div class="ui fluid selection dropdown">
                               <div class="text">Select</div>
                               <i class="dropdown icon"></i>
-                              <input name="schoolOfficeWeekEndDay" type="hidden">
+                              <input name="instituteOfficeWeekEndDay" type="hidden">
                               <div class="menu">
                                  @for(value<- weekDay){ 
                                  <div class="item" data-value="@value">@value</div>
@@ -135,7 +153,7 @@ attendenceType:List[String])
                            <div class="ui fluid selection dropdown">
                               <div class="text">Select</div>
                               <i class="dropdown icon"></i>
-                              <input name="schoolClassFrom" type="hidden">
+                              <input name="instituteClassFrom" type="hidden">
                               <div class="menu">
                                  @for(value<- classes){ 
                                  <div class="item" data-value="@value">@value</div>
@@ -148,7 +166,7 @@ attendenceType:List[String])
                            <div class="ui fluid selection dropdown">
                               <div class="text">Select</div>
                               <i class="dropdown icon"></i>
-                              <input name="schoolClassTo" type="hidden">
+                              <input name="instituteClassTo" type="hidden">
                               <div class="menu">
                                  @for(value<- classes){ 
                                  <div class="item" data-value="@value">@value</div>
@@ -166,7 +184,7 @@ attendenceType:List[String])
                            <div class="ui calendar" id="example3">
                               <div class="ui input left icon">
                                  <i class="time icon"></i>
-                                 <input name="schoolOfficeStartTime" type="text" value='' placeholder="School Start Time">
+                                 <input name="instituteOfficeStartTime" type="text" value='' placeholder="School Start Time">
                               </div>
                            </div>
                         </div>
@@ -175,7 +193,7 @@ attendenceType:List[String])
                            <div class="ui calendar" id="endtime">
                               <div class="ui input left icon">
                                  <i class="time icon"></i>
-                                 <input name="schoolOfficeEndTime" type="text" value='' placeholder="School End Time">
+                                 <input name="instituteOfficeEndTime" type="text" value='' placeholder="School End Time">
                               </div>
                            </div>
                         </div>
@@ -188,7 +206,7 @@ attendenceType:List[String])
                         <div class="ui fluid selection dropdown">
                            <div class="text">Select</div>
                            <i class="dropdown icon"></i>
-                           <input name="schoolDateFormat" type="hidden">
+                           <input name="instituteDateFormat" type="hidden">
                            <div class="menu">
                               <div class="item" data-value="dd/MM/yyyy">DD/MM/YYYY</div>
                               <div class="item" data-value="dd-MM-yyyy">DD/MM/YYYY</div>
@@ -203,7 +221,7 @@ attendenceType:List[String])
                            <div class="ui calendar" id="rangestart">
                               <div class="ui input left icon">
                                  <i class="calendar icon"></i>
-                                 <input name="schoolFinancialStartDate" type="text" value='' placeholder="Financial Year Starts">
+                                 <input name="instituteFinancialStartDate" type="text" value='' placeholder="Financial Year Starts">
                               </div>
                            </div>
                         </div>
@@ -212,7 +230,7 @@ attendenceType:List[String])
                            <div class="ui calendar" id="rangeend">
                               <div class="ui input left icon">
                                  <i class="calendar icon"></i>
-                                 <input name="schoolFinancialEndDate" type="text" value='' placeholder="Financial Year Ends">
+                                 <input name="instituteFinancialEndDate" type="text" value='' placeholder="Financial Year Ends">
                               </div>
                            </div>
                         </div>
