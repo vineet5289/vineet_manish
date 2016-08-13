@@ -11,6 +11,7 @@ import views.forms.institute.AddNewInstituteRequest;
 import views.forms.institute.InstituteFormData;
 import dao.Tables;
 import enum_package.RequestedStatus;
+import enum_package.InstituteDaoProcessStatus;
 
 public class AddNewSchoolRequestDAO {
 	public String generateRequest(AddNewInstituteRequest addNewSchoolRequest) throws Exception {
@@ -26,22 +27,22 @@ public class AddNewSchoolRequestDAO {
 
 		String requestNumber = "";
 		try {
-			requestNumber = StringUtils.getSchoolRequestRegistrationNumber(addNewSchoolRequest.getName());
+			requestNumber = StringUtils.getSchoolRequestRegistrationNumber(addNewSchoolRequest.getInstituteName());
 
 			connection = DB.getDataSource("srp").getConnection();
 			preparedStatement = connection.prepareStatement(insertQuery);
-			preparedStatement.setString(1, addNewSchoolRequest.getName().trim());
-			preparedStatement.setString(2, addNewSchoolRequest.getEmail().trim());
-			preparedStatement.setString(3, addNewSchoolRequest.getPhoneNumber().trim());
-			preparedStatement.setString(4, StringUtils.getValidStringValue(addNewSchoolRequest.getOfficeNumber()));
-			preparedStatement.setString(5, StringUtils.getValidStringValue(addNewSchoolRequest.getRegistrationId()));
+			preparedStatement.setString(1, addNewSchoolRequest.getInstituteName().trim());
+			preparedStatement.setString(2, addNewSchoolRequest.getInstituteEmail().trim());
+			preparedStatement.setString(3, addNewSchoolRequest.getInstitutePhoneNumber().trim());
+			preparedStatement.setString(4, StringUtils.getValidStringValue(addNewSchoolRequest.getInstituteOfficeNumber()));
+			preparedStatement.setString(5, StringUtils.getValidStringValue(addNewSchoolRequest.getInstituteRegistrationId()));
 			preparedStatement.setString(6, StringUtils.getValidStringValue(addNewSchoolRequest.getContactPersonName()));
-			preparedStatement.setString(7, StringUtils.getValidStringValue(addNewSchoolRequest.getAddressLine1()));
-			preparedStatement.setString(8, StringUtils.getValidStringValue(addNewSchoolRequest.getAddressLine2())); 
-			preparedStatement.setString(9, addNewSchoolRequest.getCity().trim());
-			preparedStatement.setString(10, addNewSchoolRequest.getState().trim());
-			preparedStatement.setString(11, addNewSchoolRequest.getCountry().trim());
-			preparedStatement.setString(12, addNewSchoolRequest.getPinCode().trim());
+			preparedStatement.setString(7, StringUtils.getValidStringValue(addNewSchoolRequest.getInstituteAddressLine1()));
+			preparedStatement.setString(8, StringUtils.getValidStringValue(addNewSchoolRequest.getInstituteAddressLine2())); 
+			preparedStatement.setString(9, addNewSchoolRequest.getInstituteCity().trim());
+			preparedStatement.setString(10, addNewSchoolRequest.getInstituteState().trim());
+			preparedStatement.setString(11, addNewSchoolRequest.getInstituteCountry().trim());
+			preparedStatement.setString(12, addNewSchoolRequest.getInstitutePinCode().trim());
 			preparedStatement.setString(13, addNewSchoolRequest.getGroupOfInstitute().trim());
 			preparedStatement.setInt(14, addNewSchoolRequest.getNoOfInstitute());
 			preparedStatement.setString(15, StringUtils.getValidStringValue(addNewSchoolRequest.getQuery()));
@@ -209,7 +210,7 @@ public class AddNewSchoolRequestDAO {
 				schoolFormData.setPinCode(resultSet.getString(Tables.InstituteRegistrationRequest.pinCode));
 				schoolFormData.setGroupOfInstitute(resultSet.getString(Tables.InstituteRegistrationRequest.groupOfInstitute));
 				schoolFormData.setNoOfInstitute(resultSet.getInt(Tables.InstituteRegistrationRequest.noOfInstitute));
-//				schoolFormData.setValidSchool(true);
+				schoolFormData.setProcessingStatus(InstituteDaoProcessStatus.validschool);
 			} else {
 //				schoolFormData.setValidSchool(false);
 			}
