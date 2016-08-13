@@ -25,7 +25,7 @@ POST     	/notification                              controllers.message.Notific
 
 # add new institute request
 GET      	/newinstituterequest                	   controllers.institute.NewInstituteRequestController.preAddNewInstituteRequest()
-POST     	/newinstiturerequest                       controllers.institute.NewInstituteRequestController.postAddNewInstituteRequest()
+POST     	/newinstituterequest                       controllers.institute.NewInstituteRequestController.postAddNewInstituteRequest()
 
 
 # school registration request
