@@ -1,7 +1,5 @@
 package controllers.institute;
 
-import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.List;
 
 import play.data.Form;
@@ -19,7 +17,8 @@ import enum_package.AttendenceTypeEnum;
 import enum_package.SchoolClassEnum;
 import enum_package.SessionKey;
 import enum_package.WeekDayEnum;
-public class SchoolInfoController extends ClassController {
+
+public class InstituteInfoController extends ClassController {
 
 	/*
 	 * check usernaem and auth key validation
@@ -63,7 +62,7 @@ public class SchoolInfoController extends ClassController {
 		}
 		if(schoolGeneralInfo == null) {
 			flash("error", "Error during school information update.");
-			return redirect(controllers.institute.routes.SchoolInfoController.getProfileInfo());
+			return redirect(controllers.institute.routes.InstituteInfoController.getProfileInfo());
 		}
 
 		Form<InstituteGeneralInfoForm> schoolGeneralInfoFrom = Form.form(InstituteGeneralInfoForm.class).fill(schoolGeneralInfo);
@@ -77,13 +76,13 @@ public class SchoolInfoController extends ClassController {
 		System.out.println("inside update => " + schoolGeneralInfoFrom);
 		if (schoolGeneralInfoFrom == null || schoolGeneralInfoFrom.hasErrors()) {
 			flash("error", "Error during school info update.");
-			return redirect(controllers.institute.routes.SchoolInfoController.getProfileInfo());
+			return redirect(controllers.institute.routes.InstituteInfoController.getProfileInfo());
 		}
 
 		InstituteGeneralInfoForm schoolGeneralInfo = schoolGeneralInfoFrom.get();
 		if (schoolGeneralInfo == null) {
 			flash("error", "Error during school info update.");
-			return redirect(controllers.institute.routes.SchoolInfoController.getProfileInfo());
+			return redirect(controllers.institute.routes.InstituteInfoController.getProfileInfo());
 		}
 		
 		String schoolId = session().get(SessionKey.SCHOOL_ID.name());
@@ -102,14 +101,14 @@ public class SchoolInfoController extends ClassController {
 		} else {
 			flash("success", "Successfully updated school info.");
 		}
-		return redirect(controllers.institute.routes.SchoolInfoController.getProfileInfo());
+		return redirect(controllers.institute.routes.InstituteInfoController.getProfileInfo());
 	}
 
 	public Result getShiftInfo() {
 		Form<InstituteShiftAndClassTimingInfoForm> schoolShiftAndClassTimingInfoForm = Form.form(InstituteShiftAndClassTimingInfoForm.class).bindFromRequest();
 		if (schoolShiftAndClassTimingInfoForm == null || schoolShiftAndClassTimingInfoForm.hasErrors()) {
 			flash("error", "Error during school class and shift information update.");
-			return redirect(controllers.institute.routes.SchoolInfoController.getProfileInfo());
+			return redirect(controllers.institute.routes.InstituteInfoController.getProfileInfo());
 		}
 		return ok("");
 	}
@@ -118,13 +117,13 @@ public class SchoolInfoController extends ClassController {
 		Form<InstituteShiftAndClassTimingInfoForm> schoolShiftAndClassTimingInfoForm = Form.form(InstituteShiftAndClassTimingInfoForm.class).bindFromRequest();
 		if (schoolShiftAndClassTimingInfoForm == null || schoolShiftAndClassTimingInfoForm.hasErrors()) {
 			flash("error", "Error during school info update.");
-			return redirect(controllers.institute.routes.SchoolInfoController.getProfileInfo());
+			return redirect(controllers.institute.routes.InstituteInfoController.getProfileInfo());
 		}
 
 		InstituteShiftAndClassTimingInfoForm schoolShiftAndClassTimingInfo = schoolShiftAndClassTimingInfoForm.get();
 		if (schoolShiftAndClassTimingInfo == null) {
 			flash("error", "Error during school info update.");
-			return redirect(controllers.institute.routes.SchoolInfoController.getProfileInfo());
+			return redirect(controllers.institute.routes.InstituteInfoController.getProfileInfo());
 		}
 
 		String schoolId = session().get(SessionKey.SCHOOL_ID.name());
@@ -142,14 +141,14 @@ public class SchoolInfoController extends ClassController {
 		} else {
 			flash("success", "Successfully updated school info.");
 		}
-		return redirect(controllers.institute.routes.SchoolInfoController.getProfileInfo());
+		return redirect(controllers.institute.routes.InstituteInfoController.getProfileInfo());
 	}
 
 	public Result getHeaderInfo() {
 		Form<InstituteHeaderInfoForm> schoolHeaderInfoForm = Form.form(InstituteHeaderInfoForm.class).bindFromRequest();
 		if (schoolHeaderInfoForm == null || schoolHeaderInfoForm.hasErrors()) {
 			flash("error", "Error during school ionformation update.");
-			return redirect(controllers.institute.routes.SchoolInfoController.getProfileInfo());
+			return redirect(controllers.institute.routes.InstituteInfoController.getProfileInfo());
 		}
 		return ok("");
 	}
@@ -158,13 +157,13 @@ public class SchoolInfoController extends ClassController {
 		Form<InstituteHeaderInfoForm> schoolHeaderInfoForm = Form.form(InstituteHeaderInfoForm.class).bindFromRequest();
 		if (schoolHeaderInfoForm == null || schoolHeaderInfoForm.hasErrors()) {
 			flash("error", "Error during school info update.");
-			return redirect(controllers.institute.routes.SchoolInfoController.getProfileInfo());
+			return redirect(controllers.institute.routes.InstituteInfoController.getProfileInfo());
 		}
 
 		InstituteHeaderInfoForm schoolHeaderInfo = schoolHeaderInfoForm.get();
 		if (schoolHeaderInfo == null) {
 			flash("error", "Error during school info update.");
-			return redirect(controllers.institute.routes.SchoolInfoController.getProfileInfo());
+			return redirect(controllers.institute.routes.InstituteInfoController.getProfileInfo());
 		}
 
 		String schoolId = session().get(SessionKey.SCHOOL_ID.name());
@@ -182,11 +181,11 @@ public class SchoolInfoController extends ClassController {
 		} else {
 			flash("success", "Successfully updated school info.");
 		}
-		return redirect(controllers.institute.routes.SchoolInfoController.getProfileInfo());
+		return redirect(controllers.institute.routes.InstituteInfoController.getProfileInfo());
 	}
 
 	//session validation
-	public Result getSchoolMandInfo() {
+	public Result getInstituteMandInfo() {
 		Form<FirstTimeInstituteUpdateForm> firstTimeUpdateForm = Form.form(FirstTimeInstituteUpdateForm.class);
 		List<String> weekList = WeekDayEnum.getWeekDisplayName();
 		List<String> classList = SchoolClassEnum.getClassDisplayName();
@@ -195,12 +194,12 @@ public class SchoolInfoController extends ClassController {
 	}
 
 	//session validation
-	public Result updateSchoolMandInfo() {
+	public Result updateInstituteMandInfo() {
 		Form<FirstTimeInstituteUpdateForm> firstTimeSchoolUpdateForm = Form.form(FirstTimeInstituteUpdateForm.class).bindFromRequest();
 		System.out.println("************firstTimeSchoolUpdateForm$$$$$$$$" + firstTimeSchoolUpdateForm);
 		if (firstTimeSchoolUpdateForm == null || firstTimeSchoolUpdateForm.hasErrors()) {
 			flash("error", "Some parameters are missing.");
-			return redirect(controllers.institute.routes.SchoolInfoController.getSchoolMandInfo());
+			return redirect(controllers.institute.routes.InstituteInfoController.getInstituteMandInfo());
 		}
 
 		String schoolId = session().get(SessionKey.SCHOOL_ID.name());
@@ -213,11 +212,11 @@ public class SchoolInfoController extends ClassController {
 		} catch(Exception exception) {
 			flash("error", "Some problem occur during update.");
 			exception.printStackTrace();
-			return redirect(controllers.institute.routes.SchoolInfoController.getSchoolMandInfo());
+			return redirect(controllers.institute.routes.InstituteInfoController.getInstituteMandInfo());
 		}
 		if(!isUpdated) {
 			flash("error", "Please check values of all mandatory fields.");
-			return redirect(controllers.institute.routes.SchoolInfoController.getSchoolMandInfo());
+			return redirect(controllers.institute.routes.InstituteInfoController.getInstituteMandInfo());
 		} else {
 			flash("success", "School informations updated successfully.");
 			return redirect(routes.SRPController.index());
