@@ -5,26 +5,59 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
 import models.SchoolBoard;
 import play.db.DB;
 import utils.DateUtiles;
-import utils.ShiftGenerator;
 import views.forms.institute.FirstTimeInstituteUpdateForm;
+import views.forms.institute.InstituteFormData;
 import views.forms.institute.InstituteGeneralInfoForm;
 import views.forms.institute.InstituteHeaderInfoForm;
 import views.forms.institute.InstituteShiftAndClassTimingInfoForm;
 import dao.Tables;
+import enum_package.InstituteDaoProcessStatus;
 import enum_package.LoginTypeEnum;
 import enum_package.PasswordState;
 import enum_package.SchoolClassEnum;
 import enum_package.WeekDayEnum;
 
 public class SchoolProfileInfoDAO {
+
+	public InstituteFormData getNumberOfInstituteInGivenGroup(Long schoolId) throws SQLException {
+		Connection connection = null;
+		PreparedStatement selectStatement = null;
+		ResultSet resultSet = null;
+		InstituteFormData instituteFormData = new InstituteFormData();
+		String selectQuery = String.format("SELECT %s, %s, %s FROM %s WHERE %s=? AND %s=?;", Tables.HeadInstitute.state, Tables.HeadInstitute.noOfInstitute,
+				Tables.HeadInstitute.groupOfInstitute, Tables.HeadInstitute.table, Tables.HeadInstitute.isActive, Tables.HeadInstitute.id);
+		try {
+			connection = DB.getDataSource("srp").getConnection();
+			selectStatement = connection.prepareStatement(selectQuery, ResultSet.TYPE_FORWARD_ONLY);
+			selectStatement.setBoolean(1, true);
+			selectStatement.setLong(2, schoolId);
+			resultSet = selectStatement.executeQuery();
+			if(resultSet.next()) {
+				instituteFormData.setNoOfInstitute(resultSet.getInt(Tables.HeadInstitute.noOfInstitute));
+				instituteFormData.setGroupOfInstitute(resultSet.getString(Tables.HeadInstitute.groupOfInstitute));
+				instituteFormData.setInstituteState(resultSet.getString(Tables.HeadInstitute.state));
+				instituteFormData.setProcessingStatus(InstituteDaoProcessStatus.validschool);
+			} else {
+				instituteFormData.setProcessingStatus(InstituteDaoProcessStatus.invalidschool);
+			}
+		} catch(Exception exception) {
+			exception.printStackTrace();
+			instituteFormData.setProcessingStatus(InstituteDaoProcessStatus.invalidschool);
+		} finally {
+			if(resultSet != null)
+				resultSet.close();
+			if(selectStatement != null)
+				selectStatement.close();
+			if(connection != null)
+				connection.close();
+		}
+		return instituteFormData;
+	}
 
 	public InstituteGeneralInfoForm getSchoolGeneralInfoFrom(Long schoolId) throws SQLException {
 		Connection connection = null;
@@ -391,7 +424,7 @@ public class SchoolProfileInfoDAO {
 			updateLogin.setBoolean(2, true);
 			updateLogin.setString(3, userName.trim());
 			updateLogin.setString(4, PasswordState.redirectstate.name());
-			updateLogin.setString(5, LoginTypeEnum.institite.name());
+			updateLogin.setString(5, LoginTypeEnum.institute.name());
 
 			updateStmtSchoolMadInfo.setInt(1, firstTimeSchoolUpdate.getNumberOfShift());
 			updateStmtSchoolMadInfo.setBoolean(2, firstTimeSchoolUpdate.isHostelFacilitiesAvailable());

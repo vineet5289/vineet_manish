@@ -46,18 +46,8 @@ public class InstituteRegistrationController extends CustomController {
 				session(SessionKey.OTP_KEY.name(), otp);
 
 				Form<InstituteFormData> schoolFormData = Form.form(InstituteFormData.class).fill(schoolData);
-				Map<String, String> schoolBoards = new HashMap<String, String>();
 
-				schoolBoards.put("CBSE", "CBSE");
-				schoolBoards.put("ICSE", "ICSE");
-				schoolBoards.put("IB", "International Baccalaureate");
-				
-				String affiliatedTo = schoolData.getInstituteState().trim().toUpperCase();
-				String otherBoard = SchoolBoard.getDisplayNameGivenAffiliatedTo(affiliatedTo);
-				schoolBoards.put(affiliatedTo, otherBoard);
-
-				List<String> schoolCategory = SchoolCategory.getSchoolCategoryList();
-				return ok(SchoolRegistration.render(schoolFormData, schoolBoards, schoolCategory, SchoolType.schoolTypeToValue));
+				return ok(SchoolRegistration.render(schoolFormData));
 			} else {
 				flash("error", "Your reference number or otp or email id is invalid. Please check and try again.");
 				return redirect(controllers.login_logout.routes.LoginController.preLogin()); // check here for proper redirection

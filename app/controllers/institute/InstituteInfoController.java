@@ -1,16 +1,22 @@
 package controllers.institute;
 
+import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import models.SchoolBoard;
 import play.data.Form;
 import play.mvc.Result;
 import views.forms.institute.FirstTimeInstituteUpdateForm;
+import views.forms.institute.InstituteFormData;
 import views.forms.institute.InstituteGeneralInfoForm;
 import views.forms.institute.InstituteHeaderInfoForm;
 import views.forms.institute.InstituteShiftAndClassTimingInfoForm;
 import views.html.viewClass.School.SchoolProfile;
 import views.html.viewClass.School.editSchoolInfo;
 import views.html.viewClass.School.schoolMandataryInfo;
+import views.html.viewClass.School.groupInstituteFirstUpdate;
 import controllers.routes;
 import dao.school.SchoolProfileInfoDAO;
 import enum_package.AttendenceTypeEnum;
@@ -186,11 +192,39 @@ public class InstituteInfoController extends ClassController {
 
 	//session validation
 	public Result getInstituteMandInfo() {
+		String schoolId = session().get(SessionKey.SCHOOL_ID.name());
 		Form<FirstTimeInstituteUpdateForm> firstTimeUpdateForm = Form.form(FirstTimeInstituteUpdateForm.class);
 		List<String> weekList = WeekDayEnum.getWeekDisplayName();
 		List<String> classList = SchoolClassEnum.getClassDisplayName();
 		List<String> attendenceType = AttendenceTypeEnum.getAttendenceTypeDisplayName();
-		return ok(schoolMandataryInfo.render(firstTimeUpdateForm, weekList, classList, attendenceType));
+		SchoolProfileInfoDAO schoolProfileInfoDAO = new SchoolProfileInfoDAO();
+		InstituteFormData instituteFormData = null;
+		try {
+			instituteFormData = schoolProfileInfoDAO.getNumberOfInstituteInGivenGroup(Long.valueOf(schoolId));
+		} catch (NumberFormatException | SQLException exception) {
+			exception.printStackTrace();
+			instituteFormData = null;
+		}
+
+		if(instituteFormData != null && instituteFormData.getGroupOfInstitute().equalsIgnoreCase("single")
+				&& instituteFormData.getNoOfInstitute() == 1) {
+			Map<String, String> schoolBoards = new HashMap<String, String>();
+			schoolBoards.put("CBSE", "CBSE");
+			schoolBoards.put("ICSE", "ICSE");
+			schoolBoards.put("IB", "International Baccalaureate");
+			String affiliatedTo = instituteFormData.getInstituteState().trim().toUpperCase();
+			String otherBoard = SchoolBoard.getDisplayNameGivenAffiliatedTo(affiliatedTo);
+			schoolBoards.put(affiliatedTo, otherBoard);
+			session(SessionKey.numerofinstituteingroup.name(), instituteFormData.getNoOfInstitute() + "");
+			ok(schoolMandataryInfo.render(firstTimeUpdateForm, weekList, classList, attendenceType));
+		} else if(instituteFormData != null && instituteFormData.getGroupOfInstitute().equalsIgnoreCase("group")
+				&& instituteFormData.getNoOfInstitute() > 1) {
+			session(SessionKey.numerofinstituteingroup.name(), instituteFormData.getNoOfInstitute() + "");
+			ok(groupInstituteFirstUpdate.render(firstTimeUpdateForm, weekList, classList, attendenceType));
+		}
+
+		flash("error", "Some service problem occur during request process. Please login again.");
+		return redirect(controllers.login_logout.routes.LoginController.logout());
 	}
 
 	//session validation

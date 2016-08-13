@@ -4,7 +4,7 @@ public enum LoginTypeEnum {
 	general,
 	guardian,
 	student,
-	institite,
+	institute,
 	headinstitute,
 	emp;
 }

@@ -12,5 +12,6 @@ public enum SessionKey {
 	REG_USER_REQUEST,
 	OTP_KEY,
 	REG_SCHOOL_REQUEST_NUMBER,
-	LOGIN_STATE;
+	LOGIN_STATE,
+	numerofinstituteingroup;
 }
