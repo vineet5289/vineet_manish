@@ -42,6 +42,7 @@ public class Tables {
 	}
 
 	public static class HeadInstitute {
+		public static String table = "head_institute";
 		public static String id = "id";
 		public static String name = "name";
 		public static String preferedName = "prefered_name";
@@ -144,7 +145,7 @@ public class Tables {
 		public static String updatedAt = "updated_at";
 		public static String accessRights = "access_rights";
 		public static String isActive = "is_active";
-		public static String schoolId = "school_id";
+		public static String instituteId = "institute_id";
 	}
 
 	public static class Employee {

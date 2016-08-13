@@ -35,8 +35,6 @@ public class InstituteFormData {
 	//ask school to fill during registration 
 	private String institutePassword;
 	private String instituteConfirmPassword;
-	private String instituteBoard;
-	private String instituteType;
 
 	public List<ValidationError> validate() {
 		List<ValidationError> errors = new ArrayList<>();
@@ -90,13 +88,13 @@ public class InstituteFormData {
 			errors.add(new ValidationError("password", "Invalid confirom password."));
 		}
 
-		if(instituteBoard == null || SchoolBoard.getDisplayNameGivenAffiliatedTo(instituteBoard.trim().toUpperCase()) == null) {
-			errors.add(new ValidationError("schoolBoard", "Please enter valid school board without any special characters like @;$."));
-		}
-
-		if(instituteType == null || SchoolType.schoolTypeToValue.get(instituteType.trim().toUpperCase())  == null) {
-			errors.add(new ValidationError("schoolType", "Please enter valid school type without any special characters like @;$."));
-		}
+//		if(instituteBoard == null || SchoolBoard.getDisplayNameGivenAffiliatedTo(instituteBoard.trim().toUpperCase()) == null) {
+//			errors.add(new ValidationError("schoolBoard", "Please enter valid school board without any special characters like @;$."));
+//		}
+//
+//		if(instituteType == null || SchoolType.schoolTypeToValue.get(instituteType.trim().toUpperCase())  == null) {
+//			errors.add(new ValidationError("schoolType", "Please enter valid school type without any special characters like @;$."));
+//		}
 
 		if(errors.size() > 0)
 			return errors;

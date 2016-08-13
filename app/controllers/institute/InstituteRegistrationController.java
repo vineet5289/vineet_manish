@@ -17,6 +17,7 @@ import views.forms.institute.InstituteFormData;
 import views.html.viewClass.SchoolRegistration;
 import dao.school.AddNewSchoolRequestDAO;
 import dao.school.SchoolRegistrationDAO;
+import enum_package.InstituteDaoProcessStatus;
 import enum_package.SessionKey;
 
 public class InstituteRegistrationController extends CustomController {
@@ -40,7 +41,7 @@ public class InstituteRegistrationController extends CustomController {
 		AddNewSchoolRequestDAO schoolRegistrationRequestDAO = new AddNewSchoolRequestDAO();
 		try {
 			InstituteFormData schoolData = schoolRegistrationRequestDAO.isValidSchoolRegistrationRequest(referenceKey, otp, emailId);
-			if(schoolData != null) {
+			if(schoolData != null && schoolData.getProcessingStatus() == InstituteDaoProcessStatus.validschool) {
 				session(SessionKey.REG_SCHOOL_REQUEST_NUMBER.name(), referenceKey);
 				session(SessionKey.OTP_KEY.name(), otp);
 
@@ -86,18 +87,18 @@ public class InstituteRegistrationController extends CustomController {
 		String referenceNumber = session().get(SessionKey.REG_SCHOOL_REQUEST_NUMBER.name());
 		String authToken = session().get(SessionKey.OTP_KEY.name());
 		SchoolRegistrationDAO schoolRegistrationDAO = new SchoolRegistrationDAO();
-		boolean isSuccessfull = false;
+		InstituteDaoProcessStatus instituteDaoProcessStatus;
 		try {
-			isSuccessfull = schoolRegistrationDAO.registerSchool(schoolFormDetails, referenceNumber, authToken);
+			instituteDaoProcessStatus = schoolRegistrationDAO.registerInstitute(schoolFormDetails, referenceNumber, authToken);
 		} catch(Exception exception) {
 			exception.printStackTrace();
+			instituteDaoProcessStatus = InstituteDaoProcessStatus.servererror;
 		}
-
 		session().clear();
-		if(isSuccessfull) {
+		if(instituteDaoProcessStatus == InstituteDaoProcessStatus.validschool) {
 			flash("success", "School has been successfully registered. Please use your username and password for login");			
 		} else {
-			flash("error", "Sorry!! something error occur registration request. Please try after sometime.");
+			flash("error", instituteDaoProcessStatus.name());
 		}
 		return redirect(controllers.login_logout.routes.LoginController.preLogin());
 	}

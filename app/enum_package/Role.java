@@ -3,7 +3,8 @@ package enum_package;
 public enum Role {
 	STUDENT,
 	ADMIN,
-	SUPERADMIN,
+	institutegroupadmin,
+	instituteadmin,
 	GUARDIAN,
 	TEACHER,
 	OTHER;

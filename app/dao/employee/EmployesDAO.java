@@ -20,7 +20,7 @@ public class EmployesDAO {
 
 		String loginQ = String.format("INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s, %s) VALUES (?, ?, ?, ?, ?, ?, ?, ?);", Tables.Login.table,
 				Tables.Login.userName, Tables.Login.password, Tables.Login.passwordState, Tables.Login.role, Tables.Login.name,
-				Tables.Login.emailId, Tables.Login.accessRights, Tables.Login.schoolId);
+				Tables.Login.emailId, Tables.Login.accessRights, Tables.Login.instituteId);
 
 		String empInsertQ = String.format("INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);", Tables.Employee.table,
 				Tables.Employee.name, Tables.Employee.userName, Tables.Employee.schoolId, Tables.Employee.gender, Tables.Employee.phoneNumber, Tables.Employee.empCode,

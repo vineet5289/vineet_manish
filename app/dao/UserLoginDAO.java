@@ -41,7 +41,7 @@ public class UserLoginDAO {
 
 		String loginSelectQuery = String.format("SELECT %s, %s, %s, %s, %s, %s, %s, %s, %s, %s FROM %s WHERE %s=? AND %s=?;", Tables.Login.id,
 				Tables.Login.userName, Tables.Login.emailId, Tables.Login.password, Tables.Login.passwordState, Tables.Login.role,
-				Tables.Login.accessRights, Tables.Login.name, Tables.Login.schoolId, Tables.Login.type, Tables.Login.table, Tables.Login.userName,
+				Tables.Login.accessRights, Tables.Login.name, Tables.Login.instituteId, Tables.Login.type, Tables.Login.table, Tables.Login.userName,
 				Tables.Login.isActive);
 
 		try {
@@ -66,7 +66,7 @@ public class UserLoginDAO {
 			loginDetails.setUserName(userName);
 			loginDetails.setAuthToken(authToken);
 			loginDetails.setAccessRight(loginResultSet.getString(Tables.Login.accessRights));
-			Long superUserSchoolId = loginResultSet.getLong(Tables.Login.schoolId);
+			Long superUserSchoolId = loginResultSet.getLong(Tables.Login.instituteId);
 			if( superUserSchoolId != null && superUserSchoolId > 0) {
 				loginDetails.setSchoolId(superUserSchoolId);
 			}
@@ -95,7 +95,7 @@ public class UserLoginDAO {
 
 		String loginSelectQuery = String.format("SELECT %s, %s, %s, %s, %s, %s, %s, %s, %s FROM %s WHERE %s=? AND %s=?;", Tables.Login.id,
 				Tables.Login.userName, Tables.Login.emailId, Tables.Login.role, Tables.Login.accessRights, Tables.Login.name,
-				Tables.Login.schoolId, Tables.Login.type, Tables.Login.passwordState, Tables.Login.table, Tables.Login.userName, Tables.Login.isActive);
+				Tables.Login.instituteId, Tables.Login.type, Tables.Login.passwordState, Tables.Login.table, Tables.Login.userName, Tables.Login.isActive);
 
 		LoginDetails loginDetails = new LoginDetails();;
 		try {
@@ -109,7 +109,7 @@ public class UserLoginDAO {
 				loginDetails.setRole(loginResultSet.getString(Tables.Login.role));
 				loginDetails.setAccessRight(loginResultSet.getString(Tables.Login.accessRights));
 				loginDetails.setPasswordState(loginResultSet.getString(Tables.Login.passwordState));
-				Long superUserSchoolId = loginResultSet.getLong(Tables.Login.schoolId);
+				Long superUserSchoolId = loginResultSet.getLong(Tables.Login.instituteId);
 				if( superUserSchoolId != null && superUserSchoolId > 0) {
 					loginDetails.setSchoolId(superUserSchoolId);
 				}

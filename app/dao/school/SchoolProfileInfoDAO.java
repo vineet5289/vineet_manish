@@ -391,7 +391,7 @@ public class SchoolProfileInfoDAO {
 			updateLogin.setBoolean(2, true);
 			updateLogin.setString(3, userName.trim());
 			updateLogin.setString(4, PasswordState.redirectstate.name());
-			updateLogin.setString(5, LoginTypeEnum.SCHOOL.name());
+			updateLogin.setString(5, LoginTypeEnum.institite.name());
 
 			updateStmtSchoolMadInfo.setInt(1, firstTimeSchoolUpdate.getNumberOfShift());
 			updateStmtSchoolMadInfo.setBoolean(2, firstTimeSchoolUpdate.isHostelFacilitiesAvailable());
