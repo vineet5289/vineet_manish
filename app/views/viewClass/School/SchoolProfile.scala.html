@@ -1,6 +1,7 @@
 @(schoolGeneralForm:Form[views.forms.school.SchoolGeneralInfoFrom] ,
 schoolHeaderForm:Form[views.forms.school.SchoolHeaderInfoForm],
 shiftAndTimingForm:Form[views.forms.school.SchoolShiftAndClassTimingInfoForm])
+
 @viewClass.main4("Profile | Info")("form"){
 <style type="text/css">
     #edit-details{
@@ -238,12 +239,86 @@ shiftAndTimingForm:Form[views.forms.school.SchoolShiftAndClassTimingInfoForm])
     </div>
     <div class="ui tab segment" data-tab="timings">
         <h2 class="ui dividing header">Timings</h2>
-        Timings Info goes Here
+          Timings info goes here
     </div>
     <div class="ui tab segment" data-tab="shift">
-        <h2 class="ui dividing header">Shift</h2>
-        Shift Information Goes here
+        <h2 class="ui dividing header">@shiftAndTimingForm("tabDisplayName").value</h2>
+           
+           
+     @for(index <- 0 until (shiftAndTimingForm("numberOfShift").value).toInt){ 
+                  <h4 class="ui top attacjed header">@shiftAndTimingForm("shifts["+ index +"].shiftName").value</h4>
+                    <div class="ui attached segment">
+                       
+                     
+
+                       <div class="item">
+                         <div class="content">
+                           <h4 class="ui header blue">shiftClassStartTime</h4>
+                           @shiftAndTimingForm("shifts["+ index +"].shiftClassStartTime").value
+                         </div>
+                      
+                       </div>
+
+                        <div class="item">
+                             <div class="content"></div>
+                        <h4 class="ui header blue">shiftClassEndTime </h4>
+                       @shiftAndTimingForm("shifts["+ index +"].shiftClassEndTime").value
+                       </div>
+
+                       <div class="item">
+                        <div class="content">
+                         <h4 class="ui header blue">shiftWeekStartDay</h4>
+                        @shiftAndTimingForm("shifts["+ index +"].shiftWeekStartDay").value
+                        </div>
+                        
+                       </div>
+
+                       <div class="item">
+                        <div class="content">
+                          <h4 class="ui header blue">shiftWeekEndDay</h4>
+                       @shiftAndTimingForm("shifts["+ index +"].shiftWeekEndDay").value
+                       </div>
+                        </div>
+                        
+
+                        <div class="item">
+                            <div class="content">
+                                
+                        <h4 class="ui header blue">shiftStartClassFrom</h4>
+                        @shiftAndTimingForm("shifts["+ index +"].shiftStartClassFrom").value
+                            </div>
+                       </div>
+
+                        <div class="field">
+                            <div class="content">
+                                
+                        <h4 class="ui header blue">shiftStartClassTo</h4>
+                        @shiftAndTimingForm("shifts["+ index +"].shiftEndClassTo").value
+                            </div>
+                       </div>
+
+                       <div class="field">
+                          <div class="content">
+
+                          </div>
+                        <h4 class="ui header blue">shiftAttendenceType</h4>
+                       @shiftAndTimingForm("shifts["+ index +"].shiftAttendenceType").value
+                       </div>
+                    </div>
+
+               }
+           
+
+              
+         
+        
+           
+          
+
+
     </div>
+
+
     <div class="ui tab segment" data-tab="PasswordChange">
         <h2 class="ui dividing header">Password Change</h2>
         Passsword Change fields Goes here

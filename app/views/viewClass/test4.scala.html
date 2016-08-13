@@ -304,6 +304,58 @@
 </div>
 
 
+<!-- this form next step test start from here-->
+
+<div class="ui three top attached steps">
+  <a class="moving active step" data-step="1">
+    <div class="content">
+      <div class="title">Form One</div>
+    </div>
+  </a>
+  <a class="disabled moving step" data-step="2">
+    <div class="content">
+      <div class="title">Form Two</div>
+    </div>
+  </a>
+</div>
+
+<div class="ui attached segment">
+  <div class="ui form" data-stage="1">
+    <div class="field">
+      <label>First Name</label>
+      <input type="text" id="forename" name="forename" placeholder="First Name">
+    </div>
+    <div class="field">
+      <label>Last Name</label>
+      <input type="text" id="surname" name="surname" placeholder="Last Name">
+    </div>
+    <div class="ui four column grid">
+      <div class="left floated column"></div>
+      <div class="right floated column">
+        <button class="disabled fluid positive ui button moving" data-step="2">Next</button>
+      </div>
+    </div>
+  </div>
+  <div class="ui form" data-stage="2" style="display:none;">
+    <div class="field">
+      <div class="ui checkbox">
+        <input id="terms" name="terms" type="checkbox" tabindex="0" class="hidden">
+        <label>I agree to the Terms and Conditions</label>
+      </div>
+    </div>
+    <div class="ui four column grid">
+      <div class="left floated column">
+        <button class="fluid positive ui button moving" data-step="1">Back</button>
+      </div>
+      <div class="right floated column">
+        <button class="disabled fluid positive ui button" id="submit">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--  OKKK ends here-->
+
 
 
 
@@ -398,9 +450,247 @@
 
 
 
+<!-- Another Form for ste[wise verification-->
+   <article>
+  <form role="form" action="#" method="post">
+    <section>
+      <h3><i class="fa fa-user"></i> Contact Info</h3>
+      <label for="">Name</label>
+      <input name="" required type="text">
+
+      <label for="">Email</label>
+      <input name="" required type="email" autocapitalize="off" autocorrect="off">
+
+      <label for="">Phone</label>
+      <input name="" type="tel">
+
+      <span tabindex="0" class="next step">Next Step</span>
+    </section>
+
+    <section>
+      <h3><i class="fa fa-bar-chart-o"></i> Company Info</h3>
+      <label for="">Company Name</label>
+      <input name="" type="text">
+
+      <label for="">What your Company Does</label>
+      <textarea name=""></textarea>
+
+      <span tabindex="0" class="previous step">Previous Step</span>
+      <span tabindex="0" class="next step">Next Step</span>
+    </section>
+
+    <section>
+      <h3><i class="fa fa-suitcase"></i> Project Info</h3>
+      <label for="">Do you have a Domain? (ex. www.google.com)</label>
+      <select name="">
+        <option value="">Select One</option>
+        <option value="">Yes</option>
+        <option value="">No</option>
+      </select>
+
+      <label for="">What is your Domain? (ex. www.google.com)</label>
+      <input name="" required type="text" autocapitalize="off" autocorrect="off">
+
+      <label for="">Do you need hosting/email?</label>
+      <select name="">
+        <option value="">Select One</option>
+        <option value="">Yes</option>
+        <option value="">No</option>
+      </select>
+
+      <label for="">Who will manage the website?</label>
+      <input name="" required type="text">
+
+      <label for="">How soon do you need the new website completed?</label>
+      <input name="" required type="text">
+
+      <label for="">Approximately how many pages/sections will your website have?</label>
+      <input name="" required type="text">
+
+      <label for="">What is your estimated budget</label>
+      <select name="">
+        <option value="">Select One</option>
+        <option value="">$2000</option>
+        <option value="">$2000 - $3000</option>
+        <option value="">$4000 - $5000</option>
+        <option value="">$5000+</option>
+      </select>
+
+      <span tabindex="0" class="previous step">Previous Step</span>
+      <span tabindex="0" class="next step">Next Step</span>
+    </section>
+
+    <section>
+      <h3><i class="fa fa-desktop"></i> Your New Website</h3>
+      <label for="">What Are your goals for this website?</label>
+      <textarea name=""></textarea>
+
+      <label for="">Who is your target audience?</label>
+      <textarea name=""></textarea>
+
+      <label for="">Do you have a color scheme? If not, what is your color preference?</label>
+      <textarea name=""></textarea>
+
+      <label for="">Please list your competitors' websites. What do you like and not like about their websites?</label>
+      <textarea name=""></textarea>
+
+      <label for="">Are there any websites that you like? Why? </label>
+      <textarea name=""></textarea>
+
+      <label for="">Possible Features</label>
+      <label class="checkbox"><input name="" required type="checkbox">Contact Form</label>
+      <label class="checkbox"><input name="" required type="checkbox">Blog</label>
+      <label class="checkbox"><input name="" required type="checkbox">Image Gallery</label>
+      <label class="checkbox"><input name="" required type="checkbox">Admin Section</label>
+      <label class="checkbox"><input name="" required type="checkbox">Search</label>
+      <label class="checkbox"><input name="" required type="checkbox">Contact Form</label>
+      <label class="checkbox"><input name="" required type="checkbox">Newsletter</label>
+
+      <label for="">Additional comments</label>
+      <textarea name=""></textarea>
+
+      <span tabindex="0" class="previous step">Previous Step</span>
+      <button type="submit">Send</button>
+    </section>
+  </form>   
+
+</article>      
+<!-- Stepwise verification done-->
+
+
+
+
+
+
+
 
 <!--here is last div of container -->
 </div>
+<script type="text/javascript">
+  $(function(){
+  var formElements = 'label, input, select, textarea, button, .step';
+  $('form').addClass('multi-step');
+  $(formElements).addClass('hide');
+  $('form section').first().find(formElements).removeClass('hide');
+  $('h3').on('click', function(){
+    $(formElements).addClass('hide');
+    $(this).parent('section').find(formElements).removeClass('hide');
+  });
+
+  $('.next.step').on('click', function(){
+    $(this).parent().find(formElements).addClass('hide').parent().next('section').find(formElements).removeClass('hide');
+  });
+
+  $('.previous.step').on('click', function(){
+    $(this).parent().find(formElements).addClass('hide').parent().prev('section').find(formElements).removeClass('hide');
+  });
+});
+</script>
+
+
+
+
+<script type="text/javascript">
+$(function() {
+  var requireForValidation = [{
+    element: "input#forename",
+    valid: false
+  }, {
+    element: "input#surname",
+    valid: false
+  }];
+  $(".moving").on("click", function() {
+    var step = $(this).data("step");
+    $(".form").each(function(k, v) {
+      if ($(v).data("stage")) {
+        if ($(v).data("stage") === step) {
+          $(v).show();
+        } else {
+          $(v).hide();
+        }
+      }
+    });
+    $(".step").each(function(k, v) {
+      if ($(v).data("step") === step) {
+        $(v).addClass("active");
+      } else {
+        $(v).removeClass("active");
+      }
+    });
+  });
+  $(".form[data-stage=1]").form({
+    "inline": true,
+    "on": "blur",
+    "fields": {
+      "forename": {
+        "identifier": "forename",
+        "rules": [{
+          "type": "empty",
+          "prompt": "Please enter your first name"
+        }]
+      },
+      "surname": {
+        "identifier": "surname",
+        "rules": [{
+          "type": "empty",
+          "prompt": "Please enter your last name"
+        }]
+      }
+    },
+    "onInvalid": function() {
+      $(".moving[data-step=2]").addClass("disabled");
+      var $that = $(this[0]);
+      requireForValidation.forEach(function(r) {
+        if ($that.is(r.element))
+        {
+          r.valid = false;
+        }
+      });
+    },
+    "onValid": function() {
+      var $that = $(this[0]);
+      requireForValidation.forEach(function(r) {
+        if ($that.is(r.element))
+        {
+          r.valid = true;
+        }
+      });
+      console.log(requireForValidation);
+      
+      var formIsValid = requireForValidation.reduce(function(a, b) {
+        //console.log(b);
+        return a && b.valid;
+      }, true);
+      //console.log(formIsValid);
+      if (formIsValid)
+        $(".moving[data-step=2]").removeClass("disabled");
+    }
+  });
+  $(".form[data-stage=2]").form({
+    "inline": true,
+    "on": "change",
+    "fields": {
+      "terms": {
+        "identifier": "terms",
+        "rules": [{
+          "type": "checked",
+          "prompt": "You must agree to the terms and conditions"
+        }]
+      }
+    }
+  });
+  $(".ui.checkbox").checkbox({
+    "onChecked": function() {
+      $("#submit").removeClass("disabled");
+    },
+    "onUnchecked": function() {
+      $("#submit").addClass("disabled");
+    }
+  });
+});
+
+
+</script>
 
 
 

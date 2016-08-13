@@ -25,11 +25,12 @@
                 </div>
                 <div class="column">
                     <form
-                        class="ui form segment"
+                        class="ui form"
                         id="loginform"
                         action="@login_logout.routes.LoginController.postLogin()"
                         method="Post">
-                        <h2 class="ui dividing teal header">Log-In to Your Account</h2>
+                        <h3 class="ui top attached centered green header">Log-In to Your Account</h3>
+                        <div class="ui attached secondary blue segment">
                         <div class="field">
                             <div class="ui left icon input">
                                 <input type="text" name="userName" placeholder="Username">
@@ -48,8 +49,10 @@
                                 <label>Remember Me</label>
                             </div>
                         </div>
+
                         <button class="ui inverted big fluid blue icon button" id="login-submit">Sign In
                         </button>
+                        </div>
                     </form>
                 </div>
             </div>
