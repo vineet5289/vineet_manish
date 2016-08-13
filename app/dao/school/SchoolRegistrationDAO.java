@@ -6,186 +6,187 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import dao.Tables;
-import models.SchoolBoard;
 import play.db.DB;
 import utils.RandomGenerator;
 import utils.StringUtils;
 import views.forms.institute.InstituteFormData;
+import dao.Tables;
+import enum_package.InstituteDaoProcessStatus;
 import enum_package.LoginTypeEnum;
 import enum_package.PasswordState;
 import enum_package.RequestedStatus;
 import enum_package.Role;
 
 public class SchoolRegistrationDAO {
-	private String idField = "id";
-	private String nameField = "name";
-	private String schoolRegistrationIdField = "school_registration_id";
-	private String schoolUserNameField = "school_user_name";
-	private String schooleEmailField = "school_email";
-	private String addressLine1Field = "address_line1";
-	private String addressLine2Field = "address_line2";
-	private String cityField = "city";
-	private String stateField = "state";
-	private String countryField = "country";
-	private String pincodeField = "pin_code";
-	private String phoneNumberField = "phone_number";
-	private String officeNumberField = "office_number";
-	private String noOfShiftField = "no_of_shift";
-	private String schoolCategoryField = "school_category";
-	private String schoolBoardField = "school_board_id";
-	private String schoolTypeField = "school_type";
-	private String isActiveField = "is_active";
-	private String accessRightsField = "access_rights";
-	private String loginUserNameField = "user_name";
-	private String loginEmailIdField = "email_id";
-	private String loginPasswordField = "password";
-	private String loginPasswordStateField = "password_state";
-	private String loginRoleField = "role";
-	private String schoolIdField = "school_id";
-	private String addSchoolRequestIdField = "add_school_request_id";
-	private String statusField = "status"; 
-	private String authTokenField = "auth_token";
-	private String schoolNameField = "school_name";
-	private String requestNumberField = "request_number";
 
-	private String schoolTableName = "school";
-	private String schoolRegistrationRequestTableName = "school_registration_request";
-
-	public boolean registerSchool(InstituteFormData schoolData, String referenceNumber, String authToken) throws SQLException {
-		boolean isSuccessfull = false;
+	public InstituteDaoProcessStatus registerInstitute(InstituteFormData schoolData, String referenceNumber, String authToken) throws SQLException {
+		InstituteDaoProcessStatus instituteDaoProcessStatus = InstituteDaoProcessStatus.validschool;
 		Connection connection = null;
-		PreparedStatement schoolRegistrationPreparedStatement = null;
-		PreparedStatement schoolLoginPreparedStatement = null;
-		PreparedStatement selectRegistrationRequestPreparedStatement = null;
-		PreparedStatement updateRegistrationRequestPreparedStatement = null;
+		PreparedStatement headInstituteRegistrationPS = null;
+		PreparedStatement instituteRegistrationPS = null;
+		PreparedStatement instituteLoginPS = null;
+		PreparedStatement selectRegistrationRequestPS = null;
+		PreparedStatement updateRegistrationRequestPS = null;
 		ResultSet resultSet = null;
 		ResultSet selectResultSet = null;
-		String insertLoginQuery = String.format("INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);", 
-				Tables.Login.table, loginUserNameField, loginEmailIdField, loginPasswordField, loginPasswordStateField, loginRoleField, 
-				accessRightsField, isActiveField, nameField, schoolIdField, Tables.Login.type);
 
-		String insertSchoolRegistrationQuery = String.format("INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
-				+ " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);", schoolTableName, nameField, schoolRegistrationIdField, 
-				schoolUserNameField, schooleEmailField, addressLine1Field, addressLine2Field, cityField, stateField, pincodeField, phoneNumberField,
-				officeNumberField, countryField, schoolBoardField, schoolTypeField, addSchoolRequestIdField);
+		String insertLoginQ = String.format("INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);", 
+				Tables.Login.table, Tables.Login.userName, Tables.Login.emailId, Tables.Login.password, Tables.Login.passwordState, Tables.Login.role, 
+				Tables.Login.accessRights, Tables.Login.isActive, Tables.Login.name, Tables.Login.instituteId, Tables.Login.type);
 
-		String selectSchoolRegistrationRequest = String.format("SELECT %s, %s, %s, %s FROM %s WHERE %s=? AND %s=? AND %s=? AND %s=? AND %s=?;",
-				idField, schoolNameField, schoolRegistrationIdField, isActiveField, schoolRegistrationRequestTableName,isActiveField,
-				requestNumberField, authTokenField, schooleEmailField, statusField);
+		String insertHeadInstituteQ = String.format("INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+				+ " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);", Tables.HeadInstitute.table, Tables.HeadInstitute.name, Tables.HeadInstitute.email, 
+				Tables.HeadInstitute.phoneNumber, Tables.HeadInstitute.officeNumber, Tables.HeadInstitute.addressLine1, Tables.HeadInstitute.addressLine2,
+				Tables.HeadInstitute.city, Tables.HeadInstitute.state, Tables.HeadInstitute.country, Tables.HeadInstitute.pinCode, Tables.HeadInstitute.registrationId,
+				Tables.HeadInstitute.userName, Tables.HeadInstitute.groupOfInstitute, Tables.HeadInstitute.noOfInstitute, Tables.HeadInstitute.addInstituteRequestId);
 
-		String updateSchoolRegistrationRequest = String.format("UPDATE %s SET %s=?, %s=? WHERE %s=? limit 1;", schoolRegistrationRequestTableName, isActiveField,
-				statusField, idField);
+		String insertInstituteQ =  String.format("INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,"
+				+ "?, ?, ?, ?);", Tables.Institute.table, Tables.Institute.name, Tables.Institute.email, Tables.Institute.phoneNumber, Tables.Institute.officeNumber,
+				Tables.Institute.addressLine1, Tables.Institute.addressLine2, Tables.Institute.city, Tables.Institute.state, Tables.Institute.country, Tables.Institute.pinCode,
+				Tables.Institute.registrationId, Tables.Institute.userName, Tables.Institute.headInstituteId);
+
+		String selectSchoolRegistrationRequestQ = String.format("SELECT %s, %s FROM %s WHERE %s=? AND %s=? AND %s=? AND %s=? AND %s=?;", Tables.InstituteRegistrationRequest.id,
+				Tables.InstituteRegistrationRequest.name, Tables.InstituteRegistrationRequest.table,Tables.InstituteRegistrationRequest.isActive, Tables.InstituteRegistrationRequest.requestNumber,
+				Tables.InstituteRegistrationRequest.authToken, Tables.InstituteRegistrationRequest.email, Tables.InstituteRegistrationRequest.status);
+
+		String updateSchoolRegistrationRequestQ = String.format("UPDATE %s SET %s=?, %s=? WHERE %s=? limit 1;", Tables.InstituteRegistrationRequest.table, Tables.InstituteRegistrationRequest.isActive,
+				Tables.InstituteRegistrationRequest.status, Tables.InstituteRegistrationRequest.id);
 
 		try {
-			String bCryptPassword = RandomGenerator.getBCryptPassword(schoolData.getPassword());
-
+			String bCryptPassword = RandomGenerator.getBCryptPassword(schoolData.getInstitutePassword());
 			connection = DB.getDataSource("srp").getConnection();
 			connection.setAutoCommit(false);
 
-			schoolRegistrationPreparedStatement = connection.prepareStatement(insertSchoolRegistrationQuery, Statement.RETURN_GENERATED_KEYS);
-			schoolLoginPreparedStatement = connection.prepareStatement(insertLoginQuery, Statement.RETURN_GENERATED_KEYS);
-			updateRegistrationRequestPreparedStatement = connection.prepareStatement(updateSchoolRegistrationRequest);
-			selectRegistrationRequestPreparedStatement = connection.prepareStatement(selectSchoolRegistrationRequest, ResultSet.TYPE_FORWARD_ONLY);
+			headInstituteRegistrationPS = connection.prepareStatement(insertHeadInstituteQ, Statement.RETURN_GENERATED_KEYS);
+			instituteRegistrationPS = connection.prepareStatement(insertInstituteQ, Statement.RETURN_GENERATED_KEYS);
+			instituteLoginPS = connection.prepareStatement(insertLoginQ, Statement.RETURN_GENERATED_KEYS);
+			updateRegistrationRequestPS = connection.prepareStatement(updateSchoolRegistrationRequestQ);
+			selectRegistrationRequestPS = connection.prepareStatement(selectSchoolRegistrationRequestQ, ResultSet.TYPE_FORWARD_ONLY);
 
-			selectRegistrationRequestPreparedStatement.setBoolean(1, true);
-			selectRegistrationRequestPreparedStatement.setString(2, referenceNumber.trim());
-			selectRegistrationRequestPreparedStatement.setString(3, authToken.trim());
-			selectRegistrationRequestPreparedStatement.setString(4, schoolData.getEmail().trim());			
-			selectRegistrationRequestPreparedStatement.setString(5, RequestedStatus.approved.name());
-			selectResultSet = selectRegistrationRequestPreparedStatement.executeQuery();
+			selectRegistrationRequestPS.setBoolean(1, true);
+			selectRegistrationRequestPS.setString(2, referenceNumber.trim());
+			selectRegistrationRequestPS.setString(3, authToken.trim());
+			selectRegistrationRequestPS.setString(4, schoolData.getInstituteEmail().trim());			
+			selectRegistrationRequestPS.setString(5, RequestedStatus.approved.name());
+			selectResultSet = selectRegistrationRequestPS.executeQuery();
 			if(!selectResultSet.next()) {
+				instituteDaoProcessStatus = InstituteDaoProcessStatus.invalidreferencenumber;
 				System.out.println("select query exception occur inside SchoolRegistrationDAO.registerSchool");
-				return false;
+				if(connection != null)
+					connection.rollback();
+				return instituteDaoProcessStatus;
 			}
 
-			Long registrationRequestId = selectResultSet.getLong(idField);
-			updateRegistrationRequestPreparedStatement.setBoolean(1, false);
-			updateRegistrationRequestPreparedStatement.setString(2, RequestedStatus.registered.name());
-			updateRegistrationRequestPreparedStatement.setLong(3, registrationRequestId);
-			int updateRowCount = updateRegistrationRequestPreparedStatement.executeUpdate();
+			Long registrationRequestId = selectResultSet.getLong(Tables.InstituteRegistrationRequest.id);
+			updateRegistrationRequestPS.setBoolean(1, false);
+			updateRegistrationRequestPS.setString(2, RequestedStatus.registered.name());
+			updateRegistrationRequestPS.setLong(3, registrationRequestId);
+			int updateRowCount = updateRegistrationRequestPS.executeUpdate();
 
 			if(updateRowCount == 0) {
+				instituteDaoProcessStatus = InstituteDaoProcessStatus.servererror;
 				System.out.println("update query exception occur inside SchoolRegistrationDAO.registerSchool");
-				return false;
+				if(connection != null)
+					connection.rollback();
+				return instituteDaoProcessStatus;
 			}
 
-			schoolRegistrationPreparedStatement.setString(1, schoolData.getName().trim());//schoolName
+			headInstituteRegistrationPS.setString(1, schoolData.getInstituteName().trim());//schoolName
+			headInstituteRegistrationPS.setString(2, schoolData.getInstituteEmail().trim()); //schooleEmail
+			headInstituteRegistrationPS.setString(3, schoolData.getInstitutePhoneNumber().trim()); //phoneNumber
+			String alternativeNumber = "";
+			if( schoolData.getInstituteOfficeNumber() != null)
+				alternativeNumber = schoolData.getInstituteOfficeNumber().trim();
+			headInstituteRegistrationPS.setString(4, alternativeNumber); //officeNumber
+
+			headInstituteRegistrationPS.setString(5, StringUtils.getValidStringValue(schoolData.getInstituteAddressLine1())); //addressLine1
+			headInstituteRegistrationPS.setString(6, StringUtils.getValidStringValue(schoolData.getInstituteAddressLine2())); //addressLine2
+			headInstituteRegistrationPS.setString(7, schoolData.getInstituteCity().trim()); //city
+			headInstituteRegistrationPS.setString(8, schoolData.getInstituteState().trim()); //state
+			headInstituteRegistrationPS.setString(9, schoolData.getInstituteCountry().trim()); //country
+			headInstituteRegistrationPS.setString(10, schoolData.getInstitutePinCode().trim()); //pincode
 
 			String schoolRegistrationId = "";
-			if( schoolData.getRegistrationId() != null)
-				schoolRegistrationId = schoolData.getRegistrationId().trim();
-			schoolRegistrationPreparedStatement.setString(2, schoolRegistrationId); //schoolRegistrationId
-
-			schoolRegistrationPreparedStatement.setString(3, schoolData.getUserName().trim()); //schoolUserName
-			schoolRegistrationPreparedStatement.setString(4, schoolData.getEmail().trim()); //schooleEmail
-
-			schoolRegistrationPreparedStatement.setString(5, StringUtils.getValidStringValue(schoolData.getAddressLine1())); //addressLine1
-			schoolRegistrationPreparedStatement.setString(6, StringUtils.getValidStringValue(schoolData.getAddressLine2())); //addressLine2
-			schoolRegistrationPreparedStatement.setString(7, schoolData.getCity().trim()); //city
-			schoolRegistrationPreparedStatement.setString(8, schoolData.getState().trim()); //state
-			schoolRegistrationPreparedStatement.setString(9, schoolData.getPinCode().trim()); //pincode
-
-			schoolRegistrationPreparedStatement.setString(10, schoolData.getPhoneNumber().trim()); //phoneNumber
-			String alternativeNumber = "";
-			if( schoolData.getOfficeNumber() != null)
-				schoolRegistrationId = schoolData.getOfficeNumber().trim();
-			schoolRegistrationPreparedStatement.setString(11, alternativeNumber); //officeNumber
-			
-			schoolRegistrationPreparedStatement.setString(12, schoolData.getCountry().trim()); //country
-			Long boardId = SchoolBoard.getBoardIdGivenAffiliatedTo(schoolData.getBoard().trim());
-			schoolRegistrationPreparedStatement.setLong(13, boardId); //schoolBoard
-			schoolRegistrationPreparedStatement.setString(14, schoolData.getType().trim().toUpperCase()); //schoolType
-			schoolRegistrationPreparedStatement.setLong(15, registrationRequestId);
-			schoolRegistrationPreparedStatement.executeUpdate();
-			
-			resultSet = schoolRegistrationPreparedStatement.getGeneratedKeys();
-			Long generatedSchoolId = -1L;
+			if( schoolData.getInstituteRegistrationId() != null)
+				schoolRegistrationId = schoolData.getInstituteRegistrationId().trim();
+			headInstituteRegistrationPS.setString(11, schoolRegistrationId); //schoolRegistrationId
+			headInstituteRegistrationPS.setString(12, schoolData.getInstituteUserName().trim()); //schoolUserName
+			headInstituteRegistrationPS.setString(13, schoolData.getGroupOfInstitute().trim().toLowerCase());
+			headInstituteRegistrationPS.setInt(14, schoolData.getNoOfInstitute());
+			headInstituteRegistrationPS.setLong(15, registrationRequestId);
+			headInstituteRegistrationPS.execute();
+			resultSet = headInstituteRegistrationPS.getGeneratedKeys();
+			Long generatedHeadInstituteId = -1L;
 			if(resultSet.next()) {
-				 generatedSchoolId = resultSet.getLong(1);
+				 generatedHeadInstituteId = resultSet.getLong(1);
 			} else {
+				instituteDaoProcessStatus = InstituteDaoProcessStatus.servererror;
 				System.out.println("school registration query exception occur inside SchoolRegistrationDAO.registerSchool");
-				return false;
+				if(connection != null)
+					connection.rollback();
+				return instituteDaoProcessStatus;
 			}
-				
-			schoolLoginPreparedStatement.setString(1, schoolData.getUserName().trim());
-			schoolLoginPreparedStatement.setString(2, schoolData.getEmail().trim());
-			schoolLoginPreparedStatement.setString(3, bCryptPassword);
-			schoolLoginPreparedStatement.setString(4, PasswordState.redirectstate.name());
-			schoolLoginPreparedStatement.setString(5, Role.SUPERADMIN.name());
-			schoolLoginPreparedStatement.setString(6, "ALL=1");
-			schoolLoginPreparedStatement.setBoolean(7, true);
-			schoolLoginPreparedStatement.setString(8, schoolData.getName().trim());
-			schoolLoginPreparedStatement.setLong(9, generatedSchoolId);
-			schoolLoginPreparedStatement.setString(10, LoginTypeEnum.SCHOOL.name());
-			schoolLoginPreparedStatement.execute();
+
+
+			if(schoolData.getGroupOfInstitute().equalsIgnoreCase("single") && schoolData.getNoOfInstitute() == 1) {
+				instituteRegistrationPS.setString(1, schoolData.getInstituteName().trim());//schoolName
+				instituteRegistrationPS.setString(2, schoolData.getInstituteEmail().trim()); //schooleEmail
+				instituteRegistrationPS.setString(3, schoolData.getInstitutePhoneNumber().trim()); //phoneNumber
+				instituteRegistrationPS.setString(4, alternativeNumber); //officeNumber
+
+				instituteRegistrationPS.setString(5, StringUtils.getValidStringValue(schoolData.getInstituteAddressLine1())); //addressLine1
+				instituteRegistrationPS.setString(6, StringUtils.getValidStringValue(schoolData.getInstituteAddressLine2())); //addressLine2
+				instituteRegistrationPS.setString(7, schoolData.getInstituteCity().trim()); //city
+				instituteRegistrationPS.setString(8, schoolData.getInstituteState().trim()); //state
+				instituteRegistrationPS.setString(9, schoolData.getInstituteCountry().trim()); //country
+				instituteRegistrationPS.setString(10, schoolData.getInstitutePinCode().trim()); //pincode
+				instituteRegistrationPS.setString(11, schoolRegistrationId); //schoolRegistrationId
+				instituteRegistrationPS.setString(12, schoolData.getInstituteUserName().trim()); //schoolUserName
+				instituteRegistrationPS.setLong(13, generatedHeadInstituteId);
+				instituteRegistrationPS.execute();
+			}
+
+			instituteLoginPS.setString(1, schoolData.getInstituteUserName().trim());
+			instituteLoginPS.setString(2, schoolData.getInstituteEmail().trim());
+			instituteLoginPS.setString(3, bCryptPassword);
+			instituteLoginPS.setString(4, PasswordState.redirectstate.name());
+			instituteLoginPS.setString(5, Role.institutegroupadmin.name());
+			instituteLoginPS.setString(6, "ALL=1");
+			instituteLoginPS.setBoolean(7, true);
+			instituteLoginPS.setString(8, schoolData.getInstituteName().trim());
+			instituteLoginPS.setLong(9, generatedHeadInstituteId);
+			instituteLoginPS.setString(10, LoginTypeEnum.headinstitute.name());
+			instituteLoginPS.execute();
 			connection.commit();
-			isSuccessfull = true;
+			instituteDaoProcessStatus = InstituteDaoProcessStatus.validschool;
 		} catch(Exception exception) {
 			System.out.println("connection exception happen");
 			exception.printStackTrace();
 			if(connection != null)
 				connection.rollback();
-			isSuccessfull = false;
+			instituteDaoProcessStatus = InstituteDaoProcessStatus.servererror;
 		} finally {
 			if(resultSet != null)
 				resultSet.close();
 
-			if(schoolRegistrationPreparedStatement != null)
-				schoolRegistrationPreparedStatement.close();
+			if(headInstituteRegistrationPS != null)
+				headInstituteRegistrationPS.close();
 
-			if(schoolLoginPreparedStatement != null)
-				schoolLoginPreparedStatement.close();
+			if(instituteRegistrationPS != null)
+				instituteRegistrationPS.close();
 
-			if(selectRegistrationRequestPreparedStatement != null)
-				selectRegistrationRequestPreparedStatement.close();
+			if(instituteLoginPS != null)
+				instituteLoginPS.close();
 
-			if(updateRegistrationRequestPreparedStatement != null)
-				updateRegistrationRequestPreparedStatement.close();
+			if(selectRegistrationRequestPS != null)
+				selectRegistrationRequestPS.close();
+
+			if(updateRegistrationRequestPS != null)
+				updateRegistrationRequestPS.close();
 
 			if(connection != null)
 				connection.close();
 		}
-		return isSuccessfull;
+		return instituteDaoProcessStatus;
 	}
 }

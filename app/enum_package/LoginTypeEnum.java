@@ -1,9 +1,10 @@
 package enum_package;
 
 public enum LoginTypeEnum {
-	GENERAL,
-	GUARDIAN,
-	STUDENT,
-	SCHOOL,
-	EMP;
+	general,
+	guardian,
+	student,
+	institite,
+	headinstitute,
+	emp;
 }

@@ -50,7 +50,7 @@ public class SRPController extends CustomController {
 			session(SessionKey.SCHOOL_ID.name(), Long.toString(schoolId));
 		}
 
-		if(type.equalsIgnoreCase(LoginTypeEnum.SCHOOL.name()) && role.equalsIgnoreCase("SUPERADMIN")) {
+		if(type.equalsIgnoreCase(LoginTypeEnum.institite.name()) && role.equalsIgnoreCase("SUPERADMIN")) {
 			if(passwordState.equalsIgnoreCase(PasswordState.redirectstate.name()))
 				return redirect(controllers.institute.routes.InstituteInfoController.getInstituteMandInfo());
 			return ok(dashboard.render(session().get(SessionKey.USER_NAME.name()), "SUPERADMIN"));

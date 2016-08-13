@@ -60,7 +60,7 @@ public class NewInstituteRequestController extends CustomController {
 		}
 
 		if(requestRefNumber == null || requestRefNumber.isEmpty()) {
-			flash("error", "Something wrong happen with our server. Please try again.");
+			flash("error", "Something wrong happen with our server side. Please try again.");
 			return redirect(controllers.institute.routes.NewInstituteRequestController.preAddNewInstituteRequest());
 		}
 

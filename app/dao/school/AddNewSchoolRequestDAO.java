@@ -23,7 +23,8 @@ public class AddNewSchoolRequestDAO {
 				Tables.InstituteRegistrationRequest.phoneNumber, Tables.InstituteRegistrationRequest.officeNumber, Tables.InstituteRegistrationRequest.registrationId,
 				Tables.InstituteRegistrationRequest.contactPersonName, Tables.InstituteRegistrationRequest.addressLine1, Tables.InstituteRegistrationRequest.addressLine2,
 				Tables.InstituteRegistrationRequest.city, Tables.InstituteRegistrationRequest.state, Tables.InstituteRegistrationRequest.country, Tables.InstituteRegistrationRequest.pinCode,
-				Tables.InstituteRegistrationRequest.groupOfInstitute, Tables.InstituteRegistrationRequest.noOfInstitute, Tables.InstituteRegistrationRequest.query);
+				Tables.InstituteRegistrationRequest.groupOfInstitute, Tables.InstituteRegistrationRequest.noOfInstitute, Tables.InstituteRegistrationRequest.query,
+				Tables.InstituteRegistrationRequest.requestNumber);
 
 		String requestNumber = "";
 		try {
@@ -47,7 +48,6 @@ public class AddNewSchoolRequestDAO {
 			preparedStatement.setInt(14, addNewSchoolRequest.getNoOfInstitute());
 			preparedStatement.setString(15, StringUtils.getValidStringValue(addNewSchoolRequest.getQuery()));
 			preparedStatement.setString(16, requestNumber);
-
 			preparedStatement.execute();
 		} catch(Exception exception) {
 			System.out.println("connection exception happen");
@@ -171,7 +171,7 @@ public class AddNewSchoolRequestDAO {
 //	}
 
 	public InstituteFormData isValidSchoolRegistrationRequest(String requestNumber, String otp, String emailId) throws SQLException {
-		InstituteFormData schoolFormData = null;
+		InstituteFormData instituteFormData = new InstituteFormData();;
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
@@ -185,7 +185,7 @@ public class AddNewSchoolRequestDAO {
 				Tables.InstituteRegistrationRequest.email, Tables.InstituteRegistrationRequest.status);
 
 		try {
-			schoolFormData = new InstituteFormData();
+			
 			connection = DB.getDataSource("srp").getConnection();
 			preparedStatement = connection.prepareStatement(selectQuery, ResultSet.TYPE_FORWARD_ONLY, ResultSet .CONCUR_UPDATABLE);
 			preparedStatement.setBoolean(1, true);
@@ -196,27 +196,28 @@ public class AddNewSchoolRequestDAO {
 
 			resultSet = preparedStatement.executeQuery();
 			if(resultSet.next()) {
-				schoolFormData.setName(resultSet.getString(Tables.InstituteRegistrationRequest.name));
-				schoolFormData.setEmail(resultSet.getString(Tables.InstituteRegistrationRequest.email));
-				schoolFormData.setUserName(resultSet.getString(Tables.InstituteRegistrationRequest.email));
-				schoolFormData.setPhoneNumber(resultSet.getString(Tables.InstituteRegistrationRequest.phoneNumber));
-				schoolFormData.setOfficeNumber(resultSet.getString(Tables.InstituteRegistrationRequest.officeNumber));
-				schoolFormData.setRegistrationId(resultSet.getString(Tables.InstituteRegistrationRequest.registrationId));
-				schoolFormData.setAddressLine1(resultSet.getString(Tables.InstituteRegistrationRequest.addressLine1));
-				schoolFormData.setAddressLine2(resultSet.getString(Tables.InstituteRegistrationRequest.addressLine2));
-				schoolFormData.setCity(resultSet.getString(Tables.InstituteRegistrationRequest.city));
-				schoolFormData.setState(resultSet.getString(Tables.InstituteRegistrationRequest.state));
-				schoolFormData.setCountry(resultSet.getString(Tables.InstituteRegistrationRequest.country));
-				schoolFormData.setPinCode(resultSet.getString(Tables.InstituteRegistrationRequest.pinCode));
-				schoolFormData.setGroupOfInstitute(resultSet.getString(Tables.InstituteRegistrationRequest.groupOfInstitute));
-				schoolFormData.setNoOfInstitute(resultSet.getInt(Tables.InstituteRegistrationRequest.noOfInstitute));
-				schoolFormData.setProcessingStatus(InstituteDaoProcessStatus.validschool);
+				instituteFormData.setInstituteName(resultSet.getString(Tables.InstituteRegistrationRequest.name));
+				instituteFormData.setInstituteEmail(resultSet.getString(Tables.InstituteRegistrationRequest.email));
+				instituteFormData.setInstituteUserName(resultSet.getString(Tables.InstituteRegistrationRequest.email));
+				instituteFormData.setInstitutePhoneNumber(resultSet.getString(Tables.InstituteRegistrationRequest.phoneNumber));
+				instituteFormData.setInstituteOfficeNumber(resultSet.getString(Tables.InstituteRegistrationRequest.officeNumber));
+				instituteFormData.setInstituteRegistrationId(resultSet.getString(Tables.InstituteRegistrationRequest.registrationId));
+				instituteFormData.setInstituteAddressLine1(resultSet.getString(Tables.InstituteRegistrationRequest.addressLine1));
+				instituteFormData.setInstituteAddressLine2(resultSet.getString(Tables.InstituteRegistrationRequest.addressLine2));
+				instituteFormData.setInstituteCity(resultSet.getString(Tables.InstituteRegistrationRequest.city));
+				instituteFormData.setInstituteState(resultSet.getString(Tables.InstituteRegistrationRequest.state));
+				instituteFormData.setInstituteCountry(resultSet.getString(Tables.InstituteRegistrationRequest.country));
+				instituteFormData.setInstitutePinCode(resultSet.getString(Tables.InstituteRegistrationRequest.pinCode));
+				instituteFormData.setGroupOfInstitute(resultSet.getString(Tables.InstituteRegistrationRequest.groupOfInstitute));
+				instituteFormData.setNoOfInstitute(resultSet.getInt(Tables.InstituteRegistrationRequest.noOfInstitute));
+				instituteFormData.setProcessingStatus(InstituteDaoProcessStatus.validschool);
 			} else {
-//				schoolFormData.setValidSchool(false);
+				instituteFormData.setProcessingStatus(InstituteDaoProcessStatus.invalidschool);
 			}
 		} catch(Exception exception) {
 			System.out.println("connection exception happen");
 			exception.printStackTrace();
+			instituteFormData.setProcessingStatus(InstituteDaoProcessStatus.invalidschool);
 		} finally {
 			if(resultSet != null)
 				resultSet.close();
@@ -225,6 +226,6 @@ public class AddNewSchoolRequestDAO {
 			if(connection != null)
 				connection.close();
 		}
-		return schoolFormData;
+		return instituteFormData;
 	}
 }
