@@ -1,4 +1,4 @@
-package views.forms.school;
+package views.forms.institute;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +12,7 @@ import utils.TimeUtiles;
 import utils.ValidateFields;
 
 @Data
-public class FirstTimeSchoolUpdateForm {
+public class FirstTimeInstituteUpdateForm {
 	private int numberOfShift;
 	private String hostelFacilitiesIsAvailable;
 	private String hostelIsCompulsory;
@@ -27,7 +27,7 @@ public class FirstTimeSchoolUpdateForm {
 	private boolean isHostelFacilitiesAvailable;
 	private boolean isHostelCompulsory;
 	private String schoolDateFormat;
-	private List<SchoolShiftAndClassTimingInfoForm.Shift> shifts;
+	private List<InstituteShiftAndClassTimingInfoForm.Shift> shifts;
 
 	public List<ValidationError> validate() {
 		List<ValidationError> errors = new ArrayList<>();

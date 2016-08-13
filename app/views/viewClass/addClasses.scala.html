@@ -1,4 +1,4 @@
-@(classForm : Form[views.forms.school.ClassForm])
+@(classForm : Form[views.forms.institute.ClassForm])
 @mainDashboard("Add Class"){
 <div class="sixteen wide column" id="content">
   <h2><i class="signal icon"></i> Classes</h2>
@@ -40,7 +40,7 @@
   <div class="ui modal addSchool-modal"id="addSchool_modal">
     <div class="header" style="">Add New Class</div>
     <div class="content">
-      <form class="ui form" method="POST" action="@school.routes.ClassController.postAddClass()">
+      <form class="ui form" method="POST" action="@institute.routes.ClassController.postAddClass()">
         <div class="field">
           <label>class Name</label>
           <input name="className" placeholder="className" type="text" >

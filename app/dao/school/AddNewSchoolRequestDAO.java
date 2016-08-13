@@ -7,13 +7,13 @@ import java.sql.SQLException;
 
 import play.db.DB;
 import utils.StringUtils;
-import views.forms.school.AddNewSchoolRequest;
-import views.forms.school.SchoolFormData;
+import views.forms.institute.AddNewInstituteRequest;
+import views.forms.institute.InstituteFormData;
 import dao.Tables;
 import enum_package.RequestedStatus;
 
 public class AddNewSchoolRequestDAO {
-	public String generateRequest(AddNewSchoolRequest addNewSchoolRequest) throws Exception {
+	public String generateRequest(AddNewInstituteRequest addNewSchoolRequest) throws Exception {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 
@@ -26,22 +26,22 @@ public class AddNewSchoolRequestDAO {
 
 		String requestNumber = "";
 		try {
-			requestNumber = StringUtils.getSchoolRequestRegistrationNumber(addNewSchoolRequest.getSchoolName());
+			requestNumber = StringUtils.getSchoolRequestRegistrationNumber(addNewSchoolRequest.getName());
 
 			connection = DB.getDataSource("srp").getConnection();
 			preparedStatement = connection.prepareStatement(insertQuery);
-			preparedStatement.setString(1, addNewSchoolRequest.getSchoolName().trim());
-			preparedStatement.setString(2, addNewSchoolRequest.getSchoolEmail().trim());
-			preparedStatement.setString(3, addNewSchoolRequest.getSchoolMobileNumber().trim());
-			preparedStatement.setString(4, StringUtils.getValidStringValue(addNewSchoolRequest.getSchoolAlternativeNumber()));
-			preparedStatement.setString(5, StringUtils.getValidStringValue(addNewSchoolRequest.getSchoolRegistrationId()));
+			preparedStatement.setString(1, addNewSchoolRequest.getName().trim());
+			preparedStatement.setString(2, addNewSchoolRequest.getEmail().trim());
+			preparedStatement.setString(3, addNewSchoolRequest.getPhoneNumber().trim());
+			preparedStatement.setString(4, StringUtils.getValidStringValue(addNewSchoolRequest.getOfficeNumber()));
+			preparedStatement.setString(5, StringUtils.getValidStringValue(addNewSchoolRequest.getRegistrationId()));
 			preparedStatement.setString(6, StringUtils.getValidStringValue(addNewSchoolRequest.getContactPersonName()));
-			preparedStatement.setString(7, StringUtils.getValidStringValue(addNewSchoolRequest.getSchoolAddressLine1()));
-			preparedStatement.setString(8, StringUtils.getValidStringValue(addNewSchoolRequest.getSchoolAddressLine2())); 
+			preparedStatement.setString(7, StringUtils.getValidStringValue(addNewSchoolRequest.getAddressLine1()));
+			preparedStatement.setString(8, StringUtils.getValidStringValue(addNewSchoolRequest.getAddressLine2())); 
 			preparedStatement.setString(9, addNewSchoolRequest.getCity().trim());
 			preparedStatement.setString(10, addNewSchoolRequest.getState().trim());
 			preparedStatement.setString(11, addNewSchoolRequest.getCountry().trim());
-			preparedStatement.setString(12, addNewSchoolRequest.getPincode().trim());
+			preparedStatement.setString(12, addNewSchoolRequest.getPinCode().trim());
 			preparedStatement.setString(13, addNewSchoolRequest.getGroupOfInstitute().trim());
 			preparedStatement.setInt(14, addNewSchoolRequest.getNoOfInstitute());
 			preparedStatement.setString(15, StringUtils.getValidStringValue(addNewSchoolRequest.getQuery()));
@@ -169,8 +169,8 @@ public class AddNewSchoolRequestDAO {
 //		return schools; 
 //	}
 
-	public SchoolFormData isValidSchoolRegistrationRequest(String requestNumber, String otp, String emailId) throws SQLException {
-		SchoolFormData schoolFormData = null;
+	public InstituteFormData isValidSchoolRegistrationRequest(String requestNumber, String otp, String emailId) throws SQLException {
+		InstituteFormData schoolFormData = null;
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
@@ -184,7 +184,7 @@ public class AddNewSchoolRequestDAO {
 				Tables.InstituteRegistrationRequest.email, Tables.InstituteRegistrationRequest.status);
 
 		try {
-			schoolFormData = new SchoolFormData();
+			schoolFormData = new InstituteFormData();
 			connection = DB.getDataSource("srp").getConnection();
 			preparedStatement = connection.prepareStatement(selectQuery, ResultSet.TYPE_FORWARD_ONLY, ResultSet .CONCUR_UPDATABLE);
 			preparedStatement.setBoolean(1, true);
@@ -195,18 +195,18 @@ public class AddNewSchoolRequestDAO {
 
 			resultSet = preparedStatement.executeQuery();
 			if(resultSet.next()) {
-				schoolFormData.setSchoolName(resultSet.getString(Tables.InstituteRegistrationRequest.name));
-				schoolFormData.setSchoolEmail(resultSet.getString(Tables.InstituteRegistrationRequest.email));
-				schoolFormData.setSchoolUserName(resultSet.getString(Tables.InstituteRegistrationRequest.email));
-				schoolFormData.setSchoolMobileNumber(resultSet.getString(Tables.InstituteRegistrationRequest.phoneNumber));
-				schoolFormData.setSchoolAlternativeNumber(resultSet.getString(Tables.InstituteRegistrationRequest.officeNumber));
-				schoolFormData.setSchoolRegistrationId(resultSet.getString(Tables.InstituteRegistrationRequest.registrationId));
-				schoolFormData.setSchoolAddressLine1(resultSet.getString(Tables.InstituteRegistrationRequest.addressLine1));
-				schoolFormData.setSchoolAddressLine2(resultSet.getString(Tables.InstituteRegistrationRequest.addressLine2));
+				schoolFormData.setName(resultSet.getString(Tables.InstituteRegistrationRequest.name));
+				schoolFormData.setEmail(resultSet.getString(Tables.InstituteRegistrationRequest.email));
+				schoolFormData.setUserName(resultSet.getString(Tables.InstituteRegistrationRequest.email));
+				schoolFormData.setPhoneNumber(resultSet.getString(Tables.InstituteRegistrationRequest.phoneNumber));
+				schoolFormData.setOfficeNumber(resultSet.getString(Tables.InstituteRegistrationRequest.officeNumber));
+				schoolFormData.setRegistrationId(resultSet.getString(Tables.InstituteRegistrationRequest.registrationId));
+				schoolFormData.setAddressLine1(resultSet.getString(Tables.InstituteRegistrationRequest.addressLine1));
+				schoolFormData.setAddressLine2(resultSet.getString(Tables.InstituteRegistrationRequest.addressLine2));
 				schoolFormData.setCity(resultSet.getString(Tables.InstituteRegistrationRequest.city));
 				schoolFormData.setState(resultSet.getString(Tables.InstituteRegistrationRequest.state));
 				schoolFormData.setCountry(resultSet.getString(Tables.InstituteRegistrationRequest.country));
-				schoolFormData.setPincode(resultSet.getString(Tables.InstituteRegistrationRequest.pinCode));
+				schoolFormData.setPinCode(resultSet.getString(Tables.InstituteRegistrationRequest.pinCode));
 				schoolFormData.setGroupOfInstitute(resultSet.getString(Tables.InstituteRegistrationRequest.groupOfInstitute));
 				schoolFormData.setNoOfInstitute(resultSet.getInt(Tables.InstituteRegistrationRequest.noOfInstitute));
 				schoolFormData.setValidSchool(true);

@@ -1,4 +1,4 @@
-@(subjects : Form[views.forms.school.SubjectForm])
+@(subjects : Form[views.forms.institute.SubjectForm])
 @import helper._
 <html>
 <body>
@@ -10,7 +10,7 @@
    }
 </script>
 
-	<form method="POST" action="@school.routes.SubjectController.postAddSubjects()">
+	<form method="POST" action="@institute.routes.SubjectController.postAddSubjects()">
 	
 	  <table id="myTable">
 	  <tr>

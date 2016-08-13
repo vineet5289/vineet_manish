@@ -2,12 +2,12 @@ package controllers;
 
 import play.data.Form;
 import play.mvc.Result;
-import views.forms.school.SchoolFormData;
+import views.forms.institute.InstituteFormData;
 
 public class StudentController extends CustomController {
 	public Result preStudentRegistrationRequest() {
-		SchoolFormData studentData = new SchoolFormData();
-		Form<SchoolFormData> schoolForm = Form.form(SchoolFormData.class).fill(studentData);
+		InstituteFormData studentData = new InstituteFormData();
+		Form<InstituteFormData> schoolForm = Form.form(InstituteFormData.class).fill(studentData);
 		return ok("");
 //		return ok(schoolFieldSetIndex.render(schoolForm,
 //				State.makeStateMap(studentData),
@@ -17,7 +17,7 @@ public class StudentController extends CustomController {
 	}
 
 	public Result postStudentRegistrationRequest() {
-		Form<SchoolFormData> schoolForm = Form.form(SchoolFormData.class).bindFromRequest();
+		Form<InstituteFormData> schoolForm = Form.form(InstituteFormData.class).bindFromRequest();
 		return ok("school Registration completed");
 	}
 }

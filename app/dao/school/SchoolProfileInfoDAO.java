@@ -14,10 +14,10 @@ import models.SchoolBoard;
 import play.db.DB;
 import utils.DateUtiles;
 import utils.ShiftGenerator;
-import views.forms.school.FirstTimeSchoolUpdateForm;
-import views.forms.school.SchoolGeneralInfoFrom;
-import views.forms.school.SchoolHeaderInfoForm;
-import views.forms.school.SchoolShiftAndClassTimingInfoForm;
+import views.forms.institute.FirstTimeInstituteUpdateForm;
+import views.forms.institute.InstituteGeneralInfoForm;
+import views.forms.institute.InstituteHeaderInfoForm;
+import views.forms.institute.InstituteShiftAndClassTimingInfoForm;
 import dao.Tables;
 import enum_package.LoginTypeEnum;
 import enum_package.PasswordState;
@@ -26,11 +26,11 @@ import enum_package.WeekDayEnum;
 
 public class SchoolProfileInfoDAO {
 
-	public SchoolGeneralInfoFrom getSchoolGeneralInfoFrom(Long schoolId) throws SQLException {
+	public InstituteGeneralInfoForm getSchoolGeneralInfoFrom(Long schoolId) throws SQLException {
 		Connection connection = null;
 		PreparedStatement selectStatement = null;
 		ResultSet resultSet = null;
-		SchoolGeneralInfoFrom schoolGeneralInfoFrom = null;
+		InstituteGeneralInfoForm schoolGeneralInfoFrom = null;
 		
 		String selectQuery = String.format("SELECT %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s FROM %s "
 				+ "WHERE %s=? AND %s=?", Tables.School.schoolRegistrationId, Tables.School.schoolAlternativeEmail, Tables.School.officeNumber, Tables.School.addressLine1,
@@ -47,7 +47,7 @@ public class SchoolProfileInfoDAO {
 
 			resultSet = selectStatement.executeQuery();
 			if(resultSet.next()) {				
-				schoolGeneralInfoFrom = new SchoolGeneralInfoFrom();
+				schoolGeneralInfoFrom = new InstituteGeneralInfoForm();
 				schoolGeneralInfoFrom.setSchoolRegistrationId(getString(resultSet.getString(Tables.School.schoolRegistrationId)));
 				schoolGeneralInfoFrom.setSchoolAlternativeEmail(getString(resultSet.getString(Tables.School.schoolAlternativeEmail)));
 				schoolGeneralInfoFrom.setSchoolAlternativeNumber(getString(resultSet.getString(Tables.School.officeNumber)));
@@ -104,11 +104,11 @@ public class SchoolProfileInfoDAO {
 		return schoolGeneralInfoFrom;
 	}
 
-	public SchoolHeaderInfoForm getSchoolHeaderInfoForm(long schoolId) throws SQLException {
+	public InstituteHeaderInfoForm getSchoolHeaderInfoForm(long schoolId) throws SQLException {
 		Connection connection = null;
 		PreparedStatement selectStatement = null;
 		ResultSet resultSet = null;
-		SchoolHeaderInfoForm schoolHeaderInfoForm = null;
+		InstituteHeaderInfoForm schoolHeaderInfoForm = null;
 		String selectQuery = String.format("SELECT %s, %s, %s, %s, %s, %s, %s FROM %s WHERE %s=? AND %s=?;",
 						Tables.School.schoolUserName, Tables.School.name, Tables.School.schoolEmail, Tables.School.phoneNumber,
 						Tables.School.schoolPreferedName, Tables.School.schoolWebsiteUrl, Tables.School.schoolLogoUrl,
@@ -121,7 +121,7 @@ public class SchoolProfileInfoDAO {
 
 			resultSet = selectStatement.executeQuery();
 			if(resultSet.next()) {
-				schoolHeaderInfoForm = new SchoolHeaderInfoForm();
+				schoolHeaderInfoForm = new InstituteHeaderInfoForm();
 				schoolHeaderInfoForm.setSchoolUserName(resultSet.getString(Tables.School.schoolUserName));
 				schoolHeaderInfoForm.setSchoolName(resultSet.getString(Tables.School.name));
 				schoolHeaderInfoForm.setSchoolEmail(resultSet.getString(Tables.School.schoolEmail));
@@ -147,11 +147,11 @@ public class SchoolProfileInfoDAO {
 		return schoolHeaderInfoForm;
 	}
 
-	public SchoolShiftAndClassTimingInfoForm getSchoolShiftAndClassTimingInfoForm(Long schoolId) throws SQLException {
+	public InstituteShiftAndClassTimingInfoForm getSchoolShiftAndClassTimingInfoForm(Long schoolId) throws SQLException {
 		Connection connection = null;
 		PreparedStatement selectStatement = null;
 		ResultSet resultSet = null;
-		SchoolShiftAndClassTimingInfoForm schoolShiftAndClassTimingInfoForm = null;
+		InstituteShiftAndClassTimingInfoForm schoolShiftAndClassTimingInfoForm = null;
 		String selectQuery = String.format("SELECT %s, %s, %s, %s, %s, %s, %s, %s FROM %s WHERE %s=? AND %s=?;", Tables.SchoolShiftInfo.shiftName,
 				Tables.SchoolShiftInfo.shiftClassStartTime, Tables.SchoolShiftInfo.shiftClassEndTime, Tables.SchoolShiftInfo.shiftWeekStartDay,
 				Tables.SchoolShiftInfo.shiftWeekEndDay, Tables.SchoolShiftInfo.shiftStartClassFrom, Tables.SchoolShiftInfo.shiftEndClassTo,
@@ -163,9 +163,9 @@ public class SchoolProfileInfoDAO {
 			selectStatement.setLong(2, schoolId);
 			resultSet = selectStatement.executeQuery();
 			int numberOfShift = 0;
-			List<SchoolShiftAndClassTimingInfoForm.Shift> shifts = new ArrayList<SchoolShiftAndClassTimingInfoForm.Shift>();
+			List<InstituteShiftAndClassTimingInfoForm.Shift> shifts = new ArrayList<InstituteShiftAndClassTimingInfoForm.Shift>();
 			while(resultSet.next()) {
-				SchoolShiftAndClassTimingInfoForm.Shift shift = new SchoolShiftAndClassTimingInfoForm.Shift();
+				InstituteShiftAndClassTimingInfoForm.Shift shift = new InstituteShiftAndClassTimingInfoForm.Shift();
 				shift.setShiftName(resultSet.getString(Tables.SchoolShiftInfo.shiftName));
 				shift.setShiftClassStartTime(resultSet.getString(Tables.SchoolShiftInfo.shiftClassStartTime));
 				shift.setShiftClassEndTime(resultSet.getString(Tables.SchoolShiftInfo.shiftClassEndTime));
@@ -179,7 +179,7 @@ public class SchoolProfileInfoDAO {
 			}
 
 			if(numberOfShift > 0) {				
-				schoolShiftAndClassTimingInfoForm = new SchoolShiftAndClassTimingInfoForm();
+				schoolShiftAndClassTimingInfoForm = new InstituteShiftAndClassTimingInfoForm();
 				schoolShiftAndClassTimingInfoForm.setNumberOfShift(numberOfShift);
 				schoolShiftAndClassTimingInfoForm.setShifts(shifts);
 				if(numberOfShift == 1)
@@ -204,7 +204,7 @@ public class SchoolProfileInfoDAO {
 		return schoolShiftAndClassTimingInfoForm;
 	}
 
-	public boolean updateSchoolGeneralInfo(SchoolGeneralInfoFrom schoolGeneralInfo, Long schoolId) throws SQLException {
+	public boolean updateSchoolGeneralInfo(InstituteGeneralInfoForm schoolGeneralInfo, Long schoolId) throws SQLException {
 		Connection connection = null;
 		PreparedStatement updateStatement = null;
 		ResultSet resultSet = null;
@@ -275,7 +275,7 @@ public class SchoolProfileInfoDAO {
 		return !(rowUpdated == 0);
 	}
 
-	public boolean updateSchoolHeaderInfo(SchoolHeaderInfoForm schoolHeaderInfo, Long schoolId) throws SQLException {
+	public boolean updateSchoolHeaderInfo(InstituteHeaderInfoForm schoolHeaderInfo, Long schoolId) throws SQLException {
 		Connection connection = null;
 		PreparedStatement updateStatement = null;
 		ResultSet resultSet = null;
@@ -309,7 +309,7 @@ public class SchoolProfileInfoDAO {
 		return !(rowUpdated == 0);
 	}
 
-	public boolean updateSchoolShiftAndClassTimingInfo(SchoolShiftAndClassTimingInfoForm schoolShiftAndClassTimingInfo, Long schoolId) throws SQLException {
+	public boolean updateSchoolShiftAndClassTimingInfo(InstituteShiftAndClassTimingInfoForm schoolShiftAndClassTimingInfo, Long schoolId) throws SQLException {
 		Connection connection = null;
 		PreparedStatement updateStatement = null;
 		ResultSet resultSet = null;
@@ -330,7 +330,7 @@ public class SchoolProfileInfoDAO {
 		return !(rowUpdated == 0);
 	}
 
-	public boolean updateSchoolMandInfo(FirstTimeSchoolUpdateForm firstTimeSchoolUpdate, Long schoolId, String userName) throws SQLException {
+	public boolean updateSchoolMandInfo(FirstTimeInstituteUpdateForm firstTimeSchoolUpdate, Long schoolId, String userName) throws SQLException {
 		Connection connection = null;
 		PreparedStatement updateStmtSchoolMadInfo = null;
 		PreparedStatement updateLogin = null;

@@ -1,4 +1,4 @@
-@(schoolForm:       Form[views.forms.school.SchoolFormData],
+@(schoolForm:       Form[views.forms.institute.InstituteFormData],
 schoolBoard:      Map[String, String],
 schoolCategory:   List[String],
 schoolType:       Map[String, String])
@@ -24,7 +24,7 @@ schoolType:       Map[String, String])
                <form
                   class="ui fluid form"
                   id="form1"
-                  action="@routes.SchoolController.postSchoolRegistrationRequest"
+                  action="@institute.routes.InstituteRegistrationController.postInstituteRegistrationRequest"
                   method="Post">
                   <!-- Hidden fields on form -->
                   <input

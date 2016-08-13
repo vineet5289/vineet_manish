@@ -1,11 +1,11 @@
-@(schoolRegister: Form[views.forms.school.AddNewSchoolRequest])
+@(schoolRegister: Form[views.forms.institute.AddNewInstituteRequest])
 
 @import helper._
 @main("registerIndex") {
 <div class="container">
   <div class="well">
 
-    @form(routes.SchoolController.postAddNewSchoolRequest(), 'class -> "form-horizontal") {
+    @form(institute.routes.NewInstituteRequestController.postAddNewInstituteRequest(), 'class -> "form-horizontal") {
       @addNewSchoolRequest(schoolRegister)
     }
   </div>

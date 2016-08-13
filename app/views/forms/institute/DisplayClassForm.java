@@ -1,4 +1,4 @@
-package views.forms.school;
+package views.forms.institute;
 
 import lombok.Data;
 

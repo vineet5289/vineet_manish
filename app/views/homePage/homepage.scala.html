@@ -13,7 +13,7 @@
             </h2>
             <div class="ui message">
                 Here You can raise a request for registration.
-                <a href="@routes.SchoolController.preAddNewSchoolRequest()" target="_blank">Click here</a>
+                <a href="@institute.routes.NewInstituteRequestController.preAddNewInstituteRequest()" target="_blank">Click here</a>
                 to know about us.
             </div>
             <div class="ui stackable two column grid">
@@ -71,7 +71,7 @@
         <div class="two fluid ui inverted buttons">
             <a
                 class="ui teal inverted button"
-                href="@routes.SchoolController.preAddNewSchoolRequest()">
+                href="@institute.routes.NewInstituteRequestController.preAddNewInstituteRequest()">
             <i class="plus icon"></i>FIRST TIME SCHOOL REGISTRATION</a>
             <div class="ui green inverted button" id="completeSchoolRegistration">
                 <i class="checkmark icon"></i>ALREADY REGISTERED ? ENTER OTP
@@ -93,7 +93,7 @@
             id="completeSchoolRegistrationOTPForm"
             method="POST"
             <!-- action="/submitopt"> -->
-            action="@routes.SchoolController.preAddNewSchoolRequest()"
+            action="@institute.routes.NewInstituteRequestController.preAddNewInstituteRequest()"
             <div class="field">
                 <div class="ui label pointing below teal">*E-Mail</div>
                 <input

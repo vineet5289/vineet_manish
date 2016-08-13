@@ -1,4 +1,4 @@
-package views.forms.school;
+package views.forms.institute;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,7 +11,7 @@ import utils.AddressFieldValidationUtils;
 import utils.ValidateFields;
 
 @Data
-public class SchoolGeneralInfoFrom {
+public class InstituteGeneralInfoForm {
 	//non-editable
 		private String state;
 		private String country;
