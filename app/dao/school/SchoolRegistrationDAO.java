@@ -144,12 +144,15 @@ public class SchoolRegistrationDAO {
 				instituteRegistrationPS.setString(12, schoolData.getInstituteUserName().trim()); //schoolUserName
 				instituteRegistrationPS.setLong(13, generatedHeadInstituteId);
 				instituteRegistrationPS.execute();
+
+				instituteLoginPS.setString(4, PasswordState.redirectstate.name());
+			} else {
+				instituteLoginPS.setString(4, PasswordState.finalstate.name());
 			}
 
 			instituteLoginPS.setString(1, schoolData.getInstituteUserName().trim());
 			instituteLoginPS.setString(2, schoolData.getInstituteEmail().trim());
 			instituteLoginPS.setString(3, bCryptPassword);
-			instituteLoginPS.setString(4, PasswordState.redirectstate.name());
 			instituteLoginPS.setString(5, Role.institutegroupadmin.name());
 			instituteLoginPS.setString(6, "ALL=1");
 			instituteLoginPS.setBoolean(7, true);

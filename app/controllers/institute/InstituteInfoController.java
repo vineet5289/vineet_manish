@@ -208,10 +208,8 @@ public class InstituteInfoController extends ClassController {
 			instituteFormData = null;
 		}
 
-		System.out.println("=============> 0000");
 		if(instituteFormData != null && instituteFormData.getGroupOfInstitute().equalsIgnoreCase("single")
 				&& instituteFormData.getNoOfInstitute() == 1) {
-			System.out.println("=============> 1111");
 			Map<String, String> schoolBoards = new HashMap<String, String>();
 			schoolBoards.put("CBSE", "CBSE");
 			schoolBoards.put("ICSE", "ICSE");
@@ -221,14 +219,8 @@ public class InstituteInfoController extends ClassController {
 			schoolBoards.put(affiliatedTo, otherBoard);
 			session(SessionKey.numerofinstituteingroup.name(), instituteFormData.getNoOfInstitute() + "");
 			return ok(schoolMandataryInfo.render(firstTimeUpdateForm, weekList, classList, attendenceType, schoolBoards, SchoolType.schoolTypeToValue));
-		} else if(instituteFormData != null && instituteFormData.getGroupOfInstitute().equalsIgnoreCase("group")
-				&& instituteFormData.getNoOfInstitute() > 1) {
-			System.out.println("=============> 2222222");
-			session(SessionKey.numerofinstituteingroup.name(), instituteFormData.getNoOfInstitute() + "");
-			return ok(groupInstituteFirstUpdate.render(firstTimeUpdateForm, weekList, classList, attendenceType));
 		}
 
-		System.out.println("=============> 3333");
 		flash("error", "Some service problem occur during request process. Please login again.");
 		return redirect(controllers.login_logout.routes.LoginController.logout());
 	}
