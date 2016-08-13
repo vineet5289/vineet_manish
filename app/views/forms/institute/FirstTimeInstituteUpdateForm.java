@@ -3,7 +3,6 @@ package views.forms.institute;
 import java.util.ArrayList;
 import java.util.List;
 
-import enum_package.AttendenceTypeEnum;
 import enum_package.SchoolClassEnum;
 import enum_package.WeekDayEnum;
 import lombok.Data;
@@ -18,17 +17,17 @@ public class FirstTimeInstituteUpdateForm {
 	private int numberOfShift;
 	private String hostelFacilitiesIsAvailable;
 	private String hostelIsCompulsory;
-	private String schoolOfficeWeekStartDay;
-	private String schoolOfficeWeekEndDay;
-	private String schoolClassFrom;
-	private String schoolClassTo;
-	private String schoolOfficeStartTime;
-	private String schoolOfficeEndTime;
-	private String schoolFinancialStartDate;
-	private String schoolFinancialEndDate;
+	private String instituteOfficeWeekStartDay;
+	private String instituteOfficeWeekEndDay;
+	private String instituteClassFrom;
+	private String instituteClassTo;
+	private String instituteOfficeStartTime;
+	private String instituteOfficeEndTime;
+	private String instituteFinancialStartDate;
+	private String instituteFinancialEndDate;
 	private boolean isHostelFacilitiesAvailable;
 	private boolean isHostelCompulsory;
-	private String schoolDateFormat;
+	private String instituteDateFormat;
 	private String instituteBoard;
 	private String instituteType;
 	private List<InstituteShiftAndClassTimingInfoForm.Shift> shifts;
@@ -58,39 +57,39 @@ public class FirstTimeInstituteUpdateForm {
 
 		isHostelCompulsory = (isHostelFacilitiesAvailable && hostelIsCompulsory != null && hostelIsCompulsory.trim().equalsIgnoreCase("true"));
 
-		if(schoolOfficeWeekStartDay == null || !WeekDayEnum.contains(schoolOfficeWeekStartDay)) {
+		if(instituteOfficeWeekStartDay == null || !WeekDayEnum.contains(instituteOfficeWeekStartDay)) {
 			errors.add(new ValidationError("schoolOfficeWeekStartDay", "Please select one of the week day from drop down"));
 		}
 
-		if(schoolOfficeWeekEndDay == null || !WeekDayEnum.contains(schoolOfficeWeekEndDay)) {
+		if(instituteOfficeWeekEndDay == null || !WeekDayEnum.contains(instituteOfficeWeekEndDay)) {
 			errors.add(new ValidationError("schoolOfficeWeekEndDay", "Please select one of the week day from drop down"));
 		}
 
-		if(schoolClassFrom == null || !SchoolClassEnum.contains(schoolClassFrom)) {
+		if(instituteClassFrom == null || !SchoolClassEnum.contains(instituteClassFrom)) {
 			errors.add(new ValidationError("schoolClassFrom", "Please select start class from drop down"));
 		}
 
-		if(schoolClassTo == null || !SchoolClassEnum.contains(schoolClassTo)) {
+		if(instituteClassTo == null || !SchoolClassEnum.contains(instituteClassTo)) {
 			errors.add(new ValidationError("schoolClassTo", "Please select end class from drop down"));
 		}
 
-		if(!(TimeUtiles.isValidTime(schoolOfficeStartTime))) {
+		if(!(TimeUtiles.isValidTime(instituteOfficeStartTime))) {
 			errors.add(new ValidationError("schoolOfficeStartTime", "Please select office open time."));
 		}
 
-		if(!(TimeUtiles.isValidTime(schoolOfficeEndTime))) {
+		if(!(TimeUtiles.isValidTime(instituteOfficeEndTime))) {
 			errors.add(new ValidationError("schoolOfficeEndTime", "Please select closing time."));
 		}
 
-		if(schoolFinancialStartDate == null || schoolFinancialStartDate.trim().isEmpty()) {
+		if(instituteFinancialStartDate == null || instituteFinancialStartDate.trim().isEmpty()) {
 			errors.add(new ValidationError("schoolFinancialStartDate", "Please select financial year start date."));
 		}
 
-		if(schoolFinancialEndDate == null || schoolFinancialEndDate.trim().isEmpty()) {
+		if(instituteFinancialEndDate == null || instituteFinancialEndDate.trim().isEmpty()) {
 			errors.add(new ValidationError("schoolFinancialEndDate", "Please select financial year end date."));
 		}
 
-		if(!ValidateFields.isValidDateFormat(schoolDateFormat)) {
+		if(!ValidateFields.isValidDateFormat(instituteDateFormat)) {
 			errors.add(new ValidationError("schoolDateFormat", "Please select correct date format."));
 		}
 
