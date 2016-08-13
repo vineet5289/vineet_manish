@@ -36,11 +36,6 @@ public class InstituteFormData {
 	private String board;
 	private String type;
 
-	/*
-	 * not set or asked by user, for internal use
-	 * */ 
-	private boolean validSchool;
-
 	public List<ValidationError> validate() {
 		List<ValidationError> errors = new ArrayList<>();
 

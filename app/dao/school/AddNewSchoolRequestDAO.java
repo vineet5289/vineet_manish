@@ -209,9 +209,9 @@ public class AddNewSchoolRequestDAO {
 				schoolFormData.setPinCode(resultSet.getString(Tables.InstituteRegistrationRequest.pinCode));
 				schoolFormData.setGroupOfInstitute(resultSet.getString(Tables.InstituteRegistrationRequest.groupOfInstitute));
 				schoolFormData.setNoOfInstitute(resultSet.getInt(Tables.InstituteRegistrationRequest.noOfInstitute));
-				schoolFormData.setValidSchool(true);
+//				schoolFormData.setValidSchool(true);
 			} else {
-				schoolFormData.setValidSchool(false);
+//				schoolFormData.setValidSchool(false);
 			}
 		} catch(Exception exception) {
 			System.out.println("connection exception happen");

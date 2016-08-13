@@ -40,7 +40,7 @@ public class InstituteRegistrationController extends CustomController {
 		AddNewSchoolRequestDAO schoolRegistrationRequestDAO = new AddNewSchoolRequestDAO();
 		try {
 			InstituteFormData schoolData = schoolRegistrationRequestDAO.isValidSchoolRegistrationRequest(referenceKey, otp, emailId);
-			if(schoolData != null && schoolData.isValidSchool()) {
+			if(schoolData != null) {
 				session(SessionKey.REG_SCHOOL_REQUEST_NUMBER.name(), referenceKey);
 				session(SessionKey.OTP_KEY.name(), otp);
 
