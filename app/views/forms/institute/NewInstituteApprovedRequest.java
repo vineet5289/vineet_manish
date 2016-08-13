@@ -5,7 +5,7 @@ import java.util.Date;
 import lombok.Data;
 
 @Data
-public class NewSchoolApprovedRequest {
+public class NewInstituteApprovedRequest {
 	private Long id;
 	private String referenceNumber = "";
 	private String schoolName = "";
