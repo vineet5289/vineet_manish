@@ -78,7 +78,7 @@ public class SchoolRegistrationDAO {
 				statusField, idField);
 
 		try {
-			String bCryptPassword = RandomGenerator.getBCryptPassword(schoolData.getPassword());
+			String bCryptPassword = RandomGenerator.getBCryptPassword(schoolData.getInstitutePassword());
 
 			connection = DB.getDataSource("srp").getConnection();
 			connection.setAutoCommit(false);
@@ -91,7 +91,7 @@ public class SchoolRegistrationDAO {
 			selectRegistrationRequestPreparedStatement.setBoolean(1, true);
 			selectRegistrationRequestPreparedStatement.setString(2, referenceNumber.trim());
 			selectRegistrationRequestPreparedStatement.setString(3, authToken.trim());
-			selectRegistrationRequestPreparedStatement.setString(4, schoolData.getEmail().trim());			
+			selectRegistrationRequestPreparedStatement.setString(4, schoolData.getInstituteEmail().trim());			
 			selectRegistrationRequestPreparedStatement.setString(5, RequestedStatus.approved.name());
 			selectResultSet = selectRegistrationRequestPreparedStatement.executeQuery();
 			if(!selectResultSet.next()) {
@@ -110,32 +110,32 @@ public class SchoolRegistrationDAO {
 				return false;
 			}
 
-			schoolRegistrationPreparedStatement.setString(1, schoolData.getName().trim());//schoolName
+			schoolRegistrationPreparedStatement.setString(1, schoolData.getInstituteName().trim());//schoolName
 
 			String schoolRegistrationId = "";
-			if( schoolData.getRegistrationId() != null)
-				schoolRegistrationId = schoolData.getRegistrationId().trim();
+			if( schoolData.getInstituteRegistrationId() != null)
+				schoolRegistrationId = schoolData.getInstituteRegistrationId().trim();
 			schoolRegistrationPreparedStatement.setString(2, schoolRegistrationId); //schoolRegistrationId
 
-			schoolRegistrationPreparedStatement.setString(3, schoolData.getUserName().trim()); //schoolUserName
-			schoolRegistrationPreparedStatement.setString(4, schoolData.getEmail().trim()); //schooleEmail
+			schoolRegistrationPreparedStatement.setString(3, schoolData.getInstituteUserName().trim()); //schoolUserName
+			schoolRegistrationPreparedStatement.setString(4, schoolData.getInstituteEmail().trim()); //schooleEmail
 
-			schoolRegistrationPreparedStatement.setString(5, StringUtils.getValidStringValue(schoolData.getAddressLine1())); //addressLine1
-			schoolRegistrationPreparedStatement.setString(6, StringUtils.getValidStringValue(schoolData.getAddressLine2())); //addressLine2
-			schoolRegistrationPreparedStatement.setString(7, schoolData.getCity().trim()); //city
-			schoolRegistrationPreparedStatement.setString(8, schoolData.getState().trim()); //state
-			schoolRegistrationPreparedStatement.setString(9, schoolData.getPinCode().trim()); //pincode
+			schoolRegistrationPreparedStatement.setString(5, StringUtils.getValidStringValue(schoolData.getInstituteAddressLine1())); //addressLine1
+			schoolRegistrationPreparedStatement.setString(6, StringUtils.getValidStringValue(schoolData.getInstituteAddressLine2())); //addressLine2
+			schoolRegistrationPreparedStatement.setString(7, schoolData.getInstituteCity().trim()); //city
+			schoolRegistrationPreparedStatement.setString(8, schoolData.getInstituteState().trim()); //state
+			schoolRegistrationPreparedStatement.setString(9, schoolData.getInstitutePinCode().trim()); //pincode
 
-			schoolRegistrationPreparedStatement.setString(10, schoolData.getPhoneNumber().trim()); //phoneNumber
+			schoolRegistrationPreparedStatement.setString(10, schoolData.getInstitutePhoneNumber().trim()); //phoneNumber
 			String alternativeNumber = "";
-			if( schoolData.getOfficeNumber() != null)
-				schoolRegistrationId = schoolData.getOfficeNumber().trim();
+			if( schoolData.getInstituteOfficeNumber() != null)
+				schoolRegistrationId = schoolData.getInstituteOfficeNumber().trim();
 			schoolRegistrationPreparedStatement.setString(11, alternativeNumber); //officeNumber
 			
-			schoolRegistrationPreparedStatement.setString(12, schoolData.getCountry().trim()); //country
-			Long boardId = SchoolBoard.getBoardIdGivenAffiliatedTo(schoolData.getBoard().trim());
+			schoolRegistrationPreparedStatement.setString(12, schoolData.getInstituteCountry().trim()); //country
+			Long boardId = SchoolBoard.getBoardIdGivenAffiliatedTo(schoolData.getInstituteBoard().trim());
 			schoolRegistrationPreparedStatement.setLong(13, boardId); //schoolBoard
-			schoolRegistrationPreparedStatement.setString(14, schoolData.getType().trim().toUpperCase()); //schoolType
+			schoolRegistrationPreparedStatement.setString(14, schoolData.getInstituteType().trim().toUpperCase()); //schoolType
 			schoolRegistrationPreparedStatement.setLong(15, registrationRequestId);
 			schoolRegistrationPreparedStatement.executeUpdate();
 			
@@ -148,14 +148,14 @@ public class SchoolRegistrationDAO {
 				return false;
 			}
 				
-			schoolLoginPreparedStatement.setString(1, schoolData.getUserName().trim());
-			schoolLoginPreparedStatement.setString(2, schoolData.getEmail().trim());
+			schoolLoginPreparedStatement.setString(1, schoolData.getInstituteUserName().trim());
+			schoolLoginPreparedStatement.setString(2, schoolData.getInstituteEmail().trim());
 			schoolLoginPreparedStatement.setString(3, bCryptPassword);
 			schoolLoginPreparedStatement.setString(4, PasswordState.redirectstate.name());
 			schoolLoginPreparedStatement.setString(5, Role.SUPERADMIN.name());
 			schoolLoginPreparedStatement.setString(6, "ALL=1");
 			schoolLoginPreparedStatement.setBoolean(7, true);
-			schoolLoginPreparedStatement.setString(8, schoolData.getName().trim());
+			schoolLoginPreparedStatement.setString(8, schoolData.getInstituteName().trim());
 			schoolLoginPreparedStatement.setLong(9, generatedSchoolId);
 			schoolLoginPreparedStatement.setString(10, LoginTypeEnum.SCHOOL.name());
 			schoolLoginPreparedStatement.execute();

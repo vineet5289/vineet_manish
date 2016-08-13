@@ -51,7 +51,7 @@ public class InstituteRegistrationController extends CustomController {
 				schoolBoards.put("ICSE", "ICSE");
 				schoolBoards.put("IB", "International Baccalaureate");
 				
-				String affiliatedTo = schoolData.getState().trim().toUpperCase();
+				String affiliatedTo = schoolData.getInstituteState().trim().toUpperCase();
 				String otherBoard = SchoolBoard.getDisplayNameGivenAffiliatedTo(affiliatedTo);
 				schoolBoards.put(affiliatedTo, otherBoard);
 

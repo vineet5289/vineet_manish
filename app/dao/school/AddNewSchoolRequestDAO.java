@@ -196,18 +196,18 @@ public class AddNewSchoolRequestDAO {
 
 			resultSet = preparedStatement.executeQuery();
 			if(resultSet.next()) {
-				schoolFormData.setName(resultSet.getString(Tables.InstituteRegistrationRequest.name));
-				schoolFormData.setEmail(resultSet.getString(Tables.InstituteRegistrationRequest.email));
-				schoolFormData.setUserName(resultSet.getString(Tables.InstituteRegistrationRequest.email));
-				schoolFormData.setPhoneNumber(resultSet.getString(Tables.InstituteRegistrationRequest.phoneNumber));
-				schoolFormData.setOfficeNumber(resultSet.getString(Tables.InstituteRegistrationRequest.officeNumber));
-				schoolFormData.setRegistrationId(resultSet.getString(Tables.InstituteRegistrationRequest.registrationId));
-				schoolFormData.setAddressLine1(resultSet.getString(Tables.InstituteRegistrationRequest.addressLine1));
-				schoolFormData.setAddressLine2(resultSet.getString(Tables.InstituteRegistrationRequest.addressLine2));
-				schoolFormData.setCity(resultSet.getString(Tables.InstituteRegistrationRequest.city));
-				schoolFormData.setState(resultSet.getString(Tables.InstituteRegistrationRequest.state));
-				schoolFormData.setCountry(resultSet.getString(Tables.InstituteRegistrationRequest.country));
-				schoolFormData.setPinCode(resultSet.getString(Tables.InstituteRegistrationRequest.pinCode));
+				schoolFormData.setInstituteName(resultSet.getString(Tables.InstituteRegistrationRequest.name));
+				schoolFormData.setInstituteEmail(resultSet.getString(Tables.InstituteRegistrationRequest.email));
+				schoolFormData.setInstituteUserName(resultSet.getString(Tables.InstituteRegistrationRequest.email));
+				schoolFormData.setInstitutePhoneNumber(resultSet.getString(Tables.InstituteRegistrationRequest.phoneNumber));
+				schoolFormData.setInstituteOfficeNumber(resultSet.getString(Tables.InstituteRegistrationRequest.officeNumber));
+				schoolFormData.setInstituteRegistrationId(resultSet.getString(Tables.InstituteRegistrationRequest.registrationId));
+				schoolFormData.setInstituteAddressLine1(resultSet.getString(Tables.InstituteRegistrationRequest.addressLine1));
+				schoolFormData.setInstituteAddressLine2(resultSet.getString(Tables.InstituteRegistrationRequest.addressLine2));
+				schoolFormData.setInstituteCity(resultSet.getString(Tables.InstituteRegistrationRequest.city));
+				schoolFormData.setInstituteState(resultSet.getString(Tables.InstituteRegistrationRequest.state));
+				schoolFormData.setInstituteCountry(resultSet.getString(Tables.InstituteRegistrationRequest.country));
+				schoolFormData.setInstitutePinCode(resultSet.getString(Tables.InstituteRegistrationRequest.pinCode));
 				schoolFormData.setGroupOfInstitute(resultSet.getString(Tables.InstituteRegistrationRequest.groupOfInstitute));
 				schoolFormData.setNoOfInstitute(resultSet.getInt(Tables.InstituteRegistrationRequest.noOfInstitute));
 				schoolFormData.setProcessingStatus(InstituteDaoProcessStatus.validschool);
