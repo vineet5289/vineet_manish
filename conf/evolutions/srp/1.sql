@@ -126,7 +126,7 @@ CREATE TABLE IF NOT EXISTS institute (
   created_at timestamp DEFAULT CURRENT_TIMESTAMP,
   updated_at timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (id),
-  UNIQUE KEY (school_user_name)
+  UNIQUE KEY (user_name)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS login (
@@ -142,7 +142,7 @@ CREATE TABLE IF NOT EXISTS login (
   is_active tinyint(1) DEFAULT 1 NOT NULL,
   name varchar(150) COLLATE utf8_unicode_ci NOT NULL,
   type enum('GENERAL', 'GUARDIAN', 'STUDENT', 'SCHOOL', 'EMP') DEFAULT 'GENERAL' NOT NULL,
-  school_id bigint(20),
+  institute_id bigint(20),
   PRIMARY KEY (id),
   UNIQUE KEY (user_name)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -176,7 +176,7 @@ CREATE TABLE IF NOT EXISTS employee (
   requested_user_name varchar(225) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (id),
   KEY FK_employee_school_id (school_id),
-  CONSTRAINT FK_employee_school_id FOREIGN KEY (school_id) REFERENCES school (id),
+  CONSTRAINT FK_employee_school_id FOREIGN KEY (school_id) REFERENCES institute (id),
   UNIQUE KEY (user_name)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -188,7 +188,7 @@ CREATE TABLE IF NOT EXISTS school_principle (
 	KEY FK_school_principle_principle_id (principle_id),
 	CONSTRAINT FK_school_principle_principle_id FOREIGN KEY (principle_id) REFERENCES employee (id),
 	KEY FK_school_principle_school_id (school_id),
-    CONSTRAINT FK_school_principle_school_id FOREIGN KEY (school_id) REFERENCES school (id)
+    CONSTRAINT FK_school_principle_school_id FOREIGN KEY (school_id) REFERENCES institute (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS class (
@@ -205,7 +205,7 @@ CREATE TABLE IF NOT EXISTS class (
   user_name varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (id),
   KEY FK_class_school_id (school_id),
-  CONSTRAINT FK_class_school_id FOREIGN KEY (school_id) REFERENCES school (id)
+  CONSTRAINT FK_class_school_id FOREIGN KEY (school_id) REFERENCES institute (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS employee_class (
@@ -265,7 +265,7 @@ CREATE TABLE IF NOT EXISTS student (
   is_active tinyint(1) DEFAULT 1,
   PRIMARY KEY (id),
   KEY FK_student_school_id (school_id),
-  CONSTRAINT FK_student_school_id FOREIGN KEY (school_id) REFERENCES school (id),
+  CONSTRAINT FK_student_school_id FOREIGN KEY (school_id) REFERENCES institute (id),
   UNIQUE KEY (user_name)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -307,6 +307,6 @@ drop table student;
 drop table class;
 drop table guardian;
 drop table employee;
-drop table school;
+drop table institute;
 drop table login;
 drop table board;
