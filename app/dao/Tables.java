@@ -12,33 +12,73 @@ public class Tables {
 		public static String createdAt = "created_at";
 	}
 
-	public static class schoolRegistrationRequest {
-		public static String table = "school_registration_request";
+	public static class InstituteRegistrationRequest {
+		public static String table = "institute_registration_request";
 		public static String id = "id";
-		public static String schoolName = "school_name";
-		public static String schoolEmail = "school_email";
-		public static String mobileNumber = "mobile_number";
-		public static String alternativeNumber= "alternative_number";
-		public static String schoolRegistrationId = "school_registration_id";
-		public static String query = "query";
-		public static String schoolAddressLine1 = "school_address_line1";
-		public static String schoolAddressLine2 = "school_address_line2";
+		public static String name = "name";
+		public static String email = "email";
+		public static String phoneNumber = "phone_number";
+		public static String officeNumber= "office_number";
+		public static String registrationId = "registration_id";
+		public static String contactPersonName = "contact_person_name";
+		public static String addressLine1 = "address_line1";
+		public static String addressLine2 = "address_line2";
 		public static String city = "city";
 		public static String state = "state";
 		public static String country = "country";
-		public static String pinCodeField = "pin_code";
-		public static String statusField = "status";
-		public static String authTokenField = "auth_token";
-		public static String authTokenGenereatedAtField = "auth_token_genereated_at";
-		public static String requestNumberField = "request_number";
-		public static String createdAtField = "created_at";
-		public static String updatedAtField = "updated_at";
-		public static String alertDoneField = "alert_done";
-		public static String isActiveField = "is_active";
-		public static String contractPersonNameField = "contract_person_name";
+		public static String pinCode = "pin_code";
+		public static String groupOfInstitute = "group_of_institute";
+		public static String noOfInstitute = "no_of_institute";
+		public static String query = "query";
+		public static String authToken = "auth_token";
+		public static String authTokenGenereatedAt = "auth_token_genereated_at";
+		public static String status = "status";
+		public static String requestNumber = "request_number";
+		public static String isActive = "is_active";
+		public static String notificationDone = "notification_done";
 		public static String approvalUserName = "approval_user_name";
-		public static String groupOfSchool = "group_of_school";
-		public static String noOfBranch = "no_of_branch";
+		public static String createdAt = "created_at";
+		public static String updatedAt = "updated_at";
+	}
+
+	public static class HeadInstitute {
+		public static String id = "id";
+		public static String name = "name";
+		public static String preferedName = "prefered_name";
+		public static String chairPersonName = "chairperson_name";
+		public static String managingDirector = "managing_director"; 
+		public static String registrationId = "registration_id";
+		public static String userName = "user_name";
+		public static String email = "email"; 
+		public static String alternativeEmail = "alternative_email";
+		public static String addressLine1 = "address_line1";
+		public static String addressLine2 = "address_line2"; 
+		public static String city = "city";
+		public static String state = "state";
+		public static String country = "country";
+		public static String pinCode = "pin_code";
+		public static String phoneNumber = "phone_number";
+		public static String officeNumber = "office_number";
+		public static String officeStartTime = "office_start_time";
+		public static String officeEndTime = "office_end_time";
+		public static String weekStartDay = "week_start_day";
+		public static String weekEndDay = "week_end_day";
+		public static String financialStartDay = "financial_start_day";
+		public static String financialEndDay = "financial_end_day";
+		public static String financialStartMonth = "financial_start_month";
+		public static String financialEndMonth = "financial_end_month";
+		public static String financialStartYear = "financial_start_year";
+		public static String financialEndYear = "financial_end_year";
+		public static String currentFinancialYear = "current_financial_year";
+		public static String dateFormat = "date_format";
+		public static String websiteUrl = "website_url"; 
+		public static String logoUrl = "logo_url";
+		public static String groupOfInstitute = "group_of_institute";
+		public static String noOfInstitute = "no_of_institute";
+		public static String isActive = "is_active";
+		public static String addInstituteRequestId = "add_institute_request_id";
+		public static String createdAt = "created_at";
+		public static String updatedAt = "updated_at";
 	}
 
 	public static class School {

@@ -92,7 +92,7 @@ public class SchoolRegistrationDAO {
 			selectRegistrationRequestPreparedStatement.setString(2, referenceNumber.trim());
 			selectRegistrationRequestPreparedStatement.setString(3, authToken.trim());
 			selectRegistrationRequestPreparedStatement.setString(4, schoolData.getSchoolEmail().trim());			
-			selectRegistrationRequestPreparedStatement.setString(5, RequestedStatus.APPROVED.name());
+			selectRegistrationRequestPreparedStatement.setString(5, RequestedStatus.approved.name());
 			selectResultSet = selectRegistrationRequestPreparedStatement.executeQuery();
 			if(!selectResultSet.next()) {
 				System.out.println("select query exception occur inside SchoolRegistrationDAO.registerSchool");
@@ -101,7 +101,7 @@ public class SchoolRegistrationDAO {
 
 			Long registrationRequestId = selectResultSet.getLong(idField);
 			updateRegistrationRequestPreparedStatement.setBoolean(1, false);
-			updateRegistrationRequestPreparedStatement.setString(2, RequestedStatus.REGISTERED.name());
+			updateRegistrationRequestPreparedStatement.setString(2, RequestedStatus.registered.name());
 			updateRegistrationRequestPreparedStatement.setLong(3, registrationRequestId);
 			int updateRowCount = updateRegistrationRequestPreparedStatement.executeUpdate();
 

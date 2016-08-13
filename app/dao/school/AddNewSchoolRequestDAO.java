@@ -1,83 +1,51 @@
 package dao.school;
 
-import java.security.SecureRandom;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Map;
 
 import play.db.DB;
-import utils.RandomGenerator;
 import utils.StringUtils;
-import views.forms.school.NewSchoolApprovedRequest;
+import views.forms.school.AddNewSchoolRequest;
 import views.forms.school.SchoolFormData;
-import actors.SchoolRequestActorProtocol.ApprovedSchool;
+import dao.Tables;
 import enum_package.RequestedStatus;
 
 public class AddNewSchoolRequestDAO {
-	private String tableName = "school_registration_request";
-	private String idField = "id";
-	private String schoolNameField = "school_name";
-	private String schoolEmailField = "school_email";
-	private String mobileNumberField = "mobile_number";
-	private String alternativeNumberField = "alternative_number";
-	private String schoolRegistrationIdField = "school_registration_id";
-	private String queryField = "query";
-	private String schoolAddressLine1Field = "school_address_line1";
-	private String schoolAddressLine2Field = "school_address_line2";
-	private String cityField = "city";
-	private String stateField = "state";
-	private String countryField = "country";
-	private String pinCodeField = "pin_code";
-	private String statusField = "status";
-	private String authTokenField = "auth_token";
-	private String authTokenGenereatedAtField = "auth_token_genereated_at";
-	private String requestNumberField = "request_number";
-	private String createdAtField = "created_at";
-	private String updatedAtField = "updated_at";
-	private String alertDoneField = "alert_done";
-	private String isActiveField = "is_active";
-	private String contactPersonNameField = "contact_person_name";
-
-	public String generateRequest(Map<String, String> addNewSchoolRequestDetails) throws Exception {
+	public String generateRequest(AddNewSchoolRequest addNewSchoolRequest) throws Exception {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 
-		String insertQuery = String.format("INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) VALUES (?, ?, ?, ?,"
-				+ "?, ?, ?, ?, ?, ?, ?, ?, ?, ?);", tableName, schoolNameField, schoolEmailField, mobileNumberField, alternativeNumberField,
-				schoolRegistrationIdField, queryField, schoolAddressLine1Field, schoolAddressLine2Field, cityField, stateField, 
-				countryField, pinCodeField, contactPersonNameField, requestNumberField);
+		String insertQuery = String.format("INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, "
+				+ "?, ?, ?, ?, ?, ?, ?);", Tables.InstituteRegistrationRequest.table, Tables.InstituteRegistrationRequest.name, Tables.InstituteRegistrationRequest.email,
+				Tables.InstituteRegistrationRequest.phoneNumber, Tables.InstituteRegistrationRequest.officeNumber, Tables.InstituteRegistrationRequest.registrationId,
+				Tables.InstituteRegistrationRequest.contactPersonName, Tables.InstituteRegistrationRequest.addressLine1, Tables.InstituteRegistrationRequest.addressLine2,
+				Tables.InstituteRegistrationRequest.city, Tables.InstituteRegistrationRequest.state, Tables.InstituteRegistrationRequest.country, Tables.InstituteRegistrationRequest.pinCode,
+				Tables.InstituteRegistrationRequest.groupOfInstitute, Tables.InstituteRegistrationRequest.noOfInstitute, Tables.InstituteRegistrationRequest.query);
 
 		String requestNumber = "";
 		try {
-			requestNumber = getRequestNumber(addNewSchoolRequestDetails.get("schoolName"));
+			requestNumber = StringUtils.getSchoolRequestRegistrationNumber(addNewSchoolRequest.getSchoolName());
 
 			connection = DB.getDataSource("srp").getConnection();
 			preparedStatement = connection.prepareStatement(insertQuery);
-			preparedStatement.setString(1, addNewSchoolRequestDetails.get("schoolName").trim());
-			preparedStatement.setString(2, addNewSchoolRequestDetails.get("schoolEmail").trim());
-			preparedStatement.setString(3, addNewSchoolRequestDetails.get("schoolMobileNumber").trim());
-
-			String schoolAlternativeNumber = "";
-			if(addNewSchoolRequestDetails.get("schoolAlternativeNumber") != null)
-				schoolAlternativeNumber = addNewSchoolRequestDetails.get("schoolAlternativeNumber").trim();
-			preparedStatement.setString(4, schoolAlternativeNumber);
-
-			preparedStatement.setString(5, StringUtils.getValidStringValue(addNewSchoolRequestDetails.get("schoolRegistrationId")));
-			preparedStatement.setString(6, StringUtils.getValidStringValue(addNewSchoolRequestDetails.get("query")));
-			preparedStatement.setString(7, StringUtils.getValidStringValue(addNewSchoolRequestDetails.get("schoolAddressLine1")));
-			preparedStatement.setString(8, StringUtils.getValidStringValue(addNewSchoolRequestDetails.get("schoolAddressLine2"))); 
-			preparedStatement.setString(9, addNewSchoolRequestDetails.get("city").trim().toUpperCase());
-			preparedStatement.setString(10, addNewSchoolRequestDetails.get("state").trim().toUpperCase());
-			preparedStatement.setString(11, addNewSchoolRequestDetails.get("country").trim().toUpperCase());
-			preparedStatement.setString(12, addNewSchoolRequestDetails.get("pincode").trim());
-			preparedStatement.setString(13, StringUtils.getValidStringValue(addNewSchoolRequestDetails.get("contactPersonName")));
-			preparedStatement.setString(14, requestNumber);
+			preparedStatement.setString(1, addNewSchoolRequest.getSchoolName().trim());
+			preparedStatement.setString(2, addNewSchoolRequest.getSchoolEmail().trim());
+			preparedStatement.setString(3, addNewSchoolRequest.getSchoolMobileNumber().trim());
+			preparedStatement.setString(4, StringUtils.getValidStringValue(addNewSchoolRequest.getSchoolAlternativeNumber()));
+			preparedStatement.setString(5, StringUtils.getValidStringValue(addNewSchoolRequest.getSchoolRegistrationId()));
+			preparedStatement.setString(6, StringUtils.getValidStringValue(addNewSchoolRequest.getContactPersonName()));
+			preparedStatement.setString(7, StringUtils.getValidStringValue(addNewSchoolRequest.getSchoolAddressLine1()));
+			preparedStatement.setString(8, StringUtils.getValidStringValue(addNewSchoolRequest.getSchoolAddressLine2())); 
+			preparedStatement.setString(9, addNewSchoolRequest.getCity().trim());
+			preparedStatement.setString(10, addNewSchoolRequest.getState().trim());
+			preparedStatement.setString(11, addNewSchoolRequest.getCountry().trim());
+			preparedStatement.setString(12, addNewSchoolRequest.getPincode().trim());
+			preparedStatement.setString(13, addNewSchoolRequest.getGroupOfInstitute().trim());
+			preparedStatement.setInt(14, addNewSchoolRequest.getNoOfInstitute());
+			preparedStatement.setString(15, StringUtils.getValidStringValue(addNewSchoolRequest.getQuery()));
+			preparedStatement.setString(16, requestNumber);
 
 			preparedStatement.execute();
 		} catch(Exception exception) {
@@ -149,57 +117,57 @@ public class AddNewSchoolRequestDAO {
 //		return approvedSchool; 
 //	}
 
-	public List<NewSchoolApprovedRequest> getAllSchoolNeedToBeApproved() throws Exception {
-		List<NewSchoolApprovedRequest> schools = new ArrayList<NewSchoolApprovedRequest>();
-		Connection connection = null;
-		PreparedStatement preparedStatement = null;
-		ResultSet resultSet = null;
-		String selectQuery = String.format("SELECT %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s FROM %s WHERE %s=? AND %s=?;",
-				idField, schoolNameField, schoolEmailField, mobileNumberField, alternativeNumberField, queryField, schoolAddressLine1Field,
-				schoolAddressLine2Field, cityField, stateField, countryField, pinCodeField, statusField, requestNumberField, createdAtField,
-				updatedAtField, contactPersonNameField, tableName, statusField, isActiveField);
-
-		try {
-			connection = DB.getDataSource("srp").getConnection();
-			preparedStatement = connection.prepareStatement(selectQuery, ResultSet.TYPE_FORWARD_ONLY, ResultSet .CONCUR_UPDATABLE);
-			preparedStatement.setString(1, RequestedStatus.REQUESTED.name());
-			preparedStatement.setBoolean(2, true);
-
-			resultSet = preparedStatement.executeQuery();
-			while(resultSet.next()) {
-				NewSchoolApprovedRequest newSchoolApprovedRequest = new NewSchoolApprovedRequest();
-				newSchoolApprovedRequest.setId(resultSet.getLong(idField));
-				newSchoolApprovedRequest.setSchoolName(resultSet.getString(schoolNameField));
-				newSchoolApprovedRequest.setSchoolEmail(resultSet.getString(schoolEmailField));
-				newSchoolApprovedRequest.setSchoolMobileNumber(resultSet.getString(mobileNumberField));
-				newSchoolApprovedRequest.setSchoolAlternativeNumber(resultSet.getString(alternativeNumberField));
-				newSchoolApprovedRequest.setQuery(resultSet.getString(queryField));
-				newSchoolApprovedRequest.setSchoolAddressLine1(resultSet.getString(schoolAddressLine1Field));
-				newSchoolApprovedRequest.setSchoolAddressLine2(resultSet.getString(schoolAddressLine2Field));
-				newSchoolApprovedRequest.setCity(resultSet.getString(cityField));
-				newSchoolApprovedRequest.setState(resultSet.getString(stateField));
-				newSchoolApprovedRequest.setCountry(resultSet.getString(countryField));
-				newSchoolApprovedRequest.setPincode(resultSet.getString(pinCodeField));
-				newSchoolApprovedRequest.setStatus(resultSet.getString(statusField));
-				newSchoolApprovedRequest.setReferenceNumber(resultSet.getString(requestNumberField));
-				newSchoolApprovedRequest.setRequestedAt(resultSet.getTimestamp(createdAtField));
-				newSchoolApprovedRequest.setStatusUpdatedAt(resultSet.getTimestamp(updatedAtField));
-				newSchoolApprovedRequest.setContractPersonName(resultSet.getString(contactPersonNameField));
-				schools.add(newSchoolApprovedRequest);
-			}
-		} catch(Exception exception) {
-			exception.printStackTrace();
-			return null;
-		} finally {
-			if(resultSet != null)
-				resultSet.close();
-			if(preparedStatement != null)
-				preparedStatement.close();
-			if(connection != null)
-				connection.close();
-		}
-		return schools; 
-	}
+//	public List<NewSchoolApprovedRequest> getAllSchoolNeedToBeApproved() throws Exception {
+//		List<NewSchoolApprovedRequest> schools = new ArrayList<NewSchoolApprovedRequest>();
+//		Connection connection = null;
+//		PreparedStatement preparedStatement = null;
+//		ResultSet resultSet = null;
+//		String selectQuery = String.format("SELECT %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s FROM %s WHERE %s=? AND %s=?;",
+//				idField, schoolNameField, schoolEmailField, mobileNumberField, alternativeNumberField, queryField, schoolAddressLine1Field,
+//				schoolAddressLine2Field, cityField, stateField, countryField, pinCodeField, statusField, requestNumberField, createdAtField,
+//				updatedAtField, contactPersonNameField, tableName, statusField, isActiveField);
+//
+//		try {
+//			connection = DB.getDataSource("srp").getConnection();
+//			preparedStatement = connection.prepareStatement(selectQuery, ResultSet.TYPE_FORWARD_ONLY, ResultSet .CONCUR_UPDATABLE);
+//			preparedStatement.setString(1, RequestedStatus.REQUESTED.name());
+//			preparedStatement.setBoolean(2, true);
+//
+//			resultSet = preparedStatement.executeQuery();
+//			while(resultSet.next()) {
+//				NewSchoolApprovedRequest newSchoolApprovedRequest = new NewSchoolApprovedRequest();
+//				newSchoolApprovedRequest.setId(resultSet.getLong(idField));
+//				newSchoolApprovedRequest.setSchoolName(resultSet.getString(schoolNameField));
+//				newSchoolApprovedRequest.setSchoolEmail(resultSet.getString(schoolEmailField));
+//				newSchoolApprovedRequest.setSchoolMobileNumber(resultSet.getString(mobileNumberField));
+//				newSchoolApprovedRequest.setSchoolAlternativeNumber(resultSet.getString(alternativeNumberField));
+//				newSchoolApprovedRequest.setQuery(resultSet.getString(queryField));
+//				newSchoolApprovedRequest.setSchoolAddressLine1(resultSet.getString(schoolAddressLine1Field));
+//				newSchoolApprovedRequest.setSchoolAddressLine2(resultSet.getString(schoolAddressLine2Field));
+//				newSchoolApprovedRequest.setCity(resultSet.getString(cityField));
+//				newSchoolApprovedRequest.setState(resultSet.getString(stateField));
+//				newSchoolApprovedRequest.setCountry(resultSet.getString(countryField));
+//				newSchoolApprovedRequest.setPincode(resultSet.getString(pinCodeField));
+//				newSchoolApprovedRequest.setStatus(resultSet.getString(statusField));
+//				newSchoolApprovedRequest.setReferenceNumber(resultSet.getString(requestNumberField));
+//				newSchoolApprovedRequest.setRequestedAt(resultSet.getTimestamp(createdAtField));
+//				newSchoolApprovedRequest.setStatusUpdatedAt(resultSet.getTimestamp(updatedAtField));
+//				newSchoolApprovedRequest.setContractPersonName(resultSet.getString(contactPersonNameField));
+//				schools.add(newSchoolApprovedRequest);
+//			}
+//		} catch(Exception exception) {
+//			exception.printStackTrace();
+//			return null;
+//		} finally {
+//			if(resultSet != null)
+//				resultSet.close();
+//			if(preparedStatement != null)
+//				preparedStatement.close();
+//			if(connection != null)
+//				connection.close();
+//		}
+//		return schools; 
+//	}
 
 	public SchoolFormData isValidSchoolRegistrationRequest(String requestNumber, String otp, String emailId) throws SQLException {
 		SchoolFormData schoolFormData = null;
@@ -207,9 +175,13 @@ public class AddNewSchoolRequestDAO {
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		String selectQuery = String.format("SELECT %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s FROM %s WHERE %s=? AND %s=? AND %s=? AND %s=? AND %s=?;",
-				idField, schoolNameField, schoolEmailField, mobileNumberField, alternativeNumberField, schoolRegistrationIdField, schoolAddressLine1Field,
-				schoolAddressLine2Field, cityField, stateField, countryField, pinCodeField, authTokenField, authTokenGenereatedAtField, tableName, isActiveField,
-				requestNumberField, authTokenField, schoolEmailField, statusField);
+				Tables.InstituteRegistrationRequest.name, Tables.InstituteRegistrationRequest.email, Tables.InstituteRegistrationRequest.phoneNumber,
+				Tables.InstituteRegistrationRequest.officeNumber, Tables.InstituteRegistrationRequest.registrationId, Tables.InstituteRegistrationRequest.contactPersonName,
+				Tables.InstituteRegistrationRequest.addressLine1, Tables.InstituteRegistrationRequest.addressLine2, Tables.InstituteRegistrationRequest.city,
+				Tables.InstituteRegistrationRequest.state, Tables.InstituteRegistrationRequest.country, Tables.InstituteRegistrationRequest.pinCode,
+				Tables.InstituteRegistrationRequest.groupOfInstitute, Tables.InstituteRegistrationRequest.noOfInstitute, Tables.InstituteRegistrationRequest.table,
+				Tables.InstituteRegistrationRequest.isActive, Tables.InstituteRegistrationRequest.requestNumber, Tables.InstituteRegistrationRequest.authToken,
+				Tables.InstituteRegistrationRequest.email, Tables.InstituteRegistrationRequest.status);
 
 		try {
 			schoolFormData = new SchoolFormData();
@@ -219,22 +191,24 @@ public class AddNewSchoolRequestDAO {
 			preparedStatement.setString(2, requestNumber.trim());
 			preparedStatement.setString(3, otp.trim());			
 			preparedStatement.setString(4, emailId);
-			preparedStatement.setString(5, RequestedStatus.APPROVED.name());
+			preparedStatement.setString(5, RequestedStatus.approved.name());
 
 			resultSet = preparedStatement.executeQuery();
 			if(resultSet.next()) {
-				schoolFormData.setSchoolName(resultSet.getString(schoolNameField));
-				schoolFormData.setSchoolEmail(resultSet.getString(schoolEmailField));
-				schoolFormData.setSchoolUserName(resultSet.getString(schoolEmailField));
-				schoolFormData.setSchoolMobileNumber(resultSet.getString(mobileNumberField));
-				schoolFormData.setSchoolAlternativeNumber(resultSet.getString(alternativeNumberField));
-				schoolFormData.setSchoolRegistrationId(resultSet.getString(schoolRegistrationIdField));
-				schoolFormData.setSchoolAddressLine1(resultSet.getString(schoolAddressLine1Field));
-				schoolFormData.setSchoolAddressLine2(resultSet.getString(schoolAddressLine2Field));
-				schoolFormData.setCity(resultSet.getString(cityField));
-				schoolFormData.setState(resultSet.getString(stateField));
-				schoolFormData.setCountry(resultSet.getString(countryField));
-				schoolFormData.setPincode(resultSet.getString(pinCodeField));
+				schoolFormData.setSchoolName(resultSet.getString(Tables.InstituteRegistrationRequest.name));
+				schoolFormData.setSchoolEmail(resultSet.getString(Tables.InstituteRegistrationRequest.email));
+				schoolFormData.setSchoolUserName(resultSet.getString(Tables.InstituteRegistrationRequest.email));
+				schoolFormData.setSchoolMobileNumber(resultSet.getString(Tables.InstituteRegistrationRequest.phoneNumber));
+				schoolFormData.setSchoolAlternativeNumber(resultSet.getString(Tables.InstituteRegistrationRequest.officeNumber));
+				schoolFormData.setSchoolRegistrationId(resultSet.getString(Tables.InstituteRegistrationRequest.registrationId));
+				schoolFormData.setSchoolAddressLine1(resultSet.getString(Tables.InstituteRegistrationRequest.addressLine1));
+				schoolFormData.setSchoolAddressLine2(resultSet.getString(Tables.InstituteRegistrationRequest.addressLine2));
+				schoolFormData.setCity(resultSet.getString(Tables.InstituteRegistrationRequest.city));
+				schoolFormData.setState(resultSet.getString(Tables.InstituteRegistrationRequest.state));
+				schoolFormData.setCountry(resultSet.getString(Tables.InstituteRegistrationRequest.country));
+				schoolFormData.setPincode(resultSet.getString(Tables.InstituteRegistrationRequest.pinCode));
+				schoolFormData.setGroupOfInstitute(resultSet.getString(Tables.InstituteRegistrationRequest.groupOfInstitute));
+				schoolFormData.setNoOfInstitute(resultSet.getInt(Tables.InstituteRegistrationRequest.noOfInstitute));
 				schoolFormData.setValidSchool(true);
 			} else {
 				schoolFormData.setValidSchool(false);
@@ -251,28 +225,5 @@ public class AddNewSchoolRequestDAO {
 				connection.close();
 		}
 		return schoolFormData;
-	}
-
-	private static String getRequestNumber(String schooleName) {
-		RandomGenerator randomGenerator = new RandomGenerator(); 
-		SecureRandom secureRandom = new SecureRandom();
-		String referenceNumber = randomGenerator.getReferenceNumber(30, secureRandom);
-
-		StringBuilder sb = new StringBuilder();
-		String[] charSeq = schooleName.replaceAll("([ \t.&]+)", " ").trim().split("([ \t.&]+)");
-		int nameLength = charSeq.length;
-		if(nameLength == 1) {
-			if(charSeq[0].length() < 3)
-				sb.append(charSeq[0]);
-			else
-				sb.append(charSeq[0].charAt(0) + "" + charSeq[0].charAt(1) + "" + charSeq[0].charAt(2));
-		} else if(nameLength == 2) {
-			sb.append(charSeq[0].charAt(0) + "" + charSeq[1].charAt(0));
-		} else if(nameLength > 2) {
-			sb.append(charSeq[0].charAt(0) + "" + charSeq[1].charAt(0) + "" + charSeq[2].charAt(0));
-		}
-
-		sb.append("-").append(referenceNumber);
-		return sb.toString().toUpperCase();
 	}
 }

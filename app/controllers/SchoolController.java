@@ -48,23 +48,23 @@ public class SchoolController extends CustomController {
 	}
 
 	public Result postAddNewSchoolRequest() {
-		Form<AddNewSchoolRequest> addNewSchoolRequest = Form.form(AddNewSchoolRequest.class).bindFromRequest();
-		System.out.println(addNewSchoolRequest);
-		if(addNewSchoolRequest == null || addNewSchoolRequest.hasErrors()) {
+		Form<AddNewSchoolRequest> addNewSchoolRequestFrom = Form.form(AddNewSchoolRequest.class).bindFromRequest();
+		System.out.println(addNewSchoolRequestFrom);
+		if(addNewSchoolRequestFrom == null || addNewSchoolRequestFrom.hasErrors()) {
 			flash("error", "Something parameter is missing or invalid in your registration request.");
 			return redirect(routes.SchoolController.preAddNewSchoolRequest());
 		}
 
-		Map<String, String> addNewSchoolRequestDetails = addNewSchoolRequest.data();
-		if(addNewSchoolRequestDetails == null || addNewSchoolRequestDetails.isEmpty()) {
+		AddNewSchoolRequest addNewSchoolRequest = addNewSchoolRequestFrom.get();
+		if(addNewSchoolRequest == null) {
 			flash("error", "Something parameter is missing or invalid in your registration request.");
 			return redirect(routes.SchoolController.preAddNewSchoolRequest());
 		}
 
-		AddNewSchoolRequestDAO schoolRegistrationRequestDAO = new AddNewSchoolRequestDAO();
 		String requestRefNumber = "";
 		try {
-			requestRefNumber = schoolRegistrationRequestDAO.generateRequest(addNewSchoolRequestDetails);
+			AddNewSchoolRequestDAO schoolRegistrationRequestDAO = new AddNewSchoolRequestDAO();
+			requestRefNumber = schoolRegistrationRequestDAO.generateRequest(addNewSchoolRequest);
 		} catch (Exception exception) {
 			flash("error", "Something wrong happen with our server. Please try again.");
 			return redirect(routes.SchoolController.preAddNewSchoolRequest());
@@ -75,9 +75,9 @@ public class SchoolController extends CustomController {
 			return redirect(routes.SchoolController.preAddNewSchoolRequest());
 		}
 
-		String schoolEmailId = addNewSchoolRequestDetails.get("schoolEmail");
-		String receiverPhoneNumber = addNewSchoolRequestDetails.get("schoolMobileNumber");
-		String receiverName = addNewSchoolRequestDetails.get("schoolName");
+		String schoolEmailId = addNewSchoolRequest.getSchoolEmail();
+		String receiverPhoneNumber = addNewSchoolRequest.getSchoolMobileNumber();
+		String receiverName = addNewSchoolRequest.getSchoolName();
 
 		NewSchoolRequest newSchoolRequest = new NewSchoolRequest();
 		newSchoolRequest.setSchoolEmailId(schoolEmailId);

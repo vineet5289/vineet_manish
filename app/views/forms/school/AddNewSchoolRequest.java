@@ -12,10 +12,6 @@ import utils.ValidateFields;
 
 @Data
 public class AddNewSchoolRequest {
-	//only for internal use
-	private Long id;
-	private String referenceNumber = "";
-
 	//compulsory field
 	private String schoolName = "";
 	private String schoolEmail = "";
@@ -26,7 +22,9 @@ public class AddNewSchoolRequest {
 	private String country;
 	private String pincode;
 	private String contactPersonName;
-
+	private String groupOfInstitute;
+	private int noOfInstitute;
+	
 	// optional field
 	private String schoolAlternativeNumber = "";
 	private String schoolAddressLine2 = "";
