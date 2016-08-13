@@ -13,9 +13,7 @@ public class InstituteShiftAndClassTimingInfoForm {
 
 	@Data
 	public static class Shift {
-		//for internal use & non-editable
 		private String shiftName;
-		//editable
 		private String shiftClassStartTime;
 		private String shiftClassEndTime;
 		private String shiftWeekStartDay;
@@ -23,6 +21,5 @@ public class InstituteShiftAndClassTimingInfoForm {
 		private String shiftStartClassFrom;
 		private String shiftEndClassTo;
 		private String shiftAttendenceType;
-
 	}
 }

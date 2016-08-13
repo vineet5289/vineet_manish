@@ -3,6 +3,7 @@ package views.forms.institute;
 import java.util.ArrayList;
 import java.util.List;
 
+import enum_package.AttendenceTypeEnum;
 import enum_package.SchoolClassEnum;
 import enum_package.WeekDayEnum;
 import lombok.Data;
@@ -97,8 +98,12 @@ public class FirstTimeInstituteUpdateForm {
 			errors.add(new ValidationError("schoolBoard", "Please enter valid school board without any special characters like @;$."));
 		}
 
-		if(instituteType == null || SchoolType.schoolTypeToValue.get(instituteType.trim().toUpperCase())  == null) {
+		if(instituteType == null || SchoolType.schoolTypeToValue.get(instituteType.trim().toLowerCase())  == null) {
 			errors.add(new ValidationError("schoolType", "Please enter valid school type without any special characters like @;$."));
+		}
+
+		if(shifts == null || shifts.size() != numberOfShift || !isValidShiftInfo()) {
+			errors.add(new ValidationError("shifts", "Please enter all class/shift information."));
 		}
 
 		if(errors.size() > 0)
@@ -106,4 +111,35 @@ public class FirstTimeInstituteUpdateForm {
 		return null;
 	}
 
+	private boolean isValidShiftInfo() {
+		for(InstituteShiftAndClassTimingInfoForm.Shift shiftInfo : shifts) {
+			if(!TimeUtiles.isValidTime(shiftInfo.getShiftClassStartTime()) || !TimeUtiles.isValidTime(shiftInfo.getShiftClassEndTime())) {
+				System.out.println("Shift class start or end time is invalid");
+				return false;
+			}
+
+			if(shiftInfo.getShiftWeekStartDay() == null || !WeekDayEnum.contains(shiftInfo.getShiftWeekStartDay())
+					|| shiftInfo.getShiftWeekEndDay() == null || !WeekDayEnum.contains(shiftInfo.getShiftWeekEndDay())) {
+				System.out.println("Shift week start or end day is invalid");
+				return false;
+			}
+
+			if(shiftInfo.getShiftStartClassFrom() == null || shiftInfo.getShiftEndClassTo() == null
+					|| !SchoolClassEnum.contains(shiftInfo.getShiftStartClassFrom()) || !SchoolClassEnum.contains(shiftInfo.getShiftEndClassTo())) {
+				System.out.println("Shift class from or to is invalid");
+				return false;
+			}
+
+			if(shiftInfo.getShiftAttendenceType() == null || !AttendenceTypeEnum.contain(shiftInfo.getShiftAttendenceType())) {
+				System.out.println("Shift attendence type is invalid");
+				return false;
+			}
+
+			if(shiftInfo.getShiftName() == null || shiftInfo.getShiftName().isEmpty()) {
+				System.out.println("Shift name should not be empty");
+				return false;
+			}
+		}
+		return true;
+	}
 }

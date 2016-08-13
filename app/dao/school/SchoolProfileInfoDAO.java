@@ -363,36 +363,44 @@ public class SchoolProfileInfoDAO {
 		return !(rowUpdated == 0);
 	}
 
-	public boolean updateSchoolMandInfo(FirstTimeInstituteUpdateForm firstTimeSchoolUpdate, Long schoolId, String userName) throws SQLException {
+	public InstituteDaoProcessStatus updateSchoolMandInfo(FirstTimeInstituteUpdateForm firstTimeInstituteUpdate, Long instituteId, String userName) throws SQLException {
+		InstituteDaoProcessStatus instituteDaoProcessStatus = InstituteDaoProcessStatus.invalidschool;
 		Connection connection = null;
-		PreparedStatement updateStmtSchoolMadInfo = null;
-		PreparedStatement updateLogin = null;
-		PreparedStatement insertShiftInfo = null;
-		String updateLoginQuery = String.format("UPDATE %s SET %s=? WHERE %s=? AND %s=? AND %s=? AND %s=?;", Tables.Login.table, Tables.Login.passwordState,
+		PreparedStatement updateStmtSchoolMadInfoPS = null;
+		PreparedStatement loginPS = null;
+		PreparedStatement shiftInfoPS = null;
+
+		String updateLoginQ = String.format("UPDATE %s SET %s=? WHERE %s=? AND %s=? AND %s=? AND %s=?;", Tables.Login.table, Tables.Login.passwordState,
 				Tables.Login.isActive, Tables.Login.userName, Tables.Login.passwordState, Tables.Login.type);
-		String updateQuery = String.format("UPDATE %s SET %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=? WHERE %s=? AND %s=?;",
+		String updateInstituteQ = String.format("UPDATE %s SET %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=? WHERE %s=? AND %s=?;",
 				Tables.Institute.table, Tables.Institute.noOfShift, Tables.Institute.isHostelFacilitiesAvailable, Tables.Institute.isHostelCompulsory, Tables.Institute.officeWeekStartDay,
 				Tables.Institute.officeWeekEndDay, Tables.Institute.classFrom, Tables.Institute.classTo, Tables.Institute.officeStartTime, Tables.Institute.officeEndTime,
 				Tables.Institute.financialStartDay, Tables.Institute.financialEndDay, Tables.Institute.financialStartMonth, Tables.Institute.financialEndMonth,
-				Tables.Institute.financialStartYear, Tables.Institute.financialEndYear, Tables.Institute.currentFinancialYear, Tables.Institute.dateFormat,Tables.Institute.isActive,
-				Tables.Institute.id);
+				Tables.Institute.financialStartYear, Tables.Institute.financialEndYear, Tables.Institute.currentFinancialYear, Tables.Institute.dateFormat, Tables.Institute.boardId,
+				Tables.Institute.type, Tables.Institute.isActive, Tables.Institute.id);
 		
-//		String shiftInsertQuery = String.format("INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s, %s, %s) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);", Tables.SchoolShiftInfo.table,
-//				Tables.SchoolShiftInfo.shiftName, Tables.SchoolShiftInfo.shiftClassStartTime, Tables.SchoolShiftInfo.shiftClassEndTime, Tables.SchoolShiftInfo.shiftWeekStartDay,
-//				Tables.SchoolShiftInfo.shiftWeekEndDay, Tables.SchoolShiftInfo.shiftStartClassFrom, Tables.SchoolShiftInfo.shiftEndClassTo, Tables.SchoolShiftInfo.shiftAttendenceType,
-//				Tables.SchoolShiftInfo.schoolId);
-
+		String shiftInsertQ = String.format("INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s, %s, %s) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);", Tables.SchoolShiftInfo.table,
+				Tables.SchoolShiftInfo.shiftName, Tables.SchoolShiftInfo.shiftClassStartTime, Tables.SchoolShiftInfo.shiftClassEndTime, Tables.SchoolShiftInfo.shiftWeekStartDay,
+				Tables.SchoolShiftInfo.shiftWeekEndDay, Tables.SchoolShiftInfo.shiftStartClassFrom, Tables.SchoolShiftInfo.shiftEndClassTo, Tables.SchoolShiftInfo.shiftAttendenceType,
+				Tables.SchoolShiftInfo.schoolId);
 
 		int rowSchoolInfoUpdated = 0;
 		int rowLoginUpdated = 0;
 		try {
-//			SchoolShiftAndClassTimingInfoForm schoolShiftAndClassTimingInfoForm = ShiftGenerator.generateShift(firstTimeSchoolUpdate);
-			String[] startDate = DateUtiles.parseDate(firstTimeSchoolUpdate.getSchoolFinancialStartDate());
-			String[] endDate = DateUtiles.parseDate(firstTimeSchoolUpdate.getSchoolFinancialEndDate());
-			if(startDate == null || endDate == null) {
+			if(firstTimeInstituteUpdate.getShifts() == null || firstTimeInstituteUpdate.getNumberOfShift() != firstTimeInstituteUpdate.getShifts().size()) {
 				System.out.println("Please cselect correct date range");
-				return false;
+				instituteDaoProcessStatus = InstituteDaoProcessStatus.invalidshift;
+				return instituteDaoProcessStatus;
 			}
+
+			String[] startDate = DateUtiles.parseDate(firstTimeInstituteUpdate.getInstituteFinancialStartDate());
+			String[] endDate = DateUtiles.parseDate(firstTimeInstituteUpdate.getInstituteFinancialEndDate());
+			if(startDate == null || endDate == null) {
+				instituteDaoProcessStatus = InstituteDaoProcessStatus.invalidvalue;
+				System.out.println("Please cselect correct date range");
+				return instituteDaoProcessStatus;
+			}
+
 			int startMonth = DateUtiles.getMonth(startDate[0]);
 			int endMonth = DateUtiles.getMonth(endDate[0]);
 			int startDay = Integer.parseInt(startDate[1]);
@@ -403,69 +411,77 @@ public class SchoolProfileInfoDAO {
 
 			connection = DB.getDataSource("srp").getConnection();
 			connection.setAutoCommit(false);
-			updateStmtSchoolMadInfo = connection.prepareStatement(updateQuery);
-			updateLogin = connection.prepareStatement(updateLoginQuery);
-//			insertShiftInfo = connection.prepareStatement(shiftInsertQuery);
+			updateStmtSchoolMadInfoPS = connection.prepareStatement(updateInstituteQ);
+			loginPS = connection.prepareStatement(updateLoginQ);
+			shiftInfoPS = connection.prepareStatement(shiftInsertQ);
 			
-//			for(int i = 0; i < schoolShiftAndClassTimingInfoForm.getNumberOfShift(); i++) {
-//				insertShiftInfo.setString(1, schoolShiftAndClassTimingInfoForm.getShifts().get(i).getShiftName());
-//				insertShiftInfo.setString(2, schoolShiftAndClassTimingInfoForm.getShifts().get(i).getShiftClassStartTime());
-//				insertShiftInfo.setString(3, schoolShiftAndClassTimingInfoForm.getShifts().get(i).getShiftClassEndTime());
-//				insertShiftInfo.setString(4, schoolShiftAndClassTimingInfoForm.getShifts().get(i).getShiftWeekStartDay());
-//				insertShiftInfo.setString(5, schoolShiftAndClassTimingInfoForm.getShifts().get(i).getShiftWeekEndDay());
-//				insertShiftInfo.setString(6, schoolShiftAndClassTimingInfoForm.getShifts().get(i).getShiftStartClassFrom());
-//				insertShiftInfo.setString(7, schoolShiftAndClassTimingInfoForm.getShifts().get(i).getShiftEndClassTo());
-//				insertShiftInfo.setString(8, schoolShiftAndClassTimingInfoForm.getShifts().get(i).getShiftAttendenceType());
-//				insertShiftInfo.setLong(9, schoolId);
-//				insertShiftInfo.addBatch();
-//			}
+			for(InstituteShiftAndClassTimingInfoForm.Shift shiftInfo : firstTimeInstituteUpdate.getShifts()) {
+				shiftInfoPS.setString(1, shiftInfo.getShiftName());
+				shiftInfoPS.setString(2, shiftInfo.getShiftClassStartTime());
+				shiftInfoPS.setString(3, shiftInfo.getShiftClassEndTime());
+				shiftInfoPS.setString(4, shiftInfo.getShiftWeekStartDay());
+				shiftInfoPS.setString(5, shiftInfo.getShiftWeekEndDay());
+				shiftInfoPS.setString(6, shiftInfo.getShiftStartClassFrom());
+				shiftInfoPS.setString(7, shiftInfo.getShiftEndClassTo());
+				shiftInfoPS.setString(8, shiftInfo.getShiftAttendenceType());
+				shiftInfoPS.setLong(9, instituteId);
+				shiftInfoPS.addBatch();
+			}
 
-			updateLogin.setString(1, PasswordState.finalstate.name());
-			updateLogin.setBoolean(2, true);
-			updateLogin.setString(3, userName.trim());
-			updateLogin.setString(4, PasswordState.redirectstate.name());
-			updateLogin.setString(5, LoginTypeEnum.institute.name());
+			loginPS.setString(1, PasswordState.finalstate.name());
+			loginPS.setBoolean(2, true);
+			loginPS.setString(3, userName.trim());
+			loginPS.setString(4, PasswordState.redirectstate.name());
+			loginPS.setString(5, LoginTypeEnum.institute.name());
 
-			updateStmtSchoolMadInfo.setInt(1, firstTimeSchoolUpdate.getNumberOfShift());
-			updateStmtSchoolMadInfo.setBoolean(2, firstTimeSchoolUpdate.isHostelFacilitiesAvailable());
-			updateStmtSchoolMadInfo.setBoolean(3, firstTimeSchoolUpdate.isHostelCompulsory());
-			updateStmtSchoolMadInfo.setString(4, WeekDayEnum.of(firstTimeSchoolUpdate.getSchoolOfficeWeekStartDay()).name());
-			updateStmtSchoolMadInfo.setString(5, WeekDayEnum.of(firstTimeSchoolUpdate.getSchoolOfficeWeekEndDay()).name());
-			updateStmtSchoolMadInfo.setString(6, SchoolClassEnum.of(firstTimeSchoolUpdate.getSchoolClassFrom()).name());
-			updateStmtSchoolMadInfo.setString(7, SchoolClassEnum.of(firstTimeSchoolUpdate.getSchoolClassTo()).name());
-			updateStmtSchoolMadInfo.setString(8, firstTimeSchoolUpdate.getSchoolOfficeStartTime());
-			updateStmtSchoolMadInfo.setString(9, firstTimeSchoolUpdate.getSchoolOfficeEndTime());
-			updateStmtSchoolMadInfo.setInt(10, startDay);
-			updateStmtSchoolMadInfo.setInt(11, endDay);
-			updateStmtSchoolMadInfo.setInt(12, startMonth);
-			updateStmtSchoolMadInfo.setInt(13, endMonth);
-			updateStmtSchoolMadInfo.setInt(14, startYear);
-			updateStmtSchoolMadInfo.setInt(15, endYear);
-			updateStmtSchoolMadInfo.setString(16, schoolCurrentFinancialYear);
-			updateStmtSchoolMadInfo.setString(17, firstTimeSchoolUpdate.getSchoolDateFormat());
-			updateStmtSchoolMadInfo.setBoolean(18, true);
-			updateStmtSchoolMadInfo.setLong(19, schoolId);
+			updateStmtSchoolMadInfoPS.setInt(1, firstTimeInstituteUpdate.getNumberOfShift());
+			updateStmtSchoolMadInfoPS.setBoolean(2, firstTimeInstituteUpdate.isHostelFacilitiesAvailable());
+			updateStmtSchoolMadInfoPS.setBoolean(3, firstTimeInstituteUpdate.isHostelCompulsory());
+			updateStmtSchoolMadInfoPS.setString(4, WeekDayEnum.of(firstTimeInstituteUpdate.getInstituteOfficeWeekEndDay()).name());
+			updateStmtSchoolMadInfoPS.setString(5, WeekDayEnum.of(firstTimeInstituteUpdate.getInstituteOfficeWeekEndDay()).name());
+			updateStmtSchoolMadInfoPS.setString(6, SchoolClassEnum.of(firstTimeInstituteUpdate.getInstituteClassFrom()).name());
+			updateStmtSchoolMadInfoPS.setString(7, SchoolClassEnum.of(firstTimeInstituteUpdate.getInstituteClassTo()).name());
+			updateStmtSchoolMadInfoPS.setString(8, firstTimeInstituteUpdate.getInstituteOfficeStartTime());
+			updateStmtSchoolMadInfoPS.setString(9, firstTimeInstituteUpdate.getInstituteOfficeEndTime());
+			updateStmtSchoolMadInfoPS.setInt(10, startDay);
+			updateStmtSchoolMadInfoPS.setInt(11, endDay);
+			updateStmtSchoolMadInfoPS.setInt(12, startMonth);
+			updateStmtSchoolMadInfoPS.setInt(13, endMonth);
+			updateStmtSchoolMadInfoPS.setInt(14, startYear);
+			updateStmtSchoolMadInfoPS.setInt(15, endYear);
+			updateStmtSchoolMadInfoPS.setString(16, schoolCurrentFinancialYear);
+			updateStmtSchoolMadInfoPS.setString(17, firstTimeInstituteUpdate.getInstituteDateFormat());
+			updateStmtSchoolMadInfoPS.setLong(18, SchoolBoard.getBoardIdGivenAffiliatedTo(firstTimeInstituteUpdate.getInstituteBoard()));
+			updateStmtSchoolMadInfoPS.setString(19, firstTimeInstituteUpdate.getInstituteType().trim().toLowerCase());
+			updateStmtSchoolMadInfoPS.setBoolean(20, true);
+			updateStmtSchoolMadInfoPS.setLong(21, instituteId);
 
-//			int[] batchUpdateResult = insertShiftInfo.executeBatch();
-			rowSchoolInfoUpdated = updateStmtSchoolMadInfo.executeUpdate();
-			rowLoginUpdated = updateLogin.executeUpdate();
-
+			int[] batchUpdateResult = shiftInfoPS.executeBatch();
+			rowSchoolInfoUpdated = updateStmtSchoolMadInfoPS.executeUpdate();
+			rowLoginUpdated = loginPS.executeUpdate();
+			if(rowSchoolInfoUpdated ==0 || rowLoginUpdated == 0) {
+				instituteDaoProcessStatus = InstituteDaoProcessStatus.invalidvalue;
+				throw new Exception();
+			}
 			connection.setAutoCommit(true);
+			instituteDaoProcessStatus = InstituteDaoProcessStatus.validschool;
 		} catch(Exception exception) {
 			exception.printStackTrace();
 			rowSchoolInfoUpdated = 0;
 			connection.rollback();
+			instituteDaoProcessStatus = InstituteDaoProcessStatus.servererror;
 		} finally {
-			if(updateStmtSchoolMadInfo != null)
-				updateStmtSchoolMadInfo.close();
+			if(updateStmtSchoolMadInfoPS != null)
+				updateStmtSchoolMadInfoPS.close();
 
-			if(insertShiftInfo != null)
-				insertShiftInfo.close();
+			if(shiftInfoPS != null)
+				shiftInfoPS.close();
 
 			if(connection != null)
 				connection.close();
 		}
-		return (rowSchoolInfoUpdated != 0 && rowLoginUpdated != 0);
+		
+		return instituteDaoProcessStatus;
 	}
 
 	private String getString(String string) {

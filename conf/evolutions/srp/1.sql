@@ -282,11 +282,11 @@ CREATE TABLE IF NOT EXISTS student_class (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 
-INSERT INTO board (board_code, board_name, board_display_name, affiliated_to) VALUES ('GBSHSE', 'Goa Board of Secondary & Higher Secondary Education', 'Goa Board', 'GOA');
-INSERT INTO board (board_code, board_name, board_display_name, affiliated_to) VALUES ('KSEEB', 'Karnataka Secondary Education Examination Board ', 'Karnataka Board', 'KARNATAKA');
-INSERT INTO board (board_code, board_name, board_display_name, affiliated_to) VALUES ('ICSE', 'Indian Certificate of Secondary Education', 'ICSE', 'ICSE');
-INSERT INTO board (board_code, board_name, board_display_name, affiliated_to) VALUES ('CBSE', 'Central Board of Secondary Education', 'CBSE', 'CBSE');
-INSERT INTO board (board_code, board_name, board_display_name, affiliated_to) VALUES ('IB', 'International Baccalaureate', 'IB', 'IB');
+INSERT INTO board (board_code, board_name, board_display_name, affiliated_to) VALUES ('gbshse', 'Goa Board of Secondary & Higher Secondary Education', 'Goa Board', 'goa');
+INSERT INTO board (board_code, board_name, board_display_name, affiliated_to) VALUES ('kseeb', 'Karnataka Secondary Education Examination Board ', 'Karnataka Board', 'karnataka');
+INSERT INTO board (board_code, board_name, board_display_name, affiliated_to) VALUES ('icse', 'Indian Certificate of Secondary Education', 'ICSE', 'icse');
+INSERT INTO board (board_code, board_name, board_display_name, affiliated_to) VALUES ('cbse', 'Central Board of Secondary Education', 'CBSE', 'cbse');
+INSERT INTO board (board_code, board_name, board_display_name, affiliated_to) VALUES ('ib', 'International Baccalaureate', 'IB', 'ib');
 
 
 # --- !Downs

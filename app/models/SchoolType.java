@@ -10,11 +10,11 @@ public class SchoolType {
 //https://www.angloinfo.com/india/how-to/page/india-family-schooling-education-school-system
     static
     {
-    	schoolTypeToValue.put(SchoolTypeEnum.GOVERMENT.name(), "Government School");
-    	schoolTypeToValue.put(SchoolTypeEnum.PRIVATE.name(), "Private School");
-    	schoolTypeToValue.put(SchoolTypeEnum.INTERNATIONALSCHOOL.name(), "International schools");
-    	schoolTypeToValue.put(SchoolTypeEnum.OPENSCHOOL.name(), "National open schools");
-    	schoolTypeToValue.put(SchoolTypeEnum.SPECIALNEEDSCHOOL.name(), "Special needs schools");
+    	schoolTypeToValue.put(SchoolTypeEnum.govermentinstitute.name(), "Government School");
+    	schoolTypeToValue.put(SchoolTypeEnum.privateinstitute.name(), "Private School");
+    	schoolTypeToValue.put(SchoolTypeEnum.internationalinstitute.name(), "International schools");
+    	schoolTypeToValue.put(SchoolTypeEnum.openinstitute.name(), "National open schools");
+    	schoolTypeToValue.put(SchoolTypeEnum.specialneeninstitute.name(), "Special needs schools");
     	
     }
 }

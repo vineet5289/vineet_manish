@@ -21,6 +21,7 @@ import views.html.viewClass.School.groupInstituteFirstUpdate;
 import controllers.routes;
 import dao.school.SchoolProfileInfoDAO;
 import enum_package.AttendenceTypeEnum;
+import enum_package.InstituteDaoProcessStatus;
 import enum_package.SchoolClassEnum;
 import enum_package.SessionKey;
 import enum_package.WeekDayEnum;
@@ -211,12 +212,12 @@ public class InstituteInfoController extends ClassController {
 		if(instituteFormData != null && instituteFormData.getGroupOfInstitute().equalsIgnoreCase("single")
 				&& instituteFormData.getNoOfInstitute() == 1) {
 			Map<String, String> schoolBoards = new HashMap<String, String>();
-			schoolBoards.put("CBSE", "CBSE");
-			schoolBoards.put("ICSE", "ICSE");
-			schoolBoards.put("IB", "International Baccalaureate");
-			String affiliatedTo = instituteFormData.getInstituteState().trim().toUpperCase();
+			schoolBoards.put("cbse", "CBSE");
+			schoolBoards.put("icse", "ICSE");
+			schoolBoards.put("ib", "International Baccalaureate");
+			String affiliatedTo = instituteFormData.getInstituteState();
 			String otherBoard = SchoolBoard.getDisplayNameGivenAffiliatedTo(affiliatedTo);
-			schoolBoards.put(affiliatedTo, otherBoard);
+			schoolBoards.put(affiliatedTo.trim().toLowerCase(), otherBoard);
 			session(SessionKey.numerofinstituteingroup.name(), instituteFormData.getNoOfInstitute() + "");
 			return ok(schoolMandataryInfo.render(firstTimeUpdateForm, weekList, classList, attendenceType, schoolBoards, SchoolType.schoolTypeToValue));
 		}
@@ -237,17 +238,17 @@ public class InstituteInfoController extends ClassController {
 		String schoolId = session().get(SessionKey.SCHOOL_ID.name());
 		String userName = session().get(SessionKey.USER_NAME.name());
 		FirstTimeInstituteUpdateForm firstTimeSchoolUpdate = firstTimeSchoolUpdateForm.get();
-		boolean isUpdated = false;
+		InstituteDaoProcessStatus instituteDaoProcessStatus = InstituteDaoProcessStatus.invalidschool;
 		try {
 			SchoolProfileInfoDAO schoolProfileInfoDAO = new SchoolProfileInfoDAO();
-			isUpdated = schoolProfileInfoDAO.updateSchoolMandInfo(firstTimeSchoolUpdate, Long.valueOf(schoolId), userName);
+			instituteDaoProcessStatus = schoolProfileInfoDAO.updateSchoolMandInfo(firstTimeSchoolUpdate, Long.valueOf(schoolId), userName);
 		} catch(Exception exception) {
 			flash("error", "Some problem occur during update.");
 			exception.printStackTrace();
-			return redirect(controllers.institute.routes.InstituteInfoController.getInstituteMandInfo());
+			instituteDaoProcessStatus = InstituteDaoProcessStatus.servererror;
 		}
-		if(!isUpdated) {
-			flash("error", "Please check values of all mandatory fields.");
+		if(InstituteDaoProcessStatus.validschool != instituteDaoProcessStatus) {
+			flash("error", instituteDaoProcessStatus.name());
 			return redirect(controllers.institute.routes.InstituteInfoController.getInstituteMandInfo());
 		} else {
 			flash("success", "School informations updated successfully.");

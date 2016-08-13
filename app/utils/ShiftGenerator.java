@@ -26,32 +26,32 @@ public class ShiftGenerator {
 	public static InstituteShiftAndClassTimingInfoForm generateShift(FirstTimeInstituteUpdateForm firstTimeSchoolUpdate) {
 		int numberOfShift = firstTimeSchoolUpdate.getNumberOfShift();
 		InstituteShiftAndClassTimingInfoForm schoolShiftAndClassTimingInfoForm = new InstituteShiftAndClassTimingInfoForm();
-		schoolShiftAndClassTimingInfoForm.setNumberOfShift(numberOfShift);
-		if(numberOfShift == 1) {
-			InstituteShiftAndClassTimingInfoForm.Shift shift = new InstituteShiftAndClassTimingInfoForm.Shift();
-			shift.setShiftName(shiftName.get(0));
-			shift.setShiftClassStartTime(firstTimeSchoolUpdate.getSchoolOfficeStartTime());
-			shift.setShiftClassEndTime(firstTimeSchoolUpdate.getSchoolOfficeEndTime());
-			shift.setShiftWeekStartDay(firstTimeSchoolUpdate.getSchoolOfficeWeekStartDay());
-			shift.setShiftWeekEndDay(firstTimeSchoolUpdate.getSchoolOfficeWeekEndDay());
-			shift.setShiftStartClassFrom(firstTimeSchoolUpdate.getSchoolClassFrom());
-			shift.setShiftEndClassTo(firstTimeSchoolUpdate.getSchoolClassTo());
-//			shift.setShiftAttendenceType(AttendenceTypeEnum.of(firstTimeSchoolUpdate.getAttendenceType()).name());
-			schoolShiftAndClassTimingInfoForm.getShifts().add(shift);
-		} else {
-			for(int i = 0; i < numberOfShift; i++) {
-				InstituteShiftAndClassTimingInfoForm.Shift shift = new InstituteShiftAndClassTimingInfoForm.Shift();
-				shift.setShiftName(shiftName.get(i+1));
-				shift.setShiftClassStartTime(firstTimeSchoolUpdate.getSchoolOfficeStartTime());
-				shift.setShiftClassEndTime(firstTimeSchoolUpdate.getSchoolOfficeEndTime());
-				shift.setShiftWeekStartDay(firstTimeSchoolUpdate.getSchoolOfficeWeekStartDay());
-				shift.setShiftWeekEndDay(firstTimeSchoolUpdate.getSchoolOfficeWeekEndDay());
-				shift.setShiftStartClassFrom(firstTimeSchoolUpdate.getSchoolClassFrom());
-				shift.setShiftEndClassTo(firstTimeSchoolUpdate.getSchoolClassTo());
-//				shift.setShiftAttendenceType(AttendenceTypeEnum.of(firstTimeSchoolUpdate.getAttendenceType()).name());
-				schoolShiftAndClassTimingInfoForm.getShifts().add(shift);
-			}
-		}
+//		schoolShiftAndClassTimingInfoForm.setNumberOfShift(numberOfShift);
+//		if(numberOfShift == 1) {
+//			InstituteShiftAndClassTimingInfoForm.Shift shift = new InstituteShiftAndClassTimingInfoForm.Shift();
+//			shift.setShiftName(shiftName.get(0));
+//			shift.setShiftClassStartTime(firstTimeSchoolUpdate.getSchoolOfficeStartTime());
+//			shift.setShiftClassEndTime(firstTimeSchoolUpdate.getSchoolOfficeEndTime());
+//			shift.setShiftWeekStartDay(firstTimeSchoolUpdate.getSchoolOfficeWeekStartDay());
+//			shift.setShiftWeekEndDay(firstTimeSchoolUpdate.getSchoolOfficeWeekEndDay());
+//			shift.setShiftStartClassFrom(firstTimeSchoolUpdate.getSchoolClassFrom());
+//			shift.setShiftEndClassTo(firstTimeSchoolUpdate.getSchoolClassTo());
+////			shift.setShiftAttendenceType(AttendenceTypeEnum.of(firstTimeSchoolUpdate.getAttendenceType()).name());
+//			schoolShiftAndClassTimingInfoForm.getShifts().add(shift);
+//		} else {
+//			for(int i = 0; i < numberOfShift; i++) {
+//				InstituteShiftAndClassTimingInfoForm.Shift shift = new InstituteShiftAndClassTimingInfoForm.Shift();
+//				shift.setShiftName(shiftName.get(i+1));
+//				shift.setShiftClassStartTime(firstTimeSchoolUpdate.getSchoolOfficeStartTime());
+//				shift.setShiftClassEndTime(firstTimeSchoolUpdate.getSchoolOfficeEndTime());
+//				shift.setShiftWeekStartDay(firstTimeSchoolUpdate.getSchoolOfficeWeekStartDay());
+//				shift.setShiftWeekEndDay(firstTimeSchoolUpdate.getSchoolOfficeWeekEndDay());
+//				shift.setShiftStartClassFrom(firstTimeSchoolUpdate.getSchoolClassFrom());
+//				shift.setShiftEndClassTo(firstTimeSchoolUpdate.getSchoolClassTo());
+////				shift.setShiftAttendenceType(AttendenceTypeEnum.of(firstTimeSchoolUpdate.getAttendenceType()).name());
+//				schoolShiftAndClassTimingInfoForm.getShifts().add(shift);
+//			}
+//		}
 		return schoolShiftAndClassTimingInfoForm;
 	}
 }

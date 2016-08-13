@@ -40,42 +40,42 @@ public class SchoolBoard {
 		if(boardCodeToDisplayName == null || boardCodeToDisplayName.isEmpty())
 			fetchBoardList();
 
-		return boardCodeToDisplayName.get(boardCode);
+		return boardCodeToDisplayName.get(boardCode.trim().toLowerCase());
 	}
 
 	public static synchronized String getBoardNameGivenBoardCode(String boardCode) {
 		if(boardCodeToBoardName == null || boardCodeToBoardName.isEmpty())
 			fetchBoardList();
 
-		return boardCodeToBoardName.get(boardCode);
+		return boardCodeToBoardName.get(boardCode.trim().toLowerCase());
 	}
 
 	public static synchronized String getDisplayNameGivenAffiliatedTo(String affiliatedTo){
 		if(affiliatedToDisplayName == null || affiliatedToDisplayName.isEmpty())
 			fetchBoardList();
 
-		return affiliatedToDisplayName.get(affiliatedTo);
+		return affiliatedToDisplayName.get(affiliatedTo.trim().toLowerCase());
 	}
 
 	public static synchronized String getBoardNameGivenAffiliatedTo(String affiliatedTo){
 		if(affiliatedToBoardName == null || affiliatedToBoardName.isEmpty())
 			fetchBoardList();
 
-		return affiliatedToBoardName.get(affiliatedTo);
+		return affiliatedToBoardName.get(affiliatedTo.trim().toLowerCase());
 	}
 
 	public static synchronized Long getBoardIdGivenAffiliatedTo(String affiliatedTo){
 		if(affiliatedToId == null || affiliatedToId.isEmpty())
 			fetchBoardList();
 
-		return affiliatedToId.get(affiliatedTo);
+		return affiliatedToId.get(affiliatedTo.trim().toLowerCase());
 	}
 
 	public static synchronized Long getIdGivenBoardCode(String boardCode){
 		if(boardCodeToBoradId == null || boardCodeToBoradId.isEmpty())
 			fetchBoardList();
 
-		return boardCodeToBoradId.get(boardCode);
+		return boardCodeToBoradId.get(boardCode.trim().toLowerCase());
 	}
 
 	public static synchronized String getBoardCodeGivenId(Long id){
