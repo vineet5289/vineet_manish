@@ -49,13 +49,14 @@ public class SRPController extends CustomController {
 		if(schoolId != null && schoolId != 0) {
 			session(SessionKey.SCHOOL_ID.name(), Long.toString(schoolId));
 		}
-
+		System.out.println("******* 1");
 		if(passwordState.equalsIgnoreCase(PasswordState.redirectstate.name())) {
+			System.out.println("=========> 1");
 			if(type.equalsIgnoreCase(LoginTypeEnum.headinstitute.name()) && role.equalsIgnoreCase("institutegroupadmin"))
 				return redirect(controllers.institute.routes.InstituteInfoController.getInstituteMandInfo());
 			return ok(dashboard.render(session().get(SessionKey.USER_NAME.name()), "institutegroupadmin"));
 		}
-
+		System.out.println("=========> 2");
 		List<LoginDetails> userDetails = null;
 
 		return ok(dashboard.render(session().get(SessionKey.USER_NAME.name()), session().get(SessionKey.USER_ROLE.name())));

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import models.SchoolBoard;
+import models.SchoolType;
 import play.data.Form;
 import play.mvc.Result;
 import views.forms.institute.FirstTimeInstituteUpdateForm;
@@ -192,6 +193,7 @@ public class InstituteInfoController extends ClassController {
 
 	//session validation
 	public Result getInstituteMandInfo() {
+		System.out.println("inside mand info");
 		String schoolId = session().get(SessionKey.SCHOOL_ID.name());
 		Form<FirstTimeInstituteUpdateForm> firstTimeUpdateForm = Form.form(FirstTimeInstituteUpdateForm.class);
 		List<String> weekList = WeekDayEnum.getWeekDisplayName();
@@ -206,8 +208,10 @@ public class InstituteInfoController extends ClassController {
 			instituteFormData = null;
 		}
 
+		System.out.println("=============> 0000");
 		if(instituteFormData != null && instituteFormData.getGroupOfInstitute().equalsIgnoreCase("single")
 				&& instituteFormData.getNoOfInstitute() == 1) {
+			System.out.println("=============> 1111");
 			Map<String, String> schoolBoards = new HashMap<String, String>();
 			schoolBoards.put("CBSE", "CBSE");
 			schoolBoards.put("ICSE", "ICSE");
@@ -216,13 +220,15 @@ public class InstituteInfoController extends ClassController {
 			String otherBoard = SchoolBoard.getDisplayNameGivenAffiliatedTo(affiliatedTo);
 			schoolBoards.put(affiliatedTo, otherBoard);
 			session(SessionKey.numerofinstituteingroup.name(), instituteFormData.getNoOfInstitute() + "");
-			ok(schoolMandataryInfo.render(firstTimeUpdateForm, weekList, classList, attendenceType));
+			return ok(schoolMandataryInfo.render(firstTimeUpdateForm, weekList, classList, attendenceType, schoolBoards, SchoolType.schoolTypeToValue));
 		} else if(instituteFormData != null && instituteFormData.getGroupOfInstitute().equalsIgnoreCase("group")
 				&& instituteFormData.getNoOfInstitute() > 1) {
+			System.out.println("=============> 2222222");
 			session(SessionKey.numerofinstituteingroup.name(), instituteFormData.getNoOfInstitute() + "");
-			ok(groupInstituteFirstUpdate.render(firstTimeUpdateForm, weekList, classList, attendenceType));
+			return ok(groupInstituteFirstUpdate.render(firstTimeUpdateForm, weekList, classList, attendenceType));
 		}
 
+		System.out.println("=============> 3333");
 		flash("error", "Some service problem occur during request process. Please login again.");
 		return redirect(controllers.login_logout.routes.LoginController.logout());
 	}
