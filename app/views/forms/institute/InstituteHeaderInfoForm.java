@@ -1,4 +1,4 @@
-package views.forms.school;
+package views.forms.institute;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +9,7 @@ import utils.ValidateFields;
 import lombok.Data;
 
 @Data
-public class SchoolHeaderInfoForm {
+public class InstituteHeaderInfoForm {
 	private String schoolUserName;
 	private String schoolName;
 	private String schoolEmail;

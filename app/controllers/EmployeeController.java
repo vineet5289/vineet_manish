@@ -7,7 +7,7 @@ import enum_package.SessionKey;
 import play.data.Form;
 import play.mvc.Result;
 import views.forms.employee.AddEmployeeForm;
-import views.forms.school.SchoolFormData;
+import views.forms.institute.InstituteFormData;
 
 public class EmployeeController extends CustomController {
 
@@ -31,7 +31,7 @@ public class EmployeeController extends CustomController {
 		Form<AddEmployeeForm> addEmployeeForm = Form.form(AddEmployeeForm.class).bindFromRequest();
 		if(addEmployeeForm == null || addEmployeeForm.hasErrors()) {
 			flash("error", "Something parameter is missing or invalid in add employee request.");
-			return redirect(routes.SchoolController.preAddNewSchoolRequest()); // redirect to add employee page
+			return redirect(""); // redirect to add employee page
 		}
 		AddEmployeeForm addEmployeeDetails= addEmployeeForm.get();
 		EmployesDAO employesDAO = new EmployesDAO();
@@ -53,8 +53,8 @@ public class EmployeeController extends CustomController {
 	}
 
 	public Result preEmployeeRegistrationRequest() {
-		SchoolFormData studentData = new SchoolFormData();
-		Form<SchoolFormData> schoolForm = Form.form(SchoolFormData.class).fill(studentData);
+		InstituteFormData studentData = new InstituteFormData();
+		Form<InstituteFormData> schoolForm = Form.form(InstituteFormData.class).fill(studentData);
 		return ok("");
 //		return ok(schoolFieldSetIndex.render(schoolForm,
 //				State.makeStateMap(studentData),
@@ -64,7 +64,7 @@ public class EmployeeController extends CustomController {
 	}
 
 	public Result postEmployeeRegistrationRequest() {
-		Form<SchoolFormData> schoolForm = Form.form(SchoolFormData.class).bindFromRequest();
+		Form<InstituteFormData> schoolForm = Form.form(InstituteFormData.class).bindFromRequest();
 		return ok("school Registration completed");
 
 	}

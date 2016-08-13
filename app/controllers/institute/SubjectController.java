@@ -1,11 +1,11 @@
-package controllers.school;
+package controllers.institute;
 
 import java.util.List;
 
 import controllers.CustomController;
 import play.data.Form;
 import play.mvc.Result;
-import views.forms.school.SubjectForm;
+import views.forms.institute.SubjectForm;
 import views.html.test;
 import dao.SubjectDAO;
 
@@ -20,7 +20,7 @@ public class SubjectController extends CustomController {
 		Form<SubjectForm> subjectForm = Form.form(SubjectForm.class).bindFromRequest();
 		if(subjectForm == null || subjectForm.hasErrors()) {
 			flash("error", "please check field details");
-			return redirect(controllers.school.routes.SubjectController.preAddSubjects()); // check for correct redirection
+			return redirect(controllers.institute.routes.SubjectController.preAddSubjects()); // check for correct redirection
 		}
 		
 		String userName = "vineet";//session().get(SessionKey.USER_NAME.name());

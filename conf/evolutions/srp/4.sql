@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS school_shift_info (
   is_active tinyint(1) DEFAULT 1 NOT NULL,
   PRIMARY KEY (id),
   KEY FK_school_shift_info_school_id (school_id),
-  CONSTRAINT FK_school_shift_info_school_id FOREIGN KEY (school_id) REFERENCES school (id)
+  CONSTRAINT FK_school_shift_info_school_id FOREIGN KEY (school_id) REFERENCES institute (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 # --- !Downs

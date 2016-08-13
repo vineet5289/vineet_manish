@@ -14,10 +14,10 @@ import models.SchoolBoard;
 import play.db.DB;
 import utils.DateUtiles;
 import utils.ShiftGenerator;
-import views.forms.school.FirstTimeSchoolUpdateForm;
-import views.forms.school.SchoolGeneralInfoFrom;
-import views.forms.school.SchoolHeaderInfoForm;
-import views.forms.school.SchoolShiftAndClassTimingInfoForm;
+import views.forms.institute.FirstTimeInstituteUpdateForm;
+import views.forms.institute.InstituteGeneralInfoForm;
+import views.forms.institute.InstituteHeaderInfoForm;
+import views.forms.institute.InstituteShiftAndClassTimingInfoForm;
 import dao.Tables;
 import enum_package.LoginTypeEnum;
 import enum_package.PasswordState;
@@ -26,19 +26,19 @@ import enum_package.WeekDayEnum;
 
 public class SchoolProfileInfoDAO {
 
-	public SchoolGeneralInfoFrom getSchoolGeneralInfoFrom(Long schoolId) throws SQLException {
+	public InstituteGeneralInfoForm getSchoolGeneralInfoFrom(Long schoolId) throws SQLException {
 		Connection connection = null;
 		PreparedStatement selectStatement = null;
 		ResultSet resultSet = null;
-		SchoolGeneralInfoFrom schoolGeneralInfoFrom = null;
+		InstituteGeneralInfoForm schoolGeneralInfoFrom = null;
 		
 		String selectQuery = String.format("SELECT %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s FROM %s "
-				+ "WHERE %s=? AND %s=?", Tables.School.schoolRegistrationId, Tables.School.schoolAlternativeEmail, Tables.School.officeNumber, Tables.School.addressLine1,
-				Tables.School.addressLine2, Tables.School.city, Tables.School.state, Tables.School.country, Tables.School.pinCode, Tables.School.schoolBoardId,
-				Tables.School.schoolType, Tables.School.schoolCurrentFinancialYear, Tables.School.isHostelFacilitiesAvailable, Tables.School.isHostelCompulsory,
-				Tables.School.noOfShift, Tables.School.schoolClassFrom, Tables.School.schoolClassTo, Tables.School.schoolOfficeStartTime, Tables.School.schoolOfficeEndTime,
-				Tables.School.schoolFinancialStartDay, Tables.School.schoolFinancialEndDay, Tables.School.schoolFinancialStartMonth, Tables.School.schoolFinancialEndMonth,
-				Tables.School.schoolFinancialStartYear, Tables.School.schoolFinancialEndYear, Tables.School.table, Tables.School.isActive, Tables.School.id);
+				+ "WHERE %s=? AND %s=?", Tables.Institute.registrationId, Tables.Institute.alternativeEmail, Tables.Institute.officeNumber, Tables.Institute.addressLine1,
+				Tables.Institute.addressLine2, Tables.Institute.city, Tables.Institute.state, Tables.Institute.country, Tables.Institute.pinCode, Tables.Institute.boardId,
+				Tables.Institute.type, Tables.Institute.currentFinancialYear, Tables.Institute.isHostelFacilitiesAvailable, Tables.Institute.isHostelCompulsory,
+				Tables.Institute.noOfShift, Tables.Institute.classFrom, Tables.Institute.classTo, Tables.Institute.officeStartTime, Tables.Institute.officeEndTime,
+				Tables.Institute.financialStartDay, Tables.Institute.financialEndDay, Tables.Institute.financialStartMonth, Tables.Institute.financialEndMonth,
+				Tables.Institute.financialStartYear, Tables.Institute.financialEndYear, Tables.Institute.table, Tables.Institute.isActive, Tables.Institute.id);
 		try {
 			connection = DB.getDataSource("srp").getConnection();
 			selectStatement = connection.prepareStatement(selectQuery, ResultSet.TYPE_FORWARD_ONLY);
@@ -47,39 +47,39 @@ public class SchoolProfileInfoDAO {
 
 			resultSet = selectStatement.executeQuery();
 			if(resultSet.next()) {				
-				schoolGeneralInfoFrom = new SchoolGeneralInfoFrom();
-				schoolGeneralInfoFrom.setSchoolRegistrationId(getString(resultSet.getString(Tables.School.schoolRegistrationId)));
-				schoolGeneralInfoFrom.setSchoolAlternativeEmail(getString(resultSet.getString(Tables.School.schoolAlternativeEmail)));
-				schoolGeneralInfoFrom.setSchoolAlternativeNumber(getString(resultSet.getString(Tables.School.officeNumber)));
-				schoolGeneralInfoFrom.setSchoolAddressLine1(getString(resultSet.getString(Tables.School.addressLine1)));
-				schoolGeneralInfoFrom.setSchoolAddressLine2(getString(resultSet.getString(Tables.School.addressLine2)));
-				schoolGeneralInfoFrom.setCity(getString(resultSet.getString(Tables.School.city)));
-				schoolGeneralInfoFrom.setState(getString(resultSet.getString(Tables.School.state)));
-				schoolGeneralInfoFrom.setCountry(getString(resultSet.getString(Tables.School.country)));
-				schoolGeneralInfoFrom.setPincode(getString(resultSet.getString(Tables.School.pinCode)));
+				schoolGeneralInfoFrom = new InstituteGeneralInfoForm();
+				schoolGeneralInfoFrom.setSchoolRegistrationId(getString(resultSet.getString(Tables.Institute.registrationId)));
+				schoolGeneralInfoFrom.setSchoolAlternativeEmail(getString(resultSet.getString(Tables.Institute.alternativeEmail)));
+				schoolGeneralInfoFrom.setSchoolAlternativeNumber(getString(resultSet.getString(Tables.Institute.officeNumber)));
+				schoolGeneralInfoFrom.setSchoolAddressLine1(getString(resultSet.getString(Tables.Institute.addressLine1)));
+				schoolGeneralInfoFrom.setSchoolAddressLine2(getString(resultSet.getString(Tables.Institute.addressLine2)));
+				schoolGeneralInfoFrom.setCity(getString(resultSet.getString(Tables.Institute.city)));
+				schoolGeneralInfoFrom.setState(getString(resultSet.getString(Tables.Institute.state)));
+				schoolGeneralInfoFrom.setCountry(getString(resultSet.getString(Tables.Institute.country)));
+				schoolGeneralInfoFrom.setPincode(getString(resultSet.getString(Tables.Institute.pinCode)));
 				StringBuilder sb = new StringBuilder();
-				sb.append(SchoolBoard.getBoardNameGivenId(resultSet.getLong(Tables.School.schoolBoardId)));
+				sb.append(SchoolBoard.getBoardNameGivenId(resultSet.getLong(Tables.Institute.boardId)));
 				sb.append("(");
-				sb.append(SchoolBoard.getBoardCodeGivenId(resultSet.getLong(Tables.School.schoolBoardId)));
+				sb.append(SchoolBoard.getBoardCodeGivenId(resultSet.getLong(Tables.Institute.boardId)));
 				sb.append(")");
 				schoolGeneralInfoFrom.setSchoolBoardName(sb.toString());// get borad name
-				schoolGeneralInfoFrom.setSchoolType(getString(resultSet.getString(Tables.School.schoolType)));
-				schoolGeneralInfoFrom.setSchoolCurrentFinancialYear(getString(resultSet.getString(Tables.School.schoolCurrentFinancialYear)));
-				schoolGeneralInfoFrom.setHostelFacilitiesAvailable(resultSet.getBoolean(Tables.School.isHostelFacilitiesAvailable));
-				schoolGeneralInfoFrom.setHostelCompulsory(resultSet.getBoolean(Tables.School.isHostelCompulsory));
-				schoolGeneralInfoFrom.setNoOfShift(resultSet.getInt(Tables.School.noOfShift));
-				schoolGeneralInfoFrom.setSchoolClassFrom(getString(resultSet.getString(Tables.School.schoolClassFrom)));
-				schoolGeneralInfoFrom.setSchoolClassTo(getString(resultSet.getString(Tables.School.schoolClassTo)));
-				schoolGeneralInfoFrom.setSchoolOfficeStartTime(getString(resultSet.getString(Tables.School.schoolOfficeStartTime)));
-				schoolGeneralInfoFrom.setSchoolOfficeEndTime(getString(resultSet.getString(Tables.School.schoolOfficeEndTime)));
+				schoolGeneralInfoFrom.setSchoolType(getString(resultSet.getString(Tables.Institute.type)));
+				schoolGeneralInfoFrom.setSchoolCurrentFinancialYear(getString(resultSet.getString(Tables.Institute.currentFinancialYear)));
+				schoolGeneralInfoFrom.setHostelFacilitiesAvailable(resultSet.getBoolean(Tables.Institute.isHostelFacilitiesAvailable));
+				schoolGeneralInfoFrom.setHostelCompulsory(resultSet.getBoolean(Tables.Institute.isHostelCompulsory));
+				schoolGeneralInfoFrom.setNoOfShift(resultSet.getInt(Tables.Institute.noOfShift));
+				schoolGeneralInfoFrom.setSchoolClassFrom(getString(resultSet.getString(Tables.Institute.classFrom)));
+				schoolGeneralInfoFrom.setSchoolClassTo(getString(resultSet.getString(Tables.Institute.classTo)));
+				schoolGeneralInfoFrom.setSchoolOfficeStartTime(getString(resultSet.getString(Tables.Institute.officeStartTime)));
+				schoolGeneralInfoFrom.setSchoolOfficeEndTime(getString(resultSet.getString(Tables.Institute.officeEndTime)));
 
-				int startDay = resultSet.getInt(Tables.School.schoolFinancialStartDay);
-				int startMonth = resultSet.getInt(Tables.School.schoolFinancialStartMonth);
-				int startYear = resultSet.getInt(Tables.School.schoolFinancialStartYear);
+				int startDay = resultSet.getInt(Tables.Institute.financialStartDay);
+				int startMonth = resultSet.getInt(Tables.Institute.financialStartMonth);
+				int startYear = resultSet.getInt(Tables.Institute.financialStartYear);
 
-				int endDay = resultSet.getInt(Tables.School.schoolFinancialEndDay);
-				int endMonth = resultSet.getInt(Tables.School.schoolFinancialEndMonth);
-				int endYear = resultSet.getInt(Tables.School.schoolFinancialEndYear);
+				int endDay = resultSet.getInt(Tables.Institute.financialEndDay);
+				int endMonth = resultSet.getInt(Tables.Institute.financialEndMonth);
+				int endYear = resultSet.getInt(Tables.Institute.financialEndYear);
 				String schoolStratDate = DateUtiles.getDate(startDay, startMonth, startYear);
 				String schoolEndDate = DateUtiles.getDate(endDay, endMonth, endYear);
 
@@ -104,15 +104,15 @@ public class SchoolProfileInfoDAO {
 		return schoolGeneralInfoFrom;
 	}
 
-	public SchoolHeaderInfoForm getSchoolHeaderInfoForm(long schoolId) throws SQLException {
+	public InstituteHeaderInfoForm getSchoolHeaderInfoForm(long schoolId) throws SQLException {
 		Connection connection = null;
 		PreparedStatement selectStatement = null;
 		ResultSet resultSet = null;
-		SchoolHeaderInfoForm schoolHeaderInfoForm = null;
+		InstituteHeaderInfoForm schoolHeaderInfoForm = null;
 		String selectQuery = String.format("SELECT %s, %s, %s, %s, %s, %s, %s FROM %s WHERE %s=? AND %s=?;",
-						Tables.School.schoolUserName, Tables.School.name, Tables.School.schoolEmail, Tables.School.phoneNumber,
-						Tables.School.schoolPreferedName, Tables.School.schoolWebsiteUrl, Tables.School.schoolLogoUrl,
-						Tables.School.table, Tables.School.isActive, Tables.School.id);
+						Tables.Institute.userName, Tables.Institute.name, Tables.Institute.email, Tables.Institute.phoneNumber,
+						Tables.Institute.preferedName, Tables.Institute.websiteUrl, Tables.Institute.logoUrl,
+						Tables.Institute.table, Tables.Institute.isActive, Tables.Institute.id);
 		try {
 			connection = DB.getDataSource("srp").getConnection();
 			selectStatement = connection.prepareStatement(selectQuery, ResultSet.TYPE_FORWARD_ONLY);
@@ -121,14 +121,14 @@ public class SchoolProfileInfoDAO {
 
 			resultSet = selectStatement.executeQuery();
 			if(resultSet.next()) {
-				schoolHeaderInfoForm = new SchoolHeaderInfoForm();
-				schoolHeaderInfoForm.setSchoolUserName(resultSet.getString(Tables.School.schoolUserName));
-				schoolHeaderInfoForm.setSchoolName(resultSet.getString(Tables.School.name));
-				schoolHeaderInfoForm.setSchoolEmail(resultSet.getString(Tables.School.schoolEmail));
-				schoolHeaderInfoForm.setSchoolMobileNumber(resultSet.getString(Tables.School.phoneNumber));
-				schoolHeaderInfoForm.setSchoolPreferedName(resultSet.getString(Tables.School.schoolPreferedName));
-				schoolHeaderInfoForm.setSchoolWebsiteUrl(resultSet.getString(Tables.School.schoolWebsiteUrl));
-				schoolHeaderInfoForm.setSchoolLogoUrl(resultSet.getString(Tables.School.schoolLogoUrl));
+				schoolHeaderInfoForm = new InstituteHeaderInfoForm();
+				schoolHeaderInfoForm.setSchoolUserName(resultSet.getString(Tables.Institute.userName));
+				schoolHeaderInfoForm.setSchoolName(resultSet.getString(Tables.Institute.name));
+				schoolHeaderInfoForm.setSchoolEmail(resultSet.getString(Tables.Institute.email));
+				schoolHeaderInfoForm.setSchoolMobileNumber(resultSet.getString(Tables.Institute.phoneNumber));
+				schoolHeaderInfoForm.setSchoolPreferedName(resultSet.getString(Tables.Institute.preferedName));
+				schoolHeaderInfoForm.setSchoolWebsiteUrl(resultSet.getString(Tables.Institute.websiteUrl));
+				schoolHeaderInfoForm.setSchoolLogoUrl(resultSet.getString(Tables.Institute.logoUrl));
 			}
 		} catch (Exception exception) {
 			System.out.println("connection exception happen");
@@ -147,11 +147,11 @@ public class SchoolProfileInfoDAO {
 		return schoolHeaderInfoForm;
 	}
 
-	public SchoolShiftAndClassTimingInfoForm getSchoolShiftAndClassTimingInfoForm(Long schoolId) throws SQLException {
+	public InstituteShiftAndClassTimingInfoForm getSchoolShiftAndClassTimingInfoForm(Long schoolId) throws SQLException {
 		Connection connection = null;
 		PreparedStatement selectStatement = null;
 		ResultSet resultSet = null;
-		SchoolShiftAndClassTimingInfoForm schoolShiftAndClassTimingInfoForm = null;
+		InstituteShiftAndClassTimingInfoForm schoolShiftAndClassTimingInfoForm = null;
 		String selectQuery = String.format("SELECT %s, %s, %s, %s, %s, %s, %s, %s FROM %s WHERE %s=? AND %s=?;", Tables.SchoolShiftInfo.shiftName,
 				Tables.SchoolShiftInfo.shiftClassStartTime, Tables.SchoolShiftInfo.shiftClassEndTime, Tables.SchoolShiftInfo.shiftWeekStartDay,
 				Tables.SchoolShiftInfo.shiftWeekEndDay, Tables.SchoolShiftInfo.shiftStartClassFrom, Tables.SchoolShiftInfo.shiftEndClassTo,
@@ -163,9 +163,9 @@ public class SchoolProfileInfoDAO {
 			selectStatement.setLong(2, schoolId);
 			resultSet = selectStatement.executeQuery();
 			int numberOfShift = 0;
-			List<SchoolShiftAndClassTimingInfoForm.Shift> shifts = new ArrayList<SchoolShiftAndClassTimingInfoForm.Shift>();
+			List<InstituteShiftAndClassTimingInfoForm.Shift> shifts = new ArrayList<InstituteShiftAndClassTimingInfoForm.Shift>();
 			while(resultSet.next()) {
-				SchoolShiftAndClassTimingInfoForm.Shift shift = new SchoolShiftAndClassTimingInfoForm.Shift();
+				InstituteShiftAndClassTimingInfoForm.Shift shift = new InstituteShiftAndClassTimingInfoForm.Shift();
 				shift.setShiftName(resultSet.getString(Tables.SchoolShiftInfo.shiftName));
 				shift.setShiftClassStartTime(resultSet.getString(Tables.SchoolShiftInfo.shiftClassStartTime));
 				shift.setShiftClassEndTime(resultSet.getString(Tables.SchoolShiftInfo.shiftClassEndTime));
@@ -179,7 +179,7 @@ public class SchoolProfileInfoDAO {
 			}
 
 			if(numberOfShift > 0) {				
-				schoolShiftAndClassTimingInfoForm = new SchoolShiftAndClassTimingInfoForm();
+				schoolShiftAndClassTimingInfoForm = new InstituteShiftAndClassTimingInfoForm();
 				schoolShiftAndClassTimingInfoForm.setNumberOfShift(numberOfShift);
 				schoolShiftAndClassTimingInfoForm.setShifts(shifts);
 				if(numberOfShift == 1)
@@ -204,17 +204,17 @@ public class SchoolProfileInfoDAO {
 		return schoolShiftAndClassTimingInfoForm;
 	}
 
-	public boolean updateSchoolGeneralInfo(SchoolGeneralInfoFrom schoolGeneralInfo, Long schoolId) throws SQLException {
+	public boolean updateSchoolGeneralInfo(InstituteGeneralInfoForm schoolGeneralInfo, Long schoolId) throws SQLException {
 		Connection connection = null;
 		PreparedStatement updateStatement = null;
 		ResultSet resultSet = null;
 		String updateQuery = String.format("UPDATE %s SET %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, "
-				+ "%s=?, %s=?, %s=?, %s=? WHERE %s=? AND %s=?;", Tables.School.table, Tables.School.schoolRegistrationId, Tables.School.schoolAlternativeEmail, Tables.School.officeNumber,
-				Tables.School.addressLine1, Tables.School.addressLine2, Tables.School.city, Tables.School.pinCode, Tables.School.isHostelFacilitiesAvailable, Tables.School.isHostelCompulsory,
-				Tables.School.schoolClassFrom, Tables.School.schoolClassTo, Tables.School.schoolOfficeStartTime, Tables.School.schoolOfficeEndTime, Tables.School.schoolOfficeWeekStartDay,
-				Tables.School.schoolOfficeEndTime, Tables.School.schoolCurrentFinancialYear, Tables.School.schoolFinancialStartDay, Tables.School.schoolFinancialEndDay,
-				Tables.School.schoolFinancialStartMonth, Tables.School.schoolFinancialEndMonth, Tables.School.schoolFinancialStartYear, Tables.School.schoolFinancialEndYear,
-				Tables.School.isActive, Tables.School.id);
+				+ "%s=?, %s=?, %s=?, %s=? WHERE %s=? AND %s=?;", Tables.Institute.table, Tables.Institute.registrationId, Tables.Institute.alternativeEmail, Tables.Institute.officeNumber,
+				Tables.Institute.addressLine1, Tables.Institute.addressLine2, Tables.Institute.city, Tables.Institute.pinCode, Tables.Institute.isHostelFacilitiesAvailable, Tables.Institute.isHostelCompulsory,
+				Tables.Institute.classFrom, Tables.Institute.classTo, Tables.Institute.officeStartTime, Tables.Institute.officeEndTime, Tables.Institute.officeWeekStartDay,
+				Tables.Institute.officeEndTime, Tables.Institute.currentFinancialYear, Tables.Institute.financialStartDay, Tables.Institute.financialEndDay,
+				Tables.Institute.financialStartMonth, Tables.Institute.financialEndMonth, Tables.Institute.financialStartYear, Tables.Institute.financialEndYear,
+				Tables.Institute.isActive, Tables.Institute.id);
 
 		int rowUpdated = 0;
 		try {
@@ -275,12 +275,12 @@ public class SchoolProfileInfoDAO {
 		return !(rowUpdated == 0);
 	}
 
-	public boolean updateSchoolHeaderInfo(SchoolHeaderInfoForm schoolHeaderInfo, Long schoolId) throws SQLException {
+	public boolean updateSchoolHeaderInfo(InstituteHeaderInfoForm schoolHeaderInfo, Long schoolId) throws SQLException {
 		Connection connection = null;
 		PreparedStatement updateStatement = null;
 		ResultSet resultSet = null;
-		String updateQuery = String.format("UPDATE %s SET %s=?, %s=?, %s=?, %s=?, %s=? WHERE %s=? AND %s=?;", Tables.School.table, Tables.School.name, Tables.School.phoneNumber,
-				Tables.School.schoolPreferedName, Tables.School.schoolWebsiteUrl, Tables.School.schoolLogoUrl, Tables.School.isActive, Tables.School.id);
+		String updateQuery = String.format("UPDATE %s SET %s=?, %s=?, %s=?, %s=?, %s=? WHERE %s=? AND %s=?;", Tables.Institute.table, Tables.Institute.name, Tables.Institute.phoneNumber,
+				Tables.Institute.preferedName, Tables.Institute.websiteUrl, Tables.Institute.logoUrl, Tables.Institute.isActive, Tables.Institute.id);
 
 		int rowUpdated = 0;
 		try {
@@ -309,14 +309,14 @@ public class SchoolProfileInfoDAO {
 		return !(rowUpdated == 0);
 	}
 
-	public boolean updateSchoolShiftAndClassTimingInfo(SchoolShiftAndClassTimingInfoForm schoolShiftAndClassTimingInfo, Long schoolId) throws SQLException {
+	public boolean updateSchoolShiftAndClassTimingInfo(InstituteShiftAndClassTimingInfoForm schoolShiftAndClassTimingInfo, Long schoolId) throws SQLException {
 		Connection connection = null;
 		PreparedStatement updateStatement = null;
 		ResultSet resultSet = null;
-		String updateQuery = String.format("UPDATE %s SET %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=? WHERE %s=? AND %s=?;", Tables.School.table,
-				Tables.School.noOfShift, Tables.School.isHostelFacilitiesAvailable, Tables.School.isHostelCompulsory, Tables.School.schoolOfficeWeekStartDay,
-				Tables.School.schoolOfficeWeekEndDay, Tables.School.schoolClassFrom, Tables.School.schoolClassTo, Tables.School.schoolOfficeStartTime, Tables.School.schoolOfficeEndTime,
-				Tables.School.schoolFinancialStartDay, Tables.School.schoolFinancialEndDay, Tables.School.isActive, Tables.School.id);
+		String updateQuery = String.format("UPDATE %s SET %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=? WHERE %s=? AND %s=?;", Tables.Institute.table,
+				Tables.Institute.noOfShift, Tables.Institute.isHostelFacilitiesAvailable, Tables.Institute.isHostelCompulsory, Tables.Institute.officeWeekStartDay,
+				Tables.Institute.officeWeekEndDay, Tables.Institute.classFrom, Tables.Institute.classTo, Tables.Institute.officeStartTime, Tables.Institute.officeEndTime,
+				Tables.Institute.financialStartDay, Tables.Institute.financialEndDay, Tables.Institute.isActive, Tables.Institute.id);
 
 		int rowUpdated = 0;
 		try {
@@ -330,7 +330,7 @@ public class SchoolProfileInfoDAO {
 		return !(rowUpdated == 0);
 	}
 
-	public boolean updateSchoolMandInfo(FirstTimeSchoolUpdateForm firstTimeSchoolUpdate, Long schoolId, String userName) throws SQLException {
+	public boolean updateSchoolMandInfo(FirstTimeInstituteUpdateForm firstTimeSchoolUpdate, Long schoolId, String userName) throws SQLException {
 		Connection connection = null;
 		PreparedStatement updateStmtSchoolMadInfo = null;
 		PreparedStatement updateLogin = null;
@@ -338,11 +338,11 @@ public class SchoolProfileInfoDAO {
 		String updateLoginQuery = String.format("UPDATE %s SET %s=? WHERE %s=? AND %s=? AND %s=? AND %s=?;", Tables.Login.table, Tables.Login.passwordState,
 				Tables.Login.isActive, Tables.Login.userName, Tables.Login.passwordState, Tables.Login.type);
 		String updateQuery = String.format("UPDATE %s SET %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=? WHERE %s=? AND %s=?;",
-				Tables.School.table, Tables.School.noOfShift, Tables.School.isHostelFacilitiesAvailable, Tables.School.isHostelCompulsory, Tables.School.schoolOfficeWeekStartDay,
-				Tables.School.schoolOfficeWeekEndDay, Tables.School.schoolClassFrom, Tables.School.schoolClassTo, Tables.School.schoolOfficeStartTime, Tables.School.schoolOfficeEndTime,
-				Tables.School.schoolFinancialStartDay, Tables.School.schoolFinancialEndDay, Tables.School.schoolFinancialStartMonth, Tables.School.schoolFinancialEndMonth,
-				Tables.School.schoolFinancialStartYear, Tables.School.schoolFinancialEndYear, Tables.School.schoolCurrentFinancialYear, Tables.School.schoolDateFormat,Tables.School.isActive,
-				Tables.School.id);
+				Tables.Institute.table, Tables.Institute.noOfShift, Tables.Institute.isHostelFacilitiesAvailable, Tables.Institute.isHostelCompulsory, Tables.Institute.officeWeekStartDay,
+				Tables.Institute.officeWeekEndDay, Tables.Institute.classFrom, Tables.Institute.classTo, Tables.Institute.officeStartTime, Tables.Institute.officeEndTime,
+				Tables.Institute.financialStartDay, Tables.Institute.financialEndDay, Tables.Institute.financialStartMonth, Tables.Institute.financialEndMonth,
+				Tables.Institute.financialStartYear, Tables.Institute.financialEndYear, Tables.Institute.currentFinancialYear, Tables.Institute.dateFormat,Tables.Institute.isActive,
+				Tables.Institute.id);
 		
 //		String shiftInsertQuery = String.format("INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s, %s, %s) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);", Tables.SchoolShiftInfo.table,
 //				Tables.SchoolShiftInfo.shiftName, Tables.SchoolShiftInfo.shiftClassStartTime, Tables.SchoolShiftInfo.shiftClassEndTime, Tables.SchoolShiftInfo.shiftWeekStartDay,

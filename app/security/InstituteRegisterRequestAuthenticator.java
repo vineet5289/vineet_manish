@@ -5,7 +5,7 @@ import play.mvc.Http;
 import play.mvc.Result;
 import play.mvc.Security;
 
-public class SchoolRegisterRequestAuthenticator extends Security.Authenticator{
+public class InstituteRegisterRequestAuthenticator extends Security.Authenticator{
 	@Override
 	public String getUsername(Http.Context ctx) {
 		String referenceNumber = ctx.session().get(SessionKey.REG_SCHOOL_REQUEST_NUMBER.name());

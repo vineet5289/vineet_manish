@@ -13,8 +13,8 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import play.db.DB;
-import views.forms.school.ClassForm;
-import views.forms.school.DisplayClassForm;
+import views.forms.institute.ClassForm;
+import views.forms.institute.DisplayClassForm;
 
 public class ClassDAO {
 	private String tableName = "class";

@@ -1,4 +1,4 @@
-package views.forms.school;
+package views.forms.institute;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,31 +11,29 @@ import utils.SchoolSpecificFiledValidation;
 import utils.ValidateFields;
 
 @Data
-public class AddNewSchoolRequest {
-	//only for internal use
-	private Long id;
-	private String referenceNumber = "";
-
+public class AddNewInstituteRequest {
 	//compulsory field
-	private String schoolName = "";
-	private String schoolEmail = "";
-	private String schoolMobileNumber = "";
-	private String schoolAddressLine1 = "";
+	private String name;
+	private String email;
+	private String phoneNumber;
+	private String addressLine1;
 	private String city;
 	private String state;
 	private String country;
-	private String pincode;
+	private String pinCode;
 	private String contactPersonName;
-
+	private String groupOfInstitute;
+	private int noOfInstitute;
+	
 	// optional field
-	private String schoolAlternativeNumber = "";
-	private String schoolAddressLine2 = "";
-	private String schoolRegistrationId = "";
+	private String officeNumber;
+	private String addressLine2 = "";
+	private String registrationId = "";
 	private String query = "";
 
 	public List<ValidationError> validate() {
 		List<ValidationError> errors = new ArrayList<>();
-		if (!SchoolSpecificFiledValidation.isValidSchoolName(schoolName)) {
+		if (!SchoolSpecificFiledValidation.isValidSchoolName(name)) {
 			errors.add(new ValidationError("schoolName", "School name should not be empty. And should not contains special characters like ;@[]"));
 		}
 
@@ -43,20 +41,20 @@ public class AddNewSchoolRequest {
 			errors.add(new ValidationError("contractPersonName", "contract person name should not be empty. And should not contains special characters like ;@[]"));
 		}
 
-		if(!ValidateFields.isValidEmailId(schoolEmail)) {
+		if(!ValidateFields.isValidEmailId(email)) {
 			errors.add(new ValidationError("schoolEmail","Enter valid email id like abcd@xyz.com"));
 		}
 
-		if (!ValidateFields.isValidMobileNumber(schoolMobileNumber)) {
+		if (!ValidateFields.isValidMobileNumber(phoneNumber)) {
 			errors.add(new ValidationError("schoolMobileNumber", "Enter valid contract number."));
 		}
 
-		if (schoolAlternativeNumber != null && !schoolAlternativeNumber.trim().isEmpty()
-				&& (ValidateFields.isValidMobileNumber(schoolAlternativeNumber) || ValidateFields.isValidAlternativeNumber(schoolAlternativeNumber))) {
+		if (officeNumber != null && !officeNumber.trim().isEmpty()
+				&& !(ValidateFields.isValidMobileNumber(officeNumber) || ValidateFields.isValidAlternativeNumber(officeNumber))) {
 			errors.add(new ValidationError("schoolAlternativeNumber", "Alternative number should be valid."));
 		}
 
-		if(schoolAddressLine1 == null || schoolAddressLine1.trim().isEmpty()) {
+		if(addressLine1 == null || addressLine1.trim().isEmpty()) {
 			errors.add(new ValidationError("schoolAddressLine1", "Address should not be empty."));
 		}
 
@@ -72,8 +70,16 @@ public class AddNewSchoolRequest {
 			errors.add(new ValidationError("country", "Country should not be empty. And should not contains any special characters except space."));
 		}
 
-		if(!AddressFieldValidationUtils.isValidPincode(pincode)) {
+		if(!AddressFieldValidationUtils.isValidPincode(pinCode)) {
 			errors.add(new ValidationError("pincode", "Pincode should not be empty. And should not contains any special characters."));
+		}
+
+		if(groupOfInstitute == null || !(groupOfInstitute.equalsIgnoreCase("single") || groupOfInstitute.equalsIgnoreCase("group"))) {
+			errors.add(new ValidationError("groupOfInstitute", "Please tell us whether registration is for single or group of institute."));
+		}
+
+		if(noOfInstitute < 0) {
+			errors.add(new ValidationError("noOfInstitute", "Please select number of institue/branch."));
 		}
 
 		if(errors.size() > 0)

@@ -1,4 +1,4 @@
-package views.forms.school;
+package views.forms.institute;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,7 +6,7 @@ import java.util.List;
 import lombok.Data;
 
 @Data
-public class SchoolShiftAndClassTimingInfoForm {
+public class InstituteShiftAndClassTimingInfoForm {
 	private int numberOfShift;
 	private String tabDisplayName;
 	private List<Shift> shifts = new ArrayList<Shift>();

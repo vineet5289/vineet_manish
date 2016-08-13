@@ -10,7 +10,7 @@ public enum WeekDayEnum {
 	Monday(2),
 	Tuesday(3),
 	Wednesday(4),
-	Thrusday(5),
+	Thursday(5),
 	Friday(6),
 	Saturday(7);
 

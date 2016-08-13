@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS subject (
   KEY FK_subject_class_id (class_id),
   CONSTRAINT FK_subject_class_id FOREIGN KEY (class_id) REFERENCES class (id),
   KEY FK_subject_school_id (school_id),
-  CONSTRAINT FK_subject_school_id FOREIGN KEY (school_id) REFERENCES school (id)
+  CONSTRAINT FK_subject_school_id FOREIGN KEY (school_id) REFERENCES institute (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS time_table (

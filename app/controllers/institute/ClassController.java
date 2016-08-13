@@ -1,4 +1,4 @@
-package controllers.school;
+package controllers.institute;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -7,8 +7,8 @@ import java.util.Map;
 import controllers.CustomController;
 import play.data.Form;
 import play.mvc.Result;
-import views.forms.school.ClassForm;
-import views.forms.school.DisplayClassForm;
+import views.forms.institute.ClassForm;
+import views.forms.institute.DisplayClassForm;
 import dao.ClassDAO;
 import enum_package.SessionKey;
 import views.html.viewClass.viewclasses;
@@ -43,7 +43,7 @@ public class ClassController extends CustomController {
 			try {
 				classDAO.addClass(classes, schoolId, userName);
 			} catch (SQLException exception) {
-				return redirect(controllers.school.routes.ClassController.preAddClass());
+				return redirect(controllers.institute.routes.ClassController.preAddClass());
 			}
 		}
 		return ok("class added"); // return to profile page
@@ -63,7 +63,7 @@ public class ClassController extends CustomController {
 			}
 			classes = classDAO.getClass(schoolId);
 		} catch (SQLException exception) {
-			redirect(controllers.school.routes.ClassController.preAddClass());
+			redirect(controllers.institute.routes.ClassController.preAddClass());
 		}
 
 		if(classes == null || classes.size() == 0) {
@@ -105,7 +105,7 @@ public class ClassController extends CustomController {
 			isSuccessful = classDAO.editClass(schoolId, userName, editClass);
 		} catch (SQLException exception) {
 			exception.printStackTrace();
-			redirect(controllers.school.routes.ClassController.preAddClass());
+			redirect(controllers.institute.routes.ClassController.preAddClass());
 		}
 		if(!isSuccessful) {
 			flash("warn", "Some server exception happen during deletion. Please try after some time.");
@@ -135,7 +135,7 @@ public class ClassController extends CustomController {
 				isSuccessfull = classDAO.deleteClass(schoolId, classsName);
 			} catch (SQLException exception) {
 				exception.printStackTrace();
-				redirect(controllers.school.routes.ClassController.preAddClass());
+				redirect(controllers.institute.routes.ClassController.preAddClass());
 			}
 		}
 		try {
@@ -185,7 +185,7 @@ public class ClassController extends CustomController {
 				isSuccessfull = classDAO.addSection(schoolId, classsName, sectionDetails, userName);
 			} catch (SQLException exception) {
 				exception.printStackTrace();
-				redirect(controllers.school.routes.ClassController.preAddClass());
+				redirect(controllers.institute.routes.ClassController.preAddClass());
 			}
 		}
 		try {

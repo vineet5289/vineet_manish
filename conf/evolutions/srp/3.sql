@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS user_super_user (
   is_active tinyint(1) DEFAULT 1,
   PRIMARY KEY (super_user_name, user_name),
   KEY FK_user_super_user_school_id (school_id),
-  CONSTRAINT FK_user_super_user_school_id FOREIGN KEY (school_id) REFERENCES school (id),
+  CONSTRAINT FK_user_super_user_school_id FOREIGN KEY (school_id) REFERENCES institute (id),
   KEY FK_user_super_user_name (super_user_name),
   CONSTRAINT FK_user_super_user_name FOREIGN KEY (super_user_name) REFERENCES login (user_name)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

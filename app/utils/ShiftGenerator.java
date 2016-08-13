@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import enum_package.AttendenceTypeEnum;
-import views.forms.school.FirstTimeSchoolUpdateForm;
-import views.forms.school.SchoolShiftAndClassTimingInfoForm;
+import views.forms.institute.FirstTimeInstituteUpdateForm;
+import views.forms.institute.InstituteShiftAndClassTimingInfoForm;
 
 public class ShiftGenerator {
 	private static final List<String> shiftName = new ArrayList<String>()
@@ -23,12 +23,12 @@ public class ShiftGenerator {
 	    add("Tenth Shift Details");
 	}};
 
-	public static SchoolShiftAndClassTimingInfoForm generateShift(FirstTimeSchoolUpdateForm firstTimeSchoolUpdate) {
+	public static InstituteShiftAndClassTimingInfoForm generateShift(FirstTimeInstituteUpdateForm firstTimeSchoolUpdate) {
 		int numberOfShift = firstTimeSchoolUpdate.getNumberOfShift();
-		SchoolShiftAndClassTimingInfoForm schoolShiftAndClassTimingInfoForm = new SchoolShiftAndClassTimingInfoForm();
+		InstituteShiftAndClassTimingInfoForm schoolShiftAndClassTimingInfoForm = new InstituteShiftAndClassTimingInfoForm();
 		schoolShiftAndClassTimingInfoForm.setNumberOfShift(numberOfShift);
 		if(numberOfShift == 1) {
-			SchoolShiftAndClassTimingInfoForm.Shift shift = new SchoolShiftAndClassTimingInfoForm.Shift();
+			InstituteShiftAndClassTimingInfoForm.Shift shift = new InstituteShiftAndClassTimingInfoForm.Shift();
 			shift.setShiftName(shiftName.get(0));
 			shift.setShiftClassStartTime(firstTimeSchoolUpdate.getSchoolOfficeStartTime());
 			shift.setShiftClassEndTime(firstTimeSchoolUpdate.getSchoolOfficeEndTime());
@@ -40,7 +40,7 @@ public class ShiftGenerator {
 			schoolShiftAndClassTimingInfoForm.getShifts().add(shift);
 		} else {
 			for(int i = 0; i < numberOfShift; i++) {
-				SchoolShiftAndClassTimingInfoForm.Shift shift = new SchoolShiftAndClassTimingInfoForm.Shift();
+				InstituteShiftAndClassTimingInfoForm.Shift shift = new InstituteShiftAndClassTimingInfoForm.Shift();
 				shift.setShiftName(shiftName.get(i+1));
 				shift.setShiftClassStartTime(firstTimeSchoolUpdate.getSchoolOfficeStartTime());
 				shift.setShiftClassEndTime(firstTimeSchoolUpdate.getSchoolOfficeEndTime());

@@ -1,4 +1,4 @@
-package views.forms.school;
+package views.forms.institute;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,58 +12,55 @@ import utils.SchoolSpecificFiledValidation;
 import utils.ValidateFields;
 
 @Data
-public class SchoolFormData {
+public class InstituteFormData {
 
 	//auto filed data
-	private String schoolName;
-	private String schoolEmail;
-	private String schoolMobileNumber;
-	private String schoolAlternativeNumber;
-	private String schoolAddressLine1;
-	private String schoolAddressLine2;
+	private String name;
+	private String email;
+	private String phoneNumber;
+	private String officeNumber;
+	private String addressLine1;
+	private String addressLine2;
 	private String city;
 	private String state;
 	private String country;
-	private String pincode;
-	private String schoolRegistrationId;
-	private String schoolUserName; //set to email id
+	private String pinCode;
+	private String registrationId;
+	private String userName; //set to email id
+	private String groupOfInstitute;
+	private int noOfInstitute;
 
 	//ask school to fill during registration 
 	private String password;
 	private String confirmPassword;
-	private String schoolBoard;
-	private String schoolType;
-
-	/*
-	 * not set or asked by user, for internal use
-	 * */ 
-	private boolean validSchool;
+	private String board;
+	private String type;
 
 	public List<ValidationError> validate() {
 		List<ValidationError> errors = new ArrayList<>();
 
-		if (!ValidateFields.isValidUserName(schoolUserName)) {
+		if (!ValidateFields.isValidUserName(userName)) {
 			errors.add(new ValidationError("schoolUserName", "School UserName is either emailId or combination alphanumeric character that can contains only @_-. special characters."));
 		}
 
-		if (!SchoolSpecificFiledValidation.isValidSchoolName(schoolName)) {
+		if (!SchoolSpecificFiledValidation.isValidSchoolName(name)) {
 			errors.add(new ValidationError("schoolName", "School name should not be empty. And should not contains special characters like ;@[]"));
 		}
 
-		if(!ValidateFields.isValidEmailId(schoolEmail)) {
+		if(!ValidateFields.isValidEmailId(email)) {
 			errors.add(new ValidationError("schoolEmail","Enter valid email id like abcd@xyz.com"));
 		}
 
-		if (!ValidateFields.isValidMobileNumber(schoolMobileNumber)) {
+		if (!ValidateFields.isValidMobileNumber(phoneNumber)) {
 			errors.add(new ValidationError("schoolMobileNumber", "Enter valid contract number."));
 		}
 
-		if (schoolAlternativeNumber != null && !schoolAlternativeNumber.trim().isEmpty()
-				&& !(ValidateFields.isValidMobileNumber(schoolAlternativeNumber) || ValidateFields.isValidAlternativeNumber(schoolAlternativeNumber))) {
+		if (officeNumber != null && !officeNumber.trim().isEmpty()
+				&& !(ValidateFields.isValidMobileNumber(officeNumber) || ValidateFields.isValidAlternativeNumber(officeNumber))) {
 			errors.add(new ValidationError("schoolAlternativeNumber", "Alternative number should be valid."));
 		}
 
-		if(schoolAddressLine1 == null || schoolAddressLine1.trim().isEmpty()) {
+		if(addressLine1 == null || addressLine1.trim().isEmpty()) {
 			errors.add(new ValidationError("schoolAddressLine1", "Address should not be empty."));
 		}
 
@@ -79,7 +76,7 @@ public class SchoolFormData {
 			errors.add(new ValidationError("country", "Country should not be empty. And should not contains any special characters except space."));
 		}
 
-		if(!AddressFieldValidationUtils.isValidPincode(pincode)) {
+		if(!AddressFieldValidationUtils.isValidPincode(pinCode)) {
 			errors.add(new ValidationError("pincode", "Pincode should not be empty. And should not contains any special characters."));
 		}
 
@@ -91,11 +88,11 @@ public class SchoolFormData {
 			errors.add(new ValidationError("password", "Invalid confirom password."));
 		}
 
-		if(schoolBoard == null || SchoolBoard.getDisplayNameGivenAffiliatedTo(schoolBoard.trim().toUpperCase()) == null) {
+		if(board == null || SchoolBoard.getDisplayNameGivenAffiliatedTo(board.trim().toUpperCase()) == null) {
 			errors.add(new ValidationError("schoolBoard", "Please enter valid school board without any special characters like @;$."));
 		}
 
-		if(schoolType == null || SchoolType.schoolTypeToValue.get(schoolType.trim().toUpperCase())  == null) {
+		if(type == null || SchoolType.schoolTypeToValue.get(type.trim().toUpperCase())  == null) {
 			errors.add(new ValidationError("schoolType", "Please enter valid school type without any special characters like @;$."));
 		}
 

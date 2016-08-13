@@ -11,7 +11,7 @@ import models.SchoolBoard;
 import play.db.DB;
 import utils.RandomGenerator;
 import utils.StringUtils;
-import views.forms.school.SchoolFormData;
+import views.forms.institute.InstituteFormData;
 import enum_package.LoginTypeEnum;
 import enum_package.PasswordState;
 import enum_package.RequestedStatus;
@@ -52,7 +52,7 @@ public class SchoolRegistrationDAO {
 	private String schoolTableName = "school";
 	private String schoolRegistrationRequestTableName = "school_registration_request";
 
-	public boolean registerSchool(SchoolFormData schoolData, String referenceNumber, String authToken) throws SQLException {
+	public boolean registerSchool(InstituteFormData schoolData, String referenceNumber, String authToken) throws SQLException {
 		boolean isSuccessfull = false;
 		Connection connection = null;
 		PreparedStatement schoolRegistrationPreparedStatement = null;
@@ -91,8 +91,8 @@ public class SchoolRegistrationDAO {
 			selectRegistrationRequestPreparedStatement.setBoolean(1, true);
 			selectRegistrationRequestPreparedStatement.setString(2, referenceNumber.trim());
 			selectRegistrationRequestPreparedStatement.setString(3, authToken.trim());
-			selectRegistrationRequestPreparedStatement.setString(4, schoolData.getSchoolEmail().trim());			
-			selectRegistrationRequestPreparedStatement.setString(5, RequestedStatus.APPROVED.name());
+			selectRegistrationRequestPreparedStatement.setString(4, schoolData.getEmail().trim());			
+			selectRegistrationRequestPreparedStatement.setString(5, RequestedStatus.approved.name());
 			selectResultSet = selectRegistrationRequestPreparedStatement.executeQuery();
 			if(!selectResultSet.next()) {
 				System.out.println("select query exception occur inside SchoolRegistrationDAO.registerSchool");
@@ -101,7 +101,7 @@ public class SchoolRegistrationDAO {
 
 			Long registrationRequestId = selectResultSet.getLong(idField);
 			updateRegistrationRequestPreparedStatement.setBoolean(1, false);
-			updateRegistrationRequestPreparedStatement.setString(2, RequestedStatus.REGISTERED.name());
+			updateRegistrationRequestPreparedStatement.setString(2, RequestedStatus.registered.name());
 			updateRegistrationRequestPreparedStatement.setLong(3, registrationRequestId);
 			int updateRowCount = updateRegistrationRequestPreparedStatement.executeUpdate();
 
@@ -110,32 +110,32 @@ public class SchoolRegistrationDAO {
 				return false;
 			}
 
-			schoolRegistrationPreparedStatement.setString(1, schoolData.getSchoolName().trim());//schoolName
+			schoolRegistrationPreparedStatement.setString(1, schoolData.getName().trim());//schoolName
 
 			String schoolRegistrationId = "";
-			if( schoolData.getSchoolRegistrationId() != null)
-				schoolRegistrationId = schoolData.getSchoolRegistrationId().trim();
+			if( schoolData.getRegistrationId() != null)
+				schoolRegistrationId = schoolData.getRegistrationId().trim();
 			schoolRegistrationPreparedStatement.setString(2, schoolRegistrationId); //schoolRegistrationId
 
-			schoolRegistrationPreparedStatement.setString(3, schoolData.getSchoolUserName().trim()); //schoolUserName
-			schoolRegistrationPreparedStatement.setString(4, schoolData.getSchoolEmail().trim()); //schooleEmail
+			schoolRegistrationPreparedStatement.setString(3, schoolData.getUserName().trim()); //schoolUserName
+			schoolRegistrationPreparedStatement.setString(4, schoolData.getEmail().trim()); //schooleEmail
 
-			schoolRegistrationPreparedStatement.setString(5, StringUtils.getValidStringValue(schoolData.getSchoolAddressLine1())); //addressLine1
-			schoolRegistrationPreparedStatement.setString(6, StringUtils.getValidStringValue(schoolData.getSchoolAddressLine2())); //addressLine2
+			schoolRegistrationPreparedStatement.setString(5, StringUtils.getValidStringValue(schoolData.getAddressLine1())); //addressLine1
+			schoolRegistrationPreparedStatement.setString(6, StringUtils.getValidStringValue(schoolData.getAddressLine2())); //addressLine2
 			schoolRegistrationPreparedStatement.setString(7, schoolData.getCity().trim()); //city
 			schoolRegistrationPreparedStatement.setString(8, schoolData.getState().trim()); //state
-			schoolRegistrationPreparedStatement.setString(9, schoolData.getPincode().trim()); //pincode
+			schoolRegistrationPreparedStatement.setString(9, schoolData.getPinCode().trim()); //pincode
 
-			schoolRegistrationPreparedStatement.setString(10, schoolData.getSchoolMobileNumber().trim()); //phoneNumber
+			schoolRegistrationPreparedStatement.setString(10, schoolData.getPhoneNumber().trim()); //phoneNumber
 			String alternativeNumber = "";
-			if( schoolData.getSchoolAlternativeNumber() != null)
-				schoolRegistrationId = schoolData.getSchoolAlternativeNumber().trim();
+			if( schoolData.getOfficeNumber() != null)
+				schoolRegistrationId = schoolData.getOfficeNumber().trim();
 			schoolRegistrationPreparedStatement.setString(11, alternativeNumber); //officeNumber
 			
 			schoolRegistrationPreparedStatement.setString(12, schoolData.getCountry().trim()); //country
-			Long boardId = SchoolBoard.getBoardIdGivenAffiliatedTo(schoolData.getSchoolBoard().trim());
+			Long boardId = SchoolBoard.getBoardIdGivenAffiliatedTo(schoolData.getBoard().trim());
 			schoolRegistrationPreparedStatement.setLong(13, boardId); //schoolBoard
-			schoolRegistrationPreparedStatement.setString(14, schoolData.getSchoolType().trim().toUpperCase()); //schoolType
+			schoolRegistrationPreparedStatement.setString(14, schoolData.getType().trim().toUpperCase()); //schoolType
 			schoolRegistrationPreparedStatement.setLong(15, registrationRequestId);
 			schoolRegistrationPreparedStatement.executeUpdate();
 			
@@ -148,14 +148,14 @@ public class SchoolRegistrationDAO {
 				return false;
 			}
 				
-			schoolLoginPreparedStatement.setString(1, schoolData.getSchoolUserName().trim());
-			schoolLoginPreparedStatement.setString(2, schoolData.getSchoolEmail().trim());
+			schoolLoginPreparedStatement.setString(1, schoolData.getUserName().trim());
+			schoolLoginPreparedStatement.setString(2, schoolData.getEmail().trim());
 			schoolLoginPreparedStatement.setString(3, bCryptPassword);
 			schoolLoginPreparedStatement.setString(4, PasswordState.redirectstate.name());
 			schoolLoginPreparedStatement.setString(5, Role.SUPERADMIN.name());
 			schoolLoginPreparedStatement.setString(6, "ALL=1");
 			schoolLoginPreparedStatement.setBoolean(7, true);
-			schoolLoginPreparedStatement.setString(8, schoolData.getSchoolName().trim());
+			schoolLoginPreparedStatement.setString(8, schoolData.getName().trim());
 			schoolLoginPreparedStatement.setLong(9, generatedSchoolId);
 			schoolLoginPreparedStatement.setString(10, LoginTypeEnum.SCHOOL.name());
 			schoolLoginPreparedStatement.execute();
