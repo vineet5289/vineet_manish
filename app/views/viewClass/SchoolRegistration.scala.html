@@ -29,62 +29,88 @@ schoolType:       Map[String, String])
                   <!-- Hidden fields on form -->
                   <input
                      type="hidden"
-                     name="schoolRegistrationId"
-                     value='@schoolForm("schoolRegistrationId").value'
+                     name="instituteRegistrationId"
+                     value='@schoolForm("instituteRegistrationId").value'
                      readonly>
                   <input
                      type="hidden"
-                     name="schoolAddressLine1"
-                     value='@schoolForm("schoolAddressLine1").value'
+                     name="instituteAddressLine1"
+                     value='@schoolForm("instituteAddressLine1").value'
                      readonly>
                   <input
                      type="hidden"
-                     name="schoolAddressLine2"
-                     value='@schoolForm("schoolAddressLine2").value'
+                     name="instituteAddressLine2"
+                     value='@schoolForm("instituteAddressLine2").value'
                      readonly>
-                  <input type="hidden" name="city" value='@schoolForm("city").value' readonly>
-                  <input type="hidden" name="state" value='@schoolForm("state").value' readonly>
+                  <input type="hidden" name="instituteCity" value='@schoolForm("instituteCity").value' readonly>
+                  <input type="hidden" name="instituteState" value='@schoolForm("instituteState").value' readonly>
                   <input
                      type="hidden"
-                     name="country"
-                     value='@schoolForm("country").value'
-                     readonly>
-                  <input
-                     type="hidden"
-                     name="pincode"
-                     value='@schoolForm("pincode").value'
+                     name="instituteCountry"
+                     value='@schoolForm("instituteCountry").value'
                      readonly>
                   <input
                      type="hidden"
-                     name="schoolAlternativeNumber"
-                     value='@schoolForm("schoolAlternativeNumber").value'>
+                     name="institutePinCode"
+                     value='@schoolForm("institutePinCode").value'
+                     readonly>
                   <input
                      type="hidden"
-                     name="schoolEmail"
-                     value='@schoolForm("schoolEmail").value'
+                     name="instituteOfficeNumber"
+                     value='@schoolForm("instituteOfficeNumber").value'>
+                  <input
+                     type="hidden"
+                     name="instituteEmail"
+                     value='@schoolForm("instituteEmail").value'
                      readonly>
                   <div class="field">
                      <label>School Name</label>
                      <input
-                        name="schoolName"
+                        name="instituteName"
                         type="text"
-                        value='@schoolForm("schoolName").value'
+                        value='@schoolForm("instituteName").value'
                         readonly>
+                  </div>
+
+                       <div class="two fields">
+                     <div class="field">
+                        <label>Institute Type</label>
+                        <div class="ui left icon input">
+                           <input
+                              type="text"
+                              name="groupOfInstitute"
+                              value='@schoolForm("groupOfInstitute").value'
+                              readonly>
+                              
+                           
+                        </div>
+                     </div>
+                     <div class="field">
+                        <label>Number Of Institute Branch</label>
+                        <div class="ui left icon input">
+                           <input
+                              type="text"
+                              name="noOfInstitute"
+                              value='@schoolForm("noOfInstitute").value'
+                              readonly>
+                           <i class="key icon"></i>
+                        </div>
+                     </div>
                   </div>
                   <div class="field">
                      <label>School Mobile No.</label>
                      <input
                         type="text"
-                        name="schoolMobileNumber"
-                        value='@schoolForm("schoolMobileNumber").value'
+                        name="institutePhoneNumber"
+                        value='@schoolForm("institutePhoneNumber").value'
                         readonly>
                   </div>
                   <div class="field">
                      <label>UserName</label>
                      <input
                         type="email"
-                        name="schoolUserName"
-                        value='@schoolForm("schoolUserName").value'
+                        name="instituteUserName"
+                        value='@schoolForm("instituteUserName").value'
                         readonly>
                   </div>
                   <div class="two fields">
@@ -93,7 +119,7 @@ schoolType:       Map[String, String])
                         <div class="ui left icon input">
                            <input
                               type="password"
-                              name="password"
+                              name="institutePassword"
                               placeholder="Password"
                               autocomplete="off">
                            <i class="key icon"></i>
@@ -104,41 +130,14 @@ schoolType:       Map[String, String])
                         <div class="ui left icon input">
                            <input
                               type="password"
-                              name="confirmPassword"
+                              name="instituteConfirmPassword"
                               placeholder="Confirm Password"
                               autocomplete="off">
                            <i class="key icon"></i>
                         </div>
                      </div>
                   </div>
-                  <div class="two fields">
-                     <div class="field">
-                        <label>School Type</label>
-                        <div class="ui fluid selection dropdown">
-                           <div class="text">Select</div>
-                           <i class="dropdown icon"></i>
-                           <input name="schoolType" type="hidden">
-                           <div class="menu">
-                              @for((key,value)<- schoolType){ 
-                              <div class="item" data-value="@key">@value</div>
-                              }
-                           </div>
-                        </div>
-                     </div>
-                     <div class="field">
-                        <label>School Board</label>
-                        <div class="ui fluid selection dropdown">
-                           <div class="text">Select</div>
-                           <i class="dropdown icon"></i>
-                           <input name="schoolBoard" type="hidden">
-                           <div class="menu">
-                              @for((key,value)<- schoolBoard){ 
-                              <div class="item" data-value="@key">@value</div>
-                              }
-                           </div>
-                        </div>
-                     </div>
-                  </div>
+                
                   <div class="two fields">
                      <div class="field">
                         <button class="ui green fluid left floated button" type="submit">Send Request</button>

@@ -4,6 +4,14 @@ classes:List[String],
 attendenceType:List[String])
 
 @viewClass.main6("UPDATE | INFO")("index"){
+<script type="text/javascript">
+  $(function(){
+  var shift=MandataryUpdateForm.elements["noOfShift"];
+  var index = shift.selectedIndex;
+  var selected_option_value = shift.options[index].value;
+  alert(selected_option_value);
+  });
+</script>
 
 <div class="main container">
    <div class="ui page grid">

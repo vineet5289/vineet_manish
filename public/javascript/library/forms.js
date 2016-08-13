@@ -32,30 +32,30 @@ $(function () {
         
         
        
-        schoolName: {
-                identifier: 'schoolName',
+        instituteName: {
+                identifier: 'instituteName',
                 rules: [{
                     type: 'empty',
                     prompt: 'PLEASE ENTER SCHOOL NAME'
                 }]
             },
-         schoolRegistrationId: {
-                identifier: 'schoolRegistrationId',
+         instituteRegistrationId: {
+                identifier: 'instituteRegistrationId',
                 optional:true,
                 rules: [{
                     type: 'empty',
                     prompt: 'PLEASE ENTER YOUR SCHOOL REGISTRATION ID'
                 }]
             },
-         schoolAddressLine1: {
-                identifier: 'schoolAddressLine1',
+         instituteAddressLine1: {
+                identifier: 'instituteAddressLine1',
                 rules: [{
                     type: 'empty',
                     prompt: 'PLEASE ENTER YOUR SCHOOL ADDRESS'
                 }]
             },
-            schoolAddressLine2: {
-                identifier: 'schoolAddressLine2',
+            instituteAddressLine2: {
+                identifier: 'instituteAddressLine2',
                 optional:true,
                 rules: [{
                     
@@ -63,31 +63,31 @@ $(function () {
                     prompt: 'PLEASE ENTER YOUR SCHOOL ADDRESS'
                 }]
             },
-             city: {
-                identifier: 'city',
+             instituteCity: {
+                identifier: 'instituteCity',
                 rules: [{
                     type: 'empty',
                     prompt: 'PLEASE ENTER CITY'
                 }]
             },
             
-            state: {
-                identifier: 'state',
+            instituteState: {
+                identifier: 'instituteState',
                 rules: [{
                     type: 'empty',
                     prompt: 'PLEASE SELECT STATE'
                 }]
             },
             
-             country: {
-                identifier: 'country',
+             instituteCountry: {
+                identifier: 'instituteCountry',
                 rules: [{
                     type: 'empty',
                     prompt: 'PLEASE ENTER COUNTRY NAME'
                 }]
             },
-             pincode: {
-                identifier: 'pincode',
+             institutePinCode: {
+                identifier: 'institutePinCode',
                 rules: [{
                     type: 'empty',
                     prompt: 'PLEASE ENTER PINCODE'
@@ -110,9 +110,30 @@ $(function () {
                     prompt: 'PLEASE ENTER YOUR NAME'
                 }]
             },
+
+            groupOfInstitute: {
+                identifier: 'groupOfInstitute',
+                rules: [{
+                    type: 'empty',
+                    prompt: 'PLEASE SELECT TYPE OF INSTITUTE'
+                }]
+            },
+
+             noOfInstitute: {
+                identifier: 'noOfInstitute',
+                 rules: [
+                 {
+                    type: 'empty',
+                    prompt: 'PLEASE ENTER NUMBER OF INSTITUTE'
+                },
+                {
+                    type: 'number',
+                    prompt: 'PLEASE ENTER VALID NUMBER'
+                }]
+            },
             
-            schoolEmail: {
-                identifier: 'schoolEmail',
+            instituteEmail: {
+                identifier: 'instituteEmail',
                 rules: [
                  {
                     type: 'empty',
@@ -124,8 +145,29 @@ $(function () {
                 }
                 ]
             },
-        schoolMobileNumber: {
-                identifier: 'schoolMobileNumber',
+        institutePhoneNumber: {
+                identifier: 'institutePhoneNumber',
+                rules: [
+                {
+                    type:'empty',
+                    prompt: 'PLEASE ENTER MOBILE NUMBER'
+                },
+                {
+                  type:'number',
+                  prompt:'NUMBERS ALLOWED ONLY'
+                },
+                {
+                    type:'exactLength[10]',
+                    prompt: 'MOBILE NUMBER SHOULD BE OF  LENGTH 10'
+                }
+                
+                ]
+                 
+            },
+
+            instituteOfficeNumber: {
+                identifier: 'instituteOfficeNumber',
+                optional:true,
                 rules: [
                 {
                     type:'empty',
