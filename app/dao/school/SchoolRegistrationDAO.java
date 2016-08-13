@@ -34,11 +34,11 @@ public class SchoolRegistrationDAO {
 				Tables.Login.table, Tables.Login.userName, Tables.Login.emailId, Tables.Login.password, Tables.Login.passwordState, Tables.Login.role, 
 				Tables.Login.accessRights, Tables.Login.isActive, Tables.Login.name, Tables.Login.instituteId, Tables.Login.type);
 
-		String insertHeadInstituteQ = String.format("INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
-				+ " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);", Tables.HeadInstitute.table, Tables.HeadInstitute.name, Tables.HeadInstitute.email, 
-				Tables.HeadInstitute.phoneNumber, Tables.HeadInstitute.officeNumber, Tables.HeadInstitute.addressLine1, Tables.HeadInstitute.addressLine2,
-				Tables.HeadInstitute.city, Tables.HeadInstitute.state, Tables.HeadInstitute.country, Tables.HeadInstitute.pinCode, Tables.HeadInstitute.registrationId,
-				Tables.HeadInstitute.userName, Tables.HeadInstitute.groupOfInstitute, Tables.HeadInstitute.noOfInstitute, Tables.HeadInstitute.addInstituteRequestId);
+		String insertHeadInstituteQ = String.format("INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) VALUES(?, ?, ?, ?, ?, ?, ?,"
+				+ " ?, ?, ?, ?, ?, ?, ?, ?);", Tables.HeadInstitute.table, Tables.HeadInstitute.name, Tables.HeadInstitute.email,  Tables.HeadInstitute.phoneNumber,
+				Tables.HeadInstitute.officeNumber, Tables.HeadInstitute.addressLine1, Tables.HeadInstitute.addressLine2, Tables.HeadInstitute.city,
+				Tables.HeadInstitute.state, Tables.HeadInstitute.country, Tables.HeadInstitute.pinCode, Tables.HeadInstitute.registrationId, Tables.HeadInstitute.userName,
+				Tables.HeadInstitute.groupOfInstitute, Tables.HeadInstitute.noOfInstitute, Tables.HeadInstitute.addInstituteRequestId);
 
 		String insertInstituteQ =  String.format("INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,"
 				+ "?, ?, ?, ?);", Tables.Institute.table, Tables.Institute.name, Tables.Institute.email, Tables.Institute.phoneNumber, Tables.Institute.officeNumber,
