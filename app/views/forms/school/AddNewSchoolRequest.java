@@ -50,7 +50,7 @@ public class AddNewSchoolRequest {
 		}
 
 		if (schoolAlternativeNumber != null && !schoolAlternativeNumber.trim().isEmpty()
-				&& (ValidateFields.isValidMobileNumber(schoolAlternativeNumber) || ValidateFields.isValidAlternativeNumber(schoolAlternativeNumber))) {
+				&& !(ValidateFields.isValidMobileNumber(schoolAlternativeNumber) || ValidateFields.isValidAlternativeNumber(schoolAlternativeNumber))) {
 			errors.add(new ValidationError("schoolAlternativeNumber", "Alternative number should be valid."));
 		}
 
@@ -72,6 +72,14 @@ public class AddNewSchoolRequest {
 
 		if(!AddressFieldValidationUtils.isValidPincode(pincode)) {
 			errors.add(new ValidationError("pincode", "Pincode should not be empty. And should not contains any special characters."));
+		}
+
+		if(groupOfInstitute == null || !(groupOfInstitute.equalsIgnoreCase("single") || groupOfInstitute.equalsIgnoreCase("group"))) {
+			errors.add(new ValidationError("groupOfInstitute", "Please tell us whether registration is for single or group of institute."));
+		}
+
+		if(noOfInstitute < 0) {
+			errors.add(new ValidationError("noOfInstitute", "Please select number of institue/branch."));
 		}
 
 		if(errors.size() > 0)
