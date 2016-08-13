@@ -64,9 +64,9 @@ public class NewInstituteRequestController extends CustomController {
 			return redirect(controllers.institute.routes.NewInstituteRequestController.preAddNewInstituteRequest());
 		}
 
-		String schoolEmailId = addNewSchoolRequest.getEmail();
-		String receiverPhoneNumber = addNewSchoolRequest.getPhoneNumber();
-		String receiverName = addNewSchoolRequest.getName();
+		String schoolEmailId = addNewSchoolRequest.getInstituteEmail();
+		String receiverPhoneNumber = addNewSchoolRequest.getInstitutePhoneNumber();
+		String receiverName = addNewSchoolRequest.getInstituteName();
 
 		NewSchoolRequest newSchoolRequest = new NewSchoolRequest();
 		newSchoolRequest.setSchoolEmailId(schoolEmailId);

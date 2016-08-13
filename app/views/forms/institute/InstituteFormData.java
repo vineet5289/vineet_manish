@@ -3,6 +3,7 @@ package views.forms.institute;
 import java.util.ArrayList;
 import java.util.List;
 
+import enum_package.InstituteDaoProcessStatus;
 import lombok.Data;
 import models.SchoolBoard;
 import models.SchoolType;
@@ -13,7 +14,8 @@ import utils.ValidateFields;
 
 @Data
 public class InstituteFormData {
-
+	// for internal use
+	InstituteDaoProcessStatus processingStatus;
 	//auto filed data
 	private String name;
 	private String email;
