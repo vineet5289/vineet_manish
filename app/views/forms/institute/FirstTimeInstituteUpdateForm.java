@@ -7,6 +7,8 @@ import enum_package.AttendenceTypeEnum;
 import enum_package.SchoolClassEnum;
 import enum_package.WeekDayEnum;
 import lombok.Data;
+import models.SchoolBoard;
+import models.SchoolType;
 import play.data.validation.ValidationError;
 import utils.TimeUtiles;
 import utils.ValidateFields;
@@ -27,11 +29,13 @@ public class FirstTimeInstituteUpdateForm {
 	private boolean isHostelFacilitiesAvailable;
 	private boolean isHostelCompulsory;
 	private String schoolDateFormat;
+	private String instituteBoard;
+	private String instituteType;
 	private List<InstituteShiftAndClassTimingInfoForm.Shift> shifts;
 
 	public List<ValidationError> validate() {
 		List<ValidationError> errors = new ArrayList<>();
-		
+
 		if(numberOfShift < 0) {
 			errors.add(new ValidationError("numberOfShift", "Number Of Shift should be greater then one."));
 		}
@@ -46,14 +50,14 @@ public class FirstTimeInstituteUpdateForm {
 		}
 
 		isHostelFacilitiesAvailable = (hostelFacilitiesIsAvailable != null && hostelFacilitiesIsAvailable.trim().equalsIgnoreCase("true"));
-		
+
 		if( isHostelFacilitiesAvailable && (hostelIsCompulsory == null || !(hostelIsCompulsory.trim().equalsIgnoreCase("true")
 				|| hostelIsCompulsory.trim().equalsIgnoreCase("false")))) {
 			errors.add(new ValidationError("isHostelCompulsory", "Please select hostel is compulsory or optional."));
 		}
 
 		isHostelCompulsory = (isHostelFacilitiesAvailable && hostelIsCompulsory != null && hostelIsCompulsory.trim().equalsIgnoreCase("true"));
-		
+
 		if(schoolOfficeWeekStartDay == null || !WeekDayEnum.contains(schoolOfficeWeekStartDay)) {
 			errors.add(new ValidationError("schoolOfficeWeekStartDay", "Please select one of the week day from drop down"));
 		}
@@ -90,9 +94,17 @@ public class FirstTimeInstituteUpdateForm {
 			errors.add(new ValidationError("schoolDateFormat", "Please select correct date format."));
 		}
 
+		if(instituteBoard == null || SchoolBoard.getDisplayNameGivenAffiliatedTo(instituteBoard.trim().toUpperCase()) == null) {
+			errors.add(new ValidationError("schoolBoard", "Please enter valid school board without any special characters like @;$."));
+		}
+
+		if(instituteType == null || SchoolType.schoolTypeToValue.get(instituteType.trim().toUpperCase())  == null) {
+			errors.add(new ValidationError("schoolType", "Please enter valid school type without any special characters like @;$."));
+		}
+
 		if(errors.size() > 0)
 			return errors;
 		return null;
 	}
-	
+
 }
