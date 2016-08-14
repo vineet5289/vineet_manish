@@ -4,6 +4,9 @@
 
 # Home page
 GET     /        	                        	   controllers.SRPController.index()
+GET		/gp_institute							   controllers.SRPController.headInstituteHome()
+GET		/institute								   controllers.SRPController.instituteHome()
+GET		/students								   controllers.SRPController.studentsHome()
 
 # login handler
 GET     /login                       			   controllers.login_logout.LoginController.preLogin()

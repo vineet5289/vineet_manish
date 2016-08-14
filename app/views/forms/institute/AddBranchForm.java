@@ -11,7 +11,7 @@ import utils.ValidateFields;
 import enum_package.InstituteDaoProcessStatus;
 
 @Data
-public class InstituteFormData {
+public class AddBranchForm {
 	// for internal use
 	InstituteDaoProcessStatus processingStatus;
 	//auto filed data
@@ -27,12 +27,6 @@ public class InstituteFormData {
 	private String institutePinCode;
 	private String instituteRegistrationId;
 	private String instituteUserName; //set to email id
-	private String groupOfInstitute;
-	private int noOfInstitute;
-
-	//ask school to fill during registration 
-	private String institutePassword;
-	private String instituteConfirmPassword;
 
 	public List<ValidationError> validate() {
 		List<ValidationError> errors = new ArrayList<>();
@@ -78,17 +72,8 @@ public class InstituteFormData {
 			errors.add(new ValidationError("pincode", "Pincode should not be empty. And should not contains any special characters."));
 		}
 
-		if(!ValidateFields.isValidPassword(institutePassword)) {
-			errors.add(new ValidationError("password", "Invalid password."));
-		}
-
-		if(!ValidateFields.isValidPassword(instituteConfirmPassword) || (institutePassword != null && !institutePassword.equals(instituteConfirmPassword))) {
-			errors.add(new ValidationError("password", "Invalid confirom password."));
-		}
-
 		if(errors.size() > 0)
 			return errors;
 		return null;
 	}
 }
-

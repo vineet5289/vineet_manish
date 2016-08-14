@@ -14,6 +14,7 @@ import controllers.routes;
 import dao.UserLoginDAO;
 import dao.impl.RedisSessionDao;
 import enum_package.LoginStatus;
+import enum_package.LoginType;
 import enum_package.SessionKey;
 
 
@@ -59,6 +60,16 @@ public class LoginController extends CustomController {
 			session().clear();
 			return redirect(controllers.login_logout.routes.LoginController.preLogin());
 		}
+
+		String loginType = session().get(SessionKey.logintype.name());
+		if(loginType != null && loginType.equals(LoginType.headinstitute.name())) {
+			return redirect(routes.SRPController.headInstituteHome());
+		} else if(loginType != null && loginType.equals(LoginType.institute.name())) {
+			return redirect(routes.SRPController.instituteHome());
+		} else if(loginType != null && loginType.equals(LoginType.institute.name())) {
+			return redirect(routes.SRPController.studentsHome());
+		}
+
 		return redirect(routes.SRPController.index());
 	}
 
