@@ -93,7 +93,7 @@ public class InstituteInfoController extends ClassController {
 			return redirect(controllers.institute.routes.InstituteInfoController.getProfileInfo());
 		}
 		
-		String schoolId = session().get(SessionKey.SCHOOL_ID.name());
+		String schoolId = session().get(SessionKey.instituteid.name());
 
 		boolean isUpdated = false;
 		try {
@@ -134,7 +134,7 @@ public class InstituteInfoController extends ClassController {
 			return redirect(controllers.institute.routes.InstituteInfoController.getProfileInfo());
 		}
 
-		String schoolId = session().get(SessionKey.SCHOOL_ID.name());
+		String schoolId = session().get(SessionKey.instituteid.name());
 		boolean isUpdated = false;
 		try {
 			SchoolProfileInfoDAO schoolProfileInfoDAO = new SchoolProfileInfoDAO();
@@ -174,7 +174,7 @@ public class InstituteInfoController extends ClassController {
 			return redirect(controllers.institute.routes.InstituteInfoController.getProfileInfo());
 		}
 
-		String schoolId = session().get(SessionKey.SCHOOL_ID.name());
+		String schoolId = session().get(SessionKey.instituteid.name());
 		boolean isUpdated = false;
 		try {
 			SchoolProfileInfoDAO schoolProfileInfoDAO = new SchoolProfileInfoDAO();
@@ -195,7 +195,7 @@ public class InstituteInfoController extends ClassController {
 	//session validation
 	public Result getInstituteMandInfo() {
 		System.out.println("inside mand info");
-		String schoolId = session().get(SessionKey.SCHOOL_ID.name());
+		String schoolId = session().get(SessionKey.instituteid.name());
 		Form<FirstTimeInstituteUpdateForm> firstTimeUpdateForm = Form.form(FirstTimeInstituteUpdateForm.class);
 		List<String> weekList = WeekDayEnum.getWeekDisplayName();
 		List<String> classList = SchoolClassEnum.getClassDisplayName();
@@ -235,8 +235,8 @@ public class InstituteInfoController extends ClassController {
 			return redirect(controllers.institute.routes.InstituteInfoController.getInstituteMandInfo());
 		}
 
-		String schoolId = session().get(SessionKey.SCHOOL_ID.name());
-		String userName = session().get(SessionKey.USER_NAME.name());
+		String schoolId = session().get(SessionKey.instituteid.name());
+		String userName = session().get(SessionKey.username.name());
 		FirstTimeInstituteUpdateForm firstTimeSchoolUpdate = firstTimeSchoolUpdateForm.get();
 		InstituteDaoProcessStatus instituteDaoProcessStatus = InstituteDaoProcessStatus.invalidschool;
 		try {

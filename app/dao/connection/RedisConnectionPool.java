@@ -19,7 +19,7 @@ public class RedisConnectionPool {
 
 	public static final String REDIS_URI_PROP = "redis.uri";
 	public static final String REDIS_MAX_CONNECTION = "redis.max.connection";
-	private JedisPool jedisPool;
+	@Inject private JedisPool jedisPool;
 	private final ALogger LOG = Logger.of(this.getClass());
 	
 
@@ -30,7 +30,7 @@ public class RedisConnectionPool {
 		config.setMaxTotal(maxPoolSize);
 		String redisUri = Play.application().configuration().getString(REDIS_URI_PROP);
 		LOG.debug("Redis server uri points to: " + redisUri);
-		this.jedisPool = new JedisPool(config, new URI(redisUri));
+//		this.jedisPool = new JedisPool(config, new URI(redisUri));
 		lifecycle.addStopHook(() -> {
 			LOG.debug("Jedis pool is shutting down");
 			jedisPool.destroy();

@@ -16,9 +16,9 @@ public class EmployeeController extends CustomController {
 	 * validate user has access right or not
 	 * */
 	public Result preAddEmployeeRequest() {
-		String userName = session().get(SessionKey.USER_NAME.name());
-		String userAuthKey = session().get(SessionKey.AUTH_TOKEN.name());
-		String schoolId = session().get(SessionKey.SCHOOL_ID.name());
+		String userName = session().get(SessionKey.username.name());
+		String userAuthKey = session().get(SessionKey.authtoken.name());
+		String schoolId = session().get(SessionKey.instituteid.name());
 		Form<AddEmployeeForm> addEmployeeForm = Form.form(AddEmployeeForm.class);
 		return ok("addEmployeeForm"); // may return all requested employee, not yet register
 	}
@@ -37,8 +37,8 @@ public class EmployeeController extends CustomController {
 		EmployesDAO employesDAO = new EmployesDAO();
 		boolean isEmpAdded = false;
 		try{
-			String reuestedPersonUserName = session().get(SessionKey.USER_NAME.name());
-			String schoolId = session().get(SessionKey.SCHOOL_ID.name());
+			String reuestedPersonUserName = session().get(SessionKey.username.name());
+			String schoolId = session().get(SessionKey.instituteid.name());
 			isEmpAdded = employesDAO.addNewEmpRequest(addEmployeeDetails, reuestedPersonUserName, schoolId);
 		} catch(Exception exception) {
 			exception.printStackTrace();

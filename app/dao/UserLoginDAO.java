@@ -45,6 +45,12 @@ public class UserLoginDAO {
 				Tables.Login.isActive);
 
 		try {
+			String authToken = geterateAuthToken();
+			if(authToken == null || authToken.isEmpty()) {
+				loginDetails.setLoginStatus(LoginStatus.servererror);
+				return loginDetails;
+			}
+
 			connection = DB.getDataSource("srp").getConnection();
 			loginPreparedStatement = connection.prepareStatement(loginSelectQuery, ResultSet.TYPE_FORWARD_ONLY);
 			loginPreparedStatement.setString(1, userName);
@@ -56,11 +62,6 @@ public class UserLoginDAO {
 				return loginDetails;
 			}
 
-			String authToken = geterateAuthToken();
-			if(authToken == null || authToken.isEmpty()) {
-				loginDetails.setLoginStatus(LoginStatus.servererror);
-				return loginDetails;
-			}
 
 			loginDetails.setRole(loginResultSet.getString(Tables.Login.role));
 			loginDetails.setUserName(userName);

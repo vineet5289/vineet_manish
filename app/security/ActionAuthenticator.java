@@ -19,7 +19,7 @@ public class ActionAuthenticator extends Security.Authenticator{
 
 		// write redis validation
 		
-		return userHeaderCredential.get(SessionKey.AUTH_TOKEN.name());
+		return userHeaderCredential.get(SessionKey.authtoken.name());
 	}
 
 	@Override
@@ -29,38 +29,38 @@ public class ActionAuthenticator extends Security.Authenticator{
 
 	private Map<String, String> getSessionKeyFromRequest(Http.Context ctx) {
 		Map<String, String> userHeaderCredential = new HashMap<String, String>();
-		String userName = ctx.session().get(SessionKey.USER_NAME.name());
-		String userAuth = ctx.session().get(SessionKey.AUTH_TOKEN.name());
-		String loginType = ctx.session().get(SessionKey.LOGIN_TYPE.name());
-		String schoolId = ctx.session().get(SessionKey.SCHOOL_ID.name());
-		String shiftId = ctx.session().get(SessionKey.SHIFT_ID.name());
-		String childId = ctx.session().get(SessionKey.CHILD_ID.name());
-		String userRole = ctx.session().get(SessionKey.USER_ROLE.name());
-		String userAccessRights = ctx.session().get(SessionKey.USER_ACCESSRIGHT.name());
+		String userName = ctx.session().get(SessionKey.username.name());
+		String userAuth = ctx.session().get(SessionKey.authtoken.name());
+		String loginType = ctx.session().get(SessionKey.logincategory.name());
+		String schoolId = ctx.session().get(SessionKey.instituteid.name());
+		String shiftId = ctx.session().get(SessionKey.shiftid.name());
+		String childId = ctx.session().get(SessionKey.childid.name());
+		String userRole = ctx.session().get(SessionKey.userrole.name());
+		String userAccessRights = ctx.session().get(SessionKey.useraccessright.name());
 
 		if(userName != null && !userName.trim().isEmpty())
-			userHeaderCredential.put(SessionKey.USER_NAME.name(), userName.trim());
+			userHeaderCredential.put(SessionKey.username.name(), userName.trim());
 
 		if(userAuth != null && !userAuth.trim().isEmpty())
-			userHeaderCredential.put(SessionKey.AUTH_TOKEN.name(), userAuth.trim());
+			userHeaderCredential.put(SessionKey.authtoken.name(), userAuth.trim());
 
 		if(loginType != null && !loginType.trim().isEmpty())
-			userHeaderCredential.put(SessionKey.LOGIN_TYPE.name(), loginType.trim());
+			userHeaderCredential.put(SessionKey.logincategory.name(), loginType.trim());
 
 		if(schoolId != null && !schoolId.trim().isEmpty())
-			userHeaderCredential.put(SessionKey.SCHOOL_ID.name(), schoolId.trim());
+			userHeaderCredential.put(SessionKey.instituteid.name(), schoolId.trim());
 
 		if(shiftId != null && !shiftId.trim().isEmpty())
-			userHeaderCredential.put(SessionKey.SHIFT_ID.name(), shiftId.trim());
+			userHeaderCredential.put(SessionKey.shiftid.name(), shiftId.trim());
 
 		if(childId != null && !childId.trim().isEmpty())
-			userHeaderCredential.put(SessionKey.CHILD_ID.name(), childId.trim());
+			userHeaderCredential.put(SessionKey.childid.name(), childId.trim());
 
 		if(userRole != null && !userRole.trim().isEmpty())
-			userHeaderCredential.put(SessionKey.USER_ROLE.name(), userRole.trim());
+			userHeaderCredential.put(SessionKey.userrole.name(), userRole.trim());
 
 		if(userAccessRights != null && !userAccessRights.trim().isEmpty())
-			userHeaderCredential.put(SessionKey.USER_ACCESSRIGHT.name(), userAccessRights.trim());
+			userHeaderCredential.put(SessionKey.useraccessright.name(), userAccessRights.trim());
 
 		if(!userHeaderCredential.isEmpty() && userHeaderCredential.size() >= 3)
 			return userHeaderCredential;
