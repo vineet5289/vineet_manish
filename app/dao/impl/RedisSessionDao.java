@@ -37,7 +37,7 @@ public class RedisSessionDao implements SessionDao {
 	@Override
 	public Map<String, String> get(String userName, String redisPrefix) throws Exception {
 		Jedis jedis = redisConnectionPool.getJedisPool().getResource();
-		Map<String, String> redisValue = jedis.hgetAll(redisPrefix + userName);
+		Map<String, String> redisValue = jedis.hgetAll(redisPrefix + ":" + userName);
 		jedis.close();
 		return redisValue;
 	}

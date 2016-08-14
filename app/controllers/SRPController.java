@@ -94,12 +94,14 @@ public class SRPController extends CustomController {
 			}
 		}catch(Exception exception) {
 			exception.printStackTrace();
-//			return
+			headInstituteLoginDetails = new HeadInstituteLoginDetails();
+			headInstituteLoginDetails.setLoginStatus(LoginStatus.servererror);
 		}
 
-		if(headInstituteLoginDetails == null || headInstituteLoginDetails.getLoginStatus() != LoginStatus.validuser) {
+		if(headInstituteLoginDetails.getLoginStatus() != LoginStatus.validuser) {
 			flash("error", LoginStatus.of(headInstituteLoginDetails.getLoginStatus()));
-			//return
+			session().clear();
+			return redirect(controllers.login_logout.routes.LoginController.preLogin());
 		}
 
 		if(headInstituteLoginDetails.getGropuOfInstitute().equals("single")) {

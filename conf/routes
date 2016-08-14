@@ -36,6 +36,10 @@ POST      	/submitopt                            	   controllers.institute.Insti
 POST     	/registerinstitute            	           controllers.institute.InstituteRegistrationController.postInstituteRegistrationRequest()
 
 #school info and edit
+# add branch in group of institute
+GET			/institute/add/branch				   	   controllers.institute.InstituteController.preAddBranch()
+POST		/institute/add/branch				       controllers.institute.InstituteController.postAddBranch()
+
 POST		/institute/switch/branch				   controllers.institute.InstituteController.switchBranch()
 GET			/institute/show/profile					   controllers.institute.InstituteInfoController.getProfileInfo()
 GET			/institute/edit/general					   controllers.institute.InstituteInfoController.getGeneralInfo()
