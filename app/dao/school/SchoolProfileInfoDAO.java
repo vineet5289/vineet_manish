@@ -17,8 +17,8 @@ import views.forms.institute.InstituteHeaderInfoForm;
 import views.forms.institute.InstituteShiftAndClassTimingInfoForm;
 import dao.Tables;
 import enum_package.InstituteDaoProcessStatus;
-import enum_package.LoginTypeEnum;
-import enum_package.PasswordState;
+import enum_package.LoginType;
+import enum_package.LoginState;
 import enum_package.SchoolClassEnum;
 import enum_package.WeekDayEnum;
 
@@ -428,11 +428,11 @@ public class SchoolProfileInfoDAO {
 				shiftInfoPS.addBatch();
 			}
 
-			loginPS.setString(1, PasswordState.finalstate.name());
+			loginPS.setString(1, LoginState.finalstate.name());
 			loginPS.setBoolean(2, true);
 			loginPS.setString(3, userName.trim());
-			loginPS.setString(4, PasswordState.redirectstate.name());
-			loginPS.setString(5, LoginTypeEnum.institute.name());
+			loginPS.setString(4, LoginState.redirectstate.name());
+			loginPS.setString(5, LoginType.institute.name());
 
 			updateStmtSchoolMadInfoPS.setInt(1, firstTimeInstituteUpdate.getNumberOfShift());
 			updateStmtSchoolMadInfoPS.setBoolean(2, firstTimeInstituteUpdate.isHostelFacilitiesAvailable());

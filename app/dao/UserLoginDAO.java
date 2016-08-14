@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import models.CommonUserCredentials;
+import models.HeadInstituteLoginDetails;
 import models.LoginDetails;
 import play.db.DB;
 import utils.ParseString;
@@ -33,22 +35,21 @@ public class UserLoginDAO {
 	private String loginTableName = "login";
 	private String userSuperUserTableName = "user_super_user";
 
-	public LoginDetails isValidUserCredentials(String userName, String password) throws SQLException {
-		LoginDetails loginDetails = new LoginDetails();
+	public CommonUserCredentials isValidUserCredentials(String userName, String password) throws SQLException {
+		CommonUserCredentials userCredentials = new CommonUserCredentials();
 		Connection connection = null;
 		PreparedStatement loginPreparedStatement = null;
 		ResultSet loginResultSet = null;
 
-		String loginSelectQuery = String.format("SELECT %s, %s, %s, %s, %s, %s, %s, %s, %s, %s FROM %s WHERE %s=? AND %s=?;", Tables.Login.id,
-				Tables.Login.userName, Tables.Login.emailId, Tables.Login.password, Tables.Login.passwordState, Tables.Login.role,
-				Tables.Login.accessRights, Tables.Login.name, Tables.Login.instituteId, Tables.Login.type, Tables.Login.table, Tables.Login.userName,
-				Tables.Login.isActive);
+		String loginSelectQuery = String.format("SELECT %s, %s, %s, %s, %s, %s, %s FROM %s WHERE %s=? AND %s=?;", Tables.Login.userName,
+				Tables.Login.emailId, Tables.Login.password, Tables.Login.passwordState, Tables.Login.role, Tables.Login.name, Tables.Login.type,
+				Tables.Login.table, Tables.Login.userName, Tables.Login.isActive);
 
 		try {
 			String authToken = geterateAuthToken();
 			if(authToken == null || authToken.isEmpty()) {
-				loginDetails.setLoginStatus(LoginStatus.servererror);
-				return loginDetails;
+				userCredentials.setLoginStatus(LoginStatus.servererror);
+				return userCredentials;
 			}
 
 			connection = DB.getDataSource("srp").getConnection();
@@ -58,24 +59,18 @@ public class UserLoginDAO {
 			loginResultSet = loginPreparedStatement.executeQuery();
 
 			if(!loginResultSet.next() || !isPasswordMatch(password, loginResultSet.getString(Tables.Login.password))) {
-				loginDetails.setLoginStatus(LoginStatus.invaliduser);
-				return loginDetails;
+				userCredentials.setLoginStatus(LoginStatus.invaliduser);
+				return userCredentials;
 			}
 
-
-			loginDetails.setRole(loginResultSet.getString(Tables.Login.role));
-			loginDetails.setUserName(userName);
-			loginDetails.setAuthToken(authToken);
-			loginDetails.setAccessRight(loginResultSet.getString(Tables.Login.accessRights));
-			Long superUserSchoolId = loginResultSet.getLong(Tables.Login.instituteId);
-			if( superUserSchoolId != null && superUserSchoolId > 0) {
-				loginDetails.setSchoolId(superUserSchoolId);
-			}
-			loginDetails.setType(loginResultSet.getString(Tables.Login.type));
-			loginDetails.setPasswordState(Tables.Login.passwordState);
-			loginDetails.setLoginStatus(LoginStatus.validuser);
+			userCredentials.setRole(loginResultSet.getString(Tables.Login.role));
+			userCredentials.setUserName(userName);
+			userCredentials.setAuthToken(authToken);
+			userCredentials.setType(loginResultSet.getString(Tables.Login.type));
+			userCredentials.setLoginstate(Tables.Login.passwordState);
+			userCredentials.setLoginStatus(LoginStatus.validuser);
 		} catch(Exception exception) {
-			loginDetails.setLoginStatus(LoginStatus.servererror);
+			userCredentials.setLoginStatus(LoginStatus.servererror);
 			exception.printStackTrace();
 		} finally {
 			if(loginResultSet != null)
@@ -85,8 +80,116 @@ public class UserLoginDAO {
 			if(connection != null)
 				connection.close();
 		}
+		return userCredentials;
+	}
 
-		return loginDetails;
+	public HeadInstituteLoginDetails refreshHeadInstituteUserCredentials(String userName, String type) throws SQLException {
+		Connection connection = null;
+		PreparedStatement loginPS = null;
+		PreparedStatement headInstitutePS = null;
+		PreparedStatement institutePS = null;
+		ResultSet loginRS = null;
+		ResultSet headInstituteRS = null;
+		ResultSet instituteRS = null;
+
+		String loginSelectQ = String.format("SELECT %s, %s, %s, %s, %s, %s, %s FROM %s WHERE %s=? AND %s=? AND %s=?;", Tables.Login.userName, Tables.Login.role,
+				Tables.Login.accessRights, Tables.Login.name, Tables.Login.instituteId, Tables.Login.type, Tables.Login.passwordState, Tables.Login.table,
+				Tables.Login.userName, Tables.Login.isActive, Tables.Login.type);
+
+		String headInstituteSelectQ = String.format("SELECT %s, %s, %s FROM %s WHERE %s=? AND %s=?;", Tables.HeadInstitute.groupOfInstitute, Tables.HeadInstitute.noOfInstitute,
+				Tables.HeadInstitute.preferedName, Tables.HeadInstitute.table, Tables.HeadInstitute.isActive, Tables.HeadInstitute.id);
+
+		String instituteSelectQ = String.format("SELECT %s, %s, %s, %s FROM %s WHERE %s=? AND %s=?;", Tables.Institute.id, Tables.Institute.userName,
+				Tables.Institute.name, Tables.Institute.preferedName, Tables.Institute.table, Tables.Institute.isActive, Tables.Institute.headInstituteId);
+
+		HeadInstituteLoginDetails headInstituteLoginDetails = new HeadInstituteLoginDetails();;
+		try {
+			connection = DB.getDataSource("srp").getConnection();
+			connection.setAutoCommit(false);
+			loginPS = connection.prepareStatement(loginSelectQ, ResultSet.TYPE_FORWARD_ONLY);
+			headInstitutePS = connection.prepareStatement(headInstituteSelectQ, ResultSet.TYPE_FORWARD_ONLY);
+			institutePS = connection.prepareStatement(instituteSelectQ, ResultSet.TYPE_FORWARD_ONLY);
+			loginPS.setString(1, userName);
+			loginPS.setBoolean(2, true);
+			loginPS.setString(3, type);
+
+			long headInstituteId = 0;
+			int numberOfInstitute = 0;
+			loginRS = loginPS.executeQuery();
+			if(loginRS.next()) {
+				headInstituteLoginDetails.setHeadInstituteUserName(userName);
+				headInstituteLoginDetails.setHeadInstituteName(loginRS.getString(Tables.Login.name));
+				headInstituteLoginDetails.setHeadInstituteLoginType(loginRS.getString(Tables.Login.type));
+				headInstituteLoginDetails.setHeadInstituteLoginState(loginRS.getString(Tables.Login.passwordState));
+				headInstituteLoginDetails.setHeadInstituteId(loginRS.getLong(Tables.Login.instituteId));
+				headInstituteLoginDetails.setHeadInstituteAccessRight(loginRS.getString(Tables.Login.accessRights));
+				headInstituteLoginDetails.setHeadInstituteUserRole(loginRS.getString(Tables.Login.role));
+				headInstituteId = loginRS.getLong(Tables.Login.instituteId);
+			} else {
+				headInstituteLoginDetails.setLoginStatus(LoginStatus.invaliduser);
+			}
+
+			if(headInstituteId > 0) {
+				headInstitutePS.setBoolean(1, true);
+				headInstitutePS.setLong(2, headInstituteId);
+				headInstituteRS = headInstitutePS.executeQuery();
+
+				if(headInstituteRS.next()) {
+					headInstituteLoginDetails.setGropuOfInstitute(headInstituteRS.getString(Tables.HeadInstitute.groupOfInstitute));
+					headInstituteLoginDetails.setNumberOfInstitute(headInstituteRS.getInt(Tables.HeadInstitute.noOfInstitute));
+					headInstituteLoginDetails.setHeadInstitutePrefered(headInstituteRS.getString(Tables.HeadInstitute.preferedName));
+					numberOfInstitute = headInstituteRS.getInt(Tables.HeadInstitute.noOfInstitute);
+				} else {
+					headInstituteLoginDetails.setLoginStatus(LoginStatus.invaliduser);
+				}
+			}
+
+			if(numberOfInstitute > 0 && headInstituteId > 0) {
+				institutePS.setBoolean(1, true);
+				institutePS.setLong(2, headInstituteId);
+				instituteRS = institutePS.executeQuery();
+				List<HeadInstituteLoginDetails.BranchDetails> branchs = new ArrayList<HeadInstituteLoginDetails.BranchDetails>();
+				while(instituteRS.next()) {
+					HeadInstituteLoginDetails.BranchDetails branch = new HeadInstituteLoginDetails.BranchDetails();
+					branch.setInstituteId(instituteRS.getLong(Tables.Institute.id));
+					branch.setInstituteName(instituteRS.getString(Tables.Institute.name));
+					branch.setInstitutePrefered(instituteRS.getString(Tables.Institute.preferedName));
+					branch.setInstituteUserName(instituteRS.getString(Tables.Institute.userName));
+					branchs.add(branch);
+				}
+				if(branchs.size() > 0)
+					headInstituteLoginDetails.setBranchs(branchs);
+				headInstituteLoginDetails.setLoginStatus(LoginStatus.validuser);
+			}
+			connection.commit();
+		} catch(Exception exception) {
+			exception.printStackTrace();
+			headInstituteLoginDetails.setLoginStatus(LoginStatus.servererror);
+			connection.rollback();
+		} finally {
+			if(loginRS != null)
+				loginRS.close();
+
+			if(headInstituteRS != null)
+				headInstituteRS.close();
+
+			if(instituteRS != null)
+				instituteRS.close();
+
+			if(loginPS != null)
+				loginPS.close();
+
+			if(headInstitutePS != null)
+				headInstitutePS.close();
+
+			if(institutePS != null)
+				institutePS.close();
+
+			if(connection != null)
+				connection.close();
+		}
+
+		return headInstituteLoginDetails;
 	}
 
 	public LoginDetails refreshUserUsingUserName(String userName) throws SQLException {
@@ -140,8 +243,8 @@ public class UserLoginDAO {
 		Connection connection = null;
 		PreparedStatement userSuperUserPreparedStatement = null;
 		ResultSet userSuperUserResultSet = null;
-		String userSuperUserSelectQuery = String.format("SELECT %s, %s, %s, %s FROM %s WHERE %s=? AND %s=?;", userNameField, nameField, schoolIdField,
-				superUserNameField, userSuperUserTableName, superUserNameField, isActiveField);
+		String userSuperUserSelectQuery = String.format("SELECT %s, %s, %s, %s FROM %s WHERE %s=? AND %s=?;", Tables.Login.userName, Tables.Login.name,
+				Tables.Login.instituteId, superUserNameField, userSuperUserTableName, superUserNameField, isActiveField);
 		try {
 			connection = DB.getDataSource("srp").getConnection();
 			userSuperUserPreparedStatement = connection.prepareStatement(userSuperUserSelectQuery, ResultSet.TYPE_FORWARD_ONLY);

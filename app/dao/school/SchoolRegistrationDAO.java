@@ -12,8 +12,8 @@ import utils.StringUtils;
 import views.forms.institute.InstituteFormData;
 import dao.Tables;
 import enum_package.InstituteDaoProcessStatus;
-import enum_package.LoginTypeEnum;
-import enum_package.PasswordState;
+import enum_package.LoginType;
+import enum_package.LoginState;
 import enum_package.RequestedStatus;
 import enum_package.Role;
 
@@ -145,9 +145,9 @@ public class SchoolRegistrationDAO {
 				instituteRegistrationPS.setLong(13, generatedHeadInstituteId);
 				instituteRegistrationPS.execute();
 
-				instituteLoginPS.setString(4, PasswordState.redirectstate.name());
+				instituteLoginPS.setString(4, LoginState.redirectstate.name());
 			} else {
-				instituteLoginPS.setString(4, PasswordState.finalstate.name());
+				instituteLoginPS.setString(4, LoginState.finalstate.name());
 			}
 
 			instituteLoginPS.setString(1, schoolData.getInstituteUserName().trim());
@@ -158,7 +158,7 @@ public class SchoolRegistrationDAO {
 			instituteLoginPS.setBoolean(7, true);
 			instituteLoginPS.setString(8, schoolData.getInstituteName().trim());
 			instituteLoginPS.setLong(9, generatedHeadInstituteId);
-			instituteLoginPS.setString(10, LoginTypeEnum.headinstitute.name());
+			instituteLoginPS.setString(10, LoginType.headinstitute.name());
 			instituteLoginPS.execute();
 			connection.commit();
 			instituteDaoProcessStatus = InstituteDaoProcessStatus.validschool;

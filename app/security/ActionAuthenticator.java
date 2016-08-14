@@ -31,7 +31,7 @@ public class ActionAuthenticator extends Security.Authenticator{
 		Map<String, String> userHeaderCredential = new HashMap<String, String>();
 		String userName = ctx.session().get(SessionKey.username.name());
 		String userAuth = ctx.session().get(SessionKey.authtoken.name());
-		String loginType = ctx.session().get(SessionKey.logincategory.name());
+		String loginType = ctx.session().get(SessionKey.logintype.name());
 		String schoolId = ctx.session().get(SessionKey.instituteid.name());
 		String shiftId = ctx.session().get(SessionKey.shiftid.name());
 		String childId = ctx.session().get(SessionKey.childid.name());
@@ -45,7 +45,7 @@ public class ActionAuthenticator extends Security.Authenticator{
 			userHeaderCredential.put(SessionKey.authtoken.name(), userAuth.trim());
 
 		if(loginType != null && !loginType.trim().isEmpty())
-			userHeaderCredential.put(SessionKey.logincategory.name(), loginType.trim());
+			userHeaderCredential.put(SessionKey.logintype.name(), loginType.trim());
 
 		if(schoolId != null && !schoolId.trim().isEmpty())
 			userHeaderCredential.put(SessionKey.instituteid.name(), schoolId.trim());

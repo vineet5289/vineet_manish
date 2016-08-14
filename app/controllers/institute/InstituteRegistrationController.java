@@ -42,8 +42,8 @@ public class InstituteRegistrationController extends CustomController {
 		try {
 			InstituteFormData schoolData = schoolRegistrationRequestDAO.isValidSchoolRegistrationRequest(referenceKey, otp, emailId);
 			if(schoolData != null && schoolData.getProcessingStatus() == InstituteDaoProcessStatus.validschool) {
-				session(SessionKey.REG_SCHOOL_REQUEST_NUMBER.name(), referenceKey);
-				session(SessionKey.OTP_KEY.name(), otp);
+				session(SessionKey.regschoolrequestnumber.name(), referenceKey);
+				session(SessionKey.otpkey.name(), otp);
 
 				Form<InstituteFormData> schoolFormData = Form.form(InstituteFormData.class).fill(schoolData);
 
@@ -74,8 +74,8 @@ public class InstituteRegistrationController extends CustomController {
 			return redirect(controllers.login_logout.routes.LoginController.preLogin());
 		}
 		
-		String referenceNumber = session().get(SessionKey.REG_SCHOOL_REQUEST_NUMBER.name());
-		String authToken = session().get(SessionKey.OTP_KEY.name());
+		String referenceNumber = session().get(SessionKey.regschoolrequestnumber.name());
+		String authToken = session().get(SessionKey.otpkey.name());
 		SchoolRegistrationDAO schoolRegistrationDAO = new SchoolRegistrationDAO();
 		InstituteDaoProcessStatus instituteDaoProcessStatus;
 		try {

@@ -8,8 +8,8 @@ import play.mvc.Security;
 public class InstituteRegisterRequestAuthenticator extends Security.Authenticator{
 	@Override
 	public String getUsername(Http.Context ctx) {
-		String referenceNumber = ctx.session().get(SessionKey.REG_SCHOOL_REQUEST_NUMBER.name());
-		String authToken = ctx.session().get(SessionKey.OTP_KEY.name());
+		String referenceNumber = ctx.session().get(SessionKey.regschoolrequestnumber.name());
+		String authToken = ctx.session().get(SessionKey.otpkey.name());
 
 		if(referenceNumber == null || referenceNumber.isEmpty()
 				|| authToken == null || authToken.isEmpty())

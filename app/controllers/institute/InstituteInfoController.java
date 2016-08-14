@@ -17,7 +17,6 @@ import views.forms.institute.InstituteShiftAndClassTimingInfoForm;
 import views.html.viewClass.School.SchoolProfile;
 import views.html.viewClass.School.editSchoolInfo;
 import views.html.viewClass.School.schoolMandataryInfo;
-import views.html.viewClass.School.groupInstituteFirstUpdate;
 import controllers.routes;
 import dao.school.SchoolProfileInfoDAO;
 import enum_package.AttendenceTypeEnum;
