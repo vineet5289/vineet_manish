@@ -19,6 +19,7 @@ import enum_package.LoginState;
 import enum_package.RegisterUserType;
 import enum_package.Role;
 import enum_package.SessionKey;
+import  views.html.viewClass.School.instituteGroupHome;
 
 public class SRPController extends CustomController {
 
@@ -48,6 +49,7 @@ public class SRPController extends CustomController {
 					return ok(dashboard.render(session().get(SessionKey.username.name()), "institutegroupadmin"));
 				} else {
 					
+					return ok(instituteGroupHome.render(headInstituteLoginDetails.branchs));
 				}
 			}
 		}catch(Exception exception) {
