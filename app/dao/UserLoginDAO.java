@@ -67,7 +67,7 @@ public class UserLoginDAO {
 			userCredentials.setUserName(userName);
 			userCredentials.setAuthToken(authToken);
 			userCredentials.setType(loginResultSet.getString(Tables.Login.type));
-			userCredentials.setLoginstate(Tables.Login.passwordState);
+			userCredentials.setLoginstate(loginResultSet.getString(Tables.Login.passwordState));
 			userCredentials.setLoginStatus(LoginStatus.validuser);
 		} catch(Exception exception) {
 			userCredentials.setLoginStatus(LoginStatus.servererror);
@@ -114,7 +114,6 @@ public class UserLoginDAO {
 			loginPS.setString(3, type);
 
 			long headInstituteId = 0;
-			int numberOfInstitute = 0;
 			loginRS = loginPS.executeQuery();
 			if(loginRS.next()) {
 				headInstituteLoginDetails.setHeadInstituteUserName(userName);
@@ -124,12 +123,14 @@ public class UserLoginDAO {
 				headInstituteLoginDetails.setHeadInstituteId(loginRS.getLong(Tables.Login.instituteId));
 				headInstituteLoginDetails.setHeadInstituteAccessRight(loginRS.getString(Tables.Login.accessRights));
 				headInstituteLoginDetails.setHeadInstituteUserRole(loginRS.getString(Tables.Login.role));
+				headInstituteLoginDetails.setLoginStatus(LoginStatus.validuser);
+
 				headInstituteId = loginRS.getLong(Tables.Login.instituteId);
 			} else {
 				headInstituteLoginDetails.setLoginStatus(LoginStatus.invaliduser);
 			}
 
-			if(headInstituteId > 0) {
+			if(headInstituteId > 0 && headInstituteLoginDetails.getLoginStatus() == LoginStatus.validuser) {
 				headInstitutePS.setBoolean(1, true);
 				headInstitutePS.setLong(2, headInstituteId);
 				headInstituteRS = headInstitutePS.executeQuery();
@@ -138,28 +139,25 @@ public class UserLoginDAO {
 					headInstituteLoginDetails.setGropuOfInstitute(headInstituteRS.getString(Tables.HeadInstitute.groupOfInstitute));
 					headInstituteLoginDetails.setNumberOfInstitute(headInstituteRS.getInt(Tables.HeadInstitute.noOfInstitute));
 					headInstituteLoginDetails.setHeadInstitutePrefered(headInstituteRS.getString(Tables.HeadInstitute.preferedName));
-					numberOfInstitute = headInstituteRS.getInt(Tables.HeadInstitute.noOfInstitute);
 				} else {
 					headInstituteLoginDetails.setLoginStatus(LoginStatus.invaliduser);
 				}
 			}
 
-			if(numberOfInstitute > 0 && headInstituteId > 0) {
+			if(headInstituteId > 0 && headInstituteLoginDetails.getLoginStatus() == LoginStatus.validuser) {
 				institutePS.setBoolean(1, true);
 				institutePS.setLong(2, headInstituteId);
 				instituteRS = institutePS.executeQuery();
-				List<HeadInstituteLoginDetails.BranchDetails> branchs = new ArrayList<HeadInstituteLoginDetails.BranchDetails>();
+				List<HeadInstituteLoginDetails.BranchDetails> branches = new ArrayList<HeadInstituteLoginDetails.BranchDetails>();
 				while(instituteRS.next()) {
 					HeadInstituteLoginDetails.BranchDetails branch = new HeadInstituteLoginDetails.BranchDetails();
 					branch.setInstituteId(instituteRS.getLong(Tables.Institute.id));
 					branch.setInstituteName(instituteRS.getString(Tables.Institute.name));
 					branch.setInstitutePrefered(instituteRS.getString(Tables.Institute.preferedName));
 					branch.setInstituteUserName(instituteRS.getString(Tables.Institute.userName));
-					branchs.add(branch);
+					branches.add(branch);
 				}
-				if(branchs.size() > 0)
-					headInstituteLoginDetails.setBranchs(branchs);
-				headInstituteLoginDetails.setLoginStatus(LoginStatus.validuser);
+				headInstituteLoginDetails.setBranches(branches);
 			}
 			connection.commit();
 		} catch(Exception exception) {
@@ -188,7 +186,6 @@ public class UserLoginDAO {
 			if(connection != null)
 				connection.close();
 		}
-
 		return headInstituteLoginDetails;
 	}
 

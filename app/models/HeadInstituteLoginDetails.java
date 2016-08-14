@@ -17,7 +17,7 @@ public class HeadInstituteLoginDetails {
 	private int numberOfInstitute;
 	private String gropuOfInstitute;
 	private String headInstitutePrefered;
-	private List<BranchDetails> branchs;
+	private List<BranchDetails> branches;
 	private LoginStatus loginStatus;
 
 	@Data
@@ -25,8 +25,8 @@ public class HeadInstituteLoginDetails {
 		private Long instituteId;
 		private Long headInstituteId;
 		private String headInstituteUserName;
-		private String instituteUserName;
-		private String instituteName;
+		public String instituteUserName;
+		public String instituteName;
 		private String institutePrefered;
 	}
 }

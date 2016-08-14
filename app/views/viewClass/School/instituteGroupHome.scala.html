@@ -6,15 +6,16 @@ username:String)
 </div>
 <div class="main container">
 	<div class="ui stackable cards">
-     @for((key,value) <- headInstitute.zipWithIndex ){
+     @for(institute <- headInstitute){
   <a class="card">
     <div class="content">
       <img class="right floated mini ui image" src="http://semantic-ui.com/images/avatar/large/elliot.jpg">
       <div class="header">
-          instituteUserName
+          @institute.instituteName
       </div>
       <div class="meta">
-        @instituteUserName
+      @institute.instituteUserName
+     
       </div>
       <div class="description">
         This is a school Located in bangalore
