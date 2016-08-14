@@ -11,7 +11,7 @@ import utils.ValidateFields;
 import enum_package.InstituteDaoProcessStatus;
 
 @Data
-public class AddBranchForm {
+public class AddInstituteBranchForm {
 	// for internal use
 	InstituteDaoProcessStatus processingStatus;
 	//auto filed data
