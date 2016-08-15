@@ -8,12 +8,12 @@ import views.html.viewClass.test2;
 import views.html.viewClass.test3;
 import views.html.viewClass.test4;
 import views.html.viewClass.testAcessRight;
-import views.html.viewClass.School.instituteGroupHome;
+
 import java.util.Map;
 
 public class CustomController extends Controller {
 	public Result testRoute() {
-		return ok(instituteGroupHome.render());
+		return ok(test4.render());
 	}
 	
 	public Result postRoute() {

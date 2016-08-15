@@ -34,4 +34,15 @@ public class StringUtils {
 		sb.append("-").append(referenceNumber);
 		return sb.toString().toUpperCase();
 	}
+
+	public static String generatePassword() throws Exception {
+		String password = "";
+		try {
+			password = RandomGenerator.nextSessionId(70, new SecureRandom());
+		}catch(Exception exception) {
+			exception.printStackTrace();
+			throw new Exception();
+		}
+		return password;
+	}
 }

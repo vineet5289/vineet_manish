@@ -63,6 +63,7 @@ public class LoginController extends CustomController {
 
 		String loginType = session().get(SessionKey.logintype.name());
 		if(loginType != null && loginType.equals(LoginType.headinstitute.name())) {
+			System.out.println("====>3333333333");
 			return redirect(routes.SRPController.headInstituteHome());
 		} else if(loginType != null && loginType.equals(LoginType.institute.name())) {
 			return redirect(routes.SRPController.instituteHome());

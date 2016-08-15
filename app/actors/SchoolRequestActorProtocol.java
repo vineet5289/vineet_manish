@@ -1,5 +1,6 @@
 package actors;
 
+import enum_package.InstituteDaoProcessStatus;
 import lombok.Data;
 
 public class SchoolRequestActorProtocol {
@@ -20,5 +21,15 @@ public class SchoolRequestActorProtocol {
 		private String contract;
 		private String authToke;
 		private String referenceNumber;
+	}
+
+	@Data
+	public static class AddInstituteBranch {
+		private String instituteBranchName;
+		private String instituteEmail;
+		private String instituteContract;
+		private String institutePassword;
+		private String instituteUserName;
+		private InstituteDaoProcessStatus processStatus;
 	}
 }

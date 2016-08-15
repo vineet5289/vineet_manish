@@ -26,14 +26,9 @@ public class AddInstituteBranchForm {
 	private String instituteCountry;
 	private String institutePinCode;
 	private String instituteRegistrationId;
-	private String instituteUserName; //set to email id
 
 	public List<ValidationError> validate() {
 		List<ValidationError> errors = new ArrayList<>();
-
-		if (!ValidateFields.isValidUserName(instituteUserName)) {
-			errors.add(new ValidationError("schoolUserName", "School UserName is either emailId or combination alphanumeric character that can contains only @_-. special characters."));
-		}
 
 		if (!SchoolSpecificFiledValidation.isValidSchoolName(instituteName)) {
 			errors.add(new ValidationError("schoolName", "School name should not be empty. And should not contains special characters like ;@[]"));

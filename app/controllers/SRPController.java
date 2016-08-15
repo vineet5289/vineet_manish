@@ -82,6 +82,7 @@ public class SRPController extends CustomController {
 
 	@Security.Authenticated(HeadInstituteBasicAuthCheck.class)
 	public Result headInstituteHome() {
+		System.out.println("======>");
 		String userName = session().get(SessionKey.username.name());
 		String loginType = session().get(SessionKey.logintype.name());
 		String role = session().get(SessionKey.userrole.name());
