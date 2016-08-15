@@ -1,3 +1,5 @@
+    var shiftid = 0;
+    var maxshift=0;
 $(function () {
     
     var validationObj = {
@@ -121,6 +123,7 @@ $(function () {
 
              noOfInstitute: {
                 identifier: 'noOfInstitute',
+                
                  rules: [
                  {
                     type: 'empty',
@@ -307,16 +310,63 @@ $(function () {
 
         });
 
+
+
+
     
     
     
     // captcha  code on otp form
     captchaCode();
+
+
+
+
+// adding shift box on update
+  shiftbox();
+
+  $('#removeshift').on('click',function(e){
+    while(shiftid !=0){
+        jQuery("#newShiftContainer"+shiftid).remove();
+        //jQuery('#removeitem').toggle( !$("#new_item_details").is(":empty") );
+        
+        shiftid--;
+        }
+        e.preventDefault();
+  });
+
+
     
 });
 
 
+function shiftbox(){
 
+  /*var shift=parseInt(document.getElementById("shiftvalue").value);
+    
+   for(var i=2;i<=shift;i++){
+  
+    var button=$('#shiftContainer div:first')
+        .clone();
+       
+        button.appendTo($('#shiftContainer'));
+      }*/
+
+      var shift=parseInt(document.getElementById("shiftvalue").value);
+      
+      for(var i=2;i<=shift;i++){
+      var button = $('#shiftContainer').clone(true);
+
+        shiftid++;
+        
+        button.find('input').val('');
+        button.removeAttr('id');
+        button.insertBefore('.newShiftContainer');
+        button.attr('id', 'newShiftContainer' + shiftid);
+      } 
+      
+      
+}
 
 
 
@@ -343,4 +393,12 @@ function captchaCode() {
     $('#completeSchoolRegistrationOTPForm').trigger('reset');
    }
    
-  
+
+
+
+
+
+
+
+
+    

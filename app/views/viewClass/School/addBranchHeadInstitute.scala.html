@@ -1,4 +1,4 @@
-@(schoolRegister:Form[views.forms.institute.AddNewInstituteRequest], schoolCountry:
+@(schoolRegister:Form[views.forms.institute.AddInstituteBranchForm], schoolCountry:
 List[String], state: Map[String, String])
 @main3("Register")("index"){
 <div class="main container">
@@ -22,39 +22,7 @@ List[String], state: Map[String, String])
                   id="newSchoolRegistrationForm"
                   class="ui green form segment"
                   method="Post"
-                  action="@institute.routes.NewInstituteRequestController.preAddNewInstituteRequest()" autocomplete='off'>
-
-
-              
-
-                   <div class="two fields">
-                   <div class="field">
-                        <div class="ui label">*Type Of Institute</div>
-                        <div class="ui fluid selection state dropdown">
-                           <div class="text">SELECT</div>
-                           <i class="dropdown icon"></i>
-                           <input name="groupOfInstitute" type="hidden">
-                           <div class="menu">
-                             <div class="item" data-value="single">SINGLE</div>
-                              <div class="item" data-value="group">GROUP OF INSTITUTES</div>
-                           </div>
-                        </div>
-                     </div>
-                     <div class="field">
-                     <label>Number of Institutes</label>
-                     <div class="ui left icon input">
-                        <input
-                           type="text"
-                           name="noOfInstitute"
-                           placeholder="noOfInstitute"
-                           >
-                        <i class="user icon"></i>
-                     </div>
-                     </div>
-                  </div>
-
-
-
+                  action="/institute/add/branch" >
 
                   <div class="field">
                      <label>*School Name</label>
@@ -63,7 +31,7 @@ List[String], state: Map[String, String])
                            type="text"
                            name="instituteName"
                            placeholder="name"
-                           style="text-transform:uppercase">
+                           >
                         <i class="user icon"></i>
                      </div>
                   </div>
@@ -135,16 +103,7 @@ List[String], state: Map[String, String])
                         <i class="mail icon"></i>
                      </div>
                   </div>
-                  <div class="field">
-                     <div class="ui label">*YOUR NAME</div>
-                     <div class="ui left icon input">
-                        <input
-                           type="text"
-                           name="contactPersonName"
-                           placeholder="Your Name (Who is Contacting)">
-                        <i class="user icon"></i>
-                     </div>
-                  </div>
+                  
                   <div class="two fields">
                      <div class="field">
                         <div class="ui label">*Mobile No.</div>
@@ -164,17 +123,7 @@ List[String], state: Map[String, String])
                         </div>
                      </div>
                   </div>
-                  <div class="field">
-                     <div class="ui label pointing below">QUERY</div>
-                     <div class="ui left icon input">
-                        <input
-                           type="text"
-                           name="query"
-                           placeholder="query"
-                           help="Please Enter Your Query">
-                        <i class="comment icon"></i>
-                     </div>
-                  </div>
+                
                   <div class="two fields">
                      <div class="field">
                         <button class="ui green fluid left floated button" id="New-schoolRequest-submit">Send Request</button>

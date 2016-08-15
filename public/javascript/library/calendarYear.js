@@ -4,13 +4,11 @@
 $('#example2').calendar({
   type: 'date'
 });
-$('#example3').calendar({
+$('.timeSelect').calendar({
   type: 'time'
 });
 
-$('#endtime').calendar({
-  type: 'time'
-});
+
 
 
 
