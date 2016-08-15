@@ -8,11 +8,11 @@ public class InstituteController extends CustomController {
 		return ok("===> switch branch done");
 	}
 
-	public Result preAddBranch() {
+	public Result preAddInstituteBranch() {
 		return ok("===> switch branch done");
 	}
 
-	public Result postAddBranch() {
+	public Result postAddInstituteBranch() {
 		return ok("===> switch branch done");
 	}
 }
