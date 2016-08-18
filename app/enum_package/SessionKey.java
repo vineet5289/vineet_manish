@@ -9,16 +9,17 @@ public enum SessionKey {
 	logintype("logintype"),
 	loginstate("loginstate"),
 	instituteid("instituteid"),
+	headinstituteid("headinstituteid"),
 	userrole("userrole"),
 	useraccessright("useraccessright"),
+	groupofinstitute("groupofinstitute"),
+	numerofinstituteingroup("numerofinstituteingroup"),
 	shiftid("shiftid"),
 	childid("childid"),
 	reguserrequest("reguserrequest"),
 	otpkey("otpkey"),
 	regschoolrequestnumber("regschoolrequestnumber"),
 	reginstituterequestid("reginstituterequestid"),
-	numerofinstituteingroup("numerofinstituteingroup"),
-	currentuserloginnumber("currentuserloginnumber"),
 	sessiontrackfield("sessiontrackfield");
 
 	private String value;
@@ -47,5 +48,17 @@ public enum SessionKey {
 		if(result == null)
 			return false;
 		return true;
+	}
+
+	public static String of(SessionKey key) {
+		String result = nameToValue.get(key);
+		if(result == null)
+			return "";
+		return result;
+	}
+
+	public static SessionKey of(String key) {
+		SessionKey result = valueToName.get(key);
+		return result;
 	}
 }

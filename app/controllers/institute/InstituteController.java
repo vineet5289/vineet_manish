@@ -14,6 +14,8 @@ import models.Country;
 import models.State;
 import play.data.Form;
 import play.mvc.Result;
+import play.mvc.Security;
+import security.institute.HeadInstituteBasicAuthCheck;
 import views.forms.institute.AddInstituteBranchForm;
 import views.html.viewClass.School.addBranchHeadInstitute;
 import controllers.CustomController;
@@ -36,12 +38,14 @@ public class InstituteController extends CustomController {
 		return ok("===> switch branch done");
 	}
 
+	@Security.Authenticated(HeadInstituteBasicAuthCheck.class)
 	public Result preAddInstituteBranch() {
 		Form<AddInstituteBranchForm> addInstituteBranchForm = Form.form(AddInstituteBranchForm.class);
 		List<String> countries = Country.getCountries();
 		return ok(addBranchHeadInstitute.render(addInstituteBranchForm, countries, State.states));
 	}
 
+	@Security.Authenticated(HeadInstituteBasicAuthCheck.class)
 	public Result postAddInstituteBranch() {
 		Form<AddInstituteBranchForm> addInstituteBranchForm = Form.form(AddInstituteBranchForm.class).bindFromRequest();
 		if(addInstituteBranchForm == null || addInstituteBranchForm.hasErrors()) {
@@ -55,11 +59,11 @@ public class InstituteController extends CustomController {
 			return redirect(controllers.institute.routes.InstituteController.preAddInstituteBranch());
 		}
 
-		String instituteId = session().get(SessionKey.instituteid.name());
+		String headInstituteId = session().get(SessionKey.headinstituteid.name());
 		SchoolRequestActorProtocol.AddInstituteBranch  addInstituteBranchProtocol = null;
 		try {
 			AddBranchDAO addBranchDAO = new AddBranchDAO();
-			addInstituteBranchProtocol = addBranchDAO.addBranch(addInstituteBranch, Long.valueOf(instituteId));
+			addInstituteBranchProtocol = addBranchDAO.addBranch(addInstituteBranch, Long.valueOf(headInstituteId));
 		} catch (NumberFormatException | SQLException exception) {
 			flash("error", "Some server exception happen during add branch request. Please try again.");
 			exception.printStackTrace();

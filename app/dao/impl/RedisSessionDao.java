@@ -51,7 +51,7 @@ public class RedisSessionDao implements SessionDao {
 	@Override
 	public String get(String userName, String redisPrefix, String field) throws Exception {
 		Jedis jedis = redisConnectionPool.getJedisPool().getResource();
-		String sessionTrackField = jedis.hget(redisPrefix + ":" + userName, field);
+		String sessionTrackField = jedis.hget(redisPrefix + userName, field);
 		redisConnectionPool.getJedisPool().returnResource(jedis);
 		jedis.close();
 		return sessionTrackField;

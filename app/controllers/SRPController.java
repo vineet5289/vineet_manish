@@ -1,5 +1,7 @@
 package controllers;
 
+import javax.inject.Inject;
+
 import models.HeadInstituteLoginDetails;
 import play.mvc.Result;
 import play.mvc.Security;
@@ -9,6 +11,7 @@ import views.html.homePage.schoolRequestHomepage;
 import views.html.viewClass.dashboard;
 import views.html.viewClass.School.instituteGroupHome;
 import dao.UserLoginDAO;
+import dao.impl.RedisSessionDao;
 import enum_package.LoginState;
 import enum_package.LoginStatus;
 import enum_package.LoginType;
@@ -18,7 +21,7 @@ import enum_package.SessionKey;
 
 public class SRPController extends CustomController {
 
-//	@Inject RedisSessionDao redisSessionDao;
+	@Inject RedisSessionDao redisSessionDao;
 
 	@Security.Authenticated(BasicAuthRequirement.class)
 	public Result index() {
@@ -81,6 +84,7 @@ public class SRPController extends CustomController {
 	@Security.Authenticated(HeadInstituteBasicAuthCheck.class)
 	public Result headInstituteHome() {
 		String userName = session().get(SessionKey.username.name());
+		String authToken = session().get(SessionKey.authtoken.name());
 		String loginType = session().get(SessionKey.logintype.name());
 		String role = session().get(SessionKey.userrole.name());
 
@@ -88,7 +92,7 @@ public class SRPController extends CustomController {
 		HeadInstituteLoginDetails headInstituteLoginDetails = null;
 		try {
 			if((role != null && role.equalsIgnoreCase(Role.institutegroupadmin.name()))) {
-				headInstituteLoginDetails = userLoginDAO.refreshHeadInstituteUserCredentials(userName, loginType);
+				headInstituteLoginDetails = userLoginDAO.refreshHeadInstituteUserCredentials(userName, loginType, authToken, redisSessionDao);
 			}
 		}catch(Exception exception) {
 			exception.printStackTrace();
@@ -98,11 +102,10 @@ public class SRPController extends CustomController {
 
 		if(headInstituteLoginDetails.getLoginStatus() != LoginStatus.validuser) {
 			flash("error", LoginStatus.of(headInstituteLoginDetails.getLoginStatus()));
-			session().clear();
-			return redirect(controllers.login_logout.routes.LoginController.preLogin());
+			return redirect(controllers.login_logout.routes.LoginController.logout());
 		}
 
-		session(SessionKey.instituteid.name(), Long.toString(headInstituteLoginDetails.getHeadInstituteId()));
+		session(SessionKey.of(SessionKey.headinstituteid), Long.toString(headInstituteLoginDetails.getHeadInstituteId()));
 
 		if(headInstituteLoginDetails.getGropuOfInstitute().equals("single")
 				&& headInstituteLoginDetails.getHeadInstituteLoginState().equals(LoginState.redirectstate.name())) {

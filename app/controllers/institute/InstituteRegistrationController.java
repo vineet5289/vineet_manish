@@ -71,9 +71,15 @@ public class InstituteRegistrationController extends CustomController {
 			return redirect(controllers.login_logout.routes.LoginController.preLogin());
 		}
 		
-		String referenceNumber = session().get(SessionKey.regschoolrequestnumber.name());
-		String authToken = session().get(SessionKey.otpkey.name());
-		String regInstituteRequestId = session().get(SessionKey.reginstituterequestid.name());
+		String referenceNumber = session().get(SessionKey.of(SessionKey.regschoolrequestnumber));
+		session().remove(SessionKey.of(SessionKey.regschoolrequestnumber));
+
+		String authToken = session().get(SessionKey.of(SessionKey.otpkey));
+		session().remove(SessionKey.of(SessionKey.otpkey));
+
+		String regInstituteRequestId = session().get(SessionKey.of(SessionKey.reginstituterequestid));
+		session().remove(SessionKey.of(SessionKey.reginstituterequestid));
+
 		SchoolRegistrationDAO schoolRegistrationDAO = new SchoolRegistrationDAO();
 		InstituteDaoProcessStatus instituteDaoProcessStatus;
 		try {
@@ -82,9 +88,10 @@ public class InstituteRegistrationController extends CustomController {
 			exception.printStackTrace();
 			instituteDaoProcessStatus = InstituteDaoProcessStatus.servererror;
 		}
+
 		session().clear();
 		if(instituteDaoProcessStatus == InstituteDaoProcessStatus.validschool) {
-			flash("success", "School has been successfully registered. Please use your username and password for login");			
+			flash("success", "School has been successfully registered.");			
 		} else {
 			flash("error", instituteDaoProcessStatus.name());
 		}

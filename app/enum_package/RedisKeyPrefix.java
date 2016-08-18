@@ -6,7 +6,7 @@ import java.util.Map;
 public enum RedisKeyPrefix {
 	buc("buc:"),
 	auth("auth:"),
-	hiuc("hiuc:");
+	hiii("hiii:");
 
 	private String value;
 

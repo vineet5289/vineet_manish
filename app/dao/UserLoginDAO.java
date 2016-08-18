@@ -16,6 +16,7 @@ import java.util.TimeZone;
 import dao.impl.RedisSessionDao;
 import models.CommonUserCredentials;
 import models.HeadInstituteLoginDetails;
+import models.HeadInstituteLoginDetails.BranchDetails;
 import models.LoginDetails;
 import play.db.DB;
 import utils.ParseString;
@@ -228,7 +229,7 @@ public class UserLoginDAO {
 		return removedKey;
 	}
 
-	public HeadInstituteLoginDetails refreshHeadInstituteUserCredentials(String userName, String type) throws SQLException {
+	public HeadInstituteLoginDetails refreshHeadInstituteUserCredentials(String userName, String type, String authToken, RedisSessionDao redisSessionDao) throws SQLException {
 		Connection connection = null;
 		PreparedStatement loginPS = null;
 		PreparedStatement headInstitutePS = null;
@@ -249,6 +250,11 @@ public class UserLoginDAO {
 
 		HeadInstituteLoginDetails headInstituteLoginDetails = new HeadInstituteLoginDetails();;
 		try {
+			String authKeyRedis = redisSessionDao.get(userName, RedisKeyPrefix.of(RedisKeyPrefix.auth), authToken);
+			if(authKeyRedis == null || authKeyRedis.isEmpty()) {
+				headInstituteLoginDetails.setLoginStatus(LoginStatus.servererror);
+			}
+
 			connection = DB.getDataSource("srp").getConnection();
 			connection.setAutoCommit(false);
 			loginPS = connection.prepareStatement(loginSelectQ, ResultSet.TYPE_FORWARD_ONLY);
@@ -275,6 +281,8 @@ public class UserLoginDAO {
 				headInstituteLoginDetails.setLoginStatus(LoginStatus.invaliduser);
 			}
 
+			Map<String, String> instituteMapDB = new HashMap<String, String>();
+
 			if(headInstituteId > 0 && headInstituteLoginDetails.getLoginStatus() == LoginStatus.validuser) {
 				headInstitutePS.setBoolean(1, true);
 				headInstitutePS.setLong(2, headInstituteId);
@@ -284,6 +292,9 @@ public class UserLoginDAO {
 					headInstituteLoginDetails.setGropuOfInstitute(headInstituteRS.getString(Tables.HeadInstitute.groupOfInstitute));
 					headInstituteLoginDetails.setNumberOfInstitute(headInstituteRS.getInt(Tables.HeadInstitute.noOfInstitute));
 					headInstituteLoginDetails.setHeadInstitutePrefered(headInstituteRS.getString(Tables.HeadInstitute.preferedName));
+
+					instituteMapDB.put(SessionKey.of(SessionKey.groupofinstitute), headInstituteLoginDetails.getGropuOfInstitute());
+					instituteMapDB.put(SessionKey.of(SessionKey.numerofinstituteingroup), Integer.toString(headInstituteLoginDetails.getNumberOfInstitute()));
 				} else {
 					headInstituteLoginDetails.setLoginStatus(LoginStatus.invaliduser);
 				}
@@ -299,11 +310,36 @@ public class UserLoginDAO {
 					branch.setInstituteId(instituteRS.getLong(Tables.Institute.id));
 					branch.setInstituteName(instituteRS.getString(Tables.Institute.name));
 					branch.setInstitutePrefered(instituteRS.getString(Tables.Institute.preferedName));
-					branch.setInstituteUserName(instituteRS.getString(Tables.Institute.userName));
 					branches.add(branch);
+					instituteMapDB.put(Long.toString(branch.getInstituteId()), branch.getInstituteName());
 				}
 				headInstituteLoginDetails.setBranches(branches);
 			}
+
+			Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+			long epocTime = calendar.getTimeInMillis() / 1000L;
+			Map<String, String> instituteMapFromRedis = redisSessionDao.get(userName, RedisKeyPrefix.of(RedisKeyPrefix.hiii));
+			if(instituteMapFromRedis == null || instituteMapFromRedis.size() == 0) {
+				redisSessionDao.save(userName, RedisKeyPrefix.of(RedisKeyPrefix.auth), authKeyRedis, Long.toString(epocTime));
+				redisSessionDao.save(userName, RedisKeyPrefix.of(RedisKeyPrefix.hiii), instituteMapDB);
+			} else if(instituteMapDB == null || instituteMapDB.size() == 0){
+				String[] removedKey = (String[]) instituteMapDB.keySet().toArray();
+				redisSessionDao.removed(userName, RedisKeyPrefix.of(RedisKeyPrefix.hiii), removedKey);
+			} else {
+				ArrayList<String> listOfRemovedBranch = new ArrayList<String>();
+				for(Map.Entry<String, String> entry : instituteMapFromRedis.entrySet()) {
+					if(!instituteMapDB.containsKey(entry.getKey())) {
+						listOfRemovedBranch.add(entry.getKey());
+					}
+				}
+
+				if(listOfRemovedBranch.size() > 0) {
+					String[] removedKey = (String[]) listOfRemovedBranch.toArray();
+					redisSessionDao.removed(userName, RedisKeyPrefix.of(RedisKeyPrefix.hiii), removedKey);					
+				}
+				redisSessionDao.save(userName, RedisKeyPrefix.of(RedisKeyPrefix.hiii), instituteMapDB);
+			}
+
 			connection.commit();
 		} catch(Exception exception) {
 			exception.printStackTrace();

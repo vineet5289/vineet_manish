@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS head_institute (
   website_url varchar(255) COLLATE utf8_unicode_ci,
   logo_url varchar(255) COLLATE utf8_unicode_ci,
   group_of_institute enum('single', 'group') DEFAULT 'single' NOT NULL,
-  no_of_institute int DEFAULT 1 NOT NULL,
+  no_of_institute int DEFAULT 0 NOT NULL,
   is_active tinyint(1) DEFAULT 1 NOT NULL,
   add_institute_request_id bigint(20) NOT NULL,
   created_at timestamp DEFAULT CURRENT_TIMESTAMP,
