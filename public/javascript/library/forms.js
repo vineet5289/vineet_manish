@@ -1,5 +1,13 @@
     var shiftid = 0;
-    var maxshift=0;
+    
+
+
+  
+
+
+
+
+
 $(function () {
     
     var validationObj = {
@@ -323,24 +331,16 @@ $(function () {
 
 
 // adding shift box on update
-  shiftbox();
+ // shiftbox();
 
-  $('#removeshift').on('click',function(e){
-    while(shiftid !=0){
-        jQuery("#newShiftContainer"+shiftid).remove();
-        //jQuery('#removeitem').toggle( !$("#new_item_details").is(":empty") );
-        
-        shiftid--;
-        }
-        e.preventDefault();
-  });
+
 
 
     
 });
 
 
-function shiftbox(){
+function shiftbox_original(){
 
   /*var shift=parseInt(document.getElementById("shiftvalue").value);
     
@@ -367,6 +367,34 @@ function shiftbox(){
       
       
 }
+
+
+function shiftbox(){
+
+
+
+ var shift=parseInt(document.getElementById("shiftvalue").value);
+      
+      for(var i=0;i<shift;i++){
+        var shiftName = "shifts[" + i + "].shiftName";
+            var shiftAttendenceType = "shifts[" + i + "].shiftAttendenceType";
+            var shiftClassStartTime = "shifts[" + i + "].shiftClassStartTime";
+            var shiftClassEndTime = "shifts[" + i + "].shiftClassEndTime";
+            var shiftStartClassFrom = "shifts[" + i + "].shiftStartClassFrom";
+             var shiftEndClassTo = "shifts[" + i + "].shiftEndClassTo";
+             var shiftWeekStartDay = "shifts[" + i + "].shiftWeekStartDay";
+             var shiftWeekEndDay = "shifts[" + i + "].shiftWeekEndDay";
+
+      var html = $(newShiftContainer);
+      $("#shiftContainer").append(html);
+   } 
+
+}
+
+
+
+
+
 
 
 

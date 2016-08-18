@@ -51,32 +51,20 @@
       
       <div class="disabled icon item"><i class="left arrow icon"></i></div>
       
-      <div class="ui dropdown link item" id="HomePage-DropDown">
-        <span class="count">1 of 4</span>
-        <div class="menu">
-          
-            <div class="active item">
-              <a href="index-2.html">1. Introduction</a>
-            </div>
-          
-            <div class="item">
-              <a href="collection.html">2. UI Collections</a>
-            </div>
-          
-            <div class="item">
-              <a href="element.html">3. UI Elements</a>
-            </div>
-          
-            <div class="item">
-              <a href="module.html">4. UI Modules</a>
-            </div>
-          
-        </div>
-      </div>
+     
       
       <a class="icon item" href="collection.html"><i class="right arrow icon"></i></a>
       
       <div class="ui inverted right menu">
+
+        <div class="ui dropdown link item">
+        <i class="location arrow icon"></i>Switch Branch <i class="dropdown icon"></i>
+        <div class="menu">
+           @for(institute <- headInstitute){
+  <a class="item" href="/institute/switch/branch" datavalue="@institute.instituteId"><i class="location arrow icon"></i>@institute.instituteName</a>
+        }
+        </div>
+      </div>
         
         
         <a class="popup icon sign out item" data-content="logout" href="@login_logout.routes.LoginController.logout()">
