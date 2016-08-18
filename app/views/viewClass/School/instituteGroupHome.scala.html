@@ -1,16 +1,20 @@
-@(headInstitute:List[models.HeadInstituteLoginDetails.BranchDetails],
+@(headInstitute:List[models.HeadInstituteLoginDetails.BranchDetails],username:String
 )
 @viewClass.main4("HOME | INSTITUTE")(""){
+@viewClass.School.headInstituteProfileTopMenu(headInstitute)
 <div class="ui horizontal segment">
    <a href="/institute/add/branch" class="ui  green button">ADD BRANCH</a>
 </div>
 <div class="main container">
 <div class="ui stackable cards">
+  
   @for(institute <- headInstitute){
     
-   <form method="post" action="/institute/switch/branch">
+   
     <input type="hidden" name="@institute.instituteId">
+  <div class="ui form" method="post" action="/institute/switch/branch">
    <a class="ui card">
+    
   <div class="content">
      <div class="ui teal medium header">
     
@@ -41,10 +45,13 @@
     <div class="ui basic fluid green button">Enter</div>
   </div>
 </a>
-</form>
+</div>
+
+
 }
+
 </div>
 	
 
-</div>	
-}
+</div>
+	}
