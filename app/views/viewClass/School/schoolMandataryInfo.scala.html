@@ -251,7 +251,7 @@ instituteType:  Map[String, String])
                            <div class="ui fluid selection dropdown">
                               <div class="text">Select</div>
                               <i class="dropdown icon"></i>
-                              <input name="shifts.shiftAttendenceType" type="hidden">
+                              <input name="shifts[0].shiftAttendenceType" type="hidden">
                               <div class="menu">
                                  @for(value<- attendenceType){ 
                                  <div class="item" data-value="@value">@value</div>
@@ -268,7 +268,7 @@ instituteType:  Map[String, String])
                            <div class="ui calendar timeSelect">
                               <div class="ui input left icon">
                                  <i class="time icon"></i>
-                                 <input name="shifts.shiftClassStartTime" type="text" value='' placeholder="School Start Time">
+                                 <input name="shifts[0].shiftClassStartTime" type="text" value='' placeholder="School Start Time">
                               </div>
                            </div>
                         </div>

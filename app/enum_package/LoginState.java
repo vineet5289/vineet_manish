@@ -7,7 +7,8 @@ public enum LoginState {
 	firststate("firststate"),
 	blockedstate("blockedstate"),
 	redirectstate("redirectstate"),
-	finalstate("finalstate");
+	finalstate("finalstate"),
+	dummystate("dummystate");
 
 	private String value;
 	private LoginState(String value) {

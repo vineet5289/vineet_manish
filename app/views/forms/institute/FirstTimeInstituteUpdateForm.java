@@ -102,6 +102,10 @@ public class FirstTimeInstituteUpdateForm {
 			errors.add(new ValidationError("schoolType", "Please enter valid school type without any special characters like @;$."));
 		}
 
+		System.out.println("=====> shgift");
+		System.out.println(shifts);
+		System.out.println("=======================================>");
+
 		if(shifts == null || shifts.size() != numberOfShift || !isValidShiftInfo()) {
 			errors.add(new ValidationError("shifts", "Please enter all class/shift information."));
 		}

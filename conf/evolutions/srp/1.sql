@@ -37,7 +37,8 @@ CREATE TABLE IF NOT EXISTS institute_registration_request (
   approval_user_name varchar(255) COLLATE utf8_unicode_ci,
   created_at timestamp DEFAULT CURRENT_TIMESTAMP,
   updated_at timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (id)
+  PRIMARY KEY (id),
+  UNIQUE KEY (email)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS head_institute (
@@ -77,7 +78,7 @@ CREATE TABLE IF NOT EXISTS institute (
   chairperson_name varchar(255) COLLATE utf8_unicode_ci,
   managing_director varchar(255) COLLATE utf8_unicode_ci,
   registration_id varchar(225) COLLATE utf8_unicode_ci,
-  user_name varchar(225) COLLATE utf8_unicode_ci NOT NULL,
+  user_name varchar(225) COLLATE utf8_unicode_ci,
   phone_number varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   office_number varchar(20) COLLATE utf8_unicode_ci,
   email varchar(225) COLLATE utf8_unicode_ci,
@@ -111,6 +112,7 @@ CREATE TABLE IF NOT EXISTS institute (
   logo_url varchar(255) COLLATE utf8_unicode_ci,
   is_active tinyint(1) DEFAULT 1 NOT NULL,
   head_institute_id bigint(20) NOT NULL,
+  mandatory_info_req tinyint(1) DEFAULT 1 NOT NULL,
   created_at timestamp DEFAULT CURRENT_TIMESTAMP,
   updated_at timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (id),
@@ -131,6 +133,7 @@ CREATE TABLE IF NOT EXISTS login (
   name varchar(150) COLLATE utf8_unicode_ci NOT NULL,
   type enum('general', 'guardian', 'student', 'institute', 'headinstitute', 'emp') DEFAULT 'general' NOT NULL,
   institute_id bigint(20),
+  login_session_count int DEFAULT 0 NOT NULL,
   PRIMARY KEY (id),
   UNIQUE KEY (user_name)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

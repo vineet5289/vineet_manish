@@ -112,6 +112,7 @@ public class Tables {
 		public static String logoUrl = "logo_url";
 		public static String isActive = "is_active";
 		public static String headInstituteId = "head_institute_id";
+		public static String mandatoryInfoReq = "mandatory_info_req";
 		public static String createdAt = "created_at";
 		public static String updatedAt = "updated_at";
 	}
@@ -134,6 +135,7 @@ public class Tables {
 		public static String accessRights = "access_rights";
 		public static String isActive = "is_active";
 		public static String instituteId = "institute_id";
+		public static String loginSessionCount = "login_session_count";
 	}
 
 	public static class Employee {

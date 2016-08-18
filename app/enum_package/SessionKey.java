@@ -16,7 +16,10 @@ public enum SessionKey {
 	reguserrequest("reguserrequest"),
 	otpkey("otpkey"),
 	regschoolrequestnumber("regschoolrequestnumber"),
-	numerofinstituteingroup("numerofinstituteingroup");
+	reginstituterequestid("reginstituterequestid"),
+	numerofinstituteingroup("numerofinstituteingroup"),
+	currentuserloginnumber("currentuserloginnumber"),
+	sessiontrackfield("sessiontrackfield");
 
 	private String value;
 	private SessionKey(String value) {

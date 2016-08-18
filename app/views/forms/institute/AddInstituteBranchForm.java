@@ -16,7 +16,6 @@ public class AddInstituteBranchForm {
 	InstituteDaoProcessStatus processingStatus;
 	//auto filed data
 	private String instituteName;
-	private String instituteEmail;
 	private String institutePhoneNumber;
 	private String instituteOfficeNumber;
 	private String instituteAddressLine1;
@@ -32,10 +31,6 @@ public class AddInstituteBranchForm {
 
 		if (!SchoolSpecificFiledValidation.isValidSchoolName(instituteName)) {
 			errors.add(new ValidationError("schoolName", "School name should not be empty. And should not contains special characters like ;@[]"));
-		}
-
-		if(!ValidateFields.isValidEmailId(instituteEmail)) {
-			errors.add(new ValidationError("schoolEmail","Enter valid email id like abcd@xyz.com"));
 		}
 
 		if (!ValidateFields.isValidMobileNumber(institutePhoneNumber)) {

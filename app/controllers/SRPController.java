@@ -1,7 +1,5 @@
 package controllers;
 
-import javax.inject.Inject;
-
 import models.HeadInstituteLoginDetails;
 import play.mvc.Result;
 import play.mvc.Security;
@@ -11,7 +9,7 @@ import views.html.homePage.schoolRequestHomepage;
 import views.html.viewClass.dashboard;
 import views.html.viewClass.School.instituteGroupHome;
 import dao.UserLoginDAO;
-import dao.impl.RedisSessionDao;
+import enum_package.LoginState;
 import enum_package.LoginStatus;
 import enum_package.LoginType;
 import enum_package.RegisterUserType;
@@ -20,7 +18,7 @@ import enum_package.SessionKey;
 
 public class SRPController extends CustomController {
 
-	@Inject RedisSessionDao redisSessionDao;
+//	@Inject RedisSessionDao redisSessionDao;
 
 	@Security.Authenticated(BasicAuthRequirement.class)
 	public Result index() {
@@ -82,7 +80,6 @@ public class SRPController extends CustomController {
 
 	@Security.Authenticated(HeadInstituteBasicAuthCheck.class)
 	public Result headInstituteHome() {
-		System.out.println("======>");
 		String userName = session().get(SessionKey.username.name());
 		String loginType = session().get(SessionKey.logintype.name());
 		String role = session().get(SessionKey.userrole.name());
@@ -105,7 +102,12 @@ public class SRPController extends CustomController {
 			return redirect(controllers.login_logout.routes.LoginController.preLogin());
 		}
 
-		if(headInstituteLoginDetails.getGropuOfInstitute().equals("single")) {
+		session(SessionKey.instituteid.name(), Long.toString(headInstituteLoginDetails.getHeadInstituteId()));
+
+		if(headInstituteLoginDetails.getGropuOfInstitute().equals("single")
+				&& headInstituteLoginDetails.getHeadInstituteLoginState().equals(LoginState.redirectstate.name())) {
+			return redirect(controllers.institute.routes.InstituteInfoController.getInstituteMandInfo());
+		} else if(headInstituteLoginDetails.getGropuOfInstitute().equals("single")) {
 			return ok(dashboard.render(session().get(SessionKey.username.name()), "institutegroupadmin"));
 		} else {
 			return ok(instituteGroupHome.render(headInstituteLoginDetails.getBranches(), "vineet"));

@@ -7,10 +7,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
+import dao.impl.RedisSessionDao;
 import models.CommonUserCredentials;
 import models.HeadInstituteLoginDetails;
 import models.LoginDetails;
@@ -20,7 +23,9 @@ import utils.RandomGenerator;
 import utils.ValidateFields;
 import views.forms.AccessRightsForm;
 import enum_package.LoginStatus;
+import enum_package.RedisKeyPrefix;
 import enum_package.Role;
+import enum_package.SessionKey;
 
 public class UserLoginDAO {
 	private String idField = "id";
@@ -35,15 +40,19 @@ public class UserLoginDAO {
 	private String loginTableName = "login";
 	private String userSuperUserTableName = "user_super_user";
 
-	public CommonUserCredentials isValidUserCredentials(String userName, String password) throws SQLException {
+	public CommonUserCredentials getValidUserCredentials(String userName, String password, RedisSessionDao redisSessionDao) throws SQLException {
 		CommonUserCredentials userCredentials = new CommonUserCredentials();
 		Connection connection = null;
-		PreparedStatement loginPreparedStatement = null;
+		PreparedStatement loginSelectPS = null;
+		PreparedStatement loginUpdatePS = null;
 		ResultSet loginResultSet = null;
 
-		String loginSelectQuery = String.format("SELECT %s, %s, %s, %s, %s, %s, %s FROM %s WHERE %s=? AND %s=?;", Tables.Login.userName,
-				Tables.Login.emailId, Tables.Login.password, Tables.Login.passwordState, Tables.Login.role, Tables.Login.name, Tables.Login.type,
+		String loginSelectQ = String.format("SELECT %s, %s, %s, %s, %s, %s, %s, %s, %s FROM %s WHERE %s=? AND %s=?;", Tables.Login.id, Tables.Login.userName,
+				Tables.Login.emailId, Tables.Login.password, Tables.Login.passwordState, Tables.Login.role, Tables.Login.name, Tables.Login.type, Tables.Login.loginSessionCount,
 				Tables.Login.table, Tables.Login.userName, Tables.Login.isActive);
+		
+		String loginUpdateQ = String.format("UPDATE %s SET %s=? WHERE %s=? limit 1;", Tables.Login.table, Tables.Login.loginSessionCount,
+				Tables.Login.id);
 
 		try {
 			String authToken = geterateAuthToken();
@@ -53,34 +62,170 @@ public class UserLoginDAO {
 			}
 
 			connection = DB.getDataSource("srp").getConnection();
-			loginPreparedStatement = connection.prepareStatement(loginSelectQuery, ResultSet.TYPE_FORWARD_ONLY);
-			loginPreparedStatement.setString(1, userName);
-			loginPreparedStatement.setBoolean(2, true);
-			loginResultSet = loginPreparedStatement.executeQuery();
+			connection.setAutoCommit(false);
+
+			loginSelectPS = connection.prepareStatement(loginSelectQ, ResultSet.TYPE_FORWARD_ONLY);
+			loginUpdatePS = connection.prepareStatement(loginUpdateQ);
+
+			loginSelectPS.setString(1, userName);
+			loginSelectPS.setBoolean(2, true);
+			loginResultSet = loginSelectPS.executeQuery();
 
 			if(!loginResultSet.next() || !isPasswordMatch(password, loginResultSet.getString(Tables.Login.password))) {
 				userCredentials.setLoginStatus(LoginStatus.invaliduser);
+				connection.commit();
+				return userCredentials;
+			}
+			int loginSessionCount = loginResultSet.getInt(Tables.Login.loginSessionCount);
+			Map<String, String> authKeyMap = redisSessionDao.get(userName, RedisKeyPrefix.of(RedisKeyPrefix.auth));
+			Map<String, String> otherUserCred = redisSessionDao.get(userName, RedisKeyPrefix.of(RedisKeyPrefix.buc));
+
+			if(loginSessionCount == 0 || authKeyMap == null || authKeyMap.size() == 0
+					|| otherUserCred == null || otherUserCred.size() == 0) {
+				loginSessionCount = 0;
+				authKeyMap = new HashMap<String, String>();
+				otherUserCred = new HashMap<String, String>();
+			}
+
+			String[] removedKey = null;
+			if((loginSessionCount ==  authKeyMap.size() &&  loginSessionCount >= 3)
+					|| (loginSessionCount <  authKeyMap.size() && loginSessionCount >= 3)
+					|| (loginSessionCount >  authKeyMap.size() &&  authKeyMap.size() >= 3)){
+				removedKey = getCorrectSessionIndex(authKeyMap, (authKeyMap.size() - 2));
+			}
+			if(removedKey != null && removedKey.length != 0) {
+				redisSessionDao.removed(userName, RedisKeyPrefix.of(RedisKeyPrefix.auth), removedKey);
+			}
+
+			loginSessionCount = authKeyMap.size();
+			Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+			long loginEpochTime = calendar.getTimeInMillis() / 1000L;
+			authKeyMap.put(authToken, Long.toString(loginEpochTime));
+			loginSessionCount++;
+
+			loginUpdatePS.setInt(1, loginSessionCount);
+			loginUpdatePS.setLong(2, loginResultSet.getLong(Tables.Login.id));
+			int updatedRowCount = loginUpdatePS.executeUpdate();
+			if(updatedRowCount == 0) {
+				userCredentials.setLoginStatus(LoginStatus.servererror);
 				return userCredentials;
 			}
 
-			userCredentials.setRole(loginResultSet.getString(Tables.Login.role));
+			otherUserCred.put(SessionKey.username.name(), userName);
+			otherUserCred.put(SessionKey.logintype.name(), loginResultSet.getString(Tables.Login.type));
+			otherUserCred.put(SessionKey.loginstate.name(), loginResultSet.getString(Tables.Login.passwordState));
+			otherUserCred.put(SessionKey.userrole.name(), loginResultSet.getString(Tables.Login.role));
+
+			redisSessionDao.save(userName, RedisKeyPrefix.of(RedisKeyPrefix.auth), authKeyMap);
+			redisSessionDao.save(userName, RedisKeyPrefix.of(RedisKeyPrefix.buc), otherUserCred);
+
 			userCredentials.setUserName(userName);
 			userCredentials.setAuthToken(authToken);
+			userCredentials.setRole(loginResultSet.getString(Tables.Login.role));
 			userCredentials.setType(loginResultSet.getString(Tables.Login.type));
 			userCredentials.setLoginstate(loginResultSet.getString(Tables.Login.passwordState));
+			userCredentials.setName(loginResultSet.getString(Tables.Login.name));
+
+			connection.commit();
 			userCredentials.setLoginStatus(LoginStatus.validuser);
 		} catch(Exception exception) {
 			userCredentials.setLoginStatus(LoginStatus.servererror);
 			exception.printStackTrace();
+			connection.rollback();
 		} finally {
 			if(loginResultSet != null)
 				loginResultSet.close();
-			if(loginPreparedStatement != null)
-				loginPreparedStatement.close();
+			if(loginSelectPS != null)
+				loginSelectPS.close();
+			if(loginUpdatePS != null)
+				loginUpdatePS.close();
 			if(connection != null)
 				connection.close();
 		}
 		return userCredentials;
+	}
+
+	public boolean logout(String userName, String authKey, RedisSessionDao redisSessionDao) throws SQLException {
+		Connection connection = null;
+		PreparedStatement loginUpdatePS = null;
+		PreparedStatement loginSelectPS = null;
+		ResultSet loginResultSet = null;		
+
+		String loginSelectQ = String.format("SELECT %s, %s FROM %s WHERE %s=? AND %s=?;", Tables.Login.id, Tables.Login.loginSessionCount,
+				Tables.Login.table, Tables.Login.userName, Tables.Login.isActive);
+
+		String loginUpdateQ = String.format("UPDATE %s SET %s=? WHERE %s=? limit 1;", Tables.Login.table, Tables.Login.loginSessionCount,
+				Tables.Login.id);
+
+		try {
+			connection = DB.getDataSource("srp").getConnection();
+			connection.setAutoCommit(false);
+
+			loginSelectPS = connection.prepareStatement(loginSelectQ, ResultSet.TYPE_FORWARD_ONLY);
+			loginUpdatePS = connection.prepareStatement(loginUpdateQ);
+
+			loginSelectPS.setString(1, userName);
+			loginSelectPS.setBoolean(2, true);
+			loginResultSet = loginSelectPS.executeQuery();
+
+
+			if(!loginResultSet.next()) {
+				throw new Exception();
+			}
+
+			int loginSessionCount = loginResultSet.getInt(Tables.Login.loginSessionCount);
+			Map<String, String> authKeyMap = redisSessionDao.get(userName, RedisKeyPrefix.of(RedisKeyPrefix.auth));
+			Map<String, String> otherUserCred = redisSessionDao.get(userName, RedisKeyPrefix.of(RedisKeyPrefix.buc));
+
+			if(authKeyMap == null || authKeyMap.size() == 0 || otherUserCred == null || otherUserCred.size() == 0) {
+				loginSessionCount = 0;
+			} else if(authKeyMap.containsKey(authKey)){
+				authKeyMap.remove(authKey);
+				loginSessionCount--;
+				if(loginSessionCount <= 0 || authKeyMap.size() == 0) {
+					loginSessionCount = 0;
+					redisSessionDao.removedAll(userName, RedisKeyPrefix.of(RedisKeyPrefix.buc));
+					redisSessionDao.removedAll(userName, RedisKeyPrefix.of(RedisKeyPrefix.auth));
+				} else {
+					redisSessionDao.removed(userName, RedisKeyPrefix.of(RedisKeyPrefix.auth), authKey);
+				}
+			}
+
+			loginUpdatePS.setInt(1, loginSessionCount);
+			loginUpdatePS.setLong(2, loginResultSet.getLong(Tables.Login.id));
+			loginUpdatePS.executeUpdate();
+			connection.commit();
+		} catch(Exception exception) {
+			exception.printStackTrace();
+			connection.rollback();
+		} finally {
+			if(loginResultSet != null)
+				loginResultSet.close();
+			if(loginSelectPS != null)
+				loginSelectPS.close();
+			if(connection != null)
+				connection.close();
+		}
+		return true;
+	}
+
+	private String[] getCorrectSessionIndex(Map<String, String> authKeyMap, int numberOfkeyWillRemoved) {
+		String[] removedKey = new String[numberOfkeyWillRemoved];
+		Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+		for(int i = 0; i < numberOfkeyWillRemoved && i < authKeyMap.size(); i++) {			
+			long olderLoginEpochTime = calendar.getTimeInMillis() / 1000L;
+			String ketToBeRemoved = "";
+			for(Map.Entry<String, String> entry : authKeyMap.entrySet()) {
+				long epocTime = Long.valueOf(entry.getValue());
+				if(epocTime < olderLoginEpochTime) {
+					olderLoginEpochTime = epocTime;
+					ketToBeRemoved = entry.getKey();
+				}
+			}
+			authKeyMap.remove(ketToBeRemoved);
+			removedKey[i] = ketToBeRemoved;
+		}
+		return removedKey;
 	}
 
 	public HeadInstituteLoginDetails refreshHeadInstituteUserCredentials(String userName, String type) throws SQLException {

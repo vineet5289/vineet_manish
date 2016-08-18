@@ -21,15 +21,10 @@ public class RedisSessionDao implements SessionDao {
 	}
 
 	@Override
-	public void save(CommonUserCredentials commonUserCredentials) throws Exception {
-		Map<String, String> redisValue = new HashMap<String, String>();
-		redisValue.put(SessionKey.username.name(), commonUserCredentials.getUserName());
-		redisValue.put(SessionKey.authtoken.name(), commonUserCredentials.getAuthToken());
-		redisValue.put(SessionKey.logintype.name(), commonUserCredentials.getType());
-		redisValue.put(SessionKey.loginstate.name(), commonUserCredentials.getLoginstate());
-		redisValue.put(SessionKey.userrole.name(), commonUserCredentials.getRole());
+	public void save(String userName, String redisPrefix, Map<String, String> redisValue) throws Exception {
 		Jedis jedis = redisConnectionPool.getJedisPool().getResource();
-		jedis.hmset(RedisKeyPrefix.buc.name() + ":" + commonUserCredentials.getUserName(), redisValue);
+		jedis.hmset(redisPrefix + userName, redisValue);
+		redisConnectionPool.getJedisPool().returnResource(jedis);
 		jedis.close();
 		
 	}
@@ -37,9 +32,29 @@ public class RedisSessionDao implements SessionDao {
 	@Override
 	public Map<String, String> get(String userName, String redisPrefix) throws Exception {
 		Jedis jedis = redisConnectionPool.getJedisPool().getResource();
-		Map<String, String> redisValue = jedis.hgetAll(redisPrefix + ":" + userName);
+		Map<String, String> redisValue = jedis.hgetAll(redisPrefix + userName);
+		redisConnectionPool.getJedisPool().returnResource(jedis);
 		jedis.close();
 		return redisValue;
+	}
+
+	@Override
+	public boolean save(String userName, String redisPrefix, String field, String value) throws Exception {
+		Jedis jedis = redisConnectionPool.getJedisPool().getResource();
+		Long updatedCount = jedis.hset(redisPrefix + userName, field, value);
+		redisConnectionPool.getJedisPool().returnResource(jedis);
+		jedis.close();
+		return (updatedCount == 0);
+	}
+
+
+	@Override
+	public String get(String userName, String redisPrefix, String field) throws Exception {
+		Jedis jedis = redisConnectionPool.getJedisPool().getResource();
+		String sessionTrackField = jedis.hget(redisPrefix + ":" + userName, field);
+		redisConnectionPool.getJedisPool().returnResource(jedis);
+		jedis.close();
+		return sessionTrackField;
 	}
 
 	@Override
@@ -52,6 +67,7 @@ public class RedisSessionDao implements SessionDao {
 		redisValue.put(SessionKey.userrole.name(), loginDetails.getRole());
 		Jedis jedis = redisConnectionPool.getJedisPool().getResource();
 		jedis.hmset("session:" + loginDetails.getUserName(), redisValue);
+		redisConnectionPool.getJedisPool().returnResource(jedis);
 		jedis.close();
 	}
 
@@ -59,6 +75,7 @@ public class RedisSessionDao implements SessionDao {
 	public LoginDetails get(String userName) throws Exception {
 		Jedis jedis = redisConnectionPool.getJedisPool().getResource();
 		Map<String, String> redisValue = jedis.hgetAll(RedisKeyPrefix.buc.name() + ":" + userName);
+		redisConnectionPool.getJedisPool().returnResource(jedis);
 		jedis.close();
 		LoginDetails loginDetails = new LoginDetails();
 		loginDetails.setUserName(redisValue.get(SessionKey.username.name()));
@@ -67,5 +84,23 @@ public class RedisSessionDao implements SessionDao {
 		loginDetails.setPasswordState(redisValue.get(SessionKey.loginstate.name()));
 		loginDetails.setRole(redisValue.get(SessionKey.userrole.name()));
 		return loginDetails;
+	}
+
+	@Override
+	public boolean removed(String userName, String redisPrefix, String... field) throws Exception {
+		Jedis jedis = redisConnectionPool.getJedisPool().getResource();
+		Long deleated = jedis.hdel(redisPrefix + userName, field);
+		redisConnectionPool.getJedisPool().returnResource(jedis);
+		jedis.close();
+		return (deleated == 1);
+	}
+
+	@Override
+	public boolean removedAll(String userName, String redisPrefix) throws Exception {
+		Jedis jedis = redisConnectionPool.getJedisPool().getResource();
+		Long deleated = jedis.del(redisPrefix + userName);
+		redisConnectionPool.getJedisPool().returnResource(jedis);
+		jedis.close();
+		return (deleated == 1);
 	}
 }

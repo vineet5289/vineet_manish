@@ -23,12 +23,13 @@ public class AddBranchDAO {
 		int numberOfInstitute = 0;
 		long instituteId = 0;
 		String password = "";
+		String headInstituteEmailId = "";
 
 		SchoolRequestActorProtocol.AddInstituteBranch addInstituteBranchProtocol = new SchoolRequestActorProtocol.AddInstituteBranch();
 		addInstituteBranchProtocol.setProcessStatus(InstituteDaoProcessStatus.branchsuccessfullyadded);
 
 		Connection connection = null;
-		PreparedStatement loginInsertPS = null;
+//		PreparedStatement loginInsertPS = null;
 		PreparedStatement instituteInsertPS = null;
 		PreparedStatement headInstituteSelectPS = null;
 		PreparedStatement headInstituteUpdatePS = null;
@@ -36,17 +37,17 @@ public class AddBranchDAO {
 		ResultSet headInstituteSelectRS = null;
 		ResultSet instituteInsertRS = null;
 
-		String loginInsertQ = String.format("INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s, %s, %s) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);", Tables.Login.table,
-				Tables.Login.userName, Tables.Login.emailId, Tables.Login.password, Tables.Login.passwordState, Tables.Login.instituteId, Tables.Login.type,
-				Tables.Login.name, Tables.Login.role, Tables.Login.accessRights);
+//		String loginInsertQ = String.format("INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s, %s, %s) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);", Tables.Login.table,
+//				Tables.Login.userName, Tables.Login.emailId, Tables.Login.password, Tables.Login.passwordState, Tables.Login.instituteId, Tables.Login.type,
+//				Tables.Login.name, Tables.Login.role, Tables.Login.accessRights);
 
-		String instituteInsertQ = String.format("INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-				Tables.Institute.table, Tables.Institute.name, Tables.Institute.userName, Tables.Institute.email, Tables.Institute.phoneNumber, Tables.Institute.officeNumber,
+		String instituteInsertQ = String.format("INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
+				Tables.Institute.table, Tables.Institute.name, Tables.Institute.email, Tables.Institute.phoneNumber, Tables.Institute.officeNumber,
 				Tables.Institute.addressLine1, Tables.Institute.addressLine2, Tables.Institute.city, Tables.Institute.state, Tables.Institute.country, Tables.Institute.pinCode,
 				Tables.Institute.registrationId, Tables.Institute.headInstituteId);
 
-		String headInstituteSelectQ = String.format("SELECT %s, %s FROM %s WHERE %s=? AND %s=?;", Tables.HeadInstitute.groupOfInstitute, Tables.HeadInstitute.noOfInstitute,
-				Tables.HeadInstitute.table, Tables.HeadInstitute.isActive, Tables.HeadInstitute.id);
+		String headInstituteSelectQ = String.format("SELECT %s, %s, %s FROM %s WHERE %s=? AND %s=?;", Tables.HeadInstitute.email, Tables.HeadInstitute.groupOfInstitute,
+				Tables.HeadInstitute.noOfInstitute, Tables.HeadInstitute.table, Tables.HeadInstitute.isActive, Tables.HeadInstitute.id);
 
 		String headInstituteUpdateQ = String.format("UPDATE %s SET %s=?, %s=? WHERE %s=? AND %s=? LIMIT 1;", Tables.HeadInstitute.table, Tables.HeadInstitute.groupOfInstitute,
 				Tables.HeadInstitute.noOfInstitute, Tables.HeadInstitute.isActive, Tables.HeadInstitute.id);
@@ -57,7 +58,7 @@ public class AddBranchDAO {
 
 			connection = DB.getDataSource("srp").getConnection();
 			connection.setAutoCommit(false);
-			loginInsertPS = connection.prepareStatement(loginInsertQ);
+//			loginInsertPS = connection.prepareStatement(loginInsertQ);
 			instituteInsertPS = connection.prepareStatement(instituteInsertQ, Statement.RETURN_GENERATED_KEYS);
 			headInstituteSelectPS = connection.prepareStatement(headInstituteSelectQ, ResultSet.TYPE_FORWARD_ONLY);
 			headInstituteUpdatePS = connection.prepareStatement(headInstituteUpdateQ);
@@ -67,6 +68,7 @@ public class AddBranchDAO {
 			headInstituteSelectRS = headInstituteSelectPS.executeQuery();
 			if(headInstituteSelectRS.next()) {
 				numberOfInstitute = headInstituteSelectRS.getInt(Tables.HeadInstitute.noOfInstitute);
+				headInstituteEmailId = headInstituteSelectRS.getString(Tables.HeadInstitute.email);
 			} else {
 				System.out.println("exception happen during head institute select");
 				addInstituteBranchProtocol.setProcessStatus(InstituteDaoProcessStatus.requestedinstitutednotfound);
@@ -85,18 +87,17 @@ public class AddBranchDAO {
 			}
 
 			instituteInsertPS.setString(1, addInstituteBranch.getInstituteName());
-			instituteInsertPS.setString(2, addInstituteBranch.getInstituteEmail().trim());
-			instituteInsertPS.setString(3, addInstituteBranch.getInstituteEmail().trim());
-			instituteInsertPS.setString(4, addInstituteBranch.getInstitutePhoneNumber());
-			instituteInsertPS.setString(5, addInstituteBranch.getInstituteOfficeNumber());
-			instituteInsertPS.setString(6, addInstituteBranch.getInstituteAddressLine1());
-			instituteInsertPS.setString(7, addInstituteBranch.getInstituteAddressLine2());
-			instituteInsertPS.setString(8, addInstituteBranch.getInstituteCity());
-			instituteInsertPS.setString(9, addInstituteBranch.getInstituteState());
-			instituteInsertPS.setString(10, addInstituteBranch.getInstituteCountry());
-			instituteInsertPS.setString(11, addInstituteBranch.getInstitutePinCode());
-			instituteInsertPS.setString(12, addInstituteBranch.getInstituteRegistrationId());
-			instituteInsertPS.setLong(13, headInstituteId);
+			instituteInsertPS.setString(2, headInstituteEmailId);
+			instituteInsertPS.setString(3, addInstituteBranch.getInstitutePhoneNumber());
+			instituteInsertPS.setString(4, addInstituteBranch.getInstituteOfficeNumber());
+			instituteInsertPS.setString(5, addInstituteBranch.getInstituteAddressLine1());
+			instituteInsertPS.setString(6, addInstituteBranch.getInstituteAddressLine2());
+			instituteInsertPS.setString(7, addInstituteBranch.getInstituteCity());
+			instituteInsertPS.setString(8, addInstituteBranch.getInstituteState());
+			instituteInsertPS.setString(9, addInstituteBranch.getInstituteCountry());
+			instituteInsertPS.setString(10, addInstituteBranch.getInstitutePinCode());
+			instituteInsertPS.setString(11, addInstituteBranch.getInstituteRegistrationId());
+			instituteInsertPS.setLong(12, headInstituteId);
 			instituteInsertPS.execute();
 			instituteInsertRS = instituteInsertPS.getGeneratedKeys();
 			
@@ -107,23 +108,23 @@ public class AddBranchDAO {
 				return addInstituteBranchProtocol;
 			}
 
-			loginInsertPS.setString(1, addInstituteBranch.getInstituteEmail().trim());
-			loginInsertPS.setString(2, addInstituteBranch.getInstituteEmail().trim());
-			loginInsertPS.setString(3, bCryptPassword);
-			loginInsertPS.setString(4, LoginState.firststate.name());
-			loginInsertPS.setLong(5, instituteId);
-			loginInsertPS.setString(6, LoginType.institute.name());
-			loginInsertPS.setString(7, addInstituteBranch.getInstituteName());
-			loginInsertPS.setString(8, Role.instituteadmin.name());
-			loginInsertPS.setString(9, "ALL=1");
-			loginInsertPS.execute();
+//			loginInsertPS.setString(1, addInstituteBranch.getInstituteEmail().trim());
+//			loginInsertPS.setString(2, addInstituteBranch.getInstituteEmail().trim());
+//			loginInsertPS.setString(3, bCryptPassword);
+//			loginInsertPS.setString(4, LoginState.firststate.name());
+//			loginInsertPS.setLong(5, instituteId);
+//			loginInsertPS.setString(6, LoginType.institute.name());
+//			loginInsertPS.setString(7, addInstituteBranch.getInstituteName());
+//			loginInsertPS.setString(8, Role.instituteadmin.name());
+//			loginInsertPS.setString(9, "ALL=1");
+//			loginInsertPS.execute();
+
 			connection.commit();
 
 			addInstituteBranchProtocol.setInstitutePassword(password);
 			addInstituteBranchProtocol.setInstituteBranchName(addInstituteBranch.getInstituteName());
-			addInstituteBranchProtocol.setInstituteEmail(addInstituteBranch.getInstituteEmail().trim());
+			addInstituteBranchProtocol.setInstituteEmail(headInstituteEmailId);
 			addInstituteBranchProtocol.setInstituteContract(addInstituteBranch.getInstitutePhoneNumber());
-			addInstituteBranchProtocol.setInstituteUserName(addInstituteBranch.getInstituteEmail().trim());
 
 			addInstituteBranchProtocol.setProcessStatus(InstituteDaoProcessStatus.branchsuccessfullyadded);
 		} catch(Exception exception) {
@@ -132,8 +133,8 @@ public class AddBranchDAO {
 			addInstituteBranchProtocol.setProcessStatus(InstituteDaoProcessStatus.servererror);
 			connection.rollback();
 		} finally {
-			if(loginInsertPS != null)
-				loginInsertPS.close();
+//			if(loginInsertPS != null)
+//				loginInsertPS.close();
 
 			if(instituteInsertPS != null)
 				instituteInsertPS.close();

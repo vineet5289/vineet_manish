@@ -227,6 +227,7 @@ public class InstituteInfoController extends ClassController {
 
 	//session validation
 	public Result updateInstituteMandInfo() {
+		System.out.println("======>");
 		Form<FirstTimeInstituteUpdateForm> firstTimeSchoolUpdateForm = Form.form(FirstTimeInstituteUpdateForm.class).bindFromRequest();
 		System.out.println("************firstTimeSchoolUpdateForm$$$$$$$$" + firstTimeSchoolUpdateForm);
 		if (firstTimeSchoolUpdateForm == null || firstTimeSchoolUpdateForm.hasErrors()) {

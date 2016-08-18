@@ -19,7 +19,7 @@ public class ActionAuthenticator extends Security.Authenticator{
 
 		// write redis validation
 		
-		return userHeaderCredential.get(SessionKey.authtoken.name());
+		return userHeaderCredential.get(SessionKey.username.name());
 	}
 
 	@Override

@@ -10,7 +10,8 @@ public enum LoginStatus {
 	passwordformatinvalid("UserName/Password is invalid"),
 	invaliduser("UserName/Password is invalid"),
 	validuser(""),
-	servererror("We are very sorry. Some server exception happen. We are working on it. Please try after some time.");
+	servererror("We are very sorry. Some server exception happen. We are working on it. Please try after some time."),
+	overloginsessioncount("Sorry you are already active/login at more then 3 places.");
 
 	private String message;
 	private LoginStatus(String message) {

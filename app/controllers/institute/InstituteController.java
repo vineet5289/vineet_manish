@@ -59,7 +59,7 @@ public class InstituteController extends CustomController {
 		SchoolRequestActorProtocol.AddInstituteBranch  addInstituteBranchProtocol = null;
 		try {
 			AddBranchDAO addBranchDAO = new AddBranchDAO();
-			addInstituteBranchProtocol = addBranchDAO.addBranch(addInstituteBranch, 2l);
+			addInstituteBranchProtocol = addBranchDAO.addBranch(addInstituteBranch, Long.valueOf(instituteId));
 		} catch (NumberFormatException | SQLException exception) {
 			flash("error", "Some server exception happen during add branch request. Please try again.");
 			exception.printStackTrace();

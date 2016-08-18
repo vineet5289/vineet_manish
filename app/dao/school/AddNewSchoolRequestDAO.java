@@ -175,8 +175,8 @@ public class AddNewSchoolRequestDAO {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
-		String selectQuery = String.format("SELECT %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s FROM %s WHERE %s=? AND %s=? AND %s=? AND %s=? AND %s=?;",
-				Tables.InstituteRegistrationRequest.name, Tables.InstituteRegistrationRequest.email, Tables.InstituteRegistrationRequest.phoneNumber,
+		String selectQuery = String.format("SELECT %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s FROM %s WHERE %s=? AND %s=? AND %s=? AND %s=? AND %s=?;",
+				Tables.InstituteRegistrationRequest.id, Tables.InstituteRegistrationRequest.name, Tables.InstituteRegistrationRequest.email, Tables.InstituteRegistrationRequest.phoneNumber,
 				Tables.InstituteRegistrationRequest.officeNumber, Tables.InstituteRegistrationRequest.registrationId, Tables.InstituteRegistrationRequest.contactPersonName,
 				Tables.InstituteRegistrationRequest.addressLine1, Tables.InstituteRegistrationRequest.addressLine2, Tables.InstituteRegistrationRequest.city,
 				Tables.InstituteRegistrationRequest.state, Tables.InstituteRegistrationRequest.country, Tables.InstituteRegistrationRequest.pinCode,
@@ -196,9 +196,9 @@ public class AddNewSchoolRequestDAO {
 
 			resultSet = preparedStatement.executeQuery();
 			if(resultSet.next()) {
+				instituteFormData.setRegisterInstituteRequestId(resultSet.getLong(Tables.InstituteRegistrationRequest.id));
 				instituteFormData.setInstituteName(resultSet.getString(Tables.InstituteRegistrationRequest.name));
 				instituteFormData.setInstituteEmail(resultSet.getString(Tables.InstituteRegistrationRequest.email));
-				instituteFormData.setInstituteUserName(resultSet.getString(Tables.InstituteRegistrationRequest.email));
 				instituteFormData.setInstitutePhoneNumber(resultSet.getString(Tables.InstituteRegistrationRequest.phoneNumber));
 				instituteFormData.setInstituteOfficeNumber(resultSet.getString(Tables.InstituteRegistrationRequest.officeNumber));
 				instituteFormData.setInstituteRegistrationId(resultSet.getString(Tables.InstituteRegistrationRequest.registrationId));

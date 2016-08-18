@@ -14,6 +14,7 @@ import enum_package.InstituteDaoProcessStatus;
 public class InstituteFormData {
 	// for internal use
 	InstituteDaoProcessStatus processingStatus;
+	private Long registerInstituteRequestId;
 	//auto filed data
 	private String instituteName;
 	private String instituteEmail;
@@ -26,7 +27,6 @@ public class InstituteFormData {
 	private String instituteCountry;
 	private String institutePinCode;
 	private String instituteRegistrationId;
-	private String instituteUserName; //set to email id
 	private String groupOfInstitute;
 	private int noOfInstitute;
 
@@ -36,10 +36,6 @@ public class InstituteFormData {
 
 	public List<ValidationError> validate() {
 		List<ValidationError> errors = new ArrayList<>();
-
-		if (!ValidateFields.isValidUserName(instituteUserName)) {
-			errors.add(new ValidationError("schoolUserName", "School UserName is either emailId or combination alphanumeric character that can contains only @_-. special characters."));
-		}
 
 		if (!SchoolSpecificFiledValidation.isValidSchoolName(instituteName)) {
 			errors.add(new ValidationError("schoolName", "School name should not be empty. And should not contains special characters like ;@[]"));

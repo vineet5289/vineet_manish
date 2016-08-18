@@ -19,7 +19,8 @@ import enum_package.Role;
 
 public class SchoolRegistrationDAO {
 
-	public InstituteDaoProcessStatus registerInstitute(InstituteFormData schoolData, String referenceNumber, String authToken) throws SQLException {
+	public InstituteDaoProcessStatus registerInstitute(InstituteFormData schoolData, String referenceNumber, String authToken,
+			Long regInstituteRequestId) throws SQLException {
 		InstituteDaoProcessStatus instituteDaoProcessStatus = InstituteDaoProcessStatus.validschool;
 		Connection connection = null;
 		PreparedStatement headInstituteRegistrationPS = null;
@@ -30,24 +31,24 @@ public class SchoolRegistrationDAO {
 		ResultSet resultSet = null;
 		ResultSet selectResultSet = null;
 
-		String insertLoginQ = String.format("INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);", 
+		String loginInsertQ = String.format("INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);", 
 				Tables.Login.table, Tables.Login.userName, Tables.Login.emailId, Tables.Login.password, Tables.Login.passwordState, Tables.Login.role, 
 				Tables.Login.accessRights, Tables.Login.isActive, Tables.Login.name, Tables.Login.instituteId, Tables.Login.type);
 
-		String insertHeadInstituteQ = String.format("INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) VALUES(?, ?, ?, ?, ?, ?, ?,"
+		String headInstituteInsertQ = String.format("INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) VALUES(?, ?, ?, ?, ?, ?, ?,"
 				+ " ?, ?, ?, ?, ?, ?, ?, ?);", Tables.HeadInstitute.table, Tables.HeadInstitute.name, Tables.HeadInstitute.email,  Tables.HeadInstitute.phoneNumber,
 				Tables.HeadInstitute.officeNumber, Tables.HeadInstitute.addressLine1, Tables.HeadInstitute.addressLine2, Tables.HeadInstitute.city,
 				Tables.HeadInstitute.state, Tables.HeadInstitute.country, Tables.HeadInstitute.pinCode, Tables.HeadInstitute.registrationId, Tables.HeadInstitute.userName,
 				Tables.HeadInstitute.groupOfInstitute, Tables.HeadInstitute.noOfInstitute, Tables.HeadInstitute.addInstituteRequestId);
 
-		String insertInstituteQ =  String.format("INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,"
+		String instituteInsertQ =  String.format("INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)  VALUES (?, ?, ?, ?, ?, ?, ?, ?,"
 				+ "?, ?, ?, ?);", Tables.Institute.table, Tables.Institute.name, Tables.Institute.email, Tables.Institute.phoneNumber, Tables.Institute.officeNumber,
 				Tables.Institute.addressLine1, Tables.Institute.addressLine2, Tables.Institute.city, Tables.Institute.state, Tables.Institute.country, Tables.Institute.pinCode,
-				Tables.Institute.registrationId, Tables.Institute.userName, Tables.Institute.headInstituteId);
+				Tables.Institute.registrationId, Tables.Institute.headInstituteId);
 
-		String selectSchoolRegistrationRequestQ = String.format("SELECT %s, %s FROM %s WHERE %s=? AND %s=? AND %s=? AND %s=? AND %s=?;", Tables.InstituteRegistrationRequest.id,
+		String selectSchoolRegistrationRequestQ = String.format("SELECT %s, %s FROM %s WHERE %s=? AND %s=? AND %s=? AND %s=? AND %s=? AND %s=?;", Tables.InstituteRegistrationRequest.id,
 				Tables.InstituteRegistrationRequest.name, Tables.InstituteRegistrationRequest.table,Tables.InstituteRegistrationRequest.isActive, Tables.InstituteRegistrationRequest.requestNumber,
-				Tables.InstituteRegistrationRequest.authToken, Tables.InstituteRegistrationRequest.email, Tables.InstituteRegistrationRequest.status);
+				Tables.InstituteRegistrationRequest.authToken, Tables.InstituteRegistrationRequest.email, Tables.InstituteRegistrationRequest.status, Tables.InstituteRegistrationRequest.id);
 
 		String updateSchoolRegistrationRequestQ = String.format("UPDATE %s SET %s=?, %s=? WHERE %s=? limit 1;", Tables.InstituteRegistrationRequest.table, Tables.InstituteRegistrationRequest.isActive,
 				Tables.InstituteRegistrationRequest.status, Tables.InstituteRegistrationRequest.id);
@@ -57,9 +58,9 @@ public class SchoolRegistrationDAO {
 			connection = DB.getDataSource("srp").getConnection();
 			connection.setAutoCommit(false);
 
-			headInstituteRegistrationPS = connection.prepareStatement(insertHeadInstituteQ, Statement.RETURN_GENERATED_KEYS);
-			instituteRegistrationPS = connection.prepareStatement(insertInstituteQ, Statement.RETURN_GENERATED_KEYS);
-			instituteLoginPS = connection.prepareStatement(insertLoginQ, Statement.RETURN_GENERATED_KEYS);
+			headInstituteRegistrationPS = connection.prepareStatement(headInstituteInsertQ, Statement.RETURN_GENERATED_KEYS);
+			instituteRegistrationPS = connection.prepareStatement(instituteInsertQ, Statement.RETURN_GENERATED_KEYS);
+			instituteLoginPS = connection.prepareStatement(loginInsertQ, Statement.RETURN_GENERATED_KEYS);
 			updateRegistrationRequestPS = connection.prepareStatement(updateSchoolRegistrationRequestQ);
 			selectRegistrationRequestPS = connection.prepareStatement(selectSchoolRegistrationRequestQ, ResultSet.TYPE_FORWARD_ONLY);
 
@@ -68,6 +69,7 @@ public class SchoolRegistrationDAO {
 			selectRegistrationRequestPS.setString(3, authToken.trim());
 			selectRegistrationRequestPS.setString(4, schoolData.getInstituteEmail().trim());			
 			selectRegistrationRequestPS.setString(5, RequestedStatus.approved.name());
+			selectRegistrationRequestPS.setLong(6, regInstituteRequestId);
 			selectResultSet = selectRegistrationRequestPS.executeQuery();
 			if(!selectResultSet.next()) {
 				instituteDaoProcessStatus = InstituteDaoProcessStatus.invalidreferencenumber;
@@ -110,7 +112,7 @@ public class SchoolRegistrationDAO {
 			if( schoolData.getInstituteRegistrationId() != null)
 				schoolRegistrationId = schoolData.getInstituteRegistrationId().trim();
 			headInstituteRegistrationPS.setString(11, schoolRegistrationId); //schoolRegistrationId
-			headInstituteRegistrationPS.setString(12, schoolData.getInstituteUserName().trim()); //schoolUserName
+			headInstituteRegistrationPS.setString(12, schoolData.getInstituteEmail().trim()); //schoolUserName
 			headInstituteRegistrationPS.setString(13, schoolData.getGroupOfInstitute().trim().toLowerCase());
 			headInstituteRegistrationPS.setInt(14, schoolData.getNoOfInstitute());
 			headInstituteRegistrationPS.setLong(15, registrationRequestId);
@@ -141,8 +143,7 @@ public class SchoolRegistrationDAO {
 				instituteRegistrationPS.setString(9, schoolData.getInstituteCountry().trim()); //country
 				instituteRegistrationPS.setString(10, schoolData.getInstitutePinCode().trim()); //pincode
 				instituteRegistrationPS.setString(11, schoolRegistrationId); //schoolRegistrationId
-				instituteRegistrationPS.setString(12, schoolData.getInstituteUserName().trim()); //schoolUserName
-				instituteRegistrationPS.setLong(13, generatedHeadInstituteId);
+				instituteRegistrationPS.setLong(12, generatedHeadInstituteId);
 				instituteRegistrationPS.execute();
 
 				instituteLoginPS.setString(4, LoginState.redirectstate.name());
@@ -150,7 +151,7 @@ public class SchoolRegistrationDAO {
 				instituteLoginPS.setString(4, LoginState.finalstate.name());
 			}
 
-			instituteLoginPS.setString(1, schoolData.getInstituteUserName().trim());
+			instituteLoginPS.setString(1, schoolData.getInstituteEmail().trim());
 			instituteLoginPS.setString(2, schoolData.getInstituteEmail().trim());
 			instituteLoginPS.setString(3, bCryptPassword);
 			instituteLoginPS.setString(5, Role.institutegroupadmin.name());

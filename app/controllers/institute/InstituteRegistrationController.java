@@ -1,13 +1,7 @@
 package controllers.institute;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import controllers.CustomController;
-import models.SchoolBoard;
-import models.SchoolCategory;
-import models.SchoolType;
 import play.data.Form;
 import play.mvc.Result;
 import play.mvc.Security;
@@ -15,6 +9,7 @@ import security.InstituteRegisterRequestAuthenticator;
 import views.forms.OTPField;
 import views.forms.institute.InstituteFormData;
 import views.html.viewClass.SchoolRegistration;
+import controllers.CustomController;
 import dao.school.AddNewSchoolRequestDAO;
 import dao.school.SchoolRegistrationDAO;
 import enum_package.InstituteDaoProcessStatus;
@@ -42,8 +37,10 @@ public class InstituteRegistrationController extends CustomController {
 		try {
 			InstituteFormData schoolData = schoolRegistrationRequestDAO.isValidSchoolRegistrationRequest(referenceKey, otp, emailId);
 			if(schoolData != null && schoolData.getProcessingStatus() == InstituteDaoProcessStatus.validschool) {
+				session().clear();
 				session(SessionKey.regschoolrequestnumber.name(), referenceKey);
 				session(SessionKey.otpkey.name(), otp);
+				session(SessionKey.reginstituterequestid.name(), Long.toString(schoolData.getRegisterInstituteRequestId()));
 
 				Form<InstituteFormData> schoolFormData = Form.form(InstituteFormData.class).fill(schoolData);
 
@@ -76,10 +73,11 @@ public class InstituteRegistrationController extends CustomController {
 		
 		String referenceNumber = session().get(SessionKey.regschoolrequestnumber.name());
 		String authToken = session().get(SessionKey.otpkey.name());
+		String regInstituteRequestId = session().get(SessionKey.reginstituterequestid.name());
 		SchoolRegistrationDAO schoolRegistrationDAO = new SchoolRegistrationDAO();
 		InstituteDaoProcessStatus instituteDaoProcessStatus;
 		try {
-			instituteDaoProcessStatus = schoolRegistrationDAO.registerInstitute(schoolFormDetails, referenceNumber, authToken);
+			instituteDaoProcessStatus = schoolRegistrationDAO.registerInstitute(schoolFormDetails, referenceNumber, authToken, Long.valueOf(regInstituteRequestId));
 		} catch(Exception exception) {
 			exception.printStackTrace();
 			instituteDaoProcessStatus = InstituteDaoProcessStatus.servererror;
