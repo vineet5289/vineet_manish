@@ -34,6 +34,7 @@ public class InstituteController extends CustomController {
 		this.mailerActor = mailerActor;
 	}
 
+	@Security.Authenticated(HeadInstituteBasicAuthCheck.class)
 	public Result switchBranch() {
 		return ok("===> switch branch done");
 	}
