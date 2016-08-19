@@ -1,6 +1,8 @@
 @(schoolRegister:Form[views.forms.institute.AddInstituteBranchForm], schoolCountry:
 List[String], state: Map[String, String])
-@viewClass.main3("Register")("index"){
+@viewClass.main3("Register")(""){
+
+<div class="stripe">
 <div class="main container">
    <div class="ui page grid">
       <div class="column">
@@ -138,6 +140,7 @@ List[String], state: Map[String, String])
          </div>
       </div>
    </div>
+</div>
 </div>
 @if(flash.containsKey("success")) {
 <div class="ui segment">

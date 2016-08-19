@@ -1,0 +1,154 @@
+body {
+  background-color: #eaf0f2;
+  padding-top: 40px;
+}
+
+a {
+  cursor: pointer;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.user {
+  cursor: pointer;
+}
+
+.horizontal {
+  font-weight: normal !important;
+}
+
+.password {
+  cursor: pointer;
+}
+
+.breadcrumb {
+  padding: 20px 0px 10px 0px;
+}
+
+.avatar {
+  width: 50px;
+  height: auto;
+  border-radius: 50%;
+}
+
+.image {
+  margin-top: -100px;
+}
+
+.ui.segment {
+  padding: 2rem;
+}
+
+.ui.head {
+  height: 46px;
+}
+
+.logo {
+  height: 26px !important;
+  width: auto;
+}
+
+.greeting {
+  color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.greeting::after,
+.logout::before {
+  content: "\00a0";
+}
+
+
+.ui.table thead th {
+  cursor: auto;
+  background: #FFF;
+  text-align: inherit;
+  color: rgba(0, 0, 0, 0.87);
+  padding: 0.92857143em 1em;
+  vertical-align: inherit;
+  font-style: none;
+  font-weight: bold;
+  text-transform: none;
+  border-bottom: 1px solid rgba(34, 36, 38, 0.1);
+  border-left: none;
+}
+
+.ui.table tfoot th {
+  cursor: auto;
+  border-top: 1px solid rgba(34, 36, 38, 0.15);
+  background: #FFF;
+  text-align: inherit;
+  color: rgba(0, 0, 0, 0.87);
+  padding: 1em 1em;
+  vertical-align: middle;
+  font-style: normal;
+  font-weight: normal;
+  text-transform: none;
+}
+
+.logout,
+.logout a,
+.logout a:visited {
+  color: rgba(255, 255, 255, 0.5) !important;
+  font-weight: 300 !important;
+}
+
+.logout a:hover {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.main.container {
+  position: relative;
+  max-width: 940px !important;
+  left: 0px;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding: 2em 0em 7em;
+}
+
+.inverted {
+  background-color: #28556f !important;
+  border-radius: 4px;
+}
+
+.company-name {
+  font-weight: bold !important;
+  color: #212121;
+}
+
+.company-logo {
+  max-width: 100%;
+}
+
+.compact {
+  max-width: 250px !important;
+  max-height: 250px !important;
+}
+
+.square-logo {
+  max-width: 200px !important;
+  max-height: 200px !important;
+}
+
+.company-name:hover {
+  color: #212121;
+}
+
+.checkbox label {
+  font-weight: bold;
+}
+
+.ui.segment:last-child {
+  padding: 1.5rem 2rem 1.5rem 1rem;
+}
+.skip {
+  border-left: 0px !important;
+}
+
+@media only screen and (max-width: 767px) {
+  .ui.table[class*="center aligned"],
+  .ui.table [class*="center aligned"] {
+    text-align: left;
+  }
+}

@@ -22,9 +22,9 @@ public class HeadInstituteLoginDetails {
 
 	@Data
 	public static class BranchDetails {
-		private Long instituteId;
+		public Long instituteId;
 		private Long headInstituteId;
-		private String headInstituteUserName;
+		public String headInstituteUserName;
 		public String instituteUserName;
 		public String instituteName;
 		private String institutePrefered;
