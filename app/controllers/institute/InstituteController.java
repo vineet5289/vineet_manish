@@ -78,7 +78,7 @@ public class InstituteController extends CustomController {
 
 		mailerActor.tell(addInstituteBranchProtocol, mailerActor);
 		messageActor.tell(addInstituteBranchProtocol, messageActor);
-		
-		return redirect(routes.SRPController.index());
+
+		return redirect(routes.SRPController.headInstituteHome());
 	}
 }
