@@ -1,0 +1,330 @@
+@(schoolGeneralForm:Form[views.forms.institute.InstituteGeneralInfoForm] ,
+schoolHeaderForm:Form[views.forms.institute.InstituteHeaderInfoForm],
+shiftAndTimingForm:Form[views.forms.institute.InstituteShiftAndClassTimingInfoForm])
+
+@viewClass.main4("Profile | Info")("form"){
+@viewClass.School.singleInstituteProfileTopMenu()
+<style type="text/css">
+    #edit-details{
+    padding-left: 220px;
+    font-size: 1rem;
+    position: relative;
+    }
+</style>
+<div class="ui horizontal segment">
+    <div class="container">
+        <div class="introduction">
+            <h3 class="ui dividing header">
+                PROFILE    <a href="/school/edit/general" id="edit-details"><i class="edit icon">edit</i></a>  
+            </h3>
+            <div class="ui grid ">
+                <div class="three wide column">
+                    <!--<img style="margin-bottom: 10px" class="ui medium rounded image" src="http://icons.indats.com/sewlong/justin.jpg"> -->
+                    <img class="ui circular medium image" align="center" src="@routes.Assets.versioned("images/ID.jpg")">
+                </div>
+                <div class="ten wide column">
+                    <div class="ui  list">
+                        <div class="item">
+                            <div class="content">
+                                <h4 class="ui blue header">School Name</h4>
+                                @schoolHeaderForm("schoolName").value
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="content">
+                                <h4 class="ui blue header">School UserName</h4>
+                                @schoolHeaderForm("schoolUserName").value
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="content">
+                                <h4 class="ui blue header">E-Mail</h4>
+                                @schoolHeaderForm("schoolEmail").value
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="content">
+                                <h4 class="ui blue header">Contact</h4>
+                                +91-@schoolHeaderForm("schoolMobileNumber").value
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="content">
+                                <h4 class="ui blue header">Website </h4>
+                                @schoolHeaderForm("schoolWebsiteUrl").value
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="main container">
+    <div class="peek">
+        <div class="ui secondary pointing vertical profile  menu">
+            <a class="active item" data-tab="generalInfoProfile">
+            General
+            </a>
+            <a class="item" data-tab="timings">
+            Timings
+            </a>
+            <a class="item" data-tab="shift">
+            Shift
+            </a>
+            <a class="item" data-tab="PasswordChange">
+            Password
+            </a>
+        </div>
+    </div>
+    <div class="ui active tab segment" data-tab="generalInfoProfile">
+        <h2 class="ui dividing header">General</h2>
+        <div class="ui  list">
+            <div class="item">
+                <div class="content">
+                    <h4 class="ui blue header">School Type</h4>
+                    @schoolGeneralForm("schoolType").value
+                </div>
+            </div>
+            <div class="item">
+                <div class="content">
+                    <h4 class="ui blue header">Board Name</h4>
+                    @schoolGeneralForm("schoolBoardName").value
+                </div>
+            </div>
+            <div class="item">
+                @if(schoolGeneralForm("schoolRegistrationId").value){
+                <div class="content">
+                    <h4 class="ui blue header">Registratrion ID</h4>
+                    @schoolGeneralForm("schoolRegistrationId").value
+                </div>
+                }else {
+                @if(!schoolGeneralForm("schoolRegistrationId").value){
+                <div class="content">
+                    <h4 class="ui blue header">Registratrion ID</h4>
+                    <input type="text" placeholder=" " disabled="true"/>
+                </div>
+                } }
+            </div>
+            <div class="item">
+                <div class="content">
+                    <h4 class="ui blue header">Address</h4>
+                    @schoolGeneralForm("schoolAddressLine1").value ,
+                    @schoolGeneralForm("schoolAddressLine2").value ,
+                    @schoolGeneralForm("city").value,
+                    @schoolGeneralForm("state").value,
+                    @schoolGeneralForm("country").value,
+                    <label>pincode- </label>@schoolGeneralForm("pincode").value
+                </div>
+            </div>
+            <div class="item">
+                <div class="content">
+                    <h4 class="ui blue header">Class From</h4>
+                    @schoolGeneralForm("schoolClassFrom").value --
+                    @schoolGeneralForm("schoolClassTo").value 
+                </div>
+            </div>
+            <div class="item">
+                @if(schoolGeneralForm("schoolOfficeStartTime").value){
+                <div class="content">
+                    <h4 class="ui blue header">Start Time</h4>
+                    @schoolGeneralForm("schoolOfficeStartTime").value
+                </div>
+                }else {
+                @if(!schoolGeneralForm("schoolOfficeStartTime").value){
+                <div class="content">
+                    <h4 class="ui blue header">Start Time </h4>
+                    <input type="text" placeholder=" NOT ENTERED " disabled="true"/>
+                </div>
+                } }
+            </div>
+            <div class="item">
+                @if(schoolGeneralForm("schoolOfficeEndTime").value){
+                <div class="content">
+                    <h4 class="ui blue header">End Time</h4>
+                    @schoolGeneralForm("schoolOfficeEndTime").value
+                </div>
+                }else {
+                @if(!schoolGeneralForm("schoolOfficeEndTime").value){
+                <div class="content">
+                    <h4 class="ui blue header">End Time </h4>
+                    <input type="text" placeholder=" NOT ENTERED " disabled="true"/>
+                </div>
+                } }
+            </div>
+            <div class="item">
+                @if(schoolGeneralForm("schoolOfficeWeekStartDay").value){
+                <div class="content">
+                    <h4 class="ui blue header">Week Starts</h4>
+                    @schoolGeneralForm("schoolOfficeWeekStartDay").value
+                </div>
+                }else {
+                @if(!schoolGeneralForm("schoolOfficeWeekStartDay").value){
+                <div class="content">
+                    <h4 class="ui blue header">Week Starts </h4>
+                    <input type="text" placeholder=" NOT ENTERED " disabled="true"/>
+                </div>
+                } }
+            </div>
+            <div class="item">
+                @if(schoolGeneralForm("schoolOfficeWeekEndDay").value){
+                <div class="content">
+                    <h4 class="ui blue header">Week Ends</h4>
+                    @schoolGeneralForm("schoolOfficeWeekEndDay").value
+                </div>
+                }else {
+                @if(!schoolGeneralForm("schoolOfficeWeekEndDay").value){
+                <div class="content">
+                    <h4 class="ui blue header">Week Ends </h4>
+                    <input type="text" placeholder=" NOT ENTERED " disabled="true"/>
+                </div>
+                } }
+            </div>
+            <div class="item">
+                @if(schoolGeneralForm("SchoolCategory").value){
+                <div class="content">
+                    <h4 class="ui blue header">Categoryr</h4>
+                    @schoolGeneralForm("Schoolcategory").value
+                </div>
+                }else {
+                @if(!schoolGeneralForm("SchoolCategory").value){
+                <div class="content">
+                    <h4 class="ui blue header">Category </h4>
+                    <input type="text" placeholder=" NOT ENTERED " disabled="true"/>
+                </div>
+                } }
+            </div>
+            <div class="item">
+                @if(schoolGeneralForm("schoolCurrentFinancialYear").value){
+                <div class="content">
+                    <h4 class="ui blue header">Current Financial Year</h4>
+                    @schoolGeneralForm("schoolCurrentFinancialYear").value
+                </div>
+                }else {
+                @if(!schoolGeneralForm("schoolCurrentFinancialYear").value){
+                <div class="content">
+                    <h4 class="ui blue header">Current Financial Year </h4>
+                    <input type="text" placeholder=" NOT ENTERED " disabled="true"/>
+                </div>
+                } }
+            </div>
+            <div class="item">
+                @if(schoolGeneralForm("Financial Start Date").value){
+                <div class="content">
+                    <h4 class="ui blue header">Financial Start Date</h4>
+                    @schoolGeneralForm("schoolFinancialStartDate").value
+                </div>
+                }else {
+                @if(!schoolGeneralForm("schoolFinancialStartDate").value){
+                <div class="content">
+                    <h4 class="ui blue header">Financial Start Date </h4>
+                    <input type="text" placeholder=" NOT ENTERED " disabled="true"/>
+                </div>
+                } }
+            </div>
+            <div class="item">
+                @if(schoolGeneralForm("Financial End Date").value){
+                <div class="content">
+                    <h4 class="ui blue header">Financial End Date</h4>
+                    @schoolGeneralForm("schoolFinancialEndDate").value
+                </div>
+                }else {
+                @if(!schoolGeneralForm("schoolFinancialEndDate").value){
+                <div class="content">
+                    <h4 class="ui blue header">Financial End Date </h4>
+                    <input type="text" placeholder=" NOT ENTERED " disabled="true"/>
+                </div>
+                } }
+            </div>
+        </div>
+    </div>
+    <div class="ui tab segment" data-tab="timings">
+        <h2 class="ui dividing header">Timings</h2>
+          Timings info goes here
+    </div>
+    <div class="ui tab segment" data-tab="shift">
+        <h2 class="ui dividing header">@shiftAndTimingForm("tabDisplayName").value</h2>
+           
+           
+     @for(index <- 0 until (shiftAndTimingForm("numberOfShift").value).toInt){ 
+                  <h4 class="ui top attacjed header">@shiftAndTimingForm("shifts["+ index +"].shiftName").value</h4>
+                    <div class="ui attached segment">
+                       
+                     
+
+                       <div class="item">
+                         <div class="content">
+                           <h4 class="ui header blue">shiftClassStartTime</h4>
+                           @shiftAndTimingForm("shifts["+ index +"].shiftClassStartTime").value
+                         </div>
+                      
+                       </div>
+
+                        <div class="item">
+                             <div class="content"></div>
+                        <h4 class="ui header blue">shiftClassEndTime </h4>
+                       @shiftAndTimingForm("shifts["+ index +"].shiftClassEndTime").value
+                       </div>
+
+                       <div class="item">
+                        <div class="content">
+                         <h4 class="ui header blue">shiftWeekStartDay</h4>
+                        @shiftAndTimingForm("shifts["+ index +"].shiftWeekStartDay").value
+                        </div>
+                        
+                       </div>
+
+                       <div class="item">
+                        <div class="content">
+                          <h4 class="ui header blue">shiftWeekEndDay</h4>
+                       @shiftAndTimingForm("shifts["+ index +"].shiftWeekEndDay").value
+                       </div>
+                        </div>
+                        
+
+                        <div class="item">
+                            <div class="content">
+                                
+                        <h4 class="ui header blue">shiftStartClassFrom</h4>
+                        @shiftAndTimingForm("shifts["+ index +"].shiftStartClassFrom").value
+                            </div>
+                       </div>
+
+                        <div class="field">
+                            <div class="content">
+                                
+                        <h4 class="ui header blue">shiftStartClassTo</h4>
+                        @shiftAndTimingForm("shifts["+ index +"].shiftEndClassTo").value
+                            </div>
+                       </div>
+
+                       <div class="field">
+                          <div class="content">
+
+                          </div>
+                        <h4 class="ui header blue">shiftAttendenceType</h4>
+                       @shiftAndTimingForm("shifts["+ index +"].shiftAttendenceType").value
+                       </div>
+                    </div>
+
+               }
+           
+
+              
+         
+        
+           
+          
+
+
+    </div>
+
+
+    <div class="ui tab segment" data-tab="PasswordChange">
+        <h2 class="ui dividing header">Password Change</h2>
+        Passsword Change fields Goes here
+    </div>
+</div>
+</div>
+</div>
+}

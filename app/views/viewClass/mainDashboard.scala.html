@@ -107,8 +107,9 @@
                     
                     <div class="ui fluid vertical menu" id="verticalMenu">
                         <a href="@routes.SRPController.index()" class="item"><i class="home icon"></i>Home</a>
-                        <a href="@school.routes.ClassController.preAddClass()" class="item"><i class="bar chart icon"></i>Add Class</a>
-                        <a href="@school.routes.ClassController.viewAllClass()" class="item"><i class="bar chart icon"></i>View All Class</a>
+                        <a href="@institute.routes.InstituteInfoController.getProfileInfo()" class="item"><i class="home icon"></i>Profile</a>
+                        <a href="@institute.routes.ClassController.preAddClass()" class="item"><i class="bar chart icon"></i>Add Class</a>
+                        <a href="@institute.routes.ClassController.viewAllClass()" class="item"><i class="bar chart icon"></i>View All Class</a>
                         <a href="@routes.CustomController.testRoute()" class="item"><i class="calendar icon"></i>Test Page</a>
                         <a href='/allUser/@session.get("SCHOOL_ID")' class="item"><i class="file icon"></i>Users</a>
                         <a href="index.html" class="item"><i class="sign in icon"></i> <span>Login</span></a>

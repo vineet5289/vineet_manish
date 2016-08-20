@@ -1,0 +1,57 @@
+@(headInstitute:List[models.HeadInstituteLoginDetails.BranchDetails],username:String
+)
+@viewClass.main4("HOME | INSTITUTE")(""){
+@viewClass.School.headInstituteProfileTopMenu(headInstitute)
+<div class="ui horizontal segment">
+   <a href="/institute/add/branch" class="ui  green button">ADD BRANCH</a>
+</div>
+<div class="main container">
+<div class="ui stackable cards">
+  
+  @for(institute <- headInstitute){
+    
+   
+    <input type="hidden" name="@institute.instituteId">
+  <div class="ui form" method="post" action="/institute/switch/branch">
+   <a class="ui card">
+    
+  <div class="content">
+     <div class="ui teal medium header">
+    
+<img class="ui avatar image" src="http://semantic-ui.com/images/avatar/large/elliot.jpg">
+@institute.instituteName
+  </div>
+  <div class="meta"> @institute.instituteUserName</div>
+  </div>
+  
+  <div class="content">
+    <div class="ui small header">Address</div>
+    
+    <div class="two fields">
+    <div class="field">Koramangala 8th block</div>
+    <div class="field">Bangalore</div>
+
+    </div>
+  </div>
+  <div class="content">
+    <span class="right floated">
+      <i class="notification outline like icon"></i>
+      17 notifications
+    </span>
+    <i class="comment icon"></i>
+    3 messages
+  </div>
+  <div class="extra content">
+    <div class="ui basic fluid green button">Enter</div>
+  </div>
+</a>
+</div>
+
+
+}
+
+</div>
+	
+
+</div>
+	}

@@ -1,8 +1,9 @@
 package controllers.login_logout;
 
-import java.util.Map;
+import javax.inject.Inject;
 
-import models.LoginDetails;
+import models.CommonUserCredentials;
+import play.Logger;
 import play.data.Form;
 import play.mvc.Result;
 import play.mvc.Security;
@@ -12,75 +13,97 @@ import views.html.homePage.homepage;
 import controllers.CustomController;
 import controllers.routes;
 import dao.UserLoginDAO;
+import dao.impl.RedisSessionDao;
+import enum_package.LoginStatus;
+import enum_package.LoginType;
 import enum_package.SessionKey;
 
 
 public class LoginController extends CustomController {
 
+	@Inject RedisSessionDao redisSessionDao;
+
 	public Result postLogin(String phone) {
-		System.out.println("==================");
+		response().setHeader("Cache-Control", "no-cache, no-store, must-revalidate, max-age=0, post-check=0, pre-check=0");  // HTTP 1.1
+		response().setHeader("Pragma", "no-cache"); // HTTP 1.0.
+		response().setHeader("EXPIRES", "0");
+
 		Form<LoginForm> loginForm = Form.form(LoginForm.class).bindFromRequest();
 		if (loginForm == null || loginForm.hasErrors()) {
-			flash("error", "Login credentials not valid.");
+			flash("error", "Login credentials are not valid.");
 			return redirect(controllers.login_logout.routes.LoginController.preLogin());
 		}
-		else {
-			session().clear();
-			Map<String, String> userDetails = loginForm.data();
+
+		session().clear();
+
+		LoginForm loginUserCredentials = loginForm.get();
+		String userName = loginUserCredentials.getUserName();
+		String password = loginUserCredentials.getPassword();
+		try {
 			UserLoginDAO userLoginDAO = new UserLoginDAO();
-			String userName = userDetails.get("userName");
-			String password = userDetails.get("password");
-			try {
-				LoginDetails loginDetails = userLoginDAO.isValidUserCredentials(userName, password);
-				if(!loginDetails.getError().isEmpty()) {
-					flash("error",  "Login credentials not valid.");
-					return redirect(controllers.login_logout.routes.LoginController.preLogin());
-				}
-
-				session(SessionKey.SUPER_USER_NAME.name(), userName);
-				session(SessionKey.CURRENT_USER_NAME.name(), userName);
-
-				String superUserRole = loginDetails.getRole().name();
-				if(superUserRole != null) {
-					session(SessionKey.SUPER_USER_ROLE.name(), superUserRole);
-					session(SessionKey.CURRENT_USER_ROLE.name(), superUserRole);
-				}
-
-				String superAuthToken = loginDetails.getAuthToken();
-				if(superAuthToken != null) {
-					session(SessionKey.SUPER_AUTH_TOKEN.name(), superAuthToken);
-					session(SessionKey.CURRENT_AUTH_TOKEN.name(), superAuthToken);
-				}
-
-				String superUserAccessRight = loginDetails.getAccessRight();
-				if(superUserAccessRight != null) {
-					session(SessionKey.SUPER_USER_ACCESSRIGHT.name(), superUserAccessRight);
-					session(SessionKey.CURRENT_USER_ACCESSRIGHT.name(), superUserAccessRight);
-				}
-
-				Long superUserSchoolId = loginDetails.getSchoolId();
-				if(superUserSchoolId != null && superUserSchoolId > 0) {
-					session(SessionKey.SUPER_SCHOOL_ID.name(), superUserSchoolId.toString());
-					session(SessionKey.CURRENT_SCHOOL_ID.name(), superUserSchoolId.toString());
-				}
-			} catch (Exception exception){
-				flash("error", "Server problem occur. Please try after some time");
-				session().clear();
+			CommonUserCredentials commonUserCredentials = userLoginDAO.getValidUserCredentials(userName, password, redisSessionDao);
+			if(commonUserCredentials.getLoginStatus() != LoginStatus.validuser) {
+				flash("error",  LoginStatus.of(commonUserCredentials.getLoginStatus()));
 				return redirect(controllers.login_logout.routes.LoginController.preLogin());
-			}
-			return redirect(routes.SRPController.index());
+			}				
+
+
+			session(SessionKey.username.name(), userName);
+			session(SessionKey.authtoken.name(), commonUserCredentials.getAuthToken());
+			session(SessionKey.loginstate.name(), commonUserCredentials.getLoginstate());
+			session(SessionKey.logintype.name(), commonUserCredentials.getType());
+			session(SessionKey.userrole.name(), commonUserCredentials.getRole().trim());
+
+			flash("success", "Welcome, " + commonUserCredentials.getName());
+		} catch (Exception exception){
+			flash("error", "Server problem occur. Please try after some time");
+			session().clear();
+			return redirect(controllers.login_logout.routes.LoginController.preLogin());
 		}
+
+		String loginType = session().get(SessionKey.logintype.name());
+		if(loginType != null && loginType.equals(LoginType.headinstitute.name())) {
+			return redirect(routes.SRPController.headInstituteHome());
+		} else if(loginType != null && loginType.equals(LoginType.institute.name())) {
+			return redirect(routes.SRPController.instituteHome());
+		} else if(loginType != null && loginType.equals(LoginType.institute.name())) {
+			return redirect(routes.SRPController.studentsHome());
+		}
+
+		return redirect(routes.SRPController.index());
 	}
 
 	public Result preLogin() {
+		Logger.info("info testing log");
 		session().clear();
+		response().setHeader("Cache-Control", "no-cache, no-store, must-revalidate, max-age=0, post-check=0, pre-check=0");  // HTTP 1.1
+		response().setHeader("Pragma", "no-cache"); // HTTP 1.0.
+		response().setHeader("EXPIRES", "0");
 		Form<LoginForm> loginForm = Form.form(LoginForm.class);
 		return ok(homepage.render(loginForm));
 	}
 
 	@Security.Authenticated(ActionAuthenticator.class)
 	public Result logout() {
+		String authToken = session().get(SessionKey.authtoken.name());
+		String userName = session().get(SessionKey.username.name());
+
+		if(authToken == null || userName == null) {
+			session().clear();
+			flash("error", "You are already logout.");
+			return redirect(controllers.login_logout.routes.LoginController.preLogin());
+		}
+
+		session().remove(SessionKey.username.name());
+		session().remove(SessionKey.loginstate.name());
 		session().clear();
+
+		try {
+			UserLoginDAO userLoginDAO = new UserLoginDAO();
+			userLoginDAO.logout(userName, authToken, redisSessionDao);
+		} catch (Exception exception) {
+			exception.printStackTrace();
+		}
 		flash("success", "You've been logged out");
 		return redirect(controllers.login_logout.routes.LoginController.preLogin());
 	}

@@ -1,380 +1,166 @@
- @(loginForm:Form[views.forms.LoginForm])
- @viewClass.main2("login"){
- 
-
-            
-          
-       <!-- <img src="@routes.Assets.at("semanticUI/css/images/cat.png")" class="ui medium image"> -->
-       
-       <div class="ui segment" id="loginHome">
-                        <form class="ui form" id="loginform" action="@login_logout.routes.LoginController.postLogin()" method="Post">
-                             <h2 class="ui dividing header">Log-In to Your Account</h2>
-                            <div class="field">
-                                <div class="ui left icon input">
-                                    <input type="text" name="userName" placeholder="Username">
-                                    <i class="user icon"></i>
-                                </div>
-                            </div>
-                            <div class="field">
-                                <div class="ui left icon input">
-                                    <input type="password" name="password" placeholder="Password">
-                                    <i class="lock icon"></i>
-                                </div>
-                            </div>
-                            <div class="field">
-                                <div class="ui checkbox">
-                                    <input type="checkbox" tabindex="0" class="hidden">
-                                    <label>Remember Me</label>
-                                </div>
-                            </div>
-                            <button class="ui inverted big fluid blue icon button">Sign In <i class="sign in icon"></i></button>
-                            <div class="ui error message"></div>
-                        </form>
-                          
-                             <a href="">Forgot Password?</a>
-                         
+@(loginForm:Form[views.forms.LoginForm])
+@viewClass.main3("login")("index"){
+<div class="stripe">
+    <div class="ui page grid">
+        <div class="ui column">
+            <h2 class="ui header">
+                <i class="circular emphasized book icon"></i>
+                <div class="content">
+                    Come and Register Your School
+                    <div class="sub header">Make Your School School register on our Website and make your school Digital.
                     </div>
-                   
-        <div class="ui hidden transition information">
-          <h1 class="ui inverted header">
-            An Old Cat Can Learn New Tricks
-          </h1>
-          <p>At least he won't reach his highest potential unless you enroll him in Cat University's 2013 class.</p>
-          <div class="large basic inverted animated fade ui button">
-            <div class="visible content">Register Your School Here</div>
-            <a class="hidden content" id="RegisterSchoolButton">Click Now</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="ui vertical feature segment">
-    <div class="ui centered page grid">
-      <div class="fourteen wide column">
-        <div class="ui three column center aligned stackable divided grid">
-          <div class="column">
-            <div class="ui icon header">
-              <i class="student icon"></i>
-              Courses
+                </div>
+            </h2>
+            <div class="ui message">
+                Here You can raise a request for registration.
+                <a href="@institute.routes.NewInstituteRequestController.preAddNewInstituteRequest()" target="_blank">Click here</a>
+                to know about us.
             </div>
-            <p>Take your kitty to a cat-ducation course and learn how to treat her well.</p>
-            <p>
-              <a class="ui button" href="#">
-                Learn
-              </a>
-            </p>
-          </div>
-          <div class="column">
-            <div class="ui icon header">
-              <i class="code icon"></i>
-              Library
-            </div>
-            <p>Dig through our cat library to found out amazing things you can do with your kitty.</p>
-            <p>
-              <a class="ui blue right labeled icon button" href="#">
-                Research
-                <i class="right chevron icon"></i>
-              </a>
-            </p>
-          </div>
-          <div class="column">
-            <div class="ui icon header">
-              <i class="user icon"></i>
-              Community
-            </div>
-            <p>Get feedback on your cat from a community of loving pet owners on our online bulletin board system.</p>
-            <p>
-              <a class="ui button" href="#">
-                Share
-              </a>
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+            <div class="ui stackable two column grid">
+                <div class="column">
+                    <div class="large animated fade ui inverted green button">
+                        <div class="visible content">Register Your School Here</div>
+                        <a class="hidden content" id="RegisterSchoolButton">Click Now</a>
+                    </div>
+                </div>
+                <div class="column">
+                    <form
+                        class="ui form"
+                        id="loginform"
+                        action="@login_logout.routes.LoginController.postLogin()"
+                        method="Post">
+                        <h3 class="ui top attached centered green header">Log-In to Your Account</h3>
+                        <div class="ui attached secondary blue segment">
+                        <div class="field">
+                            <div class="ui left icon input">
+                                <input type="text" name="userName" placeholder="Username">
+                                <i class="user icon"></i>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui left icon input">
+                                <input type="password" name="password" placeholder="Password">
+                                <i class="lock icon"></i>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui checkbox">
+                                <input type="checkbox">
+                                <label>Remember Me</label>
+                            </div>
+                        </div>
 
-  <div class="ui inverted vertical segment">
-    <div class="ui very relaxed stackable page grid">
-      <div class="row">
-        <div class="column">
-          <h1 class="center aligned ui inverted header">
-            The Best Cat Articles
-          </h1>
-        </div>
-      </div>
-      <div class="row">
-        <div class="ten wide column">
-          <h3 class="ui inverted header">How to Win Your Cats Attention</h3>
-          <p>Getting your cat to notice you is a large part of being a pet owner. Although I have a lot of patience for writing things about cats, perhaps this might be enough body copy to make this section of text look filled out.</p>
-          <p>This and other tips can be found in our newsletter, amazing right?</p>
-          <div class="ui basic inverted animated button button">
-            <div class="visible content">Read More</div>
-            <div class="hidden content"><i class="right arrow icon"></i></div>
-          </div>
-          <div class="ui inverted section divider"></div>
-          <h3 class="ui inverted header">More articles</h3>
-          <div class="ui inverted animated selection list">
-            <div class="item">
-              How to win in a fight with a cat
-              <div class="right floated">Jan 20, 2023</div>
+                        <button class="ui inverted big fluid blue icon button" id="login-submit">Sign In
+                        </button>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div class="item">
-              A Supposedly Fun Cat Toy I will Never Buy Again
-              <div class="right floated">Jan 1, 2023</div>
-            </div>
-            <div class="item">
-              Much ado about yarn
-              <div class="right floated">Dec 20, 2022</div>
-            </div>
-          </div>
         </div>
-        <div class="six wide column">
-          <div class="ui form segment">
-            <h3 class="ui header">Bi-Daily Newsletter</h3>
-            <p>Sign up and get spammed with cats every day. We have no unsubscribe button!</p>
-            
-            <div class="ui error message"></div>
-          </div>
-        </div>
-      </div>
     </div>
-  </div>
-
-  <div class="ui vertical segment">
-    <div class="ui stackable center aligned page grid">
-      <div class="row">
-        <div class="column">
-          <h1 class="ui header">
-            Many Companies Rely on Our Cat Knowledge
-          </h1>
-          <div class="ui horizontal divider"><i class="heart icon"></i></div>
-        </div>
-      </div>
-      <div class="four column logo row">
-        <div class="column">
-          <div class="ui shape">
-            <div class="sides">
-              <div class="active side">
-                <i class="huge github icon"></i>
-              </div>
-              <div class="side">
-                <i class="huge facebook icon"></i>
-              </div>
-              <div class="side">
-                <i class="huge maxcdn icon"></i>
-              </div>
-              <div class="side">
-                <i class="huge pinterest icon"></i>
-              </div>
-              <div class="side">
-                <i class="huge weibo icon"></i>
-              </div>
-              <div class="side">
-                <i class="huge flickr icon"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="column">
-          <div class="ui shape">
-            <div class="sides">
-              <div class="side">
-                <i class="huge github icon"></i>
-              </div>
-              <div class="side">
-                <i class="huge facebook icon"></i>
-              </div>
-              <div class="active side">
-                <i class="huge maxcdn icon"></i>
-              </div>
-              <div class="side">
-                <i class="huge pinterest icon"></i>
-              </div>
-              <div class="side">
-                <i class="huge weibo icon"></i>
-              </div>
-              <div class="side">
-                <i class="huge flickr icon"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="column">
-          <div class="ui shape">
-            <div class="sides">
-              <div class="side">
-                <i class="huge github icon"></i>
-              </div>
-              <div class="side">
-                <i class="huge facebook icon"></i>
-              </div>
-              <div class="side">
-                <i class="huge maxcdn icon"></i>
-              </div>
-              <div class="side">
-                <i class="huge pinterest icon"></i>
-              </div>
-              <div class="active side">
-                <i class="huge weibo icon"></i>
-              </div>
-              <div class="side">
-                <i class="huge flickr icon"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="column">
-          <div class="ui shape">
-            <div class="sides">
-              <div class="side">
-                <i class="huge github icon"></i>
-              </div>
-              <div class="side">
-                <i class="huge facebook icon"></i>
-              </div>
-              <div class="side">
-                <i class="huge maxcdn icon"></i>
-              </div>
-              <div class="side">
-                <i class="huge pinterest icon"></i>
-              </div>
-              <div class="side">
-                <i class="huge weibo icon"></i>
-              </div>
-              <div class="active side">
-                <i class="huge flickr icon"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="ui inverted footer vertical segment">
-    <div class="ui stackable center aligned page grid">
-      <div class="ten wide column">
-        <div class="ui three column center aligned stackable grid">
-          <div class="column">
-            <h5 class="ui inverted header">Courses</h5>
-            <div class="ui inverted link list">
-              <a class="item">Registration</a>
-              <a class="item">Course Calendar</a>
-              <a class="item">Professors</a>
-            </div>
-          </div>
-          <div class="column">
-            <h5 class="ui inverted header">Library</h5>
-            <div class="ui inverted link list">
-              <a class="item">A-Z</a>
-              <a class="item">Most Popular</a>
-              <a class="item">Recently Changed</a>
-            </div>
-          </div>
-          <div class="column">
-            <h5 class="ui inverted header">Community</h5>
-            <div class="ui inverted link list">
-              <a class="item">BBS</a>
-              <a class="item">Careers</a>
-              <a class="item">Privacy Policy</a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="six wide column">
-        <h5 class="ui inverted header">Contact Us</h5>
-        <addr>
-          237 Catberry Road <br>
-          Milton Keynes, London <br>
-        </addr>
-        <p>(404) 867-5309</p>
-      </div>
-    </div>
-  </div>
-     
-     
-     <div class="ui modal activity-modal" id="RegisterSchoolModal">
-         <i class="close icon"></i>
-  <div class="header">
-    School Registration
-  </div>
-  
-    <div class="description">
-       <div class="ui header"><b>Instructions</b></div>
-       <p>Have you Already registered Your School and received your OTP and Reference key</p>
-    </div>
-    
- 
-  <div class="actions">
-    
-     <a  class="ui black button" href="@routes.SchoolController.preAddNewSchoolRequest()">NO</a>
-     
-   
-    
-     <button class="ui positive right labeled icon button" id="completeSchoolRegistration"> YES</button>
-       <i class="checkmark icon"></i>
-    
-  </div>     
-     </div> 
-     
-     
-     <!-- this modal is for OTP confirm School Request-->
-     
-      <div class="ui small modal" id="OTP-modal">
-       <div class="header">Add Refrence Key and OTP sent on your Mobile</div>
-       <div class="content">
-             <form class="ui form" id="completeSchoolRegistrationOTPForm" method="POST" action="/submitopt">
-                  
-                   <div class="field">
-                      <label>Email</label>
-                      <input name="emailId" placeholder="Enter Mail id entered at time of Registration request" type="text" >
-                  </div>
-                  
-                  <div class="field">
-                      <label>Reference Key</label>
-                      <input name="referenceKey" placeholder="Enter Reference Key Received on Mobile" type="text" >
-                  </div>
-                  
-                  <div class="field">
-                      <label>OTP</label>
-                      <input name="otp" placeholder="Enter OTP" type="text" >
-                  </div>
-                  
-                  <div class="actions">
-			         <button type="submit" class="ui positive button">SEND</button>
-			         <div class="ui error message"></div>
-			      </div>
-                  
-                  
-             </form>
-        </div>
-         @if(flash.containsKey("success")) {
-     <div class="ui segment">
-  <div class="ui green success message" id="success-message">
-      <div class="header">
-        SUCCESSFULLY
-  </div>
-  <ul class="list">
-    <li> @flash.get("success")</li>
-  </ul>
 </div>
-</div>
-  }
-  @if(flash.containsKey("error")) {
-  <div class="ui segment">
- 
-   <div class="ui red error message" id="error-message">
-      <div class="header">
-        ERROR
-  </div>
-  <ul class="list">
-    <li> @flash.get("error")</li>
-  </ul>
-</div>
-</div>
- }
+<!-- Registration Request Modal -->
+<div class="ui basic modal" id="RegisterSchoolModal">
+    <i class="close icon"></i>
+    <div class="header" align="center">
+        School Registration
     </div>
-    
-   
+    <div class="content">
+        <div class="description">
+            <h3>Have you Already registered Your School and received your OTP and Reference key</h3>
+        </div>
+    </div>
+    <div class="actions">
+        <div class="two fluid ui inverted buttons">
+            <a
+                class="ui teal inverted button"
+                href="@institute.routes.NewInstituteRequestController.preAddNewInstituteRequest()">
+            <i class="plus icon"></i>FIRST TIME SCHOOL REGISTRATION</a>
+            <div class="ui green inverted button" id="completeSchoolRegistration">
+                <i class="checkmark icon"></i>ALREADY REGISTERED ? ENTER OTP
+            </div>
+        </div>
+    </div>
+</div>
+<!-- MODAL FOR OTP-->
+<div class="ui basic modal" id="OTP-modal">
+    <i class="close icon"></i>
+    <div class="header" align="center">
+        Add Refrence Key and OTP sent on your Mobile
+    </div>
+    <div class="image content">
+        <div class="description">
+            <div class="ui header">Enter:</div>
+            <form
+            class="ui form segment"
+            id="completeSchoolRegistrationOTPForm"
+            method="POST"
+            <!-- action="/submitopt"> -->
+            action="@institute.routes.NewInstituteRequestController.preAddNewInstituteRequest()"
+            <div class="field">
+                <div class="ui label pointing below teal">*E-Mail</div>
+                <input
+                    name="emailId"
+                    placeholder="Enter Mail id entered at time of Registration request"
+                    type="text">
+            </div>
+            <div class="field">
+                <div class="ui label pointing below orange">
+                    *Reference Key
+                </div>
+                <input
+                    name="referenceKey"
+                    placeholder="Enter Reference Key Received on Mobile"
+                    type="text">
+            </div>
+            <div class="field">
+                <div class="ui label pointing below inverted red">*OTP(One Time Password)</div>
+                <input name="otp" placeholder="Enter OTP" type="password">
+            </div>
+            <div class="actions">
+                <div class="two fluid ui inverted buttons">
+                    <div class="ui red inverted button" id="cancel-OTP-Send">
+                        <i class="chevron left icon"></i>Back To Previous Page
+                    </div>
+                    <button
+                        type="submit"
+                        id="sendSchoolRegistrationOTPForm"
+                        class="ui green inverted button">
+                    <i class="checkmark icon"></i>SUBMIT</button>
+                </div>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--  Starts from here Modal form-->
+<!--  ends Here -->
+@if(flash.containsKey("success")) {
+<div class="ui segment">
+    <div class="ui green success message" id="success-message">
+        <div class="header">
+            SUCCESSFULLY
+        </div>
+        <ul class="list">
+            <li>
+                @flash.get("success")
+            </li>
+        </ul>
+    </div>
+</div>
+}
+@if(flash.containsKey("error")) {
+<div class="ui segment">
+    <div class="ui red error message" id="error-message">
+        <div class="header">
+            ERROR
+        </div>
+        <ul class="list">
+            <li>
+                @flash.get("error")
+            </li>
+        </ul>
+    </div>
+</div>
+}
 }

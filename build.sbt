@@ -20,7 +20,7 @@ libraryDependencies ++= Seq(
    "com.google.guava" % "guava" % "19.0",
    "com.twilio.sdk" % "twilio-java-sdk" % "3.4.5",
    "com.rabbitmq" % "amqp-client" % "3.5.3",
-   "redis.clients" % "jedis" % "2.7.2",
+   "com.typesafe.play.modules" % "play-modules-redis_2.11" % "2.4.1",
    evolutions
 )
 

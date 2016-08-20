@@ -8,6 +8,7 @@ import views.html.viewClass.test2;
 import views.html.viewClass.test3;
 import views.html.viewClass.test4;
 import views.html.viewClass.testAcessRight;
+
 import java.util.Map;
 
 public class CustomController extends Controller {

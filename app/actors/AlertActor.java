@@ -5,7 +5,7 @@ import java.util.List;
 import actors.SchoolRequestActorProtocol.ApprovedSchool;
 import akka.actor.Props;
 import akka.actor.UntypedActor;
-import dao.AddNewSchoolRequestDAO;
+import dao.school.AddNewSchoolRequestDAO;
 
 public class AlertActor  extends UntypedActor{
 

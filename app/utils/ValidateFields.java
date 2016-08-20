@@ -23,6 +23,10 @@ public class ValidateFields {
 	private static Pattern alternativeNumberPatter;
 	private static final String ALTERNATIVE_NUMBER_PATTERN = "^[+0]?[0-9]{1,3}[- ]?\\d{5,8}$";
 
+	private static Pattern dateFormatPattern;
+	private static final String DATE_FORMAT = "^((d{2}/M{2}/y{4})|(d{2}/y{4}/M{2})|(M{2}/d{2}/y{4})|(M{2}/y{4}/d{2})|"
+			+ "(y{4}/M{2}/d{2})|(y{4}/d{2}/M{2}))$";
+
 	static {
 		userNamePattern = Pattern.compile(USERNAME_PATTERN, Pattern.CASE_INSENSITIVE);
 		passwordPattern = Pattern.compile(PASSWORD_PATTERN);
@@ -30,6 +34,14 @@ public class ValidateFields {
 		accessRightsPattern = Pattern.compile(ACCESS_RIGHTS_PATTERN, Pattern.CASE_INSENSITIVE);
 		mobileNumberPatter = Pattern.compile(MOBILE_NUMBER_PATTERN);
 		alternativeNumberPatter = Pattern.compile(ALTERNATIVE_NUMBER_PATTERN);
+		dateFormatPattern = Pattern.compile(DATE_FORMAT);
+	}
+
+	public static boolean isValidDateFormat(String dateFormat) {
+		if(dateFormat == null)
+			return false;
+		Matcher matcher = dateFormatPattern.matcher(dateFormat.trim());
+		return matcher.matches();
 	}
 
 	public static boolean isValidMobileNumber(String mobileNumber) {

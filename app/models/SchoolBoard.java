@@ -19,6 +19,9 @@ public class SchoolBoard {
 
 	private static Map<String, String> boardCodeToBoardName = new HashMap<String, String>();
 	private static Map<String, String> boardCodeToDisplayName = new HashMap<String, String>();
+	private static Map<String, Long> boardCodeToBoradId = new HashMap<String, Long>();
+	private static Map<Long, String> boardIdToBoardCode = new HashMap<Long, String>();
+	private static Map<Long, String> boardIdToBoardName = new HashMap<Long, String>();
 
 	private long id;
 	private String boardName;
@@ -37,35 +40,57 @@ public class SchoolBoard {
 		if(boardCodeToDisplayName == null || boardCodeToDisplayName.isEmpty())
 			fetchBoardList();
 
-		return boardCodeToDisplayName.get(boardCode);
+		return boardCodeToDisplayName.get(boardCode.trim().toLowerCase());
 	}
 
 	public static synchronized String getBoardNameGivenBoardCode(String boardCode) {
 		if(boardCodeToBoardName == null || boardCodeToBoardName.isEmpty())
 			fetchBoardList();
 
-		return boardCodeToBoardName.get(boardCode);
+		return boardCodeToBoardName.get(boardCode.trim().toLowerCase());
 	}
 
 	public static synchronized String getDisplayNameGivenAffiliatedTo(String affiliatedTo){
 		if(affiliatedToDisplayName == null || affiliatedToDisplayName.isEmpty())
 			fetchBoardList();
 
-		return affiliatedToDisplayName.get(affiliatedTo);
+		return affiliatedToDisplayName.get(affiliatedTo.trim().toLowerCase());
 	}
 
 	public static synchronized String getBoardNameGivenAffiliatedTo(String affiliatedTo){
 		if(affiliatedToBoardName == null || affiliatedToBoardName.isEmpty())
 			fetchBoardList();
 
-		return affiliatedToBoardName.get(affiliatedTo);
+		return affiliatedToBoardName.get(affiliatedTo.trim().toLowerCase());
 	}
 
 	public static synchronized Long getBoardIdGivenAffiliatedTo(String affiliatedTo){
 		if(affiliatedToId == null || affiliatedToId.isEmpty())
 			fetchBoardList();
 
-		return affiliatedToId.get(affiliatedTo);
+		return affiliatedToId.get(affiliatedTo.trim().toLowerCase());
+	}
+
+	public static synchronized Long getIdGivenBoardCode(String boardCode){
+		if(boardCodeToBoradId == null || boardCodeToBoradId.isEmpty())
+			fetchBoardList();
+
+		return boardCodeToBoradId.get(boardCode.trim().toLowerCase());
+	}
+
+	public static synchronized String getBoardCodeGivenId(Long id){
+		if(boardIdToBoardCode == null || boardIdToBoardCode.isEmpty())
+			fetchBoardList();
+
+		System.out.println("boardIdToBoardCode=> " + boardIdToBoardCode);
+		return boardIdToBoardCode.get(id);
+	}
+
+	public static synchronized String getBoardNameGivenId(Long id){
+		if(boardIdToBoardName == null || boardIdToBoardName.isEmpty())
+			fetchBoardList();
+
+		return boardIdToBoardName.get(id);
 	}
 
 	private static synchronized void fetchBoardList(){
@@ -77,6 +102,10 @@ public class SchoolBoard {
 
 		Map<String, String> boardCodeToBoardNameTemp = new HashMap<String, String>();
 		Map<String, String> boardCodeToDisplayNameTemp = new HashMap<String, String>();
+
+		Map<String, Long> boardCodeToBoradIdTemp = new HashMap<String, Long>();
+		Map<Long, String> boardIdToboardCodeTemp = new HashMap<Long, String>();
+		Map<Long, String> boardIdToBoardNameTemp = new HashMap<Long, String>();
 		
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
@@ -96,6 +125,11 @@ public class SchoolBoard {
 
 				boardCodeToBoardNameTemp.put(resultSet.getString("board_code"), resultSet.getString("board_name"));
 				boardCodeToDisplayNameTemp.put(resultSet.getString("board_code"), resultSet.getString("board_display_name"));
+
+				boardCodeToBoradIdTemp.put(resultSet.getString("board_code"), resultSet.getLong("id"));
+				boardIdToboardCodeTemp.put(resultSet.getLong("id"), resultSet.getString("board_code"));
+
+				boardIdToBoardNameTemp.put(resultSet.getLong("id"), resultSet.getString("board_name"));
 			}
 			schoolBoardList = schoolBoardNameListTemp;
 			affiliatedToBoardName = affiliatedToBoardNameTemp;
@@ -104,6 +138,11 @@ public class SchoolBoard {
 
 			boardCodeToBoardName = boardCodeToBoardNameTemp;
 			boardCodeToDisplayName = boardCodeToDisplayNameTemp;
+
+			boardCodeToBoradId = boardCodeToBoradIdTemp;
+			boardIdToBoardCode = boardIdToboardCodeTemp;
+
+			boardIdToBoardName = boardIdToBoardNameTemp;
 		} catch(Exception exception) {
 			exception.printStackTrace();
 		} finally {

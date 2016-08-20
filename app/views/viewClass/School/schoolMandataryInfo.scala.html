@@ -1,0 +1,401 @@
+@(firstTimeUpdateForm:Form[views.forms.institute.FirstTimeInstituteUpdateForm],
+weekDay:List[String],
+classes:List[String],
+attendenceType:List[String],
+instituteBoard: Map[String, String],
+instituteType:  Map[String, String])
+
+@viewClass.main6("UPDATE | INFO")("index"){
+<div class="main container">
+   <div class="ui page grid">
+      <div class="column">
+         <div class="ui green Segment">
+            <h3>
+               ABC Public School
+            </h3>
+            <div class="header">
+               <div class="profile-image">
+                  <img class="ui avatar image" src="//semantic-ui.com/images/avatar/small/jenny.jpg">
+               </div>
+               <strong>Mellisa,</strong>
+               <br/>Please Update Just a little bit more Info
+            </div>
+            </br>
+            <div class="item">
+               <form class="ui green segment  form" id="MandatoryUpdateForm" method="POST" action="/institute/mand_info">
+                  <div class="field">
+                     <label class="ui  teal header">Shift</label>
+                     <div class="ui fluid selection  dropdown" id="shiftNumber">
+                        <div class="text">Select</div>
+                              <i class="dropdown icon"></i>
+                              <input name="numberOfShift" type="hidden" value="1" id="shiftvalue" onChange="shiftbox()">
+                              <div class="menu">
+                                   <div class="item" data-value="1">1 Shift Per Day</div>
+                                   <div class="item" data-value="2">2 Shift Per Day</div>
+                                   <div class="item" data-value="3">3 Shift Per Day</div>
+                                   <div class="item" data-value="4">4 Shift Per Day</div>
+                              </div>
+                        </div>
+                     
+                  </div>
+                  
+
+                    <div class="two fields">
+                     <div class="field">
+                       <label class="ui  teal header">Institute Board</label>
+                     <div class="ui fluid selection dropdown">
+                        <div class="text">Select</div>
+                              <i class="dropdown icon"></i>
+                              <input name="instituteBoard" type="hidden">
+                              <div class="menu">
+                              @for((key,value)<- instituteBoard){ 
+                              <div class="item" data-value="@key">@value</div>
+                              }
+                           </div>
+                        </div>
+                    </div>
+                    <div class="field">
+                     <label class="ui  teal header">Institute Type</label>
+                     <div class="ui fluid selection dropdown">
+                        <div class="text">Select</div>
+                              <i class="dropdown icon"></i>
+                              <input name="instituteType" type="hidden">
+                              <div class="menu">
+                              @for((key,value)<- instituteType){ 
+                              <div class="item" data-value="@key">@value</div>
+                              }
+                           </div>
+                        </div>
+                     
+                  </div> 
+
+                    </div>
+                    
+                  
+
+                  <h4 class="ui top attached teal inverted header">Hostel</h4>
+                  <div class="ui attached  segment">
+                     <div class="inline fields">
+                        <label>Is Hostel Facilty Available in Your Institute?</label>
+                        <div class="field">
+                           <div class="ui radio">
+                              <input type="radio" name="hostelFacilitiesIsAvailable" value="true">
+                              <label>Yes</label>
+                           </div>
+                        </div>
+                        <div class="field">
+                           <div class="ui radio ">
+                              <input type="radio" name="hostelFacilitiesIsAvailable" value="false" checked/>
+                              <label>No</label>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="required inline fields">
+                        <label>Is Hostel Compulsory in Your Institute?</label>
+                        <div class="field">
+                           <div class="ui radio">
+                              <input type="radio" name="hostelIsCompulsory" value="true">
+                              <label>Yes</label>
+                           </div>
+                        </div>
+                        <div class="field">
+                           <div class="ui radio">
+                              <input type="radio" name="hostelIsCompulsory" value="false" checked/>
+                              <label>No</label>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <h4 class="ui top attached  teal inverted header">School Week</h4>
+                  <div class="ui attached  segment">
+                     <div class="two fields">
+                        <div class="field">
+                           <label>Start</label>
+                           <div class="ui fluid selection dropdown">
+                              <div class="text">Select</div>
+                              <i class="dropdown icon"></i>
+                              <input name="instituteOfficeWeekStartDay" type="hidden">
+                              <div class="menu">
+                                 @for(value<- weekDay){ 
+                                 <div class="item" data-value="@value">@value</div>
+                                 }
+                              </div>
+                           </div>
+                        </div>
+                        <div class="field">
+                           <label>End</label>
+                           <div class="ui fluid selection dropdown">
+                              <div class="text">Select</div>
+                              <i class="dropdown icon"></i>
+                              <input name="instituteOfficeWeekEndDay" type="hidden">
+                              <div class="menu">
+                                 @for(value<- weekDay){ 
+                                 <div class="item" data-value="@value">@value</div>
+                                 }
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <h4 class="ui top attached  teal inverted header">School From</h4>
+                  <div class="ui attached  segment">
+                     <div class="two fields">
+                        <div class="field">
+                           <label>From</label>
+                           <div class="ui fluid selection dropdown">
+                              <div class="text">Select</div>
+                              <i class="dropdown icon"></i>
+                              <input name="instituteClassFrom" type="hidden">
+                              <div class="menu">
+                                 @for(value<- classes){ 
+                                 <div class="item" data-value="@value">@value</div>
+                                 }
+                              </div>
+                           </div>
+                        </div>
+                        <div class="field">
+                           <label>To</label>
+                           <div class="ui fluid selection dropdown">
+                              <div class="text">Select</div>
+                              <i class="dropdown icon"></i>
+                              <input name="instituteClassTo" type="hidden">
+                              <div class="menu">
+                                 @for(value<- classes){ 
+                                 <div class="item" data-value="@value">@value</div>
+                                 }
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <h4 class="ui top attached  teal inverted inverted header">School Timing</h4>
+                  <div class="ui attached  segment">
+                     <div class="two fields">
+                        <div class="field">
+                           <label>School Start Time</label>
+                           <div class="ui calendar timeSelect">
+                              <div class="ui input left icon">
+                                 <i class="time icon"></i>
+                                 <input name="instituteOfficeStartTime" type="text" value='' placeholder="School Start Time">
+                              </div>
+                           </div>
+                        </div>
+                        <div class="field">
+                           <label>School End Time</label>
+                           <div class="ui calendar timeSelect">
+                              <div class="ui input left icon">
+                                 <i class="time icon"></i>
+                                 <input name="instituteOfficeEndTime" type="text" value='' placeholder="School End Time">
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <h4 class="ui top attached  teal inverted header">School Financial Year</h4>
+                  <div class="ui attached segment">
+                     <div class="green field">
+                        <label>Choose Date Format</label>
+                        <div class="ui fluid selection dropdown">
+                           <div class="text">Select</div>
+                           <i class="dropdown icon"></i>
+                           <input name="instituteDateFormat" type="hidden">
+                           <div class="menu">
+                              <div class="item" data-value="dd/MM/yyyy">DD/MM/YYYY</div>
+                              <div class="item" data-value="dd-MM-yyyy">DD/MM/YYYY</div>
+                              <div class="item" data-value="MM/dd/yyyy">MM/DD/YYYY</div>
+                              <div class="item" data-value="MM-dd-yyyy">MM/DD/YYYY</div>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="two fields">
+                        <div class="field">
+                           <label>Start</label>
+                           <div class="ui calendar" id="rangestart">
+                              <div class="ui input left icon">
+                                 <i class="calendar icon"></i>
+                                 <input name="instituteFinancialStartDate" type="text" value='' placeholder="Financial Year Starts">
+                              </div>
+                           </div>
+                        </div>
+                        <div class="field">
+                           <label>End</label>
+                           <div class="ui calendar" id="rangeend">
+                              <div class="ui input left icon">
+                                 <i class="calendar icon"></i>
+                                 <input name="instituteFinancialEndDate" type="text" value='' placeholder="Financial Year Ends">
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  </br>
+
+
+
+
+
+
+                 <!--   SHIFT SEGMENT STARTS HERE-->
+                  <div id="shiftContainer">
+                    
+                  <div class="ui segment">
+                     
+                     <div class="two fields">
+                        <div class="field">
+                           <label>Shift Name</label>
+                           <input name="shiftName" type="text" value=" " placeholder="Enter Shift Name">
+                        </div>
+
+                        <div class="field">
+                           <label>Shift Attendance Type </label>
+                           <div class="ui fluid selection dropdown">
+                              <div class="text">Select</div>
+                              <i class="dropdown icon"></i>
+                              <input name="shifts[0].shiftAttendenceType" type="hidden">
+                              <div class="menu">
+                                 @for(value<- attendenceType){ 
+                                 <div class="item" data-value="@value">@value</div>
+                                 }
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+
+
+                     <div class="two fields">
+                        <div class="field">
+                           <label>Shift Start Time</label>
+                           <div class="ui calendar timeSelect">
+                              <div class="ui input left icon">
+                                 <i class="time icon"></i>
+                                 <input name="shifts[0].shiftClassStartTime" type="text" value='' placeholder="School Start Time">
+                              </div>
+                           </div>
+                        </div>
+                        <div class="field">
+                           <label>Shift End Time</label>
+                           <div class="ui calendar timeSelect">
+                              <div class="ui input left icon">
+                                 <i class="time icon"></i>
+                                 <input name="shiftClassEndTime" type="text" value='' placeholder="School End Time">
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+
+                     <div class="two fields">
+                        <div class="field">
+                           <label>Class From</label>
+                           <div class="ui fluid selection dropdown">
+                              <div class="text">Select</div>
+                              <i class="dropdown icon"></i>
+                              <input name="shiftStartClassFrom" type="hidden">
+                              <div class="menu">
+                                 @for(value<- classes){ 
+                                 <div class="item" data-value="@value">@value</div>
+                                 }
+                              </div>
+                           </div>
+                        </div>
+                        <div class="field">
+                           <label>Class To</label>
+                           <div class="ui fluid selection dropdown">
+                              <div class="text">Select</div>
+                              <i class="dropdown icon"></i>
+                              <input name="shiftEndClassTo" type="hidden">
+                              <div class="menu">
+                                 @for(value<- classes){ 
+                                 <div class="item" data-value="@value">@value</div>
+                                 }
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+
+
+                     <div class="two fields">
+                        <div class="field">
+                           <label>Shift Week Starts on</label>
+                           <div class="ui fluid selection dropdown">
+                              <div class="text">Select</div>
+                              <i class="dropdown icon"></i>
+                              <input name="shiftWeekStartDay" type="hidden">
+                              <div class="menu">
+                                 @for(value<- weekDay){ 
+                                 <div class="item" data-value="@value">@value</div>
+                                 }
+                              </div>
+                           </div>
+                        </div>
+                        <div class="field">
+                           <label>Shift Week Ends on</label>
+                           <div class="ui fluid selection dropdown">
+                              <div class="text">Select</div>
+                              <i class="dropdown icon"></i>
+                              <input name="shiftWeekEndDay" type="hidden">
+                              <div class="menu">
+                                 @for(value<- weekDay){ 
+                                 <div class="item" data-value="@value">@value</div>
+                                 }
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+
+
+                    </div> 
+                     
+                  </div></br>
+
+                  <div class="newShiftContainer"></div></br>
+                 
+                 <div class="field">
+                  <button type="submit" class="ui green fluid button"><label>Let's get started</label></button>
+                 </div></br>
+
+
+               </form>
+              
+            </div>
+         </div>
+      </div>
+   </div>
+   @if(flash.containsKey("success")) {
+   <div class="ui segment">
+      <div class="ui green success message" id="success-message">
+         <div class="header">
+            SUCCESSFULLY
+         </div>
+         <ul class="list">
+            <li>
+               @flash.get("success")
+            </li>
+         </ul>
+      </div>
+   </div>
+   } @if(flash.containsKey("error")) {
+   <div class="ui segment">
+      <div class="ui red error message" id="error-message">
+         <div class="header">
+            ERROR
+         </div>
+         <ul class="list">
+            <li>
+               @flash.get("error")
+            </li>
+         </ul>
+      </div>
+   </div>
+   }
+</div>
+
+
+
+
+
+
+
+    
+
+     
+}

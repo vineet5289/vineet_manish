@@ -18,9 +18,7 @@ public class RedisMessageDAO implements MessageDAO {
 
 	@Inject
 	public RedisMessageDAO(RedisConnectionPool redisConnectionPool) {
-		System.out.println("******* RedisMessageDAO ****** 1");
 		this.redisConnectionPool = redisConnectionPool;
-		System.out.println("******* RedisMessageDAO ****** 2");
 	}
 
 	@Override

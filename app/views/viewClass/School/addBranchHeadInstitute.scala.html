@@ -1,0 +1,169 @@
+@(schoolRegister:Form[views.forms.institute.AddInstituteBranchForm], schoolCountry:
+List[String], state: Map[String, String])
+@viewClass.main3("Register")("index"){
+<div class="main container">
+   <div class="ui page grid">
+      <div class="column">
+         <h2 class="ui center aligned icon header">
+            <i class="circular emphasized users icon"></i>
+            <div class="content">
+               Request for Your School Registration
+               <div class="sub header"></div>
+            </div>
+         </h2>
+         <div class="ui horizontal divider">
+            <i class="circular heart icon"></i>
+         </div>
+         <div class="item">
+            <div class="image">
+               <!--  New School request  -->
+               <label>field marked with * are mandatory</label>
+               <form
+                  id="newSchoolRegistrationForm"
+                  class="ui green form segment"
+                  method="Post"
+                  action="/institute/add/branch" >
+
+                  <div class="field">
+                     <label>*School Name</label>
+                     <div class="ui left icon input">
+                        <input
+                           type="text"
+                           name="instituteName"
+                           placeholder="name"
+                           >
+                        <i class="user icon"></i>
+                     </div>
+                  </div>
+                  <div class="field">
+                     <!--<div class="ui basic blue label">SCHOOL REGISTRATION ID</div> -->
+                     <label>Institute Registration Id</label>
+                     <div class="ui left icon input">
+                        <input type="text" name="instituteRegistrationId" placeholder="Registration Id">
+                        <i class="user icon"></i>
+                     </div>
+                  </div>
+                  <div class="field">
+                     <div class="ui label">*ADDRESS</div>
+                     <div class="ui left icon input">
+                        <input type="text" name="instituteAddressLine1" placeholder="*Address Line 1">
+                        <i class="home icon"></i>
+                     </div>
+                  </div>
+                  <div class="field">
+                     <div class="ui left icon input">
+                        <input type="text" name="instituteAddressLine2" placeholder="Address Line2">
+                        <i class="home icon"></i>
+                     </div>
+                  </div>
+                  <div class="two fields">
+                     <div class="field">
+                        <div class="ui label">*CITY</div>
+                        <div class="ui left icon input">
+                           <input type="text" name="instituteCity" placeholder="city">
+                           <i class="home icon"></i>
+                        </div>
+                     </div>
+
+                     <div class="field">
+                        <div class="ui label ">*STATE</div>
+                        <div class="ui fluid selection state dropdown">
+                           <div class="text">Select</div>
+                           <i class="dropdown icon"></i>
+                           <input name="instituteState" type="hidden">
+                           <div class="menu">
+                              @for((key,value)<- state){ 
+                              <div class="item" data-value="@key">@value</div>
+                              }
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+
+                  <div class="two fields">
+                     <div class="field">
+                        <div class="ui label">*COUNTRY</div>
+                        <div class="ui left icon input">
+                           <input type="text" name="instituteCountry" placeholder="Country">
+                           <i class="home icon"></i>
+                        </div>
+                     </div>
+                     <div class="field">
+                        <div class="ui label">*PINCODE</div>
+                        <div class="ui left icon input">
+                           <input type="text" name="institutePinCode" placeholder="pincode">
+                           <i class="home icon"></i>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="field">
+                     <div class="ui label">*School E-Mail</div>
+                     <div class="ui left icon input">
+                        <input type="email" name="instituteEmail" placeholder="Institute Email">
+                        <i class="mail icon"></i>
+                     </div>
+                  </div>
+                  
+                  <div class="two fields">
+                     <div class="field">
+                        <div class="ui label">*Mobile No.</div>
+                        <div class="ui left icon input">
+                           <input type="text" name="institutePhoneNumber" placeholder="Institute Mobile Number">
+                           <i class="phone square icon"></i>
+                        </div>
+                     </div>
+                     <div class="field">
+                        <div class="ui label ">*SCHOOL ALTERNATIVE NO.</div>
+                        <div class="ui left icon input">
+                           <input
+                              type="text"
+                              name="instituteOfficeNumber"
+                              placeholder="Alternative  Mobile Number">
+                           <i class="phone square icon"></i>
+                        </div>
+                     </div>
+                  </div>
+                
+                  <div class="two fields">
+                     <div class="field">
+                        <button class="ui green fluid left floated button" id="New-schoolRequest-submit">Send Request</button>
+                     </div>
+                     <div class="field">
+                        <div class="ui teal reset fluid right floated button">Reset</div>
+                     </div>
+                  </div>
+                  <div class="ui error message"></div>
+               </form>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+@if(flash.containsKey("success")) {
+<div class="ui segment">
+   <div class="ui green success message" id="success-message">
+      <div class="header">
+         SUCCESSFULLY
+      </div>
+      <ul class="list">
+         <li>
+            @flash.get("success")
+         </li>
+      </ul>
+   </div>
+</div>
+} @if(flash.containsKey("error")) {
+<div class="ui segment">
+   <div class="ui red error message" id="error-message">
+      <div class="header">
+         ERROR
+      </div>
+      <ul class="list">
+         <li>
+            @flash.get("error")
+         </li>
+      </ul>
+   </div>
+</div>
+}
+}

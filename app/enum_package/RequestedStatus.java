@@ -1,8 +1,8 @@
 package enum_package;
 
 public enum RequestedStatus {
-	REQUESTED,
-	REJECTED,
-	APPROVED,
-	REGISTERED;
+	requested,
+	rejected,
+	approved,
+	registered;
 }

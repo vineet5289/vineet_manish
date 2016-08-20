@@ -6,8 +6,8 @@ import java.sql.SQLException;
 import java.util.List;
 
 import play.db.DB;
-import views.forms.school.ClassForm;
-import views.forms.school.SubjectForm;
+import views.forms.institute.ClassForm;
+import views.forms.institute.SubjectForm;
 
 public class SubjectDAO {
 

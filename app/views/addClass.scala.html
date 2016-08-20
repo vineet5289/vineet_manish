@@ -1,5 +1,5 @@
 
-@(classForm : Form[views.forms.school.ClassForm])
+@(classForm : Form[views.forms.institute.ClassForm])
 <html>
 	<head>
    		<script type="text/javascript">
@@ -21,7 +21,7 @@
 	</head>
   <body>
   <Button id="addclass" onClick="addRows()">ADD CLASSES</button>
-  <form id="classform" method="POST" action="@school.routes.ClassController.postAddClass()">    
+  <form id="classform" method="POST" action="@institute.routes.ClassController.postAddClass()">    
       <table id="myTable" border="1">
         <tr>
            <td><b> Class Name</b> </td>

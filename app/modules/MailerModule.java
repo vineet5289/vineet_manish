@@ -1,10 +1,9 @@
 package modules;
 
-import com.google.inject.AbstractModule;
-
 import play.libs.akka.AkkaGuiceSupport;
 import actors.MailerActor;
-import actors.MessageActor;
+
+import com.google.inject.AbstractModule;
 
 public class MailerModule extends AbstractModule implements AkkaGuiceSupport{
 	@Override
