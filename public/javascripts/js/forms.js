@@ -1,5 +1,107 @@
     var shiftid = 0;
 
+    
+
+    var html = [
+'<div class="ui segment">',
+'                     <div class="two fields">',
+'                        <div class="field">',
+'                           <label>Shift Name</label>',
+'                           <input name="shiftName" type="text" value=" " placeholder="Enter Shift Name">',
+'                        </div>',
+'                        <div class="field">',
+'                           <label>Shift Attendance Type </label>',
+'                           <div class="ui fluid selection dropdown">',
+'                              <div class="text">Select</div>',
+'                              <i class="dropdown icon"></i>',
+'                              <input name="shifts[0].shiftAttendenceType" type="hidden">',
+'                              <div class="menu">',
+'                                 @for(value<- attendenceType){ ',
+'                                 <div class="item" data-value="@value">@value</div>',
+'                                 }',
+'                              </div>',
+'                           </div>',
+'                        </div>',
+'                     </div>',
+'                     <div class="two fields">',
+'                        <div class="field">',
+'                           <label>Shift Start Time</label>',
+'                           <div class="ui calendar timeSelect">',
+'                              <div class="ui input left icon">',
+'                                 <i class="time icon"></i>',
+'                                 <input name="shifts[0].shiftClassStartTime" type="text" value="" placeholder="School Start Time">',
+'                              </div>',
+'                           </div>',
+'                        </div>',
+'                        <div class="field">',
+'                           <label>Shift End Time</label>',
+'                           <div class="ui calendar timeSelect">',
+'                              <div class="ui input left icon">',
+'                                 <i class="time icon"></i>',
+'                                 <input name="shiftClassEndTime" type="text" value="" placeholder="School End Time">',
+'                              </div>',
+'                           </div>',
+'                        </div>',
+'                     </div>',
+'                     <div class="two fields">',
+'                        <div class="field">',
+'                           <label>Class From</label>',
+'                           <div class="ui fluid selection dropdown">',
+'                              <div class="text">Select</div>',
+'                              <i class="dropdown icon"></i>',
+'                              <input name="shiftStartClassFrom" type="hidden">',
+'                              <div class="menu">',
+'                                 @for(value<- classes){ ',
+'                                 <div class="item" data-value="@value">@value</div>',
+'                                 }',
+'                              </div>',
+'                           </div>',
+'                        </div>',
+'                        <div class="field">',
+'                           <label>Class To</label>',
+'                           <div class="ui fluid selection dropdown">',
+'                              <div class="text">Select</div>',
+'                              <i class="dropdown icon"></i>',
+'                              <input name="shiftEndClassTo" type="hidden">',
+'                              <div class="menu">',
+'                                 @for(value<- classes){ ',
+'                                 <div class="item" data-value="@value">@value</div>',
+'                                 }',
+'                              </div>',
+'                           </div>',
+'                        </div>',
+'                     </div>',
+'                     <div class="two fields">',
+'                        <div class="field">',
+'                           <label>Shift Week Starts on</label>',
+'                           <div class="ui fluid selection dropdown">',
+'                              <div class="text">Select</div>',
+'                              <i class="dropdown icon"></i>',
+'                              <input name="shiftWeekStartDay" type="hidden">',
+'                              <div class="menu">',
+'                                 @for(value<- weekDay){ ',
+'                                 <div class="item" data-value="@value">@value</div>',
+'                                 }',
+'                              </div>',
+'                           </div>',
+'                        </div>',
+'                        <div class="field">',
+'                           <label>Shift Week Ends on</label>',
+'                           <div class="ui fluid selection dropdown">',
+'                              <div class="text">Select</div>',
+'                              <i class="dropdown icon"></i>',
+'                              <input name="shiftWeekEndDay" type="hidden">',
+'                              <div class="menu">',
+'                                 @for(value<- weekDay){ ',
+'                                 <div class="item" data-value="@value">@value</div>',
+'                                 }',
+'                              </div>',
+'                           </div>',
+'                        </div>',
+'                     </div>',
+'                    </div> '
+].join('');
+
 $(function () {
     
     var validationObj = {
@@ -326,7 +428,7 @@ $(function () {
 
 
 // adding shift box on update
- // shiftbox();
+  shiftbox();
 
 
 
@@ -380,7 +482,7 @@ function shiftbox(){
              var shiftWeekStartDay = "shifts[" + i + "].shiftWeekStartDay";
              var shiftWeekEndDay = "shifts[" + i + "].shiftWeekEndDay";
 
-      var html = $(newShiftContainer);
+      var html = $(html);
       $("#shiftContainer").append(html);
    } 
 
