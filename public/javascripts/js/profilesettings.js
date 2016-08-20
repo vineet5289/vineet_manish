@@ -9,4 +9,7 @@ $(document).ready(function(){
 	  $('.profile.menu .item').tab({history:false});
 
 	  $('.ui.dropdown').dropdown();
+
+	  $("#fileUpload").on("click", function() {
+   $('#new-file-upload').click();
 });
