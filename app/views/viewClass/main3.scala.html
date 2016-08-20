@@ -19,14 +19,12 @@
   <link href='//fonts.googleapis.com/css0c08.css?family=Source+Sans+Pro:400,700|Open+Sans:300italic,400,300,700' rel='stylesheet' type='text/css'>
 
   
-  <link rel="stylesheet" type="text/css" class="ui" href="@routes.Assets.versioned("stylesheets/packaged/css/semantic.min.css")">
+  <link rel="stylesheet" type="text/css" class="ui" href="@routes.Assets.versioned("stylesheets/semantic.min.css")">
   
 
-  <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("stylesheets/own_semantic.css")">
+  <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("stylesheets/css/own_semantic.css")">
 
-  <style type="text/css">
-   * { font-family: "helvetica", arial; }
-  </style>
+ 
 
   
   
@@ -42,64 +40,107 @@
   ga('send', 'pageview');
 
   </script>
+  <style>
+  .stripe{
+    padding-top: 5.75rem;
+  }
+  #homepageImage{
+   background-image: url(../images/dark-bg.png);
+   background-repeat: repeat;
+   padding-top: 5.75rem;
+   margin-bottom: 1.2rem;
+   margin-right: 1rem;
+   margin-left: 1rem;
+  overflow-y:auto;
+  background: rgba(97, 185, 255, 0.3);
+  }
+
+  #logoname{
+    color: white;
+    text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;
+}
+
+#homepagetopmenu{
+  background-color: black;
+
+}
+
+
+  </style>
 </head>
-<body id="example" class="@design" ontouchstart="">
+<body>
   
 
-  <div class="ui fixed transparent inverted main menu">
-    <div class="container">
-      <a class="launch item"><i class="icon list layout"></i> Content</a>
-      <div class="title item">
-        <b><a href="\">SRP</a></b> Introduction
+  <div class="ui fixed  inverted borderless menu" id="homepagetopmenu">
+    <div class="ui container">
+      <div class="item">
+      <a href="\" id="logoname">
+      <div class='ui image circular label'>
+    <image src="@routes.Assets.versioned("images/people.jpg")">
+  </div>ABC public School
+      </a> 
+    </div>
+      
+      <div class='ui circular labels item'>
+        
+      <a href="#"><div class='ui green label'>Click here form Demo</div></a>  
+     
+    </div>
+
+
+
+    <div class="ui category item">
+      <div class="ui small icon input" style="width:150px;">
+        <input class="prompt js-searchinput" type="text" placeholder="Search action items...">
+        <div class="ui popup bottom left transition hidden" style="white-space:nowrap;">
+          Or <a href="#">advanced search</a>
+        </div>
+        <i class="teal search link icon"></i>
       </div>
+      <div class="results"></div>
+    </div>
       
-      <div class="disabled icon item"><i class="left arrow icon"></i></div>
-      
-      <div class="ui dropdown link item" id="HomePage-DropDown">
-        <span class="count">1 of 4</span>
+      <div class="inverted right borderless menu ui" id="homepagetopmenu">
+        
+        
+     <div class="ui item">
+      <a href="/">About us</a>
+    </div>
+       <div class="ui item">
+      <a href="/">Contact</a>
+    </div>
+      <div class="ui simple dropdown item">
+         Company<i class="dropdown icon"></i>
         <div class="menu">
-          
-            <div class="active item">
-              <a href="index-2.html">1. Introduction</a>
-            </div>
-          
-            <div class="item">
-              <a href="collection.html">2. UI Collections</a>
-            </div>
-          
-            <div class="item">
-              <a href="element.html">3. UI Elements</a>
-            </div>
-          
-            <div class="item">
-              <a href="module.html">4. UI Modules</a>
-            </div>
-          
+          <a class="item" href="#">Clients</a>
         </div>
       </div>
-      
-      <a class="icon item" href="collection.html"><i class="right arrow icon"></i></a>
-      
-      <div class="right menu">
-        
-        
-        <a class="popup icon github item" data-content="View project on Github" href="https://github.com/quirkyinc/semantic">
-          <i class="icon github"></i>
-        </a>
-        <!--
-        <div class="ui simple dropdown item">
-          <i class="icon tint"></i> Theme
-          <div class="theme menu">
-            <div class="active item" data-theme="flat">Flat</div>
-            <div class="item" data-theme="shaded">Shaded</div>
-            <div class="item" data-theme="classic">Classic</div>
-          </div>
+
+      <div class="ui simple dropdown item">
+        <i class="green add circle icon"></i><span> Pricing</span> <i class="dropdown icon"></i>
+        <div class="menu">
+          <a class="item" href="#">Task1</a>
+          <a class="item" href="#">Task2</a>
+          <a class="item" href="#">Task3</a>
+          <a class="item" href="#">Task4</a>
         </div>
-        !-->
+      </div>
+     
+        <a class="popup icon github item" data-content="View project on Github" href="https://github.com/quirkyinc/semantic">
+          <i class="teal icon github"></i>
+        </a>
+
+       <!-- <div class="animated fade ui inverted item small button">
+            <div class="visible content">Register Your School Here</div>
+            <a class="hidden content" id="RegisterSchoolButton">Click Now</a>
+        </div> -->
+        
       </div>
     </div>
   </div>
+
   
+ 
 @content
 <div class="dark stripe">
   <div class="ui page grid">
@@ -314,19 +355,51 @@
 </div>
 
 
+<duv class="ui divider"></div>
 
-   <script type="text/javascript" src="@routes.Assets.versioned("semanticUI/js/jquery.min.js")"></script>
+
+
+<div class="ui four column doubling stackable grid container">
+  <div class="column">
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique, sunt, aliquid molestiae vero laudantium tempora natus. Error ratione, minima! Vel nam quia consequatur nihil laudantium quisquam a minima eaque, fugit.</p>
+  </div>
+  <div class="column">
+    <p>Consequatur eaque, natus, modi, quo repellat nesciunt minima magnam reprehenderit maxime veritatis perferendis beatae ullam iure quod itaque esse odio voluptatum facilis tempore repudiandae! Explicabo mollitia, consequuntur ipsum aspernatur unde!</p>
+  </div>
+  <div class="column">
+    <p>Soluta iusto tempora architecto eius dolore cum quos ea nostrum repudiandae. Sequi enim soluta alias laudantium quod ratione nam veritatis et perferendis inventore voluptates quos, nostrum obcaecati mollitia necessitatibus impedit.</p>
+  </div>
+  <div class="column">
+    <p>Repellendus quidem, possimus ad! Doloribus in aut distinctio maiores sint modi praesentium veniam culpa harum rerum provident reiciendis, quia non dolorum incidunt omnis quas, possimus molestiae error aperiam voluptatum. Sit.</p>
+  </div>
+</div>
+
+<div class="ui container">
+  <h4>Managing Lifecycle</h4>
+  <p>Semantic UI components are designed to be compatible with libraries that tightly manage UI lifecycle like <a href="#" target="_blank">React</a>. No special bindings are needed.</p>
+  <p>Most components use <a href="#" target="_blank">mutation observers</a> to watch for changes in internal state, and all components are built with <code>initialize</code>, <code>refresh</code> and <code>destroy</code> methods which will regenerate, refresh cached values, and teardown components.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+   <script type="text/javascript" src="@routes.Assets.versioned("javascripts/js/jquery.min.js")"></script>
   <!-- <script type="text/javascript" src="@routes.Assets.versioned("javascript/library/jquery.min.js")"></script> -->
-  <script  type="text/javascript" src="@routes.Assets.versioned("javascript/library/history.js")"></script>
-  <script  type="text/javascript" src="@routes.Assets.versioned("javascript/library/easing.js")"></script>
-  <script  type="text/javascript" src="@routes.Assets.versioned("javascript/library/ace.js")"></script>
-  <script  type="text/javascript" src="@routes.Assets.versioned("javascript/library/tablesort.js")"></script>
-  <script  type="text/javascript" src="@routes.Assets.versioned("javascript/library/waypoints.js")"></script>
-  <script  type="text/javascript" src="@routes.Assets.versioned("javascript/library/forms.js")"></script>
-  <script  type="text/javascript" src="@routes.Assets.versioned("stylesheets/packaged/javascript/semantic.min.js")"></script>
-  <script  type="text/javascript" src="@routes.Assets.versioned("javascript/semantic.js")"></script>
-  <script  type="text/javascript" src="@routes.Assets.versioned("javascript/home.js")"></script>
-  <script  type="text/javascript" src="@routes.Assets.versioned("javascript/library/profilesettings.js")"></script>
+
+  <script  type="text/javascript" src="@routes.Assets.versioned("javascripts/js/forms.js")"></script>
+  <script  type="text/javascript" src="@routes.Assets.versioned("javascripts/semantic.min.js")"></script>
+  <script  type="text/javascript" src="@routes.Assets.versioned("javascripts/js/profilesettings.js")"></script>
+
+
 
 
 </body>

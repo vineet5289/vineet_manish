@@ -1,5 +1,11 @@
 @(schoolForm:       Form[views.forms.institute.InstituteFormData])
-@main3("index")("School Information"){
+@main3("School Information")(""){
+<style>
+.label{
+   color: #48D1CC;
+}
+</style> 
+<div class="stripe">
 <div class="main container">
    <div class="ui page grid">
       <div class="column">
@@ -19,7 +25,7 @@
          <div class="item">
             <div class="image">
                <form
-                  class="ui fluid form"
+                  class="ui form"
                   id="form1"
                   action="@institute.routes.InstituteRegistrationController.postInstituteRegistrationRequest"
                   method="Post">
@@ -61,20 +67,23 @@
                      value='@schoolForm("instituteEmail").value'
                      readonly>
                   <div class="field">
-                     <label>School Name</label>
+                     <div class="label">School Name</div>
+                     <div class="ui focus input">
                      <input
                         name="instituteName"
-                        type="text"
+                        type="textarea"
                         value='@schoolForm("instituteName").value'
                         readonly>
+                     </div>
                   </div>
 
                        <div class="two fields">
                      <div class="field">
-                        <label>Institute Type</label>
+                        <div class="label">Institute Type</div>
+                        <div class="ui focus input">
                         <div class="ui left icon input">
                            <input
-                              type="text"
+                              type="textarea"
                               name="groupOfInstitute"
                               value='@schoolForm("groupOfInstitute").value'
                               readonly>
@@ -82,37 +91,48 @@
                            
                         </div>
                      </div>
+                     </div>
                      <div class="field">
-                        <label>Number Of Institute Branch</label>
+                        <div class="label">Number Of Institute Branch</div>
+                        <div class="ui focus input">
                         <div class="ui left icon input">
                            <input
-                              type="text"
+                              type="textarea"
                               name="noOfInstitute"
                               value='@schoolForm("noOfInstitute").value'
                               readonly>
                            <i class="key icon"></i>
                         </div>
                      </div>
+                     </div>
                   </div>
                   <div class="field">
-                     <label>School Mobile No.</label>
+                     <div class="label">School Mobile No.</div>
+                      <div class="ui focus input">
+                     <div class="ui left icon input">
                      <input
-                        type="text"
+                        type="textarea"
                         name="institutePhoneNumber"
                         value='@schoolForm("institutePhoneNumber").value'
                         readonly>
+                        <i class="phone icon"></i>
+                     </div>
+                  </div>
                   </div>
                   <div class="field">
-                     <label>Email</label>
+                     <div class="label">Email</div>
+                     <div class="ui focus input">
                      <input
-                        type="email"
+                        type="textarea"
                         name="instituteUserName"
                         value='@schoolForm("instituteEmail").value'
                         readonly>
+                     </div>
                   </div>
                   <div class="two fields">
                      <div class="field">
-                        <label>Password</label>
+                        <div class="label">Password</div>
+                        <div class="ui focus input">
                         <div class="ui left icon input">
                            <input
                               type="password"
@@ -122,8 +142,10 @@
                            <i class="key icon"></i>
                         </div>
                      </div>
+                     </div>
                      <div class="field">
-                        <label>Confirm Password</label>
+                        <div class="label">Confirm Password</div>
+                        <div class="ui focus input">
                         <div class="ui left icon input">
                            <input
                               type="password"
@@ -132,6 +154,7 @@
                               autocomplete="off">
                            <i class="key icon"></i>
                         </div>
+                     </div>
                      </div>
                   </div>
                 
@@ -152,6 +175,8 @@
       </div>
    </div>
 </div>
+</div>
+
 @if(flash.containsKey("success")) {
 <div class="ui segment">
    <div class="ui green success message" id="success-message">

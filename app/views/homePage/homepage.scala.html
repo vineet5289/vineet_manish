@@ -1,46 +1,53 @@
 @(loginForm:Form[views.forms.LoginForm])
 @viewClass.main3("login")("index"){
-<div class="stripe">
-    <div class="ui page grid">
-        <div class="ui column">
-            <h2 class="ui header">
-                <i class="circular emphasized book icon"></i>
-                <div class="content">
-                    Come and Register Your School
-                    <div class="sub header">Make Your School School register on our Website and make your school Digital.
-                    </div>
-                </div>
-            </h2>
-            <div class="ui message">
-                Here You can raise a request for registration.
-                <a href="@institute.routes.NewInstituteRequestController.preAddNewInstituteRequest()" target="_blank">Click here</a>
-                to know about us.
-            </div>
-            <div class="ui stackable two column grid">
-                <div class="column">
-                    <div class="large animated fade ui inverted green button">
-                        <div class="visible content">Register Your School Here</div>
-                        <a class="hidden content" id="RegisterSchoolButton">Click Now</a>
-                    </div>
-                </div>
-                <div class="column">
-                    <form
+
+
+ <div class="ui stackable grid" id="homepageImage" >
+      <div class="ui container">
+            <div class='ui circular labels' align="center">
+      <div class='ui red label'>CSS</div>  
+      <div class='ui blue label'>Typescript</div>  
+      <div class='ui green label'>NPM</div>  
+      <div class='ui purple label'>Semantic UI</div>  
+    </div>
+    </div>
+
+
+      <div class="ten wide column">
+        <img src="@routes.Assets.versioned("images/people.jpg")" class='ui avatar medium image'/>
+         <div class="animated fade ui inverted blue large circular button">
+            <div class="visible content">Register Your School Here</div>
+            <div class="button hidden content" id="RegisterSchoolButton"><span class="text">Click Now</span></div>
+        </div>
+        
+  <span class="text">
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi ut nulla a sapien euismod mollis sed quis lacus. Aenean dolor augue, eleifend lacinia turpis eget, vulputate venenatis nisl. Vivamus sagittis neque ac fringilla consequat</span>
+     </div>
+     <div class="right floated six wide column">
+    <div class="row">
+        <h3 class"ui dividing header" align="center">School</h3>
+
+        <div class="content">
+     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi ut nulla a sapien euismod mollis sed quis lacus. Aenean dolor augue, eleifend lacinia turpis eget, vulputate venenatis nisl. Vivamus sagittis neque ac fringilla consequat.</div>
+    </div>
+    <div class="ui hidden divider "></div>
+    <form
                         class="ui form"
                         id="loginform"
                         action="@login_logout.routes.LoginController.postLogin()"
                         method="Post">
-                        <h3 class="ui top attached centered green header">Log-In to Your Account</h3>
+                        <h5 class="ui top attached centered green header">Log-In to Your Account</h5>
                         <div class="ui attached secondary blue segment">
                         <div class="field">
                             <div class="ui left icon input">
                                 <input type="text" name="userName" placeholder="Username">
-                                <i class="user icon"></i>
+                                <i class="teal user icon"></i>
                             </div>
                         </div>
                         <div class="field">
                             <div class="ui left icon input">
                                 <input type="password" name="password" placeholder="Password">
-                                <i class="lock icon"></i>
+                                <i class="teal lock icon"></i>
                             </div>
                         </div>
                         <div class="field">
@@ -50,16 +57,41 @@
                             </div>
                         </div>
 
-                        <button class="ui inverted big fluid blue icon button" id="login-submit">Sign In
+                        <button class="ui inverted fluid green compact button" id="login-submit">Sign In
                         </button>
                         </div>
                     </form>
+
+     </div>
+
+  </div>
+
+
+<div class="stripe">
+<div class="ui page grid">
+        <div class="ui column">
+            
+                   
+                
+            <div class="ui message">
+                Here You can raise a request for registration.
+                <a href="@institute.routes.NewInstituteRequestController.preAddNewInstituteRequest()" target="_blank">Click here</a>
+                to know about us.
+            </div>
+            <div class="ui stackable two column grid">
+               <div class="column">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi ut nulla a sapien euismod mollis sed quis lacus. Aenean dolor augue, eleifend lacinia turpis eget, vulputate venenatis nisl. Vivamus sagittis neque ac fringilla consequat.
+               </div>
+                <div class="right floated six wide column">
+                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi ut nulla a sapien euismod mollis sed quis lacus. Aenean dolor augue, eleifend lacinia turpis eget, vulputate venenatis nisl. Vivamus sagittis neque ac fringilla consequat.
                 </div>
             </div>
         </div>
     </div>
+
 </div>
 <!-- Registration Request Modal -->
+
 <div class="ui basic modal" id="RegisterSchoolModal">
     <i class="close icon"></i>
     <div class="header" align="center">
@@ -135,22 +167,36 @@
 </div>
 <!--  Starts from here Modal form-->
 <!--  ends Here -->
+
+
+
+
+
 @if(flash.containsKey("success")) {
-<div class="ui segment">
+
+
+<div id="successFlash" class="ui compact message" data-html="<div class='ui message'>SUCCESSFULLY</div>">
+   
+</div>
+
+
+
     <div class="ui green success message" id="success-message">
-        <div class="header">
-            SUCCESSFULLY
-        </div>
-        <ul class="list">
+
+        <div class="ui popup" data-position="top right">
+  <div class="header">SUCCESSFULLY</div>
+  <ul class="list">
             <li>
                 @flash.get("success")
             </li>
         </ul>
-    </div>
 </div>
+        
+</div>
+
 }
 @if(flash.containsKey("error")) {
-<div class="ui segment">
+
     <div class="ui red error message" id="error-message">
         <div class="header">
             ERROR
@@ -161,6 +207,6 @@
             </li>
         </ul>
     </div>
-</div>
+
 }
 }

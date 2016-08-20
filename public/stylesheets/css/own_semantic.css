@@ -1,145 +1,4 @@
-/*******************************
-        Highlighted Colors
-*******************************/
 
-::-webkit-selection {
-  background-color: #FFFFCC;
-  color: #555555;
-}
-::-moz-selection {
-  background-color: #FFFFCC;
-  color: #555555;
-}
-::selection {
-  background-color: #FFFFCC;
-  color: #555555;
-}
-
-h1::-moz-selection,
-h2::-moz-selection,
-h3::-moz-selection {
-  background-color: #F1C1C2;
-  color: #222222;
-}
-h1::selection,
-h2::selection,
-h3::selection {
-  background-color: #F1C1C2;
-  color: #222222;
-}
-.ui *::-moz-selection {
-  background-color: #CCE2FF;
-}
-.ui *::selection {
-  background-color: #CCE2FF;
-}
-
-/*******************************
-             Global
-*******************************/
-
-html,
-body {
-  font-size: 15px;
-}
-
-body#example {
-  //font-family: "Open Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif/*rtl:prepend:"Droid Arabic Kufi","Droid Sans", */;
-  font-family:"Helvetica Neue", Helvetica, "Noto Sans", sans-serif, Arial, sans-serif;
-  background: ##F3FCFE url(/public/images/bg.jpg) repeat;
-  margin: 0px;
-  padding: 0px;
-  color: #555555;
-  min-width: 320px;
-}
-body > .content  {
-  background: ##F3FCFE url(/public/images/bg.jpg) repeat;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5 {
-  font-family: "Source Sans Pro", "Helvetica Neue", "Helvetica", "Arial", sans-serif/*rtl:prepend:"Droid Arabic Kufi","Droid Sans", */;
-}
-
-/*
-p,
-ul,
-.ui.grid,
-li {
-  font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
-  font-size-adjust: none;
-}*/
-
-
-ul.list {
-  list-style-type: disc;
-}
-ul.list li {
-  list-style-position: outside;
-}
-
-
-/* text and headers */
-h1 {
-  margin: 0px 0px 20px;
-  padding: 50px 0px 5px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-}
-h4 + p {
-  margin: 0px 0px 20px;
-}
-pre {
-  background-color: #F0F0F0;
-}
-/*rtl:ignore*/
-pre.console {
-  background-color: transparent;
-  line-height: 1.6;
-  font-family:  'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
-  height: 300px;
-  overflow: auto;
-  direction:ltr;
-}
-code {
-  background-color: rgba(0, 0, 0, 0.02);
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  display: inline-block;
-  font-family: Courier New;
-  font-size: 14px;
-  margin: 0.25em;
-  padding: 0.125em 0.5em;
-  vertical-align: middle;
-}
-pre code {
-  border: none;
-  padding: 0px;
-}
-table pre,
-table code {
-  margin: 0px !important;
-  padding: 0px;
-  background-color: transparent;
-}
-p {
-  margin: 1em 0em;
-}
-p:first-child {
-  margin-top: 0em;
-}
-p:last-child {
-  margin-bottom: 0em;
-}
-/* links */
-a {
-  color: #009FDA;
-  text-decoration: none;
-}
-a:hover {
-  color: #00BAFF;
-}
 
 #example #menu .item {
   -webkit-border-radius: 0px;
@@ -510,12 +369,12 @@ body.guide .main.container > * {
 
 #example .solid,
 #example .stripe {
-  padding: 50px 0px;
+  padding: 65px 0px;
 }
 
 #example .dark.stripe {
   background-color: #333333;
-  background: url(../images/dark-bg.png) repeat;
+  background-image: url(../images/dark-bg.png) repeat;
   color: #FFFFFF;
 }
 #example .stripe .column .label {
@@ -1526,6 +1385,42 @@ body.progress .ui.progress .bar {
 font-size:1.7em;
 font-weight:700;
 color:rgba(83, 161, 255,.8)
+}
+
+
+/* this is from other css test.css*/
+#test .right.ui.menu {
+  background: transparent !important;
+}
+
+#test .menu .ui.menu .dropdown {
+  margin-left: 10px;
+}
+
+#test .ui.inverted.menu.main {
+  background: #2f7833;
+  background:-webkit-gradient(linear, left bottom, left top, color-stop(0, #2F7833), color-stop(1, #449848));
+  z-index: 1000;
+}
+
+#test .ui.modal.large.long > .header {}
+
+#test .ui.inverted.menu.main2 {
+  background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #E29B41), color-stop(1, #FBAC48));
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.16), 0 3px 3px rgba(0, 0, 0, 0.23);
+  top: 46px;
+}
+#test .ui.vertical.right.floated.buttons > button {
+  margin-bottom:4px;
+}
+
+#test .ui.ultramini.statistics .statistic > .value,
+.ui.ultramini.statistic > .value {
+  font-size: 1rem;
+}
+
+#test .ui.statistic > .label {
+  font-size: .8rem;
 }
 
 

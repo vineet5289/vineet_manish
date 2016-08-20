@@ -1,12 +1,4 @@
     var shiftid = 0;
-    
-
-
-  
-
-
-
-
 
 $(function () {
     
@@ -319,9 +311,12 @@ $(function () {
         });
 
 
+//popup data in input field on school registration and other forms
 
-
-    
+ $('input')
+      .popup({
+        on: 'focus',
+      });    
     
     
     // captcha  code on otp form
