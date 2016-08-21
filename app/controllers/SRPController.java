@@ -3,6 +3,7 @@ package controllers;
 import javax.inject.Inject;
 
 import models.HeadInstituteLoginDetails;
+import play.Logger;
 import play.mvc.Result;
 import play.mvc.Security;
 import security.BasicAuthRequirement;
@@ -38,46 +39,6 @@ public class SRPController extends CustomController {
 		} else if(loginType.equals(LoginType.institute.name())) {
 			return redirect(routes.SRPController.studentsHome());
 		}
-
-		//		LoginDetails loginDetails = null;
-		//		boolean shouldLogout = true;
-		//		try {
-		//			
-		//			loginDetails = userLoginDAO.refreshUserUsingUserName(userName);
-		//			shouldLogout = false;
-		//		} catch(Exception exception) {
-		//			exception.printStackTrace();
-		//			flash("error", "Server problem occur during refresh.");
-		//		}
-		//
-		//		if(shouldLogout || loginDetails == null || loginDetails.getLoginStatus() != LoginStatus.validuser) {
-		//			session().clear();
-		//			return redirect(controllers.login_logout.routes.LoginController.preLogin());
-		//		}
-		//
-		//		String passwordState = loginDetails.getPasswordState();
-		//		session(SessionKey.loginstate.name(), passwordState);
-		//
-		//		String type = loginDetails.getType();
-		//		session(SessionKey.logintype.name(), type);
-		//
-		//		role = loginDetails.getRole();
-		//		session(SessionKey.userrole.name(), role);
-		//
-		//		Long schoolId = loginDetails.getSchoolId();
-		//		if(schoolId != null && schoolId != 0) {
-		//			session(SessionKey.instituteid.name(), Long.toString(schoolId));
-		//		}
-		//		System.out.println("******* 1");
-		//		if(passwordState.equalsIgnoreCase(LoginState.redirectstate.name())) {
-		//			System.out.println("=========> 1");
-		//			if(type.equalsIgnoreCase(LoginType.headinstitute.name()) && role.equalsIgnoreCase("institutegroupadmin"))
-		//				return redirect(controllers.institute.routes.InstituteInfoController.getInstituteMandInfo());
-		//			return ok(dashboard.render(session().get(SessionKey.username.name()), "institutegroupadmin"));
-		//		}
-		//		System.out.println("=========> 2");
-		//		List<LoginDetails> userDetails = null;
-
 		return ok(dashboard.render("uservineet", session().get(SessionKey.userrole.name())));
 	}
 
@@ -91,29 +52,46 @@ public class SRPController extends CustomController {
 		UserLoginDAO userLoginDAO = new UserLoginDAO();
 		HeadInstituteLoginDetails headInstituteLoginDetails = null;
 		try {
-			if((role != null && role.equalsIgnoreCase(Role.institutegroupadmin.name()))) {
+			if((role != null && role.equalsIgnoreCase(Role.of(Role.institutegroupadmin)))) {
 				headInstituteLoginDetails = userLoginDAO.refreshHeadInstituteUserCredentials(userName, loginType, authToken, redisSessionDao);
 			}
 		}catch(Exception exception) {
-			exception.printStackTrace();
-			headInstituteLoginDetails = new HeadInstituteLoginDetails();
-			headInstituteLoginDetails.setLoginStatus(LoginStatus.servererror);
-		}
-
-		if(headInstituteLoginDetails.getLoginStatus() != LoginStatus.validuser) {
+			Logger.error(String.format("exception: server exception occur for username:%s, message:", userName, exception.getMessage()));
 			flash("error", LoginStatus.of(headInstituteLoginDetails.getLoginStatus()));
 			return redirect(controllers.login_logout.routes.LoginController.logout());
 		}
 
-		session(SessionKey.of(SessionKey.headinstituteid), Long.toString(headInstituteLoginDetails.getHeadInstituteId()));
+		if(headInstituteLoginDetails.getLoginStatus() != LoginStatus.validuser) {
+			Logger.info(String.format("message: username:%s, is not valid user.", userName));
+			flash("error", LoginStatus.of(headInstituteLoginDetails.getLoginStatus()));
+			return redirect(controllers.login_logout.routes.LoginController.logout());
+		}
 
-		if(headInstituteLoginDetails.getGropuOfInstitute().equals("single")
+		long instituteId = 0;
+		if(headInstituteLoginDetails.getGropuOfInstitute().equalsIgnoreCase("single")) {
+			instituteId = headInstituteLoginDetails.getHeadInstituteId();
+		}
+
+		/* 
+		 * 1. school type single, add instituteid as session variable
+		 * 2. school type group, removed instituteid from sesson variable
+		*/
+		session(SessionKey.of(SessionKey.headinstituteid), Long.toString(headInstituteLoginDetails.getHeadInstituteId()));
+		session(SessionKey.of(SessionKey.instituteid), Long.toString(instituteId));
+
+		if(headInstituteLoginDetails.getGropuOfInstitute().equalsIgnoreCase("single")
 				&& headInstituteLoginDetails.getHeadInstituteLoginState().equals(LoginState.redirectstate.name())) {
+
+			Logger.info(String.format("user:%s institute type is single, redirecting it to get mandatory info.", userName));
 			return redirect(controllers.institute.routes.InstituteInfoController.getInstituteMandInfo());
 		} else if(headInstituteLoginDetails.getGropuOfInstitute().equals("single")) {
-			return ok(dashboard.render(session().get(SessionKey.username.name()), "institutegroupadmin"));
+
+			Logger.info(String.format("user:%s institute type is single, redirecting it to home page.", userName));
+			return ok(dashboard.render(session().get(SessionKey.username.name()), headInstituteLoginDetails.getHeadInstituteName()));
 		} else {
-			return ok(instituteGroupHome.render(headInstituteLoginDetails.getBranches(), "vineet"));
+
+			Logger.info(String.format("user:%s institute type is group, redirecting it to dashboard.", userName));
+			return ok(instituteGroupHome.render(headInstituteLoginDetails.getBranches(), headInstituteLoginDetails.getHeadInstituteName()));
 		}
 	}
 
