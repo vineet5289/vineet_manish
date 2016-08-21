@@ -469,8 +469,11 @@ function shiftbox_original(){
 function shiftbox(){
 
 
-
+ var container = document.getElementById("shiftContainer");
  var shift=parseInt(document.getElementById("shiftvalue").value);
+ while (container.hasChildNodes()) {
+                container.removeChild(container.lastChild);
+            }
       
       for(var i=0;i<shift;i++){
         var shiftName = "shifts[" + i + "].shiftName";
@@ -483,7 +486,8 @@ function shiftbox(){
              var shiftWeekEndDay = "shifts[" + i + "].shiftWeekEndDay";
 
       var html = $(html);
-      $("#shiftContainer").append(html);
+      container.appendChild(html);
+      container.appendChild(document.createElement("br"));
    } 
 
 }

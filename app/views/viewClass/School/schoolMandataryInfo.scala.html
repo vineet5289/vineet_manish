@@ -28,7 +28,7 @@ instituteType:  Map[String, String])
                      <div class="ui fluid selection  dropdown" id="shiftNumber">
                         <div class="text">Select</div>
                               <i class="dropdown icon"></i>
-                              <input name="numberOfShift" type="hidden" value="1" id="shiftvalue" onChange="shiftbox()">
+                              <input name="numberOfShift" type="hidden" value="1" id="shiftvalue" onchange="shiftfunction()">
                               <div class="menu">
                                    <div class="item" data-value="1">1 Shift Per Day</div>
                                    <div class="item" data-value="2">2 Shift Per Day</div>
@@ -233,24 +233,21 @@ instituteType:  Map[String, String])
 
 
 
-
+               
 
                  <!--   SHIFT SEGMENT STARTS HERE-->
                   <div id="shiftContainer">
                     
-                                       
-                  </div></br>
-
-                  <div class="newShiftContainer"></div></br>
+                   </div></br>
                  
                  <div class="field">
                   <button type="submit" class="ui green fluid button"><label>Let's get started</label></button>
-                  <button class="ui button" id="btnshift">shift</button>
+                  
                  </div></br>
 
-
+                
                </form>
-              
+                <button type="ui basic button" id="btnshift">Shift</button>
             </div>
          </div>
       </div>
@@ -287,7 +284,153 @@ instituteType:  Map[String, String])
 
 
 
+<script type="text/javascript">
+$('#shiftNumber').on('change', function() {
+    shiftfunction();
+   });
 
+   function shiftfunction(){
+
+  var container = document.getElementById("shiftContainer");
+ var shift=parseInt(document.getElementById("shiftvalue").value);
+ //while (container.hasChildNodes()) {
+   //             container.removeChild(container.lastChild);
+     //       }
+      
+      for(var i=0;i<shift;i++){
+
+            var shiftName = "shifts[" + i + "].shiftName";
+            var shiftAttendenceType = "shifts[" + i + "].shiftAttendenceType";
+            var shiftClassStartTime = "shifts[" + i + "].shiftClassStartTime";
+            var shiftClassEndTime = "shifts[" + i + "].shiftClassEndTime";
+            var shiftStartClassFrom = "shifts[" + i + "].shiftStartClassFrom";
+            var shiftEndClassTo = "shifts[" + i + "].shiftEndClassTo";
+            var shiftWeekStartDay = "shifts[" + i + "].shiftWeekStartDay";
+            var shiftWeekEndDay = "shifts[" + i + "].shiftWeekEndDay";
+
+
+
+             var htmlshift = [@Html(
+'<div class="ui segment">',
+'                     <div class="two fields">',
+'                        <div class="field">',
+'                           <label>Shift Name</label>',
+'                           <input name='+shiftName+' type="text" value=" " placeholder="Enter Shift Name">',
+'                        </div>',
+'                        <div class="field">',
+'                           <label>Shift Attendance Type </label>',
+'                           <div class="ui fluid selection dropdown">',
+'                              <div class="text">Select</div>',
+'                              <i class="dropdown icon"></i>',
+'                              <input name='+shiftAttendenceType+' type="hidden">',
+'                              <div class="menu">',
+'                                 @for(value<- attendenceType){ ',
+'                                 <div class="item" data-value="@value">@value</div>',
+'                                 }',
+'                              </div>',
+'                           </div>',
+'                        </div>',
+'                     </div>',
+'                     <div class="two fields">',
+'                        <div class="field">',
+'                           <label>Shift Start Time</label>',
+'                           <div class="ui calendar timeSelect">',
+'                              <div class="ui input left icon">',
+'                                 <i class="time icon"></i>',
+'                                 <input name='+shiftClassStartTime+' type="text" value="" placeholder="School Start Time">',
+'                              </div>',
+'                           </div>',
+'                        </div>',
+'                        <div class="field">',
+'                           <label>Shift End Time</label>',
+'                           <div class="ui calendar timeSelect">',
+'                              <div class="ui input left icon">',
+'                                 <i class="time icon"></i>',
+'                                 <input name='+shiftClassEndTime+' type="text" value="" placeholder="School End Time">',
+'                              </div>',
+'                           </div>',
+'                        </div>',
+'                     </div>',
+'                     <div class="two fields">',
+'                        <div class="field">',
+'                           <label>Class From</label>',
+'                           <div class="ui fluid selection dropdown">',
+'                              <div class="text">Select</div>',
+'                              <i class="dropdown icon"></i>',
+'                              <input name='+shiftStartClassFrom+' type="hidden">',
+'                              <div class="menu">',
+'                                 @for(value<- classes){ ',
+'                                 <div class="item" data-value="@value">@value</div>',
+'                                 }',
+'                              </div>',
+'                           </div>',
+'                        </div>',
+'                        <div class="field">',
+'                           <label>Class To</label>',
+'                           <div class="ui fluid selection dropdown">',
+'                              <div class="text">Select</div>',
+'                              <i class="dropdown icon"></i>',
+'                              <input name='+shiftEndClassTo+' type="hidden">',
+'                              <div class="menu">',
+'                               @for(value<- classes){ ',
+'                                 <div class="item" data-value="@value">@value</div>',
+'                                 }',
+'                              </div>',
+'                           </div>',
+'                        </div>',
+'                     </div>',
+'                     <div class="two fields">',
+'                        <div class="field">',
+'                           <label>Shift Week Starts on</label>',
+'                           <div class="ui fluid selection dropdown">',
+'                              <div class="text">Select</div>',
+'                              <i class="dropdown icon"></i>',
+'                              <input name='+shiftWeekStartDay+' type="hidden">',
+'                              <div class="menu">',
+'                                 @for(value<- weekDay){ ',
+'                                 <div class="item" data-value="@value">@value</div>',
+'                                 }',
+'                              </div>',
+'                           </div>',
+'                        </div>',
+'                        <div class="field">',
+'                           <label>Shift Week Ends on</label>',
+'                           <div class="ui fluid selection dropdown">',
+'                              <div class="text">Select</div>',
+'                              <i class="dropdown icon"></i>',
+'                              <input name='+shiftWeekEndDay+' type="hidden">',
+'                              <div class="menu">',
+'                                 @for(value<- weekDay){ ',
+'                                 <div class="item" data-value="@value">@value</div>',
+'                                 }',
+'                              </div>',
+'                           </div>',
+'                        </div>',
+'                     </div>',
+'                    </div> '
+)].join('');
+
+    
+
+
+
+
+
+
+      //var html = $(html);
+      $(htmlshift).appendTo(container);
+      //container.appendChild(html);
+      //container.appendChild(document.createElement("br"));
+      //container.innerHTML=htmlshift;
+      }
+   
+
+}
+
+
+
+
+</script>
 
 
     

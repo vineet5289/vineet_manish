@@ -1,5 +1,7 @@
     var shiftid = 0;
 
+
+
     var html = [
 '<div class="ui segment">',
 '                     <div class="two fields">',
@@ -426,8 +428,8 @@ $(function () {
 
 
 // adding shift box on update
-  shiftbox();
-
+  //shiftbox();
+$("#btnshift").click(shiftbox());
 
 
 
