@@ -66,8 +66,8 @@ public class UserFetchDAO {
 				userInfo.setRole(role);
 
 				String key = "OTHER";
-				if(role.equalsIgnoreCase(Role.TEACHER.name()) || role.equalsIgnoreCase(Role.STUDENT.name()) ||
-						userInfos.containsKey(Role.GUARDIAN.name())) {
+				if(role.equalsIgnoreCase(Role.teacher.name()) || role.equalsIgnoreCase(Role.student.name()) ||
+						userInfos.containsKey(Role.guardian.name())) {
 					key = role.toUpperCase();
 				}
 

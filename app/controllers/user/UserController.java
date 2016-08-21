@@ -55,9 +55,9 @@ public class UserController extends CustomController {
 		UserFetchDAO userFetchDAO = new UserFetchDAO();
 		UserInfo userInfos = null;
 		try {
-			if(category.equals(Role.GUARDIAN.name())) {
+			if(category.equals(Role.guardian.name())) {
 //				userInfos = userFetchDAO.getAllGuardian(schoolId);
-			} else if(category.equalsIgnoreCase(Role.STUDENT.name())) {
+			} else if(category.equalsIgnoreCase(Role.student.name())) {
 //				userInfos = userFetchDAO.getAllStudents(schoolId);
 			} else {
 				System.out.println("===========> 1");

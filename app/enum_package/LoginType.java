@@ -38,4 +38,15 @@ public enum LoginType {
 			return false;
 		return true;
 	}
+
+	public static String of(LoginType key) {
+		String result = nameToValue.get(key);
+		if(result == null)
+			return "";
+		return result;
+	}
+
+	public static LoginType of(String key) {
+		return valueToName.get(key);
+	}
 }

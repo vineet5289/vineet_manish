@@ -19,14 +19,14 @@ public class HeadInstituteLoginDetails {
 	private String headInstitutePrefered;
 	private List<BranchDetails> branches;
 	private LoginStatus loginStatus;
+	public String logoUrl;
+	public String address;
 
 	@Data
 	public static class BranchDetails {
 		public Long instituteId;
-		public Long headInstituteId;
-		public String headInstituteUserName;
-		public String instituteUserName;
 		public String instituteName;
-		public String institutePrefered;
+		public String logoUrl;
+		public String address;
 	}
 }

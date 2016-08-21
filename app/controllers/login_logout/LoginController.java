@@ -30,6 +30,7 @@ public class LoginController extends CustomController {
 
 		Form<LoginForm> loginForm = Form.form(LoginForm.class).bindFromRequest();
 		if (loginForm == null || loginForm.hasErrors()) {
+			Logger.debug("login form contains error");
 			flash("error", "Login credentials are not valid.");
 			return redirect(controllers.login_logout.routes.LoginController.preLogin());
 		}
@@ -43,6 +44,7 @@ public class LoginController extends CustomController {
 			UserLoginDAO userLoginDAO = new UserLoginDAO();
 			CommonUserCredentials commonUserCredentials = userLoginDAO.getValidUserCredentials(userName, password, redisSessionDao);
 			if(commonUserCredentials.getLoginStatus() != LoginStatus.validuser) {
+				Logger.warn(String.format("username:%s, is invalid user", userName));
 				flash("error",  LoginStatus.of(commonUserCredentials.getLoginStatus()));
 				return redirect(controllers.login_logout.routes.LoginController.preLogin());
 			}				
@@ -56,20 +58,25 @@ public class LoginController extends CustomController {
 
 			flash("success", "Welcome, " + commonUserCredentials.getName());
 		} catch (Exception exception){
+			Logger.error(String.format("exception: server exception occur during login for username:%s, message:", userName, exception.getMessage()));
 			flash("error", "Server problem occur. Please try after some time");
 			session().clear();
 			return redirect(controllers.login_logout.routes.LoginController.preLogin());
 		}
 
 		String loginType = session().get(SessionKey.logintype.name());
-		if(loginType != null && loginType.equals(LoginType.headinstitute.name())) {
+		if(loginType != null && loginType.equals(LoginType.of(LoginType.headinstitute))) {
+			Logger.info(String.format("messgae: username:%s, is loggin as %s user", userName, loginType));
 			return redirect(routes.SRPController.headInstituteHome());
-		} else if(loginType != null && loginType.equals(LoginType.institute.name())) {
+		} else if(loginType != null && loginType.equals(LoginType.of(LoginType.institute))) {
+			Logger.info(String.format("messgae: username:%s, is loggin as %s user", userName, loginType));
 			return redirect(routes.SRPController.instituteHome());
 		} else if(loginType != null && loginType.equals(LoginType.institute.name())) {
+			Logger.info(String.format("messgae: username:%s, is loggin as %s user", userName, LoginType.of(LoginType.general)));
 			return redirect(routes.SRPController.studentsHome());
 		}
 
+		Logger.info(String.format("messgae: username:%s, is loggin as %s user", userName, LoginType.of(LoginType.general)));
 		return redirect(routes.SRPController.index());
 	}
 
