@@ -8,6 +8,10 @@ GET		/gp_institute							   controllers.SRPController.headInstituteHome()
 GET		/institute								   controllers.SRPController.instituteHome()
 GET		/students								   controllers.SRPController.studentsHome()
 
+#Test
+#POST			/institute/first_upload1				   	   controllers.institute.InstituteController.upload1()
+#POST			/institute/second_upload2				   	   controllers.institute.InstituteController.upload1()
+
 # login handler
 GET     /login                       			   controllers.login_logout.LoginController.preLogin()
 POST    /login                       			   controllers.login_logout.LoginController.postLogin(phone: String ?="")
@@ -98,6 +102,7 @@ POST		/editSubjects/:subjectId				   controllers.institute.SubjectController.del
 #test
 GET			/addTest							   		controllers.CustomController.testRoute()
 POST		/addTest							   		controllers.CustomController.postRoute()
+GET			/shift/:shiftId							    controllers.CustomController.returnShiftDetails(shiftId: Long)
 
 
 # access rights
@@ -111,3 +116,4 @@ GET			/userInfo/:schoolId/:userName				controllers.user.UserController.getUser(s
 
 # initial registration
 GET			/registration								controllers.SRPController.preRegistration(reg_user_request : String ?="ERROR")
+

@@ -28,4 +28,10 @@ public class CustomController extends Controller {
 		return ok("returned "+ name +" "+ message);
 		
 	}
+
+	public Result returnShiftDetails(Long shiftId) {
+		return ok("returned "  + shiftId);
+		
+	}
+	
 }
