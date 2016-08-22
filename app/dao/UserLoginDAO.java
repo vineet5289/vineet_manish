@@ -361,7 +361,8 @@ public class UserLoginDAO {
 					}
 	
 					if(listOfRemovedBranch.size() > 0) {
-						String[] removedKey = (String[]) listOfRemovedBranch.toArray();
+						System.out.println(listOfRemovedBranch);
+						String[] removedKey = listOfRemovedBranch.toArray(new String[0]);
 						redisSessionDao.removed(userName, RedisKeyPrefix.of(RedisKeyPrefix.hiii), removedKey);					
 					}
 					redisSessionDao.save(userName, RedisKeyPrefix.of(RedisKeyPrefix.hiii), instituteMapDB);

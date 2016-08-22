@@ -10,12 +10,14 @@ import java.util.List;
 import models.SchoolBoard;
 import play.db.DB;
 import utils.DateUtiles;
+import utils.file.ImageUtils;
 import views.forms.institute.FirstTimeInstituteUpdateForm;
 import views.forms.institute.InstituteFormData;
 import views.forms.institute.InstituteGeneralInfoForm;
 import views.forms.institute.InstituteHeaderInfoForm;
 import views.forms.institute.InstituteShiftAndClassTimingInfoForm;
 import dao.Tables;
+import enum_package.FileUploadStatus;
 import enum_package.InstituteDaoProcessStatus;
 import enum_package.LoginType;
 import enum_package.LoginState;
@@ -482,6 +484,34 @@ public class SchoolProfileInfoDAO {
 		}
 		
 		return instituteDaoProcessStatus;
+	}
+
+	public FileUploadStatus updateProfileImageUrl(String url, Long id, String userName) {
+		FileUploadStatus fileUploadStatus = FileUploadStatus.unsuccessfullyProfilePicUpdate;
+		int numberOfRowUpdated = 0;
+		Connection connection = null;
+		PreparedStatement updateHeadInstitutePS = null;
+		String updateHeadInstituteQ = String.format("UPDATE %s SET %s=? WHERE %s=? AND %s=? AND %s=? limit 1;", Tables.HeadInstitute.table, Tables.HeadInstitute.logoUrl,
+				Tables.HeadInstitute.isActive, Tables.HeadInstitute.userName, Tables.HeadInstitute.id);
+		try {
+			connection = DB.getDataSource("srp").getConnection();
+			updateHeadInstitutePS = connection.prepareStatement(updateHeadInstituteQ);
+			updateHeadInstitutePS.setString(1, url);
+			updateHeadInstitutePS.setBoolean(2, true);
+			updateHeadInstitutePS.setString(3, userName);
+			updateHeadInstitutePS.setLong(4, id);
+			numberOfRowUpdated = updateHeadInstitutePS.executeUpdate();
+		} catch(Exception exception) {
+			exception.printStackTrace();
+			fileUploadStatus = FileUploadStatus.unsuccessfullyProfilePicUpdate;
+		}
+
+		if(numberOfRowUpdated == 0) {
+			fileUploadStatus = FileUploadStatus.unsuccessfullyProfilePicUpdate;
+		} else {
+			fileUploadStatus = FileUploadStatus.successfullyProfilePicUpdate;
+		}
+		return fileUploadStatus;
 	}
 
 	private String getString(String string) {

@@ -28,7 +28,11 @@ public class AddNewSchoolRequestDAO {
 
 		String requestNumber = "";
 		try {
+			int numberOfInstitute = 0;
 			requestNumber = StringUtils.getSchoolRequestRegistrationNumber(addNewSchoolRequest.getInstituteName());
+			if(addNewSchoolRequest.getGroupOfInstitute().trim().equalsIgnoreCase("single")) {
+				numberOfInstitute = 1;
+			}
 
 			connection = DB.getDataSource("srp").getConnection();
 			preparedStatement = connection.prepareStatement(insertQuery);
@@ -45,7 +49,7 @@ public class AddNewSchoolRequestDAO {
 			preparedStatement.setString(11, addNewSchoolRequest.getInstituteCountry().trim());
 			preparedStatement.setString(12, addNewSchoolRequest.getInstitutePinCode().trim());
 			preparedStatement.setString(13, addNewSchoolRequest.getGroupOfInstitute().trim());
-			preparedStatement.setInt(14, addNewSchoolRequest.getNoOfInstitute());
+			preparedStatement.setInt(14, numberOfInstitute);
 			preparedStatement.setString(15, StringUtils.getValidStringValue(addNewSchoolRequest.getQuery()));
 			preparedStatement.setString(16, requestNumber);
 			preparedStatement.execute();

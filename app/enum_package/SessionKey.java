@@ -5,6 +5,7 @@ import java.util.Map;
 
 public enum SessionKey {
 	username("username"),
+	userid("userid"),
 	authtoken("authtoken"),
 	logintype("logintype"),
 	loginstate("loginstate"),

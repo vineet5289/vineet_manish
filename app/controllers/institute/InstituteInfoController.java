@@ -199,7 +199,7 @@ public class InstituteInfoController extends ClassController {
 		List<String> weekList = WeekDayEnum.getWeekDisplayName();
 		List<String> classList = SchoolClassEnum.getClassDisplayName();
 		List<String> attendenceType = AttendenceTypeEnum.getAttendenceTypeDisplayName();
-		SchoolProfileInfoDAO schoolProfileInfoDAO = new SchoolProfileInfoDAO();
+		SchoolProfileInfoDAO schoolProfileInfoDAO = new SchoolProfileInfoDAO(	);
 		InstituteFormData instituteFormData = null;
 		try {
 			instituteFormData = schoolProfileInfoDAO.getNumberOfInstituteInGivenGroup(Long.valueOf(schoolId));

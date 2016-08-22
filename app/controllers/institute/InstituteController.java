@@ -24,6 +24,7 @@ import play.mvc.Http.MultipartFormData.FilePart;
 import play.mvc.Result;
 import play.mvc.Security;
 import security.institute.HeadInstituteBasicAuthCheck;
+import views.forms.institute.AddEmployee;
 import views.forms.institute.AddInstituteBranchForm;
 import views.html.viewClass.School.addBranchHeadInstitute;
 import controllers.CustomController;
@@ -89,60 +90,4 @@ public class InstituteController extends CustomController {
 
 		return redirect(routes.SRPController.headInstituteHome());
 	}
-
-//	@Security.Authenticated(HeadInstituteBasicAuthCheck.class)
-//	public Result postAddEmployee() {
-//		return ok("");
-//	}
-
-	public Result upload1() {
-		System.out.println("====== in upload 1");
-		  MultipartFormData body = request().body().asMultipartFormData();
-		  FilePart picture = body.getFile("fileName");
-		  if (picture != null) {
-			  System.out.println("inseid herrrrrrrrrr");
-		    String fileName = picture.getFilename();
-		    System.out.println("filname===> " + fileName);
-		    String contentType = picture.getContentType(); 
-		    File file = picture.getFile();
-		    File file1 = new File("/Users/vineet/Pictures/100_0924.JPG");
-		    System.out.println("===> file1=>" + file1.getAbsolutePath());
-		    try {
-		    	System.out.println(file.getAbsolutePath());
-		    	System.out.println("========= 1");
-				BufferedImage bi = ImageIO.read(file);
-				System.out.println("========= 2");
-				ImageIO.write(bi, "jpg", new File("/Users/vineet/imdire/abcd1.jpg"));
-				System.out.println("========= 3");
-			} catch (IOException exception) {
-				exception.printStackTrace();
-			}
-//			file.c
-//		    file.
-//		    flash("success", "File uploaded");
-//		    return ok("File uploaded");
-		  } else {
-		    flash("error", "Missing file");
-//		    return redirect();    
-		  }
-		  return ok("File uploaded");
-		}
-
-	public Result upload2() {
-		  MultipartFormData body = request().body().asMultipartFormData();
-		  FilePart picture = body.getFile("fileName");
-		  if (picture != null) {
-			  System.out.println("inseid herrrrrrrrrr");
-		    String fileName = picture.getFilename();
-		    System.out.println("filname===> " + fileName);
-		    String contentType = picture.getContentType(); 
-		    File file = picture.getFile();
-		    flash("success", "File uploaded");
-//		    return ok("File uploaded");
-		  } else {
-		    flash("error", "Missing file");
-//		    return redirect();    
-		  }
-		  return ok("File uploaded");
-		}
 }

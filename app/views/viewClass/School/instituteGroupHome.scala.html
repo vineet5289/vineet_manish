@@ -1,9 +1,25 @@
-@(headInstitute:List[models.HeadInstituteLoginDetails.BranchDetails],username:String
-)
+@(headInstitute:List[models.HeadInstituteLoginDetails.BranchDetails],username:String , logoURL:String)
 @viewClass.main("HOME | INSTITUTE")(""){
 @viewClass.School.headInstituteProfileTopMenu(headInstitute)
 <div class="ui horizontal segment">
    <a href="/institute/add/branch" class="ui  green button">ADD BRANCH</a>
+   </div>
+   <div class="ui horizontal segment">
+   <form method="post" action="/upload/@username/prof_img" enctype="multipart/form-data">
+                     <div class="ui icon big button" id="fileUpload">File Upload
+                            <i class="cloud icon"></i>
+        
+                      </div>
+                       <input type="file" id="new-file-upload" name="fileName" style="display: none">
+                       <button class="ui green button" type="submit">Send</button>
+                   </form>
+        
+</div>
+<div class="ui grid">
+  <img class="ui image" src="@routes.Assets.versioned("images/profile_images/1/profile_baea9b780569492f90a59f0e848b3674.jpg")">
+      @logoURL
+  </div>
+  
 </div>
 <div class="main container">
 <div class="ui stackable cards">
@@ -18,7 +34,7 @@
   <div class="content">
      <div class="ui teal medium header">
     
-<img class="ui avatar image" src="http://semantic-ui.com/images/avatar/large/elliot.jpg">
+<img class="ui avatar image" src="@logoURL">
 @institute.instituteName
   </div>
   <div class="meta"> @institute.instituteName</div>

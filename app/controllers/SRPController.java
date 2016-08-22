@@ -91,7 +91,7 @@ public class SRPController extends CustomController {
 		} else {
 
 			Logger.info(String.format("user:%s institute type is group, redirecting it to dashboard.", userName));
-			return ok(instituteGroupHome.render(headInstituteLoginDetails.getBranches(), headInstituteLoginDetails.getHeadInstituteName()));
+			return ok(instituteGroupHome.render(headInstituteLoginDetails.getBranches(), headInstituteLoginDetails.getHeadInstituteUserName(), headInstituteLoginDetails.getLogoUrl()));
 		}
 	}
 

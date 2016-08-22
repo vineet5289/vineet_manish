@@ -8,10 +8,6 @@ GET		/gp_institute							   controllers.SRPController.headInstituteHome()
 GET		/institute								   controllers.SRPController.instituteHome()
 GET		/students								   controllers.SRPController.studentsHome()
 
-#Test
-#POST			/institute/first_upload1				   	   controllers.institute.InstituteController.upload1()
-#POST			/institute/second_upload2				   	   controllers.institute.InstituteController.upload1()
-
 # login handler
 GET     /login                       			   controllers.login_logout.LoginController.preLogin()
 POST    /login                       			   controllers.login_logout.LoginController.postLogin(phone: String ?="")
@@ -56,8 +52,8 @@ POST		/institute/edit/header					   controllers.institute.InstituteInfoControlle
 GET			/institute/mand_info					   controllers.institute.InstituteInfoController.getInstituteMandInfo()
 POST		/institute/mand_info					   controllers.institute.InstituteInfoController.updateInstituteMandInfo()
 # employee registration request
-GET			/addemp									   controllers.EmployeeController.preAddEmployeeRequest()
-GET			/addemp									   controllers.EmployeeController.postAddEmployeeRequest()
+GET			/add_emp								   controllers.institute.AddOrDeleteEmployee.preAddEmployeeRequest()
+POST		/add_emp							   	   controllers.institute.AddOrDeleteEmployee.postAddEmployeeRequest()
 
 GET      	/registeremp                               controllers.EmployeeController.preEmployeeRegistrationRequest()
 POST     	/registeremp            	               controllers.EmployeeController.postEmployeeRegistrationRequest()
@@ -116,4 +112,8 @@ GET			/userInfo/:schoolId/:userName				controllers.user.UserController.getUser(s
 
 # initial registration
 GET			/registration								controllers.SRPController.preRegistration(reg_user_request : String ?="ERROR")
+
+# file or image upload 
+
+POST		/upload/:username/prof_img					controllers.file_controller.ImageController.uploadProfileImage(username) 
 
