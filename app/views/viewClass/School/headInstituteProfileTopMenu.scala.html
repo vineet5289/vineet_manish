@@ -1,6 +1,6 @@
 @(headInstitute:List[models.HeadInstituteLoginDetails.BranchDetails])
 
-  <div class="ui top fixed inverted borderless menu">
+  <div class="ui top fixed inverted borderless menu main">
   <div class="ui head container">
     <a class="launch item"><i class="icon list layout"></i> Menu</a>
     <div class="item">
@@ -11,7 +11,11 @@
         <i class="location arrow icon"></i>Switch Branch <i class="dropdown icon"></i>
         <div class="menu">
            @for(institute <- headInstitute){
+
   <a class="item" href="/institute/switch/branch" datavalue=""><i class="location arrow icon"></i></a>
+
+  
+
         }
         </div>
       </div>
@@ -19,40 +23,5 @@
     <p class="ui item right"><span class="greeting">Welcome, </span>Manish Kumar<span class="logout">| <a href="@login_logout.routes.LoginController.logout()">Log Out</a></span></p>
   </div>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
