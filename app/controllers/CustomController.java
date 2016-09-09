@@ -36,7 +36,10 @@ public class CustomController extends Controller {
 	}
 
 	public Result returnShiftDetails(Long shiftId) {
-		return ok("returned "  + shiftId);
+		//List<String> weekList = WeekDayEnum.getWeekDisplayName();
+		//List<String> classList = SchoolClassEnum.getClassDisplayName();
+		//List<String> attendenceType = AttendenceTypeEnum.getAttendenceTypeDisplayName();
+		return ok("returned ");
 		
 	}
 	

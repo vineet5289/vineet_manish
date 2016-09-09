@@ -9,6 +9,17 @@ $('.timeSelect').calendar({
 });
 
 
+$('.rangeTimestart').calendar({
+  type: 'time',
+  endTime: $('.rangeTimeend')
+});
+$('.rangeTimeend').calendar({
+  type: 'time',
+  startTime: $('.rangeTimestart')
+});
+
+
+
 
 
 

@@ -1,10 +1,16 @@
 @(schoolForm:       Form[views.forms.institute.InstituteFormData])
 @main3("School Information")(""){
 <style>
-.label{
-   color: #48D1CC;
+.ui.form input[type="text"],.ui.form input[type="email"]{
+   border: 1px solid #055020;
+   color: #1134F5 ;
+   background: #fff;
 }
-</style> 
+.ui.selection.dropdown{
+   border: 1px solid rgba(1, 8, 15, 0.7);
+   color: rgba(248, 119, 59, 0.9);
+}
+</style>
 <div class="stripe">
 <div class="main container">
    <div class="ui page grid">
@@ -22,6 +28,16 @@
          <!-- <div class="ui stackable grid" data-demo="true"> -->
          <!-- <div class="ui column"> -->
          <!--  New School request  -->
+         <h3>
+               Welcome , @schoolForm("instituteName").value
+            </h3>
+            <div class="header">
+               <div class="profile-image">
+                  <img class="ui avatar image" src="//semantic-ui.com/images/avatar/small/jenny.jpg">
+               </div>
+               <h5><strong>Manish,</strong>
+               <br/>Please Create Your Password and explore our world.</h5>
+            </div>
          <div class="item">
             <div class="image">
                <form
@@ -66,73 +82,92 @@
                      name="instituteEmail"
                      value='@schoolForm("instituteEmail").value'
                      readonly>
-                  <div class="field">
-                     <div class="label">School Name</div>
-                     <div class="ui focus input">
+
+                     
+
+                     <h4 class="ui dividing header">Already Provided Info</h4>
+                     <table class="ui two column table">
+               
+               <tbody>
+                  <tr>
+                     <td>Institute Name</td>
+                     <td>
+                     <div class="field">
+                           <div class="ui transparent input">
                      <input
                         name="instituteName"
-                        type="textarea"
+                        type="text"
                         value='@schoolForm("instituteName").value'
                         readonly>
+                       
                      </div>
                   </div>
-
-                       <div class="two fields">
+                     </div></td>
+                  </tr>
+                  <tr>
+                     <td>Institute Type</td>
+                     <td>
                      <div class="field">
-                        <div class="label">Institute Type</div>
-                        <div class="ui focus input">
-                        <div class="ui left icon input">
+                         <div class="ui transparent  input">
                            <input
-                              type="textarea"
+                              type="text"
                               name="groupOfInstitute"
                               value='@schoolForm("groupOfInstitute").value'
                               readonly>
-                              
+                             
                            
                         </div>
-                     </div>
-                     </div>
+                     </div></td>
+                  </tr>
+                  <tr>
+                     <td>Number Of Branches</td>
+                     <td>
                      <div class="field">
-                        <div class="label">Number Of Institute Branch</div>
-                        <div class="ui focus input">
-                        <div class="ui left icon input">
+                        <div class="ui transparent input">
                            <input
-                              type="textarea"
+                              type="text"
                               name="noOfInstitute"
                               value='@schoolForm("noOfInstitute").value'
                               readonly>
-                           <i class="key icon"></i>
+                           
                         </div>
-                     </div>
-                     </div>
-                  </div>
-                  <div class="field">
-                     <div class="label">School Mobile No.</div>
-                      <div class="ui focus input">
-                     <div class="ui left icon input">
+                     </div></td>
+                  </tr>
+                   <tr>
+                     <td>Contact No.</td>
+                     <td>
+                     <div class="field">
+                       <div class="ui transparent input">
                      <input
-                        type="textarea"
+                        type="text"
                         name="institutePhoneNumber"
                         value='@schoolForm("institutePhoneNumber").value'
                         readonly>
-                        <i class="phone icon"></i>
+                        
                      </div>
-                  </div>
-                  </div>
+                     </div></td>
+                  </tr>
+               </tbody>
+            </table>
+
+
+                  <h4 class="ui dividing header">Create Password</h4>
+                  <div class="ui segment">
                   <div class="field">
-                     <div class="label">Email</div>
-                     <div class="ui focus input">
+                     <div class="label">Email or UserName</div>
+                     <div class="ui input">
                      <input
-                        type="textarea"
+                        type="text"
                         name="instituteUserName"
                         value='@schoolForm("instituteEmail").value'
                         readonly>
                      </div>
+                     
                   </div>
                   <div class="two fields">
                      <div class="field">
                         <div class="label">Password</div>
-                        <div class="ui focus input">
+                        
                         <div class="ui left icon input">
                            <input
                               type="password"
@@ -141,11 +176,11 @@
                               autocomplete="off">
                            <i class="key icon"></i>
                         </div>
-                     </div>
+                    
                      </div>
                      <div class="field">
                         <div class="label">Confirm Password</div>
-                        <div class="ui focus input">
+                       
                         <div class="ui left icon input">
                            <input
                               type="password"
@@ -154,10 +189,12 @@
                               autocomplete="off">
                            <i class="key icon"></i>
                         </div>
-                     </div>
+                    
                      </div>
                   </div>
-                
+                  </div>
+
+                  <div class="ui hidden divider"></div>
                   <div class="two fields">
                      <div class="field">
                         <button class="ui green fluid left floated button" type="submit">Send Request</button>
