@@ -7,9 +7,7 @@ a {
   cursor: pointer;
 }
 
-a:hover {
-  text-decoration: underline;
-}
+
 
 .user {
   cursor: pointer;

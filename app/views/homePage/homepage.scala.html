@@ -1,7 +1,6 @@
 @(loginForm:Form[views.forms.LoginForm])
 @viewClass.main3("login")("index"){
 
-
  <div class="ui stackable grid" id="homepageImage" >
       <div class="ui container">
             <div class='ui circular labels' align="center">
@@ -142,19 +141,20 @@
                 <input
                     name="emailId"
                     placeholder="Enter Mail id entered at time of Registration request"
-                    type="text">
+                    type="email">
             </div>
             <div class="field">
-                <div class="ui label pointing below orange">
+                <div class="ui label pointing below teal">
                     *Reference Key
                 </div>
                 <input
                     name="referenceKey"
                     placeholder="Enter Reference Key Received on Mobile"
-                    type="text">
+                    type="text"
+                    >
             </div>
             <div class="field">
-                <div class="ui label pointing below inverted red">*OTP(One Time Password)</div>
+                <div class="ui label pointing below teal">*OTP(One Time Password)</div>
                 <input name="otp" placeholder="Enter OTP" type="password">
             </div>
             <div class="actions">
@@ -182,14 +182,7 @@
 
 @if(flash.containsKey("success")) {
 
-
-<div id="successFlash" class="ui compact message" data-html="<div class='ui message'>SUCCESSFULLY</div>">
-   
-</div>
-
-
-
-    <div class="ui green success message" id="success-message">
+<div class="ui green success topmsg message" id="success-message">
 
         <div class="ui popup" data-position="top right">
   <div class="header">SUCCESSFULLY</div>
@@ -205,7 +198,8 @@
 }
 @if(flash.containsKey("error")) {
 
-    <div class="ui red error message" id="error-message">
+    <div class="ui red error  message" id="error-message">
+        <i class="close icon"></i>
         <div class="header">
             ERROR
         </div>
