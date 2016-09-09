@@ -31,14 +31,12 @@ CREATE TABLE IF NOT EXISTS permissions (
 CREATE TABLE IF NOT EXISTS user_permissions (
   id bigint(20) NOT NULL AUTO_INCREMENT,
   user_name varchar(225) COLLATE utf8_unicode_ci,
-  permissions_id bigint(20) NOT NULL,
+  permissions_list text,
   institute_id bigint(20) NOT NULL,
   is_active tinyint(1) DEFAULT 1 NOT NULL,
   created_at timestamp DEFAULT CURRENT_TIMESTAMP,
   updated_at timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (id),
-  KEY FK_permissions_permissions_id (permissions_id),
-  CONSTRAINT FK_permissions_permissions_id FOREIGN KEY (permissions_id) REFERENCES permissions (id),
   KEY FK_institute_institute_id (institute_id),
   CONSTRAINT FK_institute_institute_id FOREIGN KEY (institute_id) REFERENCES institute (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
