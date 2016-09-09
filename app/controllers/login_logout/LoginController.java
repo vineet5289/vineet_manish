@@ -70,20 +70,19 @@ public class LoginController extends CustomController {
 		}
 
 		String loginType = session().get(SessionKey.logintype.name());
-//		if(loginType != null && loginType.equals(LoginType.of(LoginType.headinstitute))) {
-//			Logger.info(String.format("messgae: username:%s, is loggin as %s user", userName, loginType));
-//			return redirect(routes.SRPController.headInstituteHome());
-//		} else if(loginType != null && loginType.equals(LoginType.of(LoginType.institute))) {
-//			Logger.info(String.format("messgae: username:%s, is loggin as %s user", userName, loginType));
-//			return redirect(routes.SRPController.instituteHome());
-//		} else if(loginType != null && loginType.equals(LoginType.institute.name())) {
-//			Logger.info(String.format("messgae: username:%s, is loggin as %s user", userName, LoginType.of(LoginType.general)));
-//			return redirect(routes.SRPController.studentsHome());
-//		}
-//
-//		Logger.info(String.format("messgae: username:%s, is loggin as %s user", userName, LoginType.of(LoginType.general)));
-//		return redirect(routes.SRPController.index());
-		return redirect(routes.TestController.subjectPresent7(1l));
+		if(loginType != null && loginType.equals(LoginType.of(LoginType.headinstitute))) {
+			Logger.info(String.format("messgae: username:%s, is loggin as %s user", userName, loginType));
+			return redirect(routes.SRPController.headInstituteHome());
+		} else if(loginType != null && loginType.equals(LoginType.of(LoginType.institute))) {
+			Logger.info(String.format("messgae: username:%s, is loggin as %s user", userName, loginType));
+			return redirect(routes.SRPController.instituteHome());
+		} else if(loginType != null && loginType.equals(LoginType.institute.name())) {
+			Logger.info(String.format("messgae: username:%s, is loggin as %s user", userName, LoginType.of(LoginType.general)));
+			return redirect(routes.SRPController.studentsHome());
+		}
+
+		Logger.info(String.format("messgae: username:%s, is loggin as %s user", userName, LoginType.of(LoginType.general)));
+		return redirect(routes.SRPController.index());
 	}
 
 	public Result preLogin() {
