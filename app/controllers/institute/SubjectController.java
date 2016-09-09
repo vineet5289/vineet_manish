@@ -2,8 +2,11 @@ package controllers.institute;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import controllers.CustomController;
 import play.data.Form;
+import play.data.FormFactory;
 import play.mvc.Result;
 import views.forms.institute.SubjectForm;
 import views.html.test;
@@ -11,13 +14,16 @@ import dao.SubjectDAO;
 
 public class SubjectController extends CustomController {
 
+	@Inject
+	private FormFactory formFactory;
+
 	public Result preAddSubjects() {
-		Form<SubjectForm> subjectForm = Form.form(SubjectForm.class);
+		Form<SubjectForm> subjectForm = formFactory.form(SubjectForm.class);
 		return ok(test.render(subjectForm));
 	}
 
 	public Result postAddSubjects() {
-		Form<SubjectForm> subjectForm = Form.form(SubjectForm.class).bindFromRequest();
+		Form<SubjectForm> subjectForm = formFactory.form(SubjectForm.class).bindFromRequest();
 		if(subjectForm == null || subjectForm.hasErrors()) {
 			flash("error", "please check field details");
 			return redirect(controllers.institute.routes.SubjectController.preAddSubjects()); // check for correct redirection

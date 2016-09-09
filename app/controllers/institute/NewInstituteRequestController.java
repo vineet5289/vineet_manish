@@ -8,6 +8,7 @@ import javax.inject.Named;
 import models.Country;
 import models.State;
 import play.data.Form;
+import play.data.FormFactory;
 import play.mvc.Result;
 import views.forms.institute.AddNewInstituteRequest;
 import views.html.viewClass.newSchoolRequest;
@@ -22,6 +23,9 @@ import dao.school.AddNewSchoolRequestDAO;
 
 public class NewInstituteRequestController extends CustomController {
 
+	@Inject
+	private FormFactory formFactory;
+
 	final ActorSystem actorSystem = ActorSystem.create("srp");
 	final ActorRef mailerActor;
 	final ActorRef messageActor = actorSystem.actorOf(MessageActor.props());
@@ -31,13 +35,13 @@ public class NewInstituteRequestController extends CustomController {
 	}
 
 	public Result preAddNewInstituteRequest() {
-		Form<AddNewInstituteRequest> addNewSchoolRequest = Form.form(AddNewInstituteRequest.class);
+		Form<AddNewInstituteRequest> addNewSchoolRequest = formFactory.form(AddNewInstituteRequest.class);
 		List<String> countries = Country.getCountries();
 		return ok(newSchoolRequest.render(addNewSchoolRequest, countries, State.states));
 	}
 
 	public Result postAddNewInstituteRequest() {
-		Form<AddNewInstituteRequest> addNewSchoolRequestFrom = Form.form(AddNewInstituteRequest.class).bindFromRequest();
+		Form<AddNewInstituteRequest> addNewSchoolRequestFrom = formFactory.form(AddNewInstituteRequest.class).bindFromRequest();
 		System.out.println(addNewSchoolRequestFrom);
 		if(addNewSchoolRequestFrom == null || addNewSchoolRequestFrom.hasErrors()) {
 			flash("error", "Something parameter is missing or invalid in your registration request.");

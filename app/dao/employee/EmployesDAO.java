@@ -5,12 +5,16 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Map;
 
-import play.db.DB;
+import javax.inject.Inject;
+
+import play.db.Database;
+import play.db.NamedDatabase;
 import views.forms.employee.AddEmployeeForm;
 import dao.Tables;
 
 public class EmployesDAO {
 
+	@Inject @NamedDatabase("srp") private Database db;
 
 	public boolean addNewEmpRequest(AddEmployeeForm addEmployeeDetails, String reuestedPersonUserName, String schoolId) throws SQLException {
 		Connection connection = null;
@@ -30,7 +34,7 @@ public class EmployesDAO {
 		
 		String empCode = "";
 		try {
-			connection = DB.getDataSource("srp").getConnection();
+			connection = db.getConnection();
 			connection.setAutoCommit(false);
 			if(addEmployeeDetails.getEmpCode() == null || addEmployeeDetails.getEmpCode().trim().isEmpty()) {
 				

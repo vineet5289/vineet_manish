@@ -6,8 +6,9 @@ import java.io.IOException;
 import java.util.UUID;
 
 import javax.imageio.ImageIO;
+import javax.inject.Inject;
 
-import play.libs.F.Promise;
+import play.data.FormFactory;
 import play.mvc.Result;
 import play.mvc.Http.MultipartFormData;
 import play.mvc.Http.MultipartFormData.FilePart;
@@ -22,8 +23,11 @@ import enum_package.SessionKey;
 
 public class ImageController extends CustomController {
 
+	@Inject
+	private FormFactory formFactory;
+
 	public Result uploadProfileImage(String userName) {
-		MultipartFormData body = request().body().asMultipartFormData();
+		MultipartFormData<File> body = request().body().asMultipartFormData();
 
 		String userId = "1";//session().get(SessionKey.of(SessionKey.userid));
 		String loginType = session().get(SessionKey.of(SessionKey.logintype));
@@ -32,7 +36,7 @@ public class ImageController extends CustomController {
 			//retunr
 		}
 
-		FilePart picture = body.getFile("fileName");
+		FilePart<File> picture = body.getFile("fileName");
 		FileUploadStatus fileUploadStatus = null;
 		if (picture != null) {
 			String fileName = picture.getFilename();

@@ -5,9 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Inject;
+
 import models.SchoolBoard;
 import models.SchoolType;
 import play.data.Form;
+import play.data.FormFactory;
 import play.mvc.Result;
 import views.forms.institute.FirstTimeInstituteUpdateForm;
 import views.forms.institute.InstituteFormData;
@@ -26,6 +29,9 @@ import enum_package.SessionKey;
 import enum_package.WeekDayEnum;
 
 public class InstituteInfoController extends ClassController {
+
+	@Inject
+	private FormFactory formFactory;
 
 	/*
 	 * check usernaem and auth key validation
@@ -48,9 +54,9 @@ public class InstituteInfoController extends ClassController {
 		if(schoolHeaderInfo == null || schoolGeneralInfo == null || schoolShiftAndClassTimingInfo == null) {
 			System.out.println("any of the value is null");
 		}
-		Form<InstituteGeneralInfoForm> schoolGeneralInfoForm = Form.form(InstituteGeneralInfoForm.class).fill(schoolGeneralInfo);
-		Form<InstituteHeaderInfoForm> schoolHeaderInfoForm = Form.form(InstituteHeaderInfoForm.class).fill(schoolHeaderInfo);
-		Form<InstituteShiftAndClassTimingInfoForm> schoolShiftAndClassTimingInfoForm = Form.form(InstituteShiftAndClassTimingInfoForm.class).fill(schoolShiftAndClassTimingInfo);
+		Form<InstituteGeneralInfoForm> schoolGeneralInfoForm = formFactory.form(InstituteGeneralInfoForm.class).fill(schoolGeneralInfo);
+		Form<InstituteHeaderInfoForm> schoolHeaderInfoForm = formFactory.form(InstituteHeaderInfoForm.class).fill(schoolHeaderInfo);
+		Form<InstituteShiftAndClassTimingInfoForm> schoolShiftAndClassTimingInfoForm = formFactory.form(InstituteShiftAndClassTimingInfoForm.class).fill(schoolShiftAndClassTimingInfo);
 
 		System.out.println("schoolGeneralInfoForm=> " + schoolGeneralInfoForm);
 		System.out.println("schoolHeaderInfoForm=> " + schoolHeaderInfoForm);
@@ -72,14 +78,14 @@ public class InstituteInfoController extends ClassController {
 			return redirect(controllers.institute.routes.InstituteInfoController.getProfileInfo());
 		}
 
-		Form<InstituteGeneralInfoForm> schoolGeneralInfoFrom = Form.form(InstituteGeneralInfoForm.class).fill(schoolGeneralInfo);
+		Form<InstituteGeneralInfoForm> schoolGeneralInfoFrom = formFactory.form(InstituteGeneralInfoForm.class).fill(schoolGeneralInfo);
 		System.out.println("general Form errors ******" + schoolGeneralInfoFrom);
 		return ok(editSchoolInfo.render(schoolGeneralInfoFrom));
 	}
 
 	//auth + only superadmin, schoolId must present
 	public Result updateGeneralInfo() {
-		Form<InstituteGeneralInfoForm> schoolGeneralInfoFrom = Form.form(InstituteGeneralInfoForm.class).bindFromRequest();
+		Form<InstituteGeneralInfoForm> schoolGeneralInfoFrom = formFactory.form(InstituteGeneralInfoForm.class).bindFromRequest();
 		System.out.println("inside update => " + schoolGeneralInfoFrom);
 		if (schoolGeneralInfoFrom == null || schoolGeneralInfoFrom.hasErrors()) {
 			flash("error", "Error during school info update.");
@@ -112,7 +118,7 @@ public class InstituteInfoController extends ClassController {
 	}
 
 	public Result getShiftInfo() {
-		Form<InstituteShiftAndClassTimingInfoForm> schoolShiftAndClassTimingInfoForm = Form.form(InstituteShiftAndClassTimingInfoForm.class).bindFromRequest();
+		Form<InstituteShiftAndClassTimingInfoForm> schoolShiftAndClassTimingInfoForm = formFactory.form(InstituteShiftAndClassTimingInfoForm.class).bindFromRequest();
 		if (schoolShiftAndClassTimingInfoForm == null || schoolShiftAndClassTimingInfoForm.hasErrors()) {
 			flash("error", "Error during school class and shift information update.");
 			return redirect(controllers.institute.routes.InstituteInfoController.getProfileInfo());
@@ -121,7 +127,7 @@ public class InstituteInfoController extends ClassController {
 	}
 
 	public Result updateShiftInfo() {
-		Form<InstituteShiftAndClassTimingInfoForm> schoolShiftAndClassTimingInfoForm = Form.form(InstituteShiftAndClassTimingInfoForm.class).bindFromRequest();
+		Form<InstituteShiftAndClassTimingInfoForm> schoolShiftAndClassTimingInfoForm = formFactory.form(InstituteShiftAndClassTimingInfoForm.class).bindFromRequest();
 		if (schoolShiftAndClassTimingInfoForm == null || schoolShiftAndClassTimingInfoForm.hasErrors()) {
 			flash("error", "Error during school info update.");
 			return redirect(controllers.institute.routes.InstituteInfoController.getProfileInfo());
@@ -152,7 +158,7 @@ public class InstituteInfoController extends ClassController {
 	}
 
 	public Result getHeaderInfo() {
-		Form<InstituteHeaderInfoForm> schoolHeaderInfoForm = Form.form(InstituteHeaderInfoForm.class).bindFromRequest();
+		Form<InstituteHeaderInfoForm> schoolHeaderInfoForm = formFactory.form(InstituteHeaderInfoForm.class).bindFromRequest();
 		if (schoolHeaderInfoForm == null || schoolHeaderInfoForm.hasErrors()) {
 			flash("error", "Error during school ionformation update.");
 			return redirect(controllers.institute.routes.InstituteInfoController.getProfileInfo());
@@ -161,7 +167,7 @@ public class InstituteInfoController extends ClassController {
 	}
 
 	public Result updateHeaderInfo() {
-		Form<InstituteHeaderInfoForm> schoolHeaderInfoForm = Form.form(InstituteHeaderInfoForm.class).bindFromRequest();
+		Form<InstituteHeaderInfoForm> schoolHeaderInfoForm = formFactory.form(InstituteHeaderInfoForm.class).bindFromRequest();
 		if (schoolHeaderInfoForm == null || schoolHeaderInfoForm.hasErrors()) {
 			flash("error", "Error during school info update.");
 			return redirect(controllers.institute.routes.InstituteInfoController.getProfileInfo());
@@ -195,7 +201,7 @@ public class InstituteInfoController extends ClassController {
 	public Result getInstituteMandInfo() {
 		System.out.println("inside mand info");
 		String schoolId = session().get(SessionKey.instituteid.name());
-		Form<FirstTimeInstituteUpdateForm> firstTimeUpdateForm = Form.form(FirstTimeInstituteUpdateForm.class);
+		Form<FirstTimeInstituteUpdateForm> firstTimeUpdateForm = formFactory.form(FirstTimeInstituteUpdateForm.class);
 		List<String> weekList = WeekDayEnum.getWeekDisplayName();
 		List<String> classList = SchoolClassEnum.getClassDisplayName();
 		List<String> attendenceType = AttendenceTypeEnum.getAttendenceTypeDisplayName();
@@ -228,7 +234,7 @@ public class InstituteInfoController extends ClassController {
 	//session validation
 	public Result updateInstituteMandInfo() {
 		System.out.println("======>");
-		Form<FirstTimeInstituteUpdateForm> firstTimeSchoolUpdateForm = Form.form(FirstTimeInstituteUpdateForm.class).bindFromRequest();
+		Form<FirstTimeInstituteUpdateForm> firstTimeSchoolUpdateForm = formFactory.form(FirstTimeInstituteUpdateForm.class).bindFromRequest();
 		System.out.println("************firstTimeSchoolUpdateForm$$$$$$$$" + firstTimeSchoolUpdateForm);
 		if (firstTimeSchoolUpdateForm == null || firstTimeSchoolUpdateForm.hasErrors()) {
 			flash("error", "Some parameters are missing.");

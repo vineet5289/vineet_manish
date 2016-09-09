@@ -2,6 +2,7 @@ package dao.impl;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -14,7 +15,7 @@ import enum_package.RedisKeyPrefix;
 import enum_package.SessionKey;
 
 public class RedisSessionDao implements SessionDao {
-	private RedisConnectionPool redisConnectionPool;	
+	private RedisConnectionPool redisConnectionPool;
 	@Inject
 	public RedisSessionDao(RedisConnectionPool redisConnectionPool) {
 		this.redisConnectionPool = redisConnectionPool;
@@ -89,6 +90,9 @@ public class RedisSessionDao implements SessionDao {
 	@Override
 	public boolean removed(String userName, String redisPrefix, String... field) throws Exception {
 		Jedis jedis = redisConnectionPool.getJedisPool().getResource();
+		if(jedis == null)
+			System.out.println("==================>");
+		System.out.println("userName=>" +userName + ", field" + field);
 		Long deleated = jedis.hdel(redisPrefix + userName, field);
 		redisConnectionPool.getJedisPool().returnResource(jedis);
 		jedis.close();
@@ -102,5 +106,23 @@ public class RedisSessionDao implements SessionDao {
 		redisConnectionPool.getJedisPool().returnResource(jedis);
 		jedis.close();
 		return (deleated == 1);
+	}
+
+	@Override
+	public Set<String> getRoles(String userName, String redisPrefix) {
+		Jedis jedis = redisConnectionPool.getJedisPool().getResource();
+		Set<String> roles = jedis.smembers(redisPrefix + userName);
+		redisConnectionPool.getJedisPool().returnResource(jedis);
+		jedis.close();
+		return roles;
+	}
+
+	@Override
+	public Set<String> getPermission(String userName, String redisPrefix) {
+		Jedis jedis = redisConnectionPool.getJedisPool().getResource();
+		Set<String> permission = jedis.smembers(redisPrefix + userName);
+		redisConnectionPool.getJedisPool().returnResource(jedis);
+		jedis.close();
+		return permission;
 	}
 }

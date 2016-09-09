@@ -9,11 +9,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import enum_package.Role;
-import play.db.DB;
+import javax.inject.Inject;
+
+import enum_package.InstituteUserRole;
+import play.db.Database;
+import play.db.NamedDatabase;
 import models.UserInfo;
 
 public class UserFetchDAO {
+	@Inject @NamedDatabase("srp") private Database db;
 	private final String userNameField = "user_name";
 	private final String schoolIdField = "school_id";
 	private final String nameField = "name";
@@ -50,7 +54,7 @@ public class UserFetchDAO {
 		String selectQuery = String.format("SELECT %s, %s, %s, %s FROM %s WHERE %s=?;", userNameField, schoolIdField, nameField,
 				roleField, userSchoolTableName, schoolIdField);
 		try {
-			connection = DB.getDataSource("srp").getConnection();
+			connection = db.getConnection();
 			preparedStatement = connection.prepareStatement(selectQuery, ResultSet.TYPE_FORWARD_ONLY);
 			preparedStatement.setLong(1, schoolId);
 			resultSet = preparedStatement.executeQuery();
@@ -66,8 +70,8 @@ public class UserFetchDAO {
 				userInfo.setRole(role);
 
 				String key = "OTHER";
-				if(role.equalsIgnoreCase(Role.teacher.name()) || role.equalsIgnoreCase(Role.student.name()) ||
-						userInfos.containsKey(Role.guardian.name())) {
+				if(role.equalsIgnoreCase(InstituteUserRole.employee.name()) || role.equalsIgnoreCase(InstituteUserRole.student.name()) ||
+						userInfos.containsKey(InstituteUserRole.guardian.name())) {
 					key = role.toUpperCase();
 				}
 
@@ -152,7 +156,7 @@ public class UserFetchDAO {
 				addressLine1Field, addressLine2Field, cityField, stateField, pinCodeField, countryField, phoneNumber1Field, phoneNumber2Field, employeeTableName,
 				schoolIdField, userNameField);
 		try{
-			connection = DB.getDataSource("srp").getConnection();
+			connection = db.getConnection();
 			preparedStatement = connection.prepareStatement(selectQuery, ResultSet.TYPE_FORWARD_ONLY);
 			preparedStatement.setLong(1, schoolId);
 			preparedStatement.setString(2, userName);

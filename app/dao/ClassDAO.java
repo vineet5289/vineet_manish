@@ -5,18 +5,19 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
-import play.db.DB;
+import javax.inject.Inject;
+
+import play.db.Database;
+import play.db.NamedDatabase;
 import views.forms.institute.ClassForm;
 import views.forms.institute.DisplayClassForm;
 
 public class ClassDAO {
+	@Inject @NamedDatabase("srp") private Database db;
 	private String tableName = "class";
 	private String className = "class_name";
 	private String schoolIdField = "school_id";
@@ -36,7 +37,7 @@ public class ClassDAO {
 		String insertQuery = String.format("INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s) VALUES(?, ?, ?, ?, ?, ?, ?);", 
 				tableName, className, schoolIdField, classStartTime, classEndTime, noOfPeriod, parentClass, userNameField);
 		try {
-			connection = DB.getDataSource("srp").getConnection();
+			connection = db.getConnection();
 			connection.setAutoCommit(false);
 			insertStatement = connection.prepareStatement(insertQuery);
 			for(ClassForm.AddClass c : classes) {
@@ -91,7 +92,7 @@ public class ClassDAO {
 		String updateQuery = String.format("UPDATE %s SET %s=?, %s=?, %s=?, %s=? WHERE %s=? AND %s=?;", 
 				tableName, classStartTime, classEndTime, noOfPeriod, userNameField, schoolId, className);
 		try {
-			connection = DB.getDataSource("srp").getConnection();
+			connection = db.getConnection();
 			updateStatement = connection.prepareStatement(updateQuery);
 			updateStatement.setString(1, editClass.getClassStartTime());
 			updateStatement.setString(2, editClass.getClassEndTime());
@@ -125,7 +126,7 @@ public class ClassDAO {
 				tableName, schoolIdField, isActive);
 		try {
 			Map<String, List<DisplayClassForm>> classes = new HashMap<String, List<DisplayClassForm>>();
-			connection = DB.getDataSource("srp").getConnection();
+			connection = db.getConnection();
 			selectStatement = connection.prepareStatement(selectQuery);
 			selectStatement.setLong(1, schoolId);
 			selectStatement.setBoolean(2, true);
@@ -176,7 +177,7 @@ public class ClassDAO {
 		int result = 0;
 		String updateQuery = String.format("UPDATE %s SET %s=? WHERE %s=? AND %s=?;", tableName, isActive, schoolId, className);
 		try {
-			connection = DB.getDataSource("srp").getConnection();
+			connection = db.getConnection();
 			updateStatement = connection.prepareStatement(updateQuery);
 			updateStatement.setBoolean(1, false);
 			updateStatement.setLong(2, schoolId);
@@ -210,7 +211,7 @@ public class ClassDAO {
 				className, classStartTime, classEndTime, noOfPeriod, parentClass, userNameField, isActive, tableName,
 				schoolIdField, parentClass, className, isActive);
 		try {
-			connection = DB.getDataSource("srp").getConnection();
+			connection = db.getConnection();
 			connection.setAutoCommit(false);
 			selectStatement = connection.prepareStatement(selectQuery);
 			selectStatement.setLong(1, schoolId);

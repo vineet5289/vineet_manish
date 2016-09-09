@@ -1,6 +1,7 @@
 package dao;
 
 import java.util.Map;
+import java.util.Set;
 
 import models.LoginDetails;
 
@@ -16,4 +17,7 @@ public interface SessionDao {
 
 	public boolean removed(String userName, String redisPrefix, String... field) throws Exception;
 	public boolean removedAll(String userName, String redisPrefix) throws Exception;
+
+	public Set<String> getRoles(String userName, String redisPrefix);
+	public Set<String> getPermission(String userName, String redisPrefix);
 }

@@ -4,8 +4,11 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Inject;
+
 import controllers.CustomController;
 import play.data.Form;
+import play.data.FormFactory;
 import play.mvc.Result;
 import views.forms.institute.ClassForm;
 import views.forms.institute.DisplayClassForm;
@@ -16,13 +19,16 @@ import views.html.viewClass.addClasses;
 
 
 public class ClassController extends CustomController {
+	@Inject
+	private FormFactory formFactory;
+
 	public Result preAddClass() {
-		Form<ClassForm> classForm = Form.form(ClassForm.class);
+		Form<ClassForm> classForm = formFactory.form(ClassForm.class);
 		return ok(addClasses.render(classForm));
 	}
 
 	public Result postAddClass() {
-		Form<ClassForm> classForm = Form.form(ClassForm.class).bindFromRequest();
+		Form<ClassForm> classForm = formFactory.form(ClassForm.class).bindFromRequest();
 		if (classForm == null || classForm.hasErrors()) {
 			flash("error", "Some server exception happen");
 			return redirect(controllers.login_logout.routes.LoginController.preLogin()); // check for correct redirection
@@ -74,7 +80,7 @@ public class ClassController extends CustomController {
 	}
 
 	public Result editClass(String className) {
-		Form<DisplayClassForm> editClassForm = Form.form(DisplayClassForm.class).bindFromRequest();
+		Form<DisplayClassForm> editClassForm = formFactory.form(DisplayClassForm.class).bindFromRequest();
 		String schoolIdFromSession = "1";//session().get(SessionKey.SCHOOL_ID.name());
 		String userName = "vineet";//session().get(SessionKey.USER_NAME.name());
 
@@ -163,7 +169,7 @@ public class ClassController extends CustomController {
 			return redirect(controllers.login_logout.routes.LoginController.preLogin()); // check for correct redirection
 		}
 
-		Form<DisplayClassForm> sectionFormDetails = Form.form(DisplayClassForm.class).bindFromRequest();
+		Form<DisplayClassForm> sectionFormDetails = formFactory.form(DisplayClassForm.class).bindFromRequest();
 		boolean isSuccessfull = true;
 		if(sectionFormDetails == null || sectionFormDetails.hasErrors()) {
 			flash("error", "Some server exception happen. Please try again.");

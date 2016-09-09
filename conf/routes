@@ -7,21 +7,25 @@ GET     /        	                        	   controllers.SRPController.index()
 GET		/gp_institute							   controllers.SRPController.headInstituteHome()
 GET		/institute								   controllers.SRPController.instituteHome()
 GET		/students								   controllers.SRPController.studentsHome()
+GET		/test_deadbolt_1						   controllers.TestController.subjectPresent()
+GET		/test_deadbolt_2						   controllers.TestController.subjectPresent2()
+GET		/test_deadbolt_3						   controllers.TestController.subjectPresent3()
+GET		/test_deadbolt_4						   controllers.TestController.subjectPresent4()
+GET		/test_deadbolt_5						   controllers.TestController.subjectPresent5()
+GET		/test_deadbolt_6/:schoolId					controllers.TestController.subjectPresent6(schoolId: Long)
+GET		/test_deadbolt_7/:schoolId					controllers.TestController.subjectPresent7(schoolId: Long)
 
 # login handler
 GET     /login                       			   controllers.login_logout.LoginController.preLogin()
 POST    /login                       			   controllers.login_logout.LoginController.postLogin(phone: String ?="")
 GET     /logout                       			   controllers.login_logout.LoginController.logout()
 
-# mailer
-GET       /sendmail                           	   controllers.MailController.sendMailTest()
-
 # Message Api
 GET			/sendMessage							   controllers.message.MobileMessageController.sendMessage()
 
 # Notification Listening Controller
-GET     	/listen                           		   controllers.message.NotificationListeningController.listen()
-GET     	/listeningWS                     		   controllers.message.NotificationListeningController.listeningSocket()
+#GET     	/listen                           		   controllers.message.NotificationListeningController.listen()
+#GET     	/listeningWS                     		   controllers.message.NotificationListeningController.listeningSocket()
 
 # Notification Controller
 POST     	/notification                              controllers.message.NotificationController.notification()

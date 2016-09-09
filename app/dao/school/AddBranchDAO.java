@@ -6,8 +6,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import javax.inject.Inject;
+
+import play.db.Database;
+import play.db.NamedDatabase;
 import actors.SchoolRequestActorProtocol;
-import play.db.DB;
 import utils.RandomGenerator;
 import utils.StringUtils;
 import views.forms.institute.AddInstituteBranchForm;
@@ -15,9 +18,11 @@ import dao.Tables;
 import enum_package.InstituteDaoProcessStatus;
 import enum_package.LoginState;
 import enum_package.LoginType;
-import enum_package.Role;
+import enum_package.InstituteUserRole;
 
 public class AddBranchDAO {
+
+	@Inject @NamedDatabase("srp") private Database db;
 
 	public SchoolRequestActorProtocol.AddInstituteBranch addBranch(AddInstituteBranchForm addInstituteBranch, Long headInstituteId) throws SQLException {
 		int numberOfInstitute = 0;
@@ -56,7 +61,7 @@ public class AddBranchDAO {
 			password = StringUtils.generatePassword();
 			String bCryptPassword = RandomGenerator.getBCryptPassword(password);
 
-			connection = DB.getDataSource("srp").getConnection();
+			connection = db.getConnection();
 			connection.setAutoCommit(false);
 //			loginInsertPS = connection.prepareStatement(loginInsertQ);
 			instituteInsertPS = connection.prepareStatement(instituteInsertQ, Statement.RETURN_GENERATED_KEYS);

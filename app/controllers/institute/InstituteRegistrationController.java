@@ -2,7 +2,10 @@ package controllers.institute;
 
 import java.util.Map;
 
+import javax.inject.Inject;
+
 import play.data.Form;
+import play.data.FormFactory;
 import play.mvc.Result;
 import play.mvc.Security;
 import security.InstituteRegisterRequestAuthenticator;
@@ -16,9 +19,12 @@ import enum_package.InstituteDaoProcessStatus;
 import enum_package.SessionKey;
 
 public class InstituteRegistrationController extends CustomController {
+	@Inject
+	private FormFactory formFactory;
+
 	public Result submitOTP() {
 		session().clear();
-		Form<OTPField> otpForm = Form.form(OTPField.class).bindFromRequest();
+		Form<OTPField> otpForm = formFactory.form(OTPField.class).bindFromRequest();
 		if(otpForm == null || otpForm.hasErrors()) {
 			flash("error", "Something parameter is missing or invalid in request. Please check and enter valid value");
 			return redirect(controllers.login_logout.routes.LoginController.preLogin());// same otp page call
@@ -42,7 +48,7 @@ public class InstituteRegistrationController extends CustomController {
 				session(SessionKey.otpkey.name(), otp);
 				session(SessionKey.reginstituterequestid.name(), Long.toString(schoolData.getRegisterInstituteRequestId()));
 
-				Form<InstituteFormData> schoolFormData = Form.form(InstituteFormData.class).fill(schoolData);
+				Form<InstituteFormData> schoolFormData = formFactory.form(InstituteFormData.class).fill(schoolData);
 
 				return ok(SchoolRegistration.render(schoolFormData));
 			} else {
@@ -58,7 +64,7 @@ public class InstituteRegistrationController extends CustomController {
 
 	@Security.Authenticated(InstituteRegisterRequestAuthenticator.class)
 	public Result postInstituteRegistrationRequest() {
-		Form<InstituteFormData> schoolForm = Form.form(InstituteFormData.class).bindFromRequest();
+		Form<InstituteFormData> schoolForm = formFactory.form(InstituteFormData.class).bindFromRequest();
 		if(schoolForm == null || schoolForm.hasErrors()) {
 			System.out.println(schoolForm.errors());
 			flash("error", "Something parameter is missing or invalid in your registration request.");

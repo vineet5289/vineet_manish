@@ -13,23 +13,28 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
-import dao.impl.RedisSessionDao;
+import javax.inject.Inject;
+
 import models.CommonUserCredentials;
 import models.HeadInstituteLoginDetails;
-import models.HeadInstituteLoginDetails.BranchDetails;
 import models.LoginDetails;
 import play.Logger;
-import play.db.DB;
+import play.db.Database;
+import play.db.NamedDatabase;
 import utils.ParseString;
 import utils.RandomGenerator;
 import utils.ValidateFields;
 import views.forms.AccessRightsForm;
+import dao.impl.RedisSessionDao;
 import enum_package.LoginStatus;
 import enum_package.RedisKeyPrefix;
-import enum_package.Role;
+import enum_package.InstituteUserRole;
 import enum_package.SessionKey;
 
 public class UserLoginDAO {
+	
+	private Database db;
+
 	private String idField = "id";
 	private String userNameField = "user_name";
 	private String roleField = "role";
@@ -42,6 +47,11 @@ public class UserLoginDAO {
 	private String loginTableName = "login";
 	private String userSuperUserTableName = "user_super_user";
 
+	@Inject
+	public UserLoginDAO(@NamedDatabase("srp") Database db) {
+		this.db = db;
+	}
+	
 	public CommonUserCredentials getValidUserCredentials(String userName, String password, RedisSessionDao redisSessionDao) throws SQLException {
 		CommonUserCredentials userCredentials = new CommonUserCredentials();
 		Connection connection = null;
@@ -63,7 +73,7 @@ public class UserLoginDAO {
 				return userCredentials;
 			}
 
-			connection = DB.getDataSource("srp").getConnection();
+			connection = db.getConnection();
 			connection.setAutoCommit(false);
 
 			loginSelectPS = connection.prepareStatement(loginSelectQ, ResultSet.TYPE_FORWARD_ONLY);
@@ -93,9 +103,19 @@ public class UserLoginDAO {
 			if((loginSessionCount ==  authKeyMap.size() &&  loginSessionCount >= 3)
 					|| (loginSessionCount <  authKeyMap.size() && loginSessionCount >= 3)
 					|| (loginSessionCount >  authKeyMap.size() &&  authKeyMap.size() >= 3)){
+				System.out.println("===1>" + (authKeyMap.size() - 2));
+				System.out.println("===2>" + (authKeyMap.size()));
+				System.out.println("===3>" + loginSessionCount);
+				System.out.println("===4>" + authKeyMap);
 				removedKey = getCorrectSessionIndex(authKeyMap, (authKeyMap.size() - 2));
 			}
+
 			if(removedKey != null && removedKey.length != 0) {
+				System.out.println("rem.size=" + removedKey.length);
+				for(String rk : removedKey) {
+					System.out.println("rk=>" + rk);
+				}
+
 				redisSessionDao.removed(userName, RedisKeyPrefix.of(RedisKeyPrefix.auth), removedKey);
 			}
 
@@ -118,6 +138,7 @@ public class UserLoginDAO {
 			otherUserCred.put(SessionKey.loginstate.name(), loginResultSet.getString(Tables.Login.passwordState));
 			otherUserCred.put(SessionKey.userrole.name(), loginResultSet.getString(Tables.Login.role));
 
+			System.out.println("authKeyMap===>" + authKeyMap);
 			redisSessionDao.save(userName, RedisKeyPrefix.of(RedisKeyPrefix.auth), authKeyMap);
 			redisSessionDao.save(userName, RedisKeyPrefix.of(RedisKeyPrefix.buc), otherUserCred);
 
@@ -160,7 +181,7 @@ public class UserLoginDAO {
 				Tables.Login.id);
 
 		try {
-			connection = DB.getDataSource("srp").getConnection();
+			connection = db.getConnection();
 			connection.setAutoCommit(false);
 
 			loginSelectPS = connection.prepareStatement(loginSelectQ, ResultSet.TYPE_FORWARD_ONLY);
@@ -214,7 +235,7 @@ public class UserLoginDAO {
 	private String[] getCorrectSessionIndex(Map<String, String> authKeyMap, int numberOfkeyWillRemoved) {
 		String[] removedKey = new String[numberOfkeyWillRemoved];
 		Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-		for(int i = 0; i < numberOfkeyWillRemoved && i < authKeyMap.size(); i++) {			
+		for(int i = 0; i < numberOfkeyWillRemoved; i++) {		
 			long olderLoginEpochTime = calendar.getTimeInMillis() / 1000L;
 			String ketToBeRemoved = "";
 			for(Map.Entry<String, String> entry : authKeyMap.entrySet()) {
@@ -255,11 +276,12 @@ public class UserLoginDAO {
 		HeadInstituteLoginDetails headInstituteLoginDetails = new HeadInstituteLoginDetails();;
 		try {
 			String authKeyRedis = redisSessionDao.get(userName, RedisKeyPrefix.of(RedisKeyPrefix.auth), authToken);
+			System.out.println("authKeyRedis=> " + authKeyRedis);
 			if(authKeyRedis == null || authKeyRedis.isEmpty()) {
 				headInstituteLoginDetails.setLoginStatus(LoginStatus.servererror);
 			}
 
-			connection = DB.getDataSource("srp").getConnection();
+			connection = db.getConnection();
 			connection.setAutoCommit(false);
 			loginPS = connection.prepareStatement(loginSelectQ, ResultSet.TYPE_FORWARD_ONLY);
 			headInstitutePS = connection.prepareStatement(headInstituteSelectQ, ResultSet.TYPE_FORWARD_ONLY);
@@ -368,7 +390,7 @@ public class UserLoginDAO {
 					redisSessionDao.save(userName, RedisKeyPrefix.of(RedisKeyPrefix.hiii), instituteMapDB);
 				}
 
-				redisSessionDao.save(userName, RedisKeyPrefix.of(RedisKeyPrefix.auth), authKeyRedis, Long.toString(epocTime));
+				redisSessionDao.save(userName, RedisKeyPrefix.of(RedisKeyPrefix.auth), authToken, Long.toString(epocTime));
 			}
 			connection.commit();
 		} catch(Exception exception) {
@@ -411,7 +433,7 @@ public class UserLoginDAO {
 
 		LoginDetails loginDetails = new LoginDetails();;
 		try {
-			connection = DB.getDataSource("srp").getConnection();
+			connection = db.getConnection();
 			loginPreparedStatement = connection.prepareStatement(loginSelectQuery, ResultSet.TYPE_FORWARD_ONLY);
 			loginPreparedStatement.setString(1, userName);
 			loginPreparedStatement.setBoolean(2, true);
@@ -454,7 +476,7 @@ public class UserLoginDAO {
 		String userSuperUserSelectQuery = String.format("SELECT %s, %s, %s, %s FROM %s WHERE %s=? AND %s=?;", Tables.Login.userName, Tables.Login.name,
 				Tables.Login.instituteId, superUserNameField, userSuperUserTableName, superUserNameField, isActiveField);
 		try {
-			connection = DB.getDataSource("srp").getConnection();
+			connection = db.getConnection();
 			userSuperUserPreparedStatement = connection.prepareStatement(userSuperUserSelectQuery, ResultSet.TYPE_FORWARD_ONLY);
 			userSuperUserPreparedStatement.setString(1, superUserName);
 			userSuperUserPreparedStatement.setBoolean(2, true);
@@ -466,7 +488,7 @@ public class UserLoginDAO {
 
 				LoginDetails userDetail = new LoginDetails();
 				userDetail.setAuthToken(userAuthToken);
-				userDetail.setRole(Role.student.name());
+				userDetail.setRole(InstituteUserRole.student.name());
 				userDetail.setUserName(userSuperUserResultSet.getString(userNameField));
 				userDetail.setSchoolId(userSuperUserResultSet.getLong(schoolIdField));
 				userDetails.add(userDetail);
@@ -499,7 +521,7 @@ public class UserLoginDAO {
 				schoolIdField, roleField, accessRightsField, isActiveField, loginTableName, userNameField, isActiveField);
 		boolean isSuccessful = true;
 		try {
-			connection = DB.getDataSource("srp").getConnection();
+			connection = db.getConnection();
 			connection.setAutoCommit(false);
 			for(AccessRightsForm.UserAccessRights accessRight : accessRights) {
 				String userName = accessRight.getUserName();
@@ -549,7 +571,7 @@ public class UserLoginDAO {
 		ResultSet resultSet = null;
 		String selectQuery = String.format("SELECT * FROM %s WHERE user_name=? AND auth_token=?;", loginTableName);
 		try {
-			connection = DB.getDataSource("srp").getConnection();
+			connection = db.getConnection();
 			preparedStatement = connection.prepareStatement(selectQuery, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
 			preparedStatement.setString(1, userName);
 			preparedStatement.setString(2, authKey);
@@ -569,6 +591,47 @@ public class UserLoginDAO {
 				connection.close();
 		}
 		return false;
+	}
+
+	public boolean isEmployeeInSameInstitute(String firstEmpUsername, String secondEmpUsername) throws SQLException {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		String selectQuery = String.format("SELECT %s FROM %s WHERE %s in (?, ?) AND %s = ?;", Tables.Login.instituteId, Tables.Login.table,
+				Tables.Login.userName, Tables.Login.isActive);
+
+		boolean bothEmpFromSameInstitute = false;
+		try {
+			connection = db.getConnection();
+			preparedStatement = connection.prepareStatement(selectQuery, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
+			preparedStatement.setString(1, firstEmpUsername);
+			preparedStatement.setString(2, secondEmpUsername);
+			preparedStatement.setBoolean(3, true);
+			resultSet = preparedStatement.executeQuery();
+			Long firstInstituteId = 0l;
+			Long secondInstituteId = 0l;
+			if(resultSet.next()){
+				firstInstituteId = resultSet.getLong(Tables.Login.instituteId);
+			}
+
+			if(resultSet.next()){
+				secondInstituteId = resultSet.getLong(Tables.Login.instituteId);
+			}
+
+			bothEmpFromSameInstitute = firstInstituteId != 0 && (firstInstituteId == secondInstituteId);
+
+		} catch(Exception exception) {
+			exception.printStackTrace();
+			bothEmpFromSameInstitute = false;
+		} finally {
+			if(resultSet != null)
+				resultSet.close();
+			if(preparedStatement != null)
+				preparedStatement.close();
+			if(connection != null)
+				connection.close();
+		}
+		return bothEmpFromSameInstitute;
 	}
 
 	private boolean isPasswordMatch(String enteredPassword, String dbPassword) throws NoSuchAlgorithmException {

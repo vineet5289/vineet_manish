@@ -1,15 +1,19 @@
 package controllers;
 
-import java.util.Map;
+import javax.inject.Inject;
 
-import dao.employee.EmployesDAO;
-import enum_package.SessionKey;
 import play.data.Form;
+import play.data.FormFactory;
 import play.mvc.Result;
 import views.forms.employee.AddEmployeeForm;
 import views.forms.institute.InstituteFormData;
+import dao.employee.EmployesDAO;
+import enum_package.SessionKey;
 
 public class EmployeeController extends CustomController {
+
+	@Inject
+	private FormFactory formFactory;
 
 	/*
 	 * validate valid user
@@ -19,7 +23,7 @@ public class EmployeeController extends CustomController {
 		String userName = session().get(SessionKey.username.name());
 		String userAuthKey = session().get(SessionKey.authtoken.name());
 		String schoolId = session().get(SessionKey.instituteid.name());
-		Form<AddEmployeeForm> addEmployeeForm = Form.form(AddEmployeeForm.class);
+		Form<AddEmployeeForm> addEmployeeForm = formFactory.form(AddEmployeeForm.class);
 		return ok("addEmployeeForm"); // may return all requested employee, not yet register
 	}
 
@@ -28,7 +32,7 @@ public class EmployeeController extends CustomController {
 	 * validate user has access right or not
 	 * */
 	public Result postAddEmployeeRequest() {
-		Form<AddEmployeeForm> addEmployeeForm = Form.form(AddEmployeeForm.class).bindFromRequest();
+		Form<AddEmployeeForm> addEmployeeForm = formFactory.form(AddEmployeeForm.class).bindFromRequest();
 		if(addEmployeeForm == null || addEmployeeForm.hasErrors()) {
 			flash("error", "Something parameter is missing or invalid in add employee request.");
 			return redirect(""); // redirect to add employee page
@@ -54,7 +58,7 @@ public class EmployeeController extends CustomController {
 
 	public Result preEmployeeRegistrationRequest() {
 		InstituteFormData studentData = new InstituteFormData();
-		Form<InstituteFormData> schoolForm = Form.form(InstituteFormData.class).fill(studentData);
+		Form<InstituteFormData> schoolForm = formFactory.form(InstituteFormData.class).fill(studentData);
 		return ok("");
 //		return ok(schoolFieldSetIndex.render(schoolForm,
 //				State.makeStateMap(studentData),
@@ -64,7 +68,7 @@ public class EmployeeController extends CustomController {
 	}
 
 	public Result postEmployeeRegistrationRequest() {
-		Form<InstituteFormData> schoolForm = Form.form(InstituteFormData.class).bindFromRequest();
+		Form<InstituteFormData> schoolForm = formFactory.form(InstituteFormData.class).bindFromRequest();
 		return ok("school Registration completed");
 
 	}

@@ -1,5 +1,6 @@
 package controllers;
 
+import play.data.FormFactory;
 import play.mvc.Controller;
 import play.mvc.Result;
 import views.html.viewClass.testPage;
@@ -11,7 +12,12 @@ import views.html.viewClass.testAcessRight;
 
 import java.util.Map;
 
+import javax.inject.Inject;
+
 public class CustomController extends Controller {
+	@Inject
+	private FormFactory formFactory;
+
 	public Result testRoute() {
 		return ok(test4.render());
 	}

@@ -19,6 +19,7 @@ import akka.actor.ActorSystem;
 import models.Country;
 import models.State;
 import play.data.Form;
+import play.data.FormFactory;
 import play.mvc.Http.MultipartFormData;
 import play.mvc.Http.MultipartFormData.FilePart;
 import play.mvc.Result;
@@ -35,6 +36,9 @@ import enum_package.SessionKey;
 
 public class InstituteController extends CustomController {
 
+	@Inject
+	private FormFactory formFactory;
+
 	final ActorSystem actorSystem = ActorSystem.create("srp");
 	final ActorRef mailerActor;
 	final ActorRef messageActor = actorSystem.actorOf(MessageActor.props());
@@ -50,14 +54,14 @@ public class InstituteController extends CustomController {
 
 	@Security.Authenticated(HeadInstituteBasicAuthCheck.class)
 	public Result preAddInstituteBranch() {
-		Form<AddInstituteBranchForm> addInstituteBranchForm = Form.form(AddInstituteBranchForm.class);
+		Form<AddInstituteBranchForm> addInstituteBranchForm = formFactory.form(AddInstituteBranchForm.class);
 		List<String> countries = Country.getCountries();
 		return ok(addBranchHeadInstitute.render(addInstituteBranchForm, countries, State.states));
 	}
 
 	@Security.Authenticated(HeadInstituteBasicAuthCheck.class)
 	public Result postAddInstituteBranch() {
-		Form<AddInstituteBranchForm> addInstituteBranchForm = Form.form(AddInstituteBranchForm.class).bindFromRequest();
+		Form<AddInstituteBranchForm> addInstituteBranchForm = formFactory.form(AddInstituteBranchForm.class).bindFromRequest();
 		if(addInstituteBranchForm == null || addInstituteBranchForm.hasErrors()) {
 			flash("error", "Some field are missing or invalid. Please try again.");
 			return redirect(controllers.institute.routes.InstituteController.preAddInstituteBranch());

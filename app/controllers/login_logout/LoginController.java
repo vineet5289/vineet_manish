@@ -5,6 +5,7 @@ import javax.inject.Inject;
 import models.CommonUserCredentials;
 import play.Logger;
 import play.data.Form;
+import play.data.FormFactory;
 import play.mvc.Result;
 import play.mvc.Security;
 import security.ActionAuthenticator;
@@ -21,14 +22,19 @@ import enum_package.SessionKey;
 
 public class LoginController extends CustomController {
 
+	@Inject
+	private FormFactory formFactory;
+
 	@Inject RedisSessionDao redisSessionDao;
+
+	@Inject private UserLoginDAO userLoginDAO;
 
 	public Result postLogin(String phone) {
 		response().setHeader("Cache-Control", "no-cache, no-store, must-revalidate, max-age=0, post-check=0, pre-check=0");  // HTTP 1.1
 		response().setHeader("Pragma", "no-cache"); // HTTP 1.0.
 		response().setHeader("EXPIRES", "0");
 
-		Form<LoginForm> loginForm = Form.form(LoginForm.class).bindFromRequest();
+		Form<LoginForm> loginForm = formFactory.form(LoginForm.class).bindFromRequest();
 		if (loginForm == null || loginForm.hasErrors()) {
 			Logger.debug("login form contains error");
 			flash("error", "Login credentials are not valid.");
@@ -41,7 +47,6 @@ public class LoginController extends CustomController {
 		String userName = loginUserCredentials.getUserName();
 		String password = loginUserCredentials.getPassword();
 		try {
-			UserLoginDAO userLoginDAO = new UserLoginDAO();
 			CommonUserCredentials commonUserCredentials = userLoginDAO.getValidUserCredentials(userName, password, redisSessionDao);
 			if(commonUserCredentials.getLoginStatus() != LoginStatus.validuser) {
 				Logger.warn(String.format("username:%s, is invalid user", userName));
@@ -65,19 +70,20 @@ public class LoginController extends CustomController {
 		}
 
 		String loginType = session().get(SessionKey.logintype.name());
-		if(loginType != null && loginType.equals(LoginType.of(LoginType.headinstitute))) {
-			Logger.info(String.format("messgae: username:%s, is loggin as %s user", userName, loginType));
-			return redirect(routes.SRPController.headInstituteHome());
-		} else if(loginType != null && loginType.equals(LoginType.of(LoginType.institute))) {
-			Logger.info(String.format("messgae: username:%s, is loggin as %s user", userName, loginType));
-			return redirect(routes.SRPController.instituteHome());
-		} else if(loginType != null && loginType.equals(LoginType.institute.name())) {
-			Logger.info(String.format("messgae: username:%s, is loggin as %s user", userName, LoginType.of(LoginType.general)));
-			return redirect(routes.SRPController.studentsHome());
-		}
-
-		Logger.info(String.format("messgae: username:%s, is loggin as %s user", userName, LoginType.of(LoginType.general)));
-		return redirect(routes.SRPController.index());
+//		if(loginType != null && loginType.equals(LoginType.of(LoginType.headinstitute))) {
+//			Logger.info(String.format("messgae: username:%s, is loggin as %s user", userName, loginType));
+//			return redirect(routes.SRPController.headInstituteHome());
+//		} else if(loginType != null && loginType.equals(LoginType.of(LoginType.institute))) {
+//			Logger.info(String.format("messgae: username:%s, is loggin as %s user", userName, loginType));
+//			return redirect(routes.SRPController.instituteHome());
+//		} else if(loginType != null && loginType.equals(LoginType.institute.name())) {
+//			Logger.info(String.format("messgae: username:%s, is loggin as %s user", userName, LoginType.of(LoginType.general)));
+//			return redirect(routes.SRPController.studentsHome());
+//		}
+//
+//		Logger.info(String.format("messgae: username:%s, is loggin as %s user", userName, LoginType.of(LoginType.general)));
+//		return redirect(routes.SRPController.index());
+		return redirect(routes.TestController.subjectPresent7(1l));
 	}
 
 	public Result preLogin() {
@@ -86,7 +92,7 @@ public class LoginController extends CustomController {
 		response().setHeader("Cache-Control", "no-cache, no-store, must-revalidate, max-age=0, post-check=0, pre-check=0");  // HTTP 1.1
 		response().setHeader("Pragma", "no-cache"); // HTTP 1.0.
 		response().setHeader("EXPIRES", "0");
-		Form<LoginForm> loginForm = Form.form(LoginForm.class);
+		Form<LoginForm> loginForm = formFactory.form(LoginForm.class);
 		return ok(homepage.render(loginForm));
 	}
 
@@ -106,7 +112,6 @@ public class LoginController extends CustomController {
 		session().clear();
 
 		try {
-			UserLoginDAO userLoginDAO = new UserLoginDAO();
 			userLoginDAO.logout(userName, authToken, redisSessionDao);
 		} catch (Exception exception) {
 			exception.printStackTrace();

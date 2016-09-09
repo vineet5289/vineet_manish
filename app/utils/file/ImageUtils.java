@@ -1,10 +1,16 @@
 package utils.file;
 
-import play.Play;
+import javax.inject.Inject;
+
+import play.Configuration;
+
 
 public class ImageUtils {
-	private final static String PROFILE_IMAGE_CREATE_STORAGE_PATH = Play.application().configuration().getString("file.image.profileImageCreatePath");
-	private final static String PROFILE_IMAGE_URL_PATH = Play.application().configuration().getString("file.image.urlPath");
+	@Inject
+	private static Configuration configuration;
+	
+	private final static String PROFILE_IMAGE_CREATE_STORAGE_PATH = configuration.getString("file.image.profileImageCreatePath");
+	private final static String PROFILE_IMAGE_URL_PATH = configuration.getString("file.image.urlPath");
 
 	public static String getProfileImageCreatePath() {
 		return PROFILE_IMAGE_CREATE_STORAGE_PATH;

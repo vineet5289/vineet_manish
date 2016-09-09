@@ -7,8 +7,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import play.db.Database;
+import play.db.NamedDatabase;
 import models.SchoolBoard;
-import play.db.DB;
 import utils.DateUtiles;
 import utils.file.ImageUtils;
 import views.forms.institute.FirstTimeInstituteUpdateForm;
@@ -26,6 +29,8 @@ import enum_package.WeekDayEnum;
 
 public class SchoolProfileInfoDAO {
 
+	@Inject @NamedDatabase("srp") private Database db;
+
 	public InstituteFormData getNumberOfInstituteInGivenGroup(Long schoolId) throws SQLException {
 		Connection connection = null;
 		PreparedStatement selectStatement = null;
@@ -34,7 +39,7 @@ public class SchoolProfileInfoDAO {
 		String selectQuery = String.format("SELECT %s, %s, %s FROM %s WHERE %s=? AND %s=?;", Tables.HeadInstitute.state, Tables.HeadInstitute.noOfInstitute,
 				Tables.HeadInstitute.groupOfInstitute, Tables.HeadInstitute.table, Tables.HeadInstitute.isActive, Tables.HeadInstitute.id);
 		try {
-			connection = DB.getDataSource("srp").getConnection();
+			connection = db.getConnection();
 			selectStatement = connection.prepareStatement(selectQuery, ResultSet.TYPE_FORWARD_ONLY);
 			selectStatement.setBoolean(1, true);
 			selectStatement.setLong(2, schoolId);
@@ -75,7 +80,7 @@ public class SchoolProfileInfoDAO {
 				Tables.Institute.financialStartDay, Tables.Institute.financialEndDay, Tables.Institute.financialStartMonth, Tables.Institute.financialEndMonth,
 				Tables.Institute.financialStartYear, Tables.Institute.financialEndYear, Tables.Institute.table, Tables.Institute.isActive, Tables.Institute.id);
 		try {
-			connection = DB.getDataSource("srp").getConnection();
+			connection = db.getConnection();
 			selectStatement = connection.prepareStatement(selectQuery, ResultSet.TYPE_FORWARD_ONLY);
 			selectStatement.setBoolean(1, true);
 			selectStatement.setLong(2, schoolId);
@@ -149,7 +154,7 @@ public class SchoolProfileInfoDAO {
 						Tables.Institute.preferedName, Tables.Institute.websiteUrl, Tables.Institute.logoUrl,
 						Tables.Institute.table, Tables.Institute.isActive, Tables.Institute.id);
 		try {
-			connection = DB.getDataSource("srp").getConnection();
+			connection = db.getConnection();
 			selectStatement = connection.prepareStatement(selectQuery, ResultSet.TYPE_FORWARD_ONLY);
 			selectStatement.setBoolean(1, true);
 			selectStatement.setLong(2, schoolId);
@@ -192,7 +197,7 @@ public class SchoolProfileInfoDAO {
 				Tables.SchoolShiftInfo.shiftWeekEndDay, Tables.SchoolShiftInfo.shiftStartClassFrom, Tables.SchoolShiftInfo.shiftEndClassTo,
 				Tables.SchoolShiftInfo.shiftAttendenceType, Tables.SchoolShiftInfo.table, Tables.SchoolShiftInfo.isActive, Tables.SchoolShiftInfo.schoolId);
 		try {
-			connection = DB.getDataSource("srp").getConnection();
+			connection = db.getConnection();
 			selectStatement = connection.prepareStatement(selectQuery, ResultSet.TYPE_FORWARD_ONLY);
 			selectStatement.setBoolean(1, true);
 			selectStatement.setLong(2, schoolId);
@@ -267,7 +272,7 @@ public class SchoolProfileInfoDAO {
 			int endYear = Integer.parseInt(endDate[2]);
 			String schoolCurrentFinancialYear = DateUtiles.getFinancialYear(startDate[0], startYear, endDate[0], endYear);
 
-			connection = DB.getDataSource("srp").getConnection();
+			connection = db.getConnection();
 			updateStatement = connection.prepareStatement(updateQuery);
 			
 			updateStatement.setString(1, getString(schoolGeneralInfo.getSchoolRegistrationId()));
@@ -319,7 +324,7 @@ public class SchoolProfileInfoDAO {
 
 		int rowUpdated = 0;
 		try {
-			connection = DB.getDataSource("srp").getConnection();
+			connection = db.getConnection();
 			updateStatement = connection.prepareStatement(updateQuery);
 
 			updateStatement.setString(1, schoolHeaderInfo.getSchoolName());
@@ -411,7 +416,7 @@ public class SchoolProfileInfoDAO {
 			int endYear = Integer.parseInt(endDate[2]);
 			String schoolCurrentFinancialYear = DateUtiles.getFinancialYear(startDate[0], startYear, endDate[0], endYear);
 
-			connection = DB.getDataSource("srp").getConnection();
+			connection = db.getConnection();
 			connection.setAutoCommit(false);
 			updateStmtSchoolMadInfoPS = connection.prepareStatement(updateInstituteQ);
 			loginPS = connection.prepareStatement(updateLoginQ);
@@ -494,7 +499,7 @@ public class SchoolProfileInfoDAO {
 		String updateHeadInstituteQ = String.format("UPDATE %s SET %s=? WHERE %s=? AND %s=? AND %s=? limit 1;", Tables.HeadInstitute.table, Tables.HeadInstitute.logoUrl,
 				Tables.HeadInstitute.isActive, Tables.HeadInstitute.userName, Tables.HeadInstitute.id);
 		try {
-			connection = DB.getDataSource("srp").getConnection();
+			connection = db.getConnection();
 			updateHeadInstitutePS = connection.prepareStatement(updateHeadInstituteQ);
 			updateHeadInstitutePS.setString(1, url);
 			updateHeadInstitutePS.setBoolean(2, true);

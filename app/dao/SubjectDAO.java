@@ -2,15 +2,16 @@ package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.List;
 
-import play.db.DB;
-import views.forms.institute.ClassForm;
+import javax.inject.Inject;
+
+import play.db.Database;
+import play.db.NamedDatabase;
 import views.forms.institute.SubjectForm;
 
 public class SubjectDAO {
-
+	@Inject @NamedDatabase("srp") private Database db;
 	private String tableName = "subject";
 	private String idField = "id";
 	private String subjectNameField = "subject_name";
@@ -30,7 +31,7 @@ public class SubjectDAO {
 		String insertQuery = String.format("INSERT INTO %s (%s, %s, %s, %s, %s) VALUES(?, ?, ?, ?, ?);", 
 				tableName, subjectNameField, classIdField, schoolIdField, subjectCodeField, userNameField);
 		try {
-			connection = DB.getDataSource("srp").getConnection();
+			connection = db.getConnection();
 			connection.setAutoCommit(false);
 			insertStatement = connection.prepareStatement(insertQuery);
 			for(SubjectForm.SubjectInfo s : subjects) {

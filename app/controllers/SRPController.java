@@ -4,6 +4,7 @@ import javax.inject.Inject;
 
 import models.HeadInstituteLoginDetails;
 import play.Logger;
+import play.data.FormFactory;
 import play.mvc.Result;
 import play.mvc.Security;
 import security.BasicAuthRequirement;
@@ -17,12 +18,17 @@ import enum_package.LoginState;
 import enum_package.LoginStatus;
 import enum_package.LoginType;
 import enum_package.RegisterUserType;
-import enum_package.Role;
+import enum_package.InstituteUserRole;
 import enum_package.SessionKey;
 
 public class SRPController extends CustomController {
 
+	@Inject
+	private FormFactory formFactory;
+
 	@Inject RedisSessionDao redisSessionDao;
+
+	@Inject private UserLoginDAO userLoginDAO;
 
 	@Security.Authenticated(BasicAuthRequirement.class)
 	public Result index() {
@@ -49,10 +55,9 @@ public class SRPController extends CustomController {
 		String loginType = session().get(SessionKey.logintype.name());
 		String role = session().get(SessionKey.userrole.name());
 
-		UserLoginDAO userLoginDAO = new UserLoginDAO();
 		HeadInstituteLoginDetails headInstituteLoginDetails = null;
 		try {
-			if((role != null && role.equalsIgnoreCase(Role.of(Role.institutegroupadmin)))) {
+			if((role != null && role.equalsIgnoreCase(InstituteUserRole.of(InstituteUserRole.institutegroupadmin)))) {
 				headInstituteLoginDetails = userLoginDAO.refreshHeadInstituteUserCredentials(userName, loginType, authToken, redisSessionDao);
 			}
 		}catch(Exception exception) {

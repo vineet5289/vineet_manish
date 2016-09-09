@@ -5,6 +5,7 @@ import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 
 import akka.actor.ActorRef;
+import akka.actor.ActorSystem;
 import akka.actor.Props;
 import akka.routing.RoundRobinPool;
 
@@ -12,7 +13,12 @@ import com.rabbitmq.client.Channel;
 
 import dao.MessageDAO;
 import play.Application;
+import play.api.Configuration;
+import play.api.Environment;
+import play.api.inject.Binding;
+import play.api.inject.Module;
 import play.libs.Akka;
+import scala.collection.Seq;
 import scala.concurrent.duration.FiniteDuration;
 import service.messaging.MessagingConnectionHandler;
 import service.messaging.MessagingPublisherService;
@@ -21,7 +27,7 @@ import service.messaging.listener.MessagePersisterActor;
 import service.messaging.listener.MessageReceiver;
 import service.socket.SocketManager;
 
-public class NotificationInitializer {
+public class NotificationInitializer extends Module {
 
 	private MessagingConnectionHandler messagingConnectionHandler;
 	private MessagingPublisherService<String> messagingPublisherService;
@@ -32,6 +38,8 @@ public class NotificationInitializer {
 	public static final int NUMBER_OF_CONCURRENT_MESSAGE_PERSISTER = 1;
 	public static final String WS_BROADCAST_CHANNEL = "wsBroadcastChannel";
 
+	@Inject
+	ActorSystem actorSystem;
 	@Inject
 	public NotificationInitializer(MessagingConnectionHandler messagingConnectionHandler, MessagingPublisherService<String> messagingPublisherService,
 			SocketManager socketManager, MessageDAO messageDAO) {
@@ -79,7 +87,13 @@ public class NotificationInitializer {
 	}
 
 	private void createConsumerForQueue(Channel channel, String queueName, MessageReceiver messageReceiver) {
-		Akka.system().scheduler().scheduleOnce(new FiniteDuration(0L, TimeUnit.MILLISECONDS),
-				new MessageListenerRunnable(messageReceiver, channel, queueName), Akka.system().dispatcher());
+		actorSystem.scheduler().scheduleOnce(new FiniteDuration(0L, TimeUnit.MILLISECONDS),
+				new MessageListenerRunnable(messageReceiver, channel, queueName), actorSystem.dispatcher());
+	}
+
+	@Override
+	public Seq<Binding<?>> bindings(Environment arg0, Configuration arg1) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
