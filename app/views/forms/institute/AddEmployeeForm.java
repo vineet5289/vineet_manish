@@ -8,7 +8,7 @@ import play.data.validation.ValidationError;
 import utils.ValidateFields;
 
 @Data
-public class AddEmployee {
+public class AddEmployeeForm {
 	private String empName;
 	private String empEmail;// optional
 	private  String empPhoneNumber;

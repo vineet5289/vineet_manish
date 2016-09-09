@@ -9,7 +9,7 @@ import play.data.FormFactory;
 import play.mvc.Result;
 import play.mvc.Security;
 import security.institute.HeadInstituteBasicAuthCheck;
-import views.forms.institute.AddEmployee;
+import views.forms.institute.AddEmployeeForm;
 
 public class AddOrDeleteEmployee extends CustomController {
 	@Inject
@@ -17,19 +17,19 @@ public class AddOrDeleteEmployee extends CustomController {
 
 	@Security.Authenticated(HeadInstituteBasicAuthCheck.class)
 	public Result preAddEmployeeRequest() {
-		Form<AddEmployee> addEmployee = formFactory.form(AddEmployee.class);
+		Form<AddEmployeeForm> addEmployee = formFactory.form(AddEmployeeForm.class);
 		return ok("addEmployee " + addEmployee);
 	}
 
 	@Security.Authenticated(HeadInstituteBasicAuthCheck.class)
 	public Result postAddEmployeeRequest() {
-		Form<AddEmployee> addEmployeeForm = formFactory.form(AddEmployee.class).bindFromRequest();
+		Form<AddEmployeeForm> addEmployeeForm = formFactory.form(AddEmployeeForm.class).bindFromRequest();
 		if(addEmployeeForm == null || addEmployeeForm.hasErrors()) {
 			flash("error", "Some errors occur either of some fileds are missing or contains invalid value.");
 			return redirect(controllers.institute.routes.AddOrDeleteEmployee.preAddEmployeeRequest());
 		}
 
-		AddEmployee addEmployee = addEmployeeForm.get();
+		AddEmployeeForm addEmployee = addEmployeeForm.get();
 		if(addEmployee == null) {
 			flash("error", "Some errors occur either of some fileds are missing or contains invalid value.");
 			return redirect(controllers.institute.routes.AddOrDeleteEmployee.preAddEmployeeRequest());
