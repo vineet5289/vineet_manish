@@ -21,24 +21,69 @@ CREATE TABLE IF NOT EXISTS school_shift_info (
 
 CREATE TABLE IF NOT EXISTS permissions (
   id bigint(20) NOT NULL AUTO_INCREMENT,
-  permission_name varchar(50) NOT NULL,
+  permission_name varchar(255) NOT NULL,
+  permission_description varchar(255),
   is_active tinyint(1) DEFAULT 1 NOT NULL,
   created_at timestamp DEFAULT CURRENT_TIMESTAMP,
   updated_at timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-CREATE TABLE IF NOT EXISTS user_permissions (
+CREATE TABLE IF NOT EXISTS groups (
   id bigint(20) NOT NULL AUTO_INCREMENT,
-  user_name varchar(225) COLLATE utf8_unicode_ci,
-  permissions_list text,
+  group_name varchar(255) NOT NULL,
+  group_description varchar(255),
+  group_added_by varchar(255),
   institute_id bigint(20) NOT NULL,
+  head_institute_id bigint(20) NOT NULL,
   is_active tinyint(1) DEFAULT 1 NOT NULL,
   created_at timestamp DEFAULT CURRENT_TIMESTAMP,
   updated_at timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (id),
-  KEY FK_institute_institute_id (institute_id),
-  CONSTRAINT FK_institute_institute_id FOREIGN KEY (institute_id) REFERENCES institute (id)
+  KEY FK_group_institute_id (institute_id),
+  CONSTRAINT FK_group_institute_id FOREIGN KEY (institute_id) REFERENCES institute (id),
+  KEY FK_group_head_institute_id (head_institute_id),
+  CONSTRAINT FK_group_head_institute_id FOREIGN KEY (head_institute_id) REFERENCES head_institute (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS roles (
+  id bigint(20) NOT NULL AUTO_INCREMENT,
+  role_name varchar(255) NOT NULL,
+  role_description varchar(255),
+  role_added_by varchar(255),
+  institute_id bigint(20) NOT NULL,
+  head_institute_id bigint(20) NOT NULL,
+  is_active tinyint(1) DEFAULT 1 NOT NULL,
+  created_at timestamp DEFAULT CURRENT_TIMESTAMP,
+  updated_at timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  KEY FK_role_institute_id (institute_id),
+  CONSTRAINT FK_role_institute_id FOREIGN KEY (institute_id) REFERENCES institute (id),
+  KEY FK_role_head_institute_id (head_institute_id),
+  CONSTRAINT FK_role_head_institute_id FOREIGN KEY (head_institute_id) REFERENCES head_institute (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS employee_role_group (
+  id bigint(20) NOT NULL AUTO_INCREMENT,
+  employee_id bigint(20) NOT NULL,
+  role_id bigint(20) NOT NULL,
+  group_id bigint(20) NOT NULL,
+  institute_id bigint(20) NOT NULL,
+  head_institute_id bigint(20) NOT NULL,
+  is_active tinyint(1) DEFAULT 1 NOT NULL,
+  created_at timestamp DEFAULT CURRENT_TIMESTAMP,
+  updated_at timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  KEY FK_employee_role_group_institute_id (institute_id),
+  CONSTRAINT FK_employee_role_group_institute_id FOREIGN KEY (institute_id) REFERENCES institute (id),
+  KEY FK_employee_role_group_head_institute_id (head_institute_id),
+  CONSTRAINT FK_employee_role_group_head_institute_id FOREIGN KEY (head_institute_id) REFERENCES head_institute (id),
+  KEY FK_employee_role_group_employee_id (employee_id),
+  CONSTRAINT FK_employee_role_group_employee_id FOREIGN KEY (employee_id) REFERENCES employee (id),
+  KEY FK_employee_role_group_role_id (role_id),
+  CONSTRAINT FK_employee_role_group_role_id FOREIGN KEY (role_id) REFERENCES roles (id),
+  KEY FK_employee_role_group_group_id (group_id),
+  CONSTRAINT FK_employee_role_group_group_id FOREIGN KEY (group_id) REFERENCES groups (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO permissions (permission_name) VALUES ('addEmployee');

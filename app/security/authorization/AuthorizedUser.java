@@ -49,12 +49,12 @@ public class AuthorizedUser implements Subject {
 		Logger.info("AuthorizedUser: getAuthorizedUser method is called.");
 		AuthorizedUser authorizedUser = new AuthorizedUser();
 		try {
-			Map<String, String> basicUserInfo = authorizedUser.redisSessionDao.get(userName, RedisKeyPrefix.of(RedisKeyPrefix.buc));
+			Map<String, String> basicUserInfo = authorizedUser.redisSessionDao.get(userName, RedisKeyPrefix.of(RedisKeyPrefix.bui));
 			String authTokenFromRedis = authorizedUser.redisSessionDao.get(userName, RedisKeyPrefix.of(RedisKeyPrefix.auth), userAuth);
-			Set<String> userRoles = authorizedUser.redisSessionDao.getRoles(userName, RedisKeyPrefix.of(RedisKeyPrefix.role));
+			Set<String> userRoles = authorizedUser.redisSessionDao.getSetMembers(userName, RedisKeyPrefix.of(RedisKeyPrefix.role));
 			authorizedUser.setRole(userRoles);
 
-			Set<String> permissions = authorizedUser.redisSessionDao.getRoles(userName, RedisKeyPrefix.of(RedisKeyPrefix.permission));
+			Set<String> permissions = authorizedUser.redisSessionDao.getSetMembers(userName, RedisKeyPrefix.of(RedisKeyPrefix.permission));
 			authorizedUser.setPermission(permissions);
 
 		} catch (Exception exception) {

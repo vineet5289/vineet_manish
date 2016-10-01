@@ -40,7 +40,6 @@ public class UserLoginDAO {
 	private String roleField = "role";
 	private String accessRightsField = "access_rights";
 	private String isActiveField = "is_active";
-	private String nameField = "name";
 	private String schoolIdField = "school_id";
 	private String superUserNameField = "super_user_name";
 
@@ -60,9 +59,12 @@ public class UserLoginDAO {
 		ResultSet loginResultSet = null;
 
 		String loginSelectQ = String.format("SELECT %s, %s, %s, %s, %s, %s, %s, %s, %s FROM %s WHERE %s=? AND %s=?;", Tables.Login.id, Tables.Login.userName,
-				Tables.Login.emailId, Tables.Login.password, Tables.Login.passwordState, Tables.Login.role, Tables.Login.name, Tables.Login.type, Tables.Login.loginSessionCount,
-				Tables.Login.table, Tables.Login.userName, Tables.Login.isActive);
+				Tables.Login.emailId, Tables.Login.password, Tables.Login.passwordState, Tables.Login.role, Tables.Login.name, Tables.Login.type,
+				Tables.Login.loginSessionCount, Tables.Login.table, Tables.Login.userName, Tables.Login.isActive);
 		
+//		String userPermissionSelectQ = String.format("SELECT %s FROM %s WHERE %s=? AND %s=? AND %s=?;", Tables.UserPermissions.permissionsList,
+//				Tables.UserPermissions.table, Tables.UserPermissions.userName, Tables.UserPermissions.instituteId, Tables.UserPermissions.isActive);
+
 		String loginUpdateQ = String.format("UPDATE %s SET %s=? WHERE %s=? limit 1;", Tables.Login.table, Tables.Login.loginSessionCount,
 				Tables.Login.id);
 
@@ -90,32 +92,23 @@ public class UserLoginDAO {
 			}
 			int loginSessionCount = loginResultSet.getInt(Tables.Login.loginSessionCount);
 			Map<String, String> authKeyMap = redisSessionDao.get(userName, RedisKeyPrefix.of(RedisKeyPrefix.auth));
-			Map<String, String> otherUserCred = redisSessionDao.get(userName, RedisKeyPrefix.of(RedisKeyPrefix.buc));
+			Map<String, String> userBasicCred = redisSessionDao.get(userName, RedisKeyPrefix.of(RedisKeyPrefix.bui));
 
 			if(loginSessionCount == 0 || authKeyMap == null || authKeyMap.size() == 0
-					|| otherUserCred == null || otherUserCred.size() == 0) {
+					|| userBasicCred == null || userBasicCred.size() == 0) {
 				loginSessionCount = 0;
 				authKeyMap = new HashMap<String, String>();
-				otherUserCred = new HashMap<String, String>();
+				userBasicCred = new HashMap<String, String>();
 			}
 
 			String[] removedKey = null;
 			if((loginSessionCount ==  authKeyMap.size() &&  loginSessionCount >= 3)
 					|| (loginSessionCount <  authKeyMap.size() && loginSessionCount >= 3)
 					|| (loginSessionCount >  authKeyMap.size() &&  authKeyMap.size() >= 3)){
-				System.out.println("===1>" + (authKeyMap.size() - 2));
-				System.out.println("===2>" + (authKeyMap.size()));
-				System.out.println("===3>" + loginSessionCount);
-				System.out.println("===4>" + authKeyMap);
 				removedKey = getCorrectSessionIndex(authKeyMap, (authKeyMap.size() - 2));
 			}
 
 			if(removedKey != null && removedKey.length != 0) {
-				System.out.println("rem.size=" + removedKey.length);
-				for(String rk : removedKey) {
-					System.out.println("rk=>" + rk);
-				}
-
 				redisSessionDao.removed(userName, RedisKeyPrefix.of(RedisKeyPrefix.auth), removedKey);
 			}
 
@@ -133,14 +126,13 @@ public class UserLoginDAO {
 				return userCredentials;
 			}
 
-			otherUserCred.put(SessionKey.username.name(), userName);
-			otherUserCred.put(SessionKey.logintype.name(), loginResultSet.getString(Tables.Login.type));
-			otherUserCred.put(SessionKey.loginstate.name(), loginResultSet.getString(Tables.Login.passwordState));
-			otherUserCred.put(SessionKey.userrole.name(), loginResultSet.getString(Tables.Login.role));
+			userBasicCred.put(SessionKey.username.name(), userName);
+			userBasicCred.put(SessionKey.logintype.name(), loginResultSet.getString(Tables.Login.type));
+			userBasicCred.put(SessionKey.loginstate.name(), loginResultSet.getString(Tables.Login.passwordState));
+//			userBasicCred.put(SessionKey.userrole.name(), loginResultSet.getString(Tables.Login.role));
 
-			System.out.println("authKeyMap===>" + authKeyMap);
 			redisSessionDao.save(userName, RedisKeyPrefix.of(RedisKeyPrefix.auth), authKeyMap);
-			redisSessionDao.save(userName, RedisKeyPrefix.of(RedisKeyPrefix.buc), otherUserCred);
+			redisSessionDao.save(userName, RedisKeyPrefix.of(RedisKeyPrefix.bui), userBasicCred);
 
 			userCredentials.setUserName(userName);
 			userCredentials.setAuthToken(authToken);
@@ -198,7 +190,7 @@ public class UserLoginDAO {
 
 			int loginSessionCount = loginResultSet.getInt(Tables.Login.loginSessionCount);
 			Map<String, String> authKeyMap = redisSessionDao.get(userName, RedisKeyPrefix.of(RedisKeyPrefix.auth));
-			Map<String, String> otherUserCred = redisSessionDao.get(userName, RedisKeyPrefix.of(RedisKeyPrefix.buc));
+			Map<String, String> otherUserCred = redisSessionDao.get(userName, RedisKeyPrefix.of(RedisKeyPrefix.bui));
 
 			if(authKeyMap == null || authKeyMap.size() == 0 || otherUserCred == null || otherUserCred.size() == 0) {
 				loginSessionCount = 0;
@@ -207,7 +199,7 @@ public class UserLoginDAO {
 				loginSessionCount--;
 				if(loginSessionCount <= 0 || authKeyMap.size() == 0) {
 					loginSessionCount = 0;
-					redisSessionDao.removedAll(userName, RedisKeyPrefix.of(RedisKeyPrefix.buc));
+					redisSessionDao.removedAll(userName, RedisKeyPrefix.of(RedisKeyPrefix.bui));
 					redisSessionDao.removedAll(userName, RedisKeyPrefix.of(RedisKeyPrefix.auth));
 				} else {
 					redisSessionDao.removed(userName, RedisKeyPrefix.of(RedisKeyPrefix.auth), authKey);

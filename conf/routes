@@ -117,6 +117,9 @@ GET			/userInfo/:schoolId/:userName				controllers.user.UserController.getUser(s
 # initial registration
 GET			/registration								controllers.SRPController.preRegistration(reg_user_request : String ?="ERROR")
 
+#role
+Post		/role/:schoolId								controllers.SRPController.preRegistration(reg_user_request : String ?="ERROR")
+
 # file or image upload 
 
 POST		/upload/:username/prof_img					controllers.file_controller.ImageController.uploadProfileImage(username) 

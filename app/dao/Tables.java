@@ -187,4 +187,24 @@ public class Tables {
 		public static String updatedAt = "updated_at";
 		public static String isActive = "is_active";
 	}
+
+	public static class Permissions {
+		public static String table = "permissions";
+		public static String id = "id";
+		public static String permissionName = "permission_name";
+		public static String isActive = "is_active";
+		public static String createdAt = "created_at";
+		public static String updatedAt = "updated_at";
+	}
+
+	public static class UserPermissions {
+		public static String table = "user_permissions";
+		public static String id = "id";
+		public static String userName = "user_name";
+		public static String permissionsList = "permissions_list";
+		public static String instituteId = "institute_id";
+		public static String isActive = "is_active";
+		public static String createdAt = "created_at";
+		public static String updatedAt = "updated_at";
+	}
 }

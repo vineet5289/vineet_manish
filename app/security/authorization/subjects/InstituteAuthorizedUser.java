@@ -51,7 +51,7 @@ public class InstituteAuthorizedUser implements Subject {
 		Logger.info("InstituteAuthorizedUser: getAuthorizedUser method is called.");
 		InstituteAuthorizedUser authorizedUser = new InstituteAuthorizedUser();
 		try {
-			Map<String, String> basicUserInfo = redisSessionDao.get(userName, RedisKeyPrefix.of(RedisKeyPrefix.buc));
+			Map<String, String> basicUserInfo = redisSessionDao.get(userName, RedisKeyPrefix.of(RedisKeyPrefix.bui));
 			String authTokenFromRedis = redisSessionDao.get(userName, RedisKeyPrefix.of(RedisKeyPrefix.auth), userAuth);
 			System.out.println("basicUserInfo : " + basicUserInfo);
 			System.out.println("authTokenFromRedis : " + authTokenFromRedis);
@@ -61,11 +61,11 @@ public class InstituteAuthorizedUser implements Subject {
 				return null;
 			}
 
-			Set<String> userRoles = redisSessionDao.getRoles(userName, RedisKeyPrefix.of(RedisKeyPrefix.role));
+			Set<String> userRoles = redisSessionDao.getSetMembers(userName, RedisKeyPrefix.of(RedisKeyPrefix.role));
 			System.out.println("userRoles: " + userRoles);
 			authorizedUser.setRole(userRoles);
 
-			Set<String> permissions = redisSessionDao.getRoles(userName, RedisKeyPrefix.of(RedisKeyPrefix.permission));
+			Set<String> permissions = redisSessionDao.getSetMembers(userName, RedisKeyPrefix.of(RedisKeyPrefix.permission));
 			authorizedUser.setPermission(permissions);
 			authorizedUser.userName = userName;
 
