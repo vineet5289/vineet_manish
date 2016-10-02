@@ -119,6 +119,8 @@ GET			/registration								controllers.SRPController.preRegistration(reg_user_re
 
 #role
 GET			/role/										controllers.institute.RoleController.preAddRole()
+POST		/add_role/									controllers.institute.RoleController.postAddRole()
+POST		/disable_role/								controllers.institute.RoleController.disableRole()
 
 # file or image upload 
 
