@@ -77,15 +77,22 @@ public class RoleController extends CustomController {
 	}
 
 	public Result editPermission() {
-		RoleForm addNewRole = formFactory.form(RoleForm.class).get();
+		PermissionForm permissions = formFactory.form(PermissionForm.class).get();
+		boolean isPermissionEdited = false;
 		try {
 			String instituteIdFromSession = session().get(SessionKey.of(SessionKey.instituteid));
 			String userName = session().get(SessionKey.of(SessionKey.username));
-			
+			if(instituteIdFromSession != null) {
+				Long instituteId = Long.parseLong(instituteIdFromSession);
+				isPermissionEdited = roleDao.assignPermission(instituteId, permissions.getRoleId(), permissions.getPermissions(), userName);
+			}
 		} catch(Exception exception) {
 			exception.printStackTrace();
 		}
-		return ok("");
+		if(!isPermissionEdited) {
+			flash("error", "Permission request processing error.");
+		}
+		return redirect(controllers.institute.routes.RoleController.preAddRole());
 	}
 
 	public Result disableRole() {
