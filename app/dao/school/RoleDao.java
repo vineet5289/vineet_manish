@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -71,35 +72,31 @@ public class RoleDao {
 		return instituteRoles;
 	}
 
-	public boolean addNewRole(Long instituteId, Long headInstituteId, String userName) throws SQLException {
+	public Long addNewRole(Long instituteId, String userName, RoleForm roleForm) throws SQLException {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
-		String query = String.format("INSERT INTO %s SET %s=?, %s=?, %s=?;", Tables.Role.roleName,
-				Tables.Role.roleDescription, Tables.Role.roleAddedBy, Tables.Role.createdAt, Tables.Role.instituteId,
-				Tables.Role.isActive);
+		Long roleId = 0l;
+		String query = String.format("INSERT INTO %s SET %s=?, %s=?, %s=?;", Tables.Role.table, Tables.Role.roleName,
+				Tables.Role.roleDescription, Tables.Role.roleAddedBy, Tables.Role.instituteId);
 		List<RoleForm> roles = new ArrayList<RoleForm>();
 		try {
 			connection = db.getConnection();
-			preparedStatement = connection.prepareStatement(query, ResultSet.TYPE_FORWARD_ONLY);
-			preparedStatement.setLong(1, instituteId);
-			preparedStatement.setBoolean(2, true);
-			resultSet = preparedStatement.executeQuery();
-			while (resultSet.next()) {
-				RoleForm roleForm = new RoleForm();
-				roleForm.setRoleName(resultSet.getString(Tables.Role.roleName));
-				roleForm.setRoleDescription(resultSet.getString(Tables.Role.roleDescription));
-				roleForm.setRoleCreatedBy(resultSet.getString(Tables.Role.roleAddedBy));
-				String roleCreatedAt = resultSet.getDate(Tables.Role.createdAt) != null ? resultSet.getDate(Tables.Role.createdAt).toString() : "";
-				roleForm.setRoleCreatedAt(roleCreatedAt);
-				roles.add(roleForm);
+			preparedStatement = connection.prepareStatement(query, ResultSet.TYPE_FORWARD_ONLY, Statement.RETURN_GENERATED_KEYS);
+			preparedStatement.setString(1, roleForm.getRoleName());
+			preparedStatement.setString(2, roleForm.getRoleDescription());
+			preparedStatement.setString(3, userName);
+			preparedStatement.setLong(4, instituteId);
+			preparedStatement.execute();
+			resultSet = preparedStatement.getGeneratedKeys();
+			if(resultSet.next()) {
+				roleId = resultSet.getLong(1);
+			} else {
+				System.out.println("==> role addition problem");
 			}
 		} catch(Exception exception) {
 			exception.printStackTrace();
 		} finally {
-			if(resultSet != null) {
-				resultSet.close();
-			}
 			if(preparedStatement != null) {
 				preparedStatement.close();
 			}
@@ -107,7 +104,7 @@ public class RoleDao {
 				connection.close();
 			}
 		}
-		return true;
+		return roleId;
 	}
 
 	public boolean disableRole(Long roleId, Long instituteId, String userName) throws SQLException {
