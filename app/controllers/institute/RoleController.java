@@ -10,6 +10,7 @@ import models.PermissionModel;
 import play.data.Form;
 import play.data.FormFactory;
 import play.mvc.Result;
+import views.forms.institute.PermissionForm;
 import views.forms.institute.RoleForm;
 import controllers.CustomController;
 import dao.PermissionDAO;
@@ -50,12 +51,14 @@ public class RoleController extends CustomController {
 		RoleForm addNewRole = formFactory.form(RoleForm.class).get();
 		Long roleKey = 0l;
 		List<PermissionModel> permissions = new ArrayList<PermissionModel>();
+		String roleName = addNewRole.getRoleName();
+		String roleDescription = addNewRole.getRoleDescription();
 		try {
 			String instituteIdFromSession = session().get(SessionKey.of(SessionKey.instituteid));
 			String userName = session().get(SessionKey.of(SessionKey.username));
 			if(addNewRole != null && instituteIdFromSession != null) {
 				Long instituteId = Long.parseLong(instituteIdFromSession);
-				roleKey = roleDao.addNewRole(instituteId, userName, addNewRole);
+				roleKey = roleDao.addNewRole(instituteId, userName, roleName, roleDescription);
 				if(roleKey != 0) {
 					permissions = permissionDAO.getAllPermissionInSystem();
 				}
@@ -67,7 +70,9 @@ public class RoleController extends CustomController {
 			flash("error", "Please select an institute you want to see if you are login as group of institute other wise refresh page.");
 			//redirect to preAddRole;
 		}
-		
+
+		Form<PermissionForm> permissionForm = formFactory.form(PermissionForm.class);
+		//permissionForm, roleName, roleDescription, roleKey, permissions
 		return ok("");
 	}
 
