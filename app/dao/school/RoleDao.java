@@ -79,7 +79,6 @@ public class RoleDao {
 		Long roleId = 0l;
 		String query = String.format("INSERT INTO %s SET %s=?, %s=?, %s=?;", Tables.Role.table, Tables.Role.roleName,
 				Tables.Role.roleDescription, Tables.Role.roleAddedBy, Tables.Role.instituteId);
-		List<RoleForm> roles = new ArrayList<RoleForm>();
 		try {
 			connection = db.getConnection();
 			preparedStatement = connection.prepareStatement(query, ResultSet.TYPE_FORWARD_ONLY, Statement.RETURN_GENERATED_KEYS);
@@ -135,5 +134,50 @@ public class RoleDao {
 			}
 		}
 		return isDisabled;
+	}
+
+	public boolean assignPermission(Long instituteId, Long roleId, List<Long> permissionIds, String userName) throws SQLException {
+		String permissions = getPermissionString(permissionIds);
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		String updateQ = String.format("UPDATE %s SET %s=?, %s=? WHERE %s=? AND %s=? AND %s=? limit 1;", Tables.Role.table,
+				Tables.Role.permission, Tables.Role.roleAddedBy, Tables.Role.id, Tables.Role.instituteId, Tables.Role.isActive);
+		boolean isUpdated = false;
+		try {
+			connection = db.getConnection();
+			preparedStatement = connection.prepareStatement(updateQ);
+			preparedStatement.setString(1, permissions);
+			preparedStatement.setString(2, userName);
+			preparedStatement.setLong(3, roleId);
+			preparedStatement.setLong(4, instituteId);
+			preparedStatement.setBoolean(5, true);
+			int numberOfRoleUpdated = preparedStatement.executeUpdate();
+			while (numberOfRoleUpdated == 1) {
+				isUpdated = true;
+			}
+		} catch(Exception exception) {
+			exception.printStackTrace();
+		} finally {
+			if(preparedStatement != null) {
+				preparedStatement.close();
+			}
+			if(connection != null) {
+				connection.close();
+			}
+		}
+		return isUpdated;
+	}
+
+	private String getPermissionString(List<Long> permissionIds) {
+		if(permissionIds == null || permissionIds.size() == 0) {
+			return "";
+		}
+
+		StringBuilder sb = new StringBuilder();
+		for (Long s : permissionIds) {
+		    sb.append(s);
+		    sb.append(",");
+		}
+		return sb.toString();
 	}
 }
