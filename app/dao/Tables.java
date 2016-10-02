@@ -207,4 +207,19 @@ public class Tables {
 		public static String createdAt = "created_at";
 		public static String updatedAt = "updated_at";
 	}
+
+	public static class Role {
+		public static String table = "roles";
+		public static String id = "id";
+		public static String roleName = "role_name";
+		public static String roleDescription = "role_description";
+		public static String roleAddedBy = "role_added_by";
+		public static String permission = "permission";
+		public static String instituteId = "institute_id";
+		public static String headInstituteId = "head_institute_id";
+		public static String isActive = "is_active";
+		public static String isEditable = "is_editable";
+		public static String createdAt = "created_at";
+		public static String updatedAt = "updated_at";
+	}
 }

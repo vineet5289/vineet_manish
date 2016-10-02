@@ -118,7 +118,7 @@ GET			/userInfo/:schoolId/:userName				controllers.user.UserController.getUser(s
 GET			/registration								controllers.SRPController.preRegistration(reg_user_request : String ?="ERROR")
 
 #role
-Post		/role/:schoolId								controllers.SRPController.preRegistration(reg_user_request : String ?="ERROR")
+GET			/role/										controllers.institute.RoleController.preAddRole()
 
 # file or image upload 
 

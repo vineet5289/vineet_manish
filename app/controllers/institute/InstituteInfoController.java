@@ -33,6 +33,8 @@ public class InstituteInfoController extends ClassController {
 	@Inject
 	private FormFactory formFactory;
 
+	@Inject private SchoolProfileInfoDAO schoolProfileInfoDAO;
+
 	/*
 	 * check usernaem and auth key validation
 	 * current shift
@@ -44,7 +46,6 @@ public class InstituteInfoController extends ClassController {
 		InstituteGeneralInfoForm schoolGeneralInfo = null;
 		InstituteShiftAndClassTimingInfoForm schoolShiftAndClassTimingInfo = null;
 		try{
-			SchoolProfileInfoDAO schoolProfileInfoDAO = new SchoolProfileInfoDAO();
 			schoolHeaderInfo = schoolProfileInfoDAO.getSchoolHeaderInfoForm(1l);
 			schoolGeneralInfo = schoolProfileInfoDAO.getSchoolGeneralInfoFrom(1l);
 			schoolShiftAndClassTimingInfo = schoolProfileInfoDAO.getSchoolShiftAndClassTimingInfoForm(1l);
@@ -68,7 +69,6 @@ public class InstituteInfoController extends ClassController {
 	public Result getGeneralInfo() {
 		InstituteGeneralInfoForm schoolGeneralInfo = null;
 		try{
-			SchoolProfileInfoDAO schoolProfileInfoDAO = new SchoolProfileInfoDAO();
 			schoolGeneralInfo = schoolProfileInfoDAO.getSchoolGeneralInfoFrom(1l);
 		} catch(Exception exception) {
 			System.out.println("some error happen");
@@ -102,7 +102,6 @@ public class InstituteInfoController extends ClassController {
 
 		boolean isUpdated = false;
 		try {
-			SchoolProfileInfoDAO schoolProfileInfoDAO = new SchoolProfileInfoDAO();
 			isUpdated = schoolProfileInfoDAO.updateSchoolGeneralInfo(schoolGeneralInfo, Long.valueOf(schoolId));
 		} catch(Exception exception) {
 			isUpdated = false;
@@ -142,7 +141,6 @@ public class InstituteInfoController extends ClassController {
 		String schoolId = session().get(SessionKey.instituteid.name());
 		boolean isUpdated = false;
 		try {
-			SchoolProfileInfoDAO schoolProfileInfoDAO = new SchoolProfileInfoDAO();
 			isUpdated = schoolProfileInfoDAO.updateSchoolShiftAndClassTimingInfo(schoolShiftAndClassTimingInfo, Long.valueOf(schoolId));
 		} catch(Exception exception) {
 			isUpdated = false;
@@ -182,7 +180,6 @@ public class InstituteInfoController extends ClassController {
 		String schoolId = session().get(SessionKey.instituteid.name());
 		boolean isUpdated = false;
 		try {
-			SchoolProfileInfoDAO schoolProfileInfoDAO = new SchoolProfileInfoDAO();
 			isUpdated = schoolProfileInfoDAO.updateSchoolHeaderInfo(schoolHeaderInfo, Long.valueOf(schoolId));
 		} catch(Exception exception) {
 			isUpdated = false;
@@ -205,7 +202,6 @@ public class InstituteInfoController extends ClassController {
 		List<String> weekList = WeekDayEnum.getWeekDisplayName();
 		List<String> classList = SchoolClassEnum.getClassDisplayName();
 		List<String> attendenceType = AttendenceTypeEnum.getAttendenceTypeDisplayName();
-		SchoolProfileInfoDAO schoolProfileInfoDAO = new SchoolProfileInfoDAO(	);
 		InstituteFormData instituteFormData = null;
 		try {
 			instituteFormData = schoolProfileInfoDAO.getNumberOfInstituteInGivenGroup(Long.valueOf(schoolId));
@@ -246,7 +242,6 @@ public class InstituteInfoController extends ClassController {
 		FirstTimeInstituteUpdateForm firstTimeSchoolUpdate = firstTimeSchoolUpdateForm.get();
 		InstituteDaoProcessStatus instituteDaoProcessStatus = InstituteDaoProcessStatus.invalidschool;
 		try {
-			SchoolProfileInfoDAO schoolProfileInfoDAO = new SchoolProfileInfoDAO();
 			instituteDaoProcessStatus = schoolProfileInfoDAO.updateSchoolMandInfo(firstTimeSchoolUpdate, Long.valueOf(schoolId), userName);
 		} catch(Exception exception) {
 			flash("error", "Some problem occur during update.");

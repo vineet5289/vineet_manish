@@ -72,7 +72,7 @@ public class SRPController extends CustomController {
 			return redirect(controllers.login_logout.routes.LoginController.logout());
 		}
 
-		long instituteId = 0;
+		long instituteId = 1; // change here as 0 , because in production it shoud be zero
 		if(headInstituteLoginDetails.getGropuOfInstitute().equalsIgnoreCase("single")) {
 			instituteId = headInstituteLoginDetails.getHeadInstituteId();
 		}
