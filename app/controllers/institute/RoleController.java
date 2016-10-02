@@ -31,7 +31,7 @@ public class RoleController extends CustomController {
 				activeRoles = instituteRoles.get(true);
 				inactiveRoles = instituteRoles.get(false);
 			} else if(instituteIdFromSession == null) {
-				// flash warning, select institute to see all role
+				flash("error", "Please select an institute you want to see if you are login as group of institute other wise refresh page.");
 			}
 			
 		} catch(Exception exception) {
@@ -47,12 +47,12 @@ public class RoleController extends CustomController {
 		RoleForm addNewRole = formFactory.form(RoleForm.class).get();
 		try {
 			String instituteIdFromSession = session().get(SessionKey.of(SessionKey.instituteid));
-			String headInstituteIdFromSession = session().get(SessionKey.of(SessionKey.headinstituteid));
 			String userName = session().get(SessionKey.of(SessionKey.username));
-			if(addNewRole != null && instituteIdFromSession != null && headInstituteIdFromSession != null) {
+			if(addNewRole != null && instituteIdFromSession != null) {
 				Long instituteId = Long.parseLong(instituteIdFromSession);
-				Long headInstituteId = Long.parseLong(headInstituteIdFromSession);
 				
+			} else if(instituteIdFromSession == null) {
+				flash("error", "Please select an institute you want to see if you are login as group of institute other wise refresh page.");
 			}
 		} catch(Exception exception) {
 			exception.printStackTrace();
@@ -62,22 +62,23 @@ public class RoleController extends CustomController {
 		return ok("");
 	}
 
-	public Result removeRole() {
+	public Result disableRole() {
 		RoleForm addNewRole = formFactory.form(RoleForm.class).get();
 		try {
 			String instituteIdFromSession = session().get(SessionKey.of(SessionKey.instituteid));
-			String headInstituteIdFromSession = session().get(SessionKey.of(SessionKey.headinstituteid));
 			String userName = session().get(SessionKey.of(SessionKey.username));
-			if(addNewRole != null && instituteIdFromSession != null && headInstituteIdFromSession != null) {
+			boolean isRoleDisabled = false;
+			if(addNewRole != null && instituteIdFromSession != null) {
+				Long roleId = addNewRole.getId();
 				Long instituteId = Long.parseLong(instituteIdFromSession);
-				Long headInstituteId = Long.parseLong(headInstituteIdFromSession);
-				
+				isRoleDisabled = roleDao.disableRole(roleId, instituteId, userName);
+			}
+			if(!isRoleDisabled) {
+				flash("error", "Some problem happend during execution of your request. Please try again.");
 			}
 		} catch(Exception exception) {
 			exception.printStackTrace();
 		}
-
-//		return (rolePresent, rolePresent);
-		return ok("");
+		return redirect(controllers.institute.routes.RoleController.preAddRole());
 	}
 }
