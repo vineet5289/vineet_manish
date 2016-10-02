@@ -58,7 +58,6 @@ public class AdminDeadboltHandler extends AbstractDeadboltHandler {
 
 	@Override
 	public CompletionStage<Optional<DynamicResourceHandler>> getDynamicResourceHandler(final Http.Context context) {
-		System.out.println("================= MyDeadboltHandler.getDynamicResourceHandler");
 		return CompletableFuture.completedFuture(Optional.of(new MyDynamicResourceHandler()));
 	}
 

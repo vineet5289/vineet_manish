@@ -4,11 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum RedisKeyPrefix {
-	buc("buc:"),
+	bui("bui:"),
 	auth("auth:"),
-	hiii("hiii:"),
 	role("role:"),
-	permission("permission:");
+	permission("permission:"),
+	hiii("hiii:");
 
 	private String value;
 

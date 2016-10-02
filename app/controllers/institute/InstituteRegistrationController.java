@@ -21,16 +21,20 @@ import enum_package.SessionKey;
 public class InstituteRegistrationController extends CustomController {
 	@Inject
 	private FormFactory formFactory;
+	@Inject private AddNewSchoolRequestDAO addNewSchoolRequestDAO;
+	@Inject private SchoolRegistrationDAO schoolRegistrationDAO;
 
 	public Result submitOTP() {
 		session().clear();
 		Form<OTPField> otpForm = formFactory.form(OTPField.class).bindFromRequest();
 		if(otpForm == null || otpForm.hasErrors()) {
+			System.out.println("=======> otpForm=" + otpForm);
 			flash("error", "Something parameter is missing or invalid in request. Please check and enter valid value");
 			return redirect(controllers.login_logout.routes.LoginController.preLogin());// same otp page call
 		}
 		Map<String, String> otpFieldsValues = otpForm.data();
 		if(otpFieldsValues == null || otpFieldsValues.size() == 0) {
+			System.out.println("=======> otpFieldsValues" + otpFieldsValues);
 			flash("error", "Something parameter is missing or invalid in request. Please check and enter valid value");
 			return redirect(controllers.login_logout.routes.LoginController.preLogin());// same otp page call
 		}
@@ -38,10 +42,9 @@ public class InstituteRegistrationController extends CustomController {
 		String referenceKey = otpFieldsValues.get("referenceKey");
 		String otp = otpFieldsValues.get("otp");
 		String emailId = otpFieldsValues.get("emailId");
-
-		AddNewSchoolRequestDAO schoolRegistrationRequestDAO = new AddNewSchoolRequestDAO();
+		System.out.println("=======> referenceKey" + referenceKey);
 		try {
-			InstituteFormData schoolData = schoolRegistrationRequestDAO.isValidSchoolRegistrationRequest(referenceKey, otp, emailId);
+			InstituteFormData schoolData = addNewSchoolRequestDAO.isValidSchoolRegistrationRequest(referenceKey, otp, emailId);
 			if(schoolData != null && schoolData.getProcessingStatus() == InstituteDaoProcessStatus.validschool) {
 				session().clear();
 				session(SessionKey.regschoolrequestnumber.name(), referenceKey);
@@ -86,7 +89,6 @@ public class InstituteRegistrationController extends CustomController {
 		String regInstituteRequestId = session().get(SessionKey.of(SessionKey.reginstituterequestid));
 		session().remove(SessionKey.of(SessionKey.reginstituterequestid));
 
-		SchoolRegistrationDAO schoolRegistrationDAO = new SchoolRegistrationDAO();
 		InstituteDaoProcessStatus instituteDaoProcessStatus;
 		try {
 			instituteDaoProcessStatus = schoolRegistrationDAO.registerInstitute(schoolFormDetails, referenceNumber, authToken, Long.valueOf(regInstituteRequestId));

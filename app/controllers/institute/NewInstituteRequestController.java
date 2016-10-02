@@ -25,7 +25,7 @@ public class NewInstituteRequestController extends CustomController {
 
 	@Inject
 	private FormFactory formFactory;
-
+	@Inject private AddNewSchoolRequestDAO addNewSchoolRequestDAO;
 	final ActorSystem actorSystem = ActorSystem.create("srp");
 	final ActorRef mailerActor;
 	final ActorRef messageActor = actorSystem.actorOf(MessageActor.props());
@@ -56,8 +56,7 @@ public class NewInstituteRequestController extends CustomController {
 
 		String requestRefNumber = "";
 		try {
-			AddNewSchoolRequestDAO schoolRegistrationRequestDAO = new AddNewSchoolRequestDAO();
-			requestRefNumber = schoolRegistrationRequestDAO.generateRequest(addNewSchoolRequest);
+			requestRefNumber = addNewSchoolRequestDAO.generateRequest(addNewSchoolRequest);
 		} catch (Exception exception) {
 			flash("error", "Something wrong happen with our server. Please try again.");
 			return redirect(controllers.institute.routes.NewInstituteRequestController.preAddNewInstituteRequest());

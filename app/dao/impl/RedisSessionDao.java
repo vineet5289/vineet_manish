@@ -1,18 +1,13 @@
 package dao.impl;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
 import javax.inject.Inject;
 
 import redis.clients.jedis.Jedis;
-import models.CommonUserCredentials;
-import models.LoginDetails;
 import dao.SessionDao;
 import dao.connection.RedisConnectionPool;
-import enum_package.RedisKeyPrefix;
-import enum_package.SessionKey;
 
 public class RedisSessionDao implements SessionDao {
 	private RedisConnectionPool redisConnectionPool;
@@ -27,7 +22,17 @@ public class RedisSessionDao implements SessionDao {
 		jedis.hmset(redisPrefix + userName, redisValue);
 		redisConnectionPool.getJedisPool().returnResource(jedis);
 		jedis.close();
-		
+
+	}
+
+
+	@Override
+	public boolean save(String userName, String redisPrefix, String field, String value) throws Exception {
+		Jedis jedis = redisConnectionPool.getJedisPool().getResource();
+		Long updatedCount = jedis.hset(redisPrefix + userName, field, value);
+		redisConnectionPool.getJedisPool().returnResource(jedis);
+		jedis.close();
+		return (updatedCount == 0);
 	}
 
 	@Override
@@ -40,16 +45,6 @@ public class RedisSessionDao implements SessionDao {
 	}
 
 	@Override
-	public boolean save(String userName, String redisPrefix, String field, String value) throws Exception {
-		Jedis jedis = redisConnectionPool.getJedisPool().getResource();
-		Long updatedCount = jedis.hset(redisPrefix + userName, field, value);
-		redisConnectionPool.getJedisPool().returnResource(jedis);
-		jedis.close();
-		return (updatedCount == 0);
-	}
-
-
-	@Override
 	public String get(String userName, String redisPrefix, String field) throws Exception {
 		Jedis jedis = redisConnectionPool.getJedisPool().getResource();
 		String sessionTrackField = jedis.hget(redisPrefix + userName, field);
@@ -59,40 +54,8 @@ public class RedisSessionDao implements SessionDao {
 	}
 
 	@Override
-	public void save(LoginDetails loginDetails) throws Exception {
-		Map<String, String> redisValue = new HashMap<String, String>();
-		redisValue.put(SessionKey.username.name(), loginDetails.getUserName());
-		redisValue.put(SessionKey.authtoken.name(), loginDetails.getAuthToken());
-		redisValue.put(SessionKey.logintype.name(), loginDetails.getType());
-		redisValue.put(SessionKey.loginstate.name(), loginDetails.getPasswordState());
-		redisValue.put(SessionKey.userrole.name(), loginDetails.getRole());
-		Jedis jedis = redisConnectionPool.getJedisPool().getResource();
-		jedis.hmset("session:" + loginDetails.getUserName(), redisValue);
-		redisConnectionPool.getJedisPool().returnResource(jedis);
-		jedis.close();
-	}
-
-	@Override
-	public LoginDetails get(String userName) throws Exception {
-		Jedis jedis = redisConnectionPool.getJedisPool().getResource();
-		Map<String, String> redisValue = jedis.hgetAll(RedisKeyPrefix.buc.name() + ":" + userName);
-		redisConnectionPool.getJedisPool().returnResource(jedis);
-		jedis.close();
-		LoginDetails loginDetails = new LoginDetails();
-		loginDetails.setUserName(redisValue.get(SessionKey.username.name()));
-		loginDetails.setAuthToken(redisValue.get(SessionKey.authtoken.name()));
-		loginDetails.setType(redisValue.get(SessionKey.logintype.name()));
-		loginDetails.setPasswordState(redisValue.get(SessionKey.loginstate.name()));
-		loginDetails.setRole(redisValue.get(SessionKey.userrole.name()));
-		return loginDetails;
-	}
-
-	@Override
 	public boolean removed(String userName, String redisPrefix, String... field) throws Exception {
 		Jedis jedis = redisConnectionPool.getJedisPool().getResource();
-		if(jedis == null)
-			System.out.println("==================>");
-		System.out.println("userName=>" +userName + ", field" + field);
 		Long deleated = jedis.hdel(redisPrefix + userName, field);
 		redisConnectionPool.getJedisPool().returnResource(jedis);
 		jedis.close();
@@ -109,20 +72,28 @@ public class RedisSessionDao implements SessionDao {
 	}
 
 	@Override
-	public Set<String> getRoles(String userName, String redisPrefix) {
+	public Set<String> getSetMembers(String userName, String redisPrefix) {
 		Jedis jedis = redisConnectionPool.getJedisPool().getResource();
-		Set<String> roles = jedis.smembers(redisPrefix + userName);
+		Set<String> setValue = jedis.smembers(redisPrefix + userName);
 		redisConnectionPool.getJedisPool().returnResource(jedis);
 		jedis.close();
-		return roles;
+		return setValue;
 	}
 
 	@Override
-	public Set<String> getPermission(String userName, String redisPrefix) {
+	public void setSetMembers(String userName, String redisPrefix, String... setMembers) {
 		Jedis jedis = redisConnectionPool.getJedisPool().getResource();
-		Set<String> permission = jedis.smembers(redisPrefix + userName);
+		jedis.sadd(redisPrefix + userName, setMembers);
 		redisConnectionPool.getJedisPool().returnResource(jedis);
 		jedis.close();
-		return permission;
+	}
+
+	@Override
+	public Long removedSetMembers(String userName, String redisPrefix, String... setMembers) {
+		Jedis jedis = redisConnectionPool.getJedisPool().getResource();
+		long memberRemoved = jedis.srem(redisPrefix + userName, setMembers);
+		redisConnectionPool.getJedisPool().returnResource(jedis);
+		jedis.close();
+		return memberRemoved;
 	}
 }
