@@ -72,7 +72,7 @@ public class RoleDao {
 		return instituteRoles;
 	}
 
-	public Long addNewRole(Long instituteId, String userName, RoleForm roleForm) throws SQLException {
+	public Long addNewRole(Long instituteId, String userName, String roleName, String roleDescription) throws SQLException {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
@@ -83,8 +83,8 @@ public class RoleDao {
 		try {
 			connection = db.getConnection();
 			preparedStatement = connection.prepareStatement(query, ResultSet.TYPE_FORWARD_ONLY, Statement.RETURN_GENERATED_KEYS);
-			preparedStatement.setString(1, roleForm.getRoleName());
-			preparedStatement.setString(2, roleForm.getRoleDescription());
+			preparedStatement.setString(1, roleName);
+			preparedStatement.setString(2, roleDescription);
 			preparedStatement.setString(3, userName);
 			preparedStatement.setLong(4, instituteId);
 			preparedStatement.execute();
