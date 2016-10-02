@@ -192,6 +192,7 @@ public class Tables {
 		public static String table = "permissions";
 		public static String id = "id";
 		public static String permissionName = "permission_name";
+		public static String permissionDescription = "permission_description";
 		public static String isActive = "is_active";
 		public static String createdAt = "created_at";
 		public static String updatedAt = "updated_at";
