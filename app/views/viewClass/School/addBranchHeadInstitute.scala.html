@@ -1,6 +1,6 @@
 @(schoolRegister:Form[views.forms.institute.AddInstituteBranchForm], schoolCountry:
 List[String], state: Map[String, String])
-@viewClass.main3("Register")(""){
+@viewClass.main7("Register")(""){
 <style>
 .ui.form input[type="text"],.ui.form input[type="email"]{
    border: 1px solid #055020;
@@ -12,10 +12,10 @@ List[String], state: Map[String, String])
    color: rgba(248, 119, 59, 0.9);
 }
 </style>
-<div class="stripe">
-<div class="main container">
-   <div class="ui page grid">
-      <div class="column">
+
+<div class="ui main container" id="content">
+  
+      
          <h2 class="ui center aligned icon header">
             <i class="circular emphasized users icon"></i>
             <div class="content">
@@ -26,8 +26,7 @@ List[String], state: Map[String, String])
          <div class="ui horizontal divider">
             <i class="circular heart icon"></i>
          </div>
-         <div class="item">
-            <div class="image">
+        
                <!--  New School request  -->
                <label>field marked with * are mandatory</label>
                <div class="ui hidden divider"></div>
@@ -165,11 +164,8 @@ List[String], state: Map[String, String])
                   <div class="ui error message"></div>
                </form>
             </div>
-         </div>
-      </div>
-   </div>
-</div>
-</div>
+      
+
 @if(flash.containsKey("success")) {
 <div class="ui segment">
    <div class="ui green success message" id="success-message">
