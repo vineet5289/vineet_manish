@@ -1,0 +1,153 @@
+@(activeRoleList:List[views.forms.institute.RoleForm],
+inactiveRoleList:List[views.forms.institute.RoleForm],
+addRoleForm:Form[views.forms.institute.RoleForm])
+
+@viewClass.main("HOME | INSTITUTE")(""){
+	<div class="main container">
+    <div class="ui attached segment">
+
+
+          <div class="ui grid">
+     
+            <div class="two column row">
+              <div class="left floated column  aligned content">
+                <h1 class="ui header"><i class="building icon"></i>   <div class="content">Roles
+  <div class="sub header">Different roles can be assigned to employees. </div> 
+  </div>   
+</h1>
+              </div>
+              <div class="right floated column middle aligned  right aligned">
+                <div class="middle aligned content">
+                
+               <button class="ui right labeled icon button primary addNewRoleBtn">ADD NEW ROLE<i class="add icon"></i>   </button>
+                </div>
+              </div>
+            </div>
+            <br><br>
+
+          <div class="ui basic modal" id="addRoleModal">
+    <i class="close icon"></i>
+    <div class="header" align="center">
+        Add Roles and Permissions
+    </div>
+    <div class="image content">
+        <div class="description">
+            <div class="ui header">Enter:</div>
+            <form
+            class="ui form segment"
+            id="addNewRoleForm"
+            method="POST"
+            <!-- action="/submitopt"> -->
+            action=""
+            <div class=" two field">
+             <div class="field">
+                <label>Role</label>
+                <input name="roleName" placeholder="Enter Role" type="text">
+            </div>
+            <div class="field">
+                <label>Role Description</label>
+                <input name="roleDescription" placeholder="Enter Role Description" type="text">
+            </div>
+            </div>
+           
+            
+            <div class="actions">
+                <div class="two fluid ui inverted buttons">
+                    <div class="ui red inverted button" id="">
+                        <i class="chevron left icon"></i>Back To Previous Page
+                    </div>
+                    <button
+                        type="submit"
+                        id="addNewRolePermissions"
+                        class="ui green inverted button">
+                    <i class="checkmark icon"></i>Add Permissions</button>
+                </div>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+          </div>
+
+          <div class="ui grid">
+            <div class="sixteen wide column">
+
+
+      <div class="ui top attached tabular menu">
+        
+        <a href="#" class="item active" style="background-color: whitesmoke;">Active Roles</a>
+        <a href="#" class="item">Disabled Roles</a>
+        
+      </div>
+
+              <table class="ui  single line roletable table selectable">
+                <thead>
+                  <tr>
+                    <th class="one wide"></th>
+                    <th class="three wide">Role</th>
+                    <th class="four wide">Description</th>
+                    <th class="four wide">Permission</th>
+                    <th class="four wide">Edit / Disable</th>
+                  </tr>
+                </thead>
+                <tbody>
+                	@for(activeRole <- activeRoleList){
+                	<tr class="role">
+                		<td class="collapsing">
+                      <img class="avatar" src="https://randomuser.me/api/portraits/men/51.jpg">
+                    </td>
+                		<td>@activeRole.roleName</td>
+                		<td>@activeRole.roleDescription</td>
+                		<td>@activeRole.permission</td>
+                		 <td>
+                            <div class="middle aligned content">
+                               <a href=""><button class="ui classic gray button">edit
+                               </button></a>
+                                <a href="/disable_role/"><button class="ui classic red disableRoleBtn button">disable 
+                                </button></a>
+                             </div>
+                          </td>
+                      </tr>
+                }
+                
+            </tbody>
+            <tfoot>
+              <tr>
+                <th colspan="7">
+                  <div class="ui right floated pagination basic menu tiny">
+                    <a class="item">1</a>
+                    <a class="item">2</a>
+                    <a class="icon item">
+                      <i class="right chevron icon"></i>
+                    </a>
+                  </div>
+                </th>
+              </tr>
+            </tfoot>
+            </table>
+          </div>
+      </div>
+
+      </div>
+	</div>
+
+	<div class="ui small test modal">
+          <i class="close icon"></i>
+          <div class="header">
+            Delete Your Account
+          </div>
+          <div class="content">
+            <p>Are you sure you want to delete your account</p>
+          </div>
+          <div class="actions">
+            <div class="ui negative button">
+              No
+            </div>
+            <div class="ui positive right labeled icon button">
+              Yes
+              <i class="checkmark icon"></i>
+            </div>
+          </div>
+          </div>
+}

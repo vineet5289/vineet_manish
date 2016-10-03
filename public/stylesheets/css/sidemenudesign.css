@@ -1,0 +1,278 @@
+/* frrom here Css for test4 main 7*/
+
+body {
+  background:#eaf0f2 !important;
+   font-family:"Helvetica Neue", Helvetica, "Noto Sans", sans-serif, Arial, sans-serif;
+  padding-top: 80px !important;
+} 
+
+.right.ui.menu {
+  background: transparent !important;
+} 
+
+.menu .ui.menu .dropdown {
+  margin-left: 10px;
+  
+}
+
+.ui.head {
+  height: 46px;
+}
+
+.ui.dropdown.menu{
+  background: #388e3c;
+}
+
+.ui.inverted.menu.main {
+  
+  z-index: 1350; 
+}
+
+.ui.modal.large.long > .header {}
+
+.ui.inverted.menu.main2 {
+ 
+  top: 50px;
+}
+
+
+.ui.ultramini.statistics .statistic > .value,
+.ui.ultramini.statistic > .value {
+  font-size: 1rem;
+}
+
+.ui.statistic > .label {
+  font-size: .8rem;
+}
+
+
+
+.ui.menu.main {
+  background: #388e3c;
+}
+
+.ui.menu.sidebar{
+  border:none ! important;
+}
+
+
+  
+#sideMenu{
+  width: 18rem !important;
+   border-radius: 0;
+  box-shadow: none;
+  border: none;
+  max-height: 510px !important;
+  overflow: hidden;
+  position: fixed;
+  background-color: #eaf0f2 !important;
+ 
+ }
+
+#sideMenu:hover {
+    overflow-y:scroll;
+}
+
+#togglesidemenu {
+        display: none;
+
+      }
+
+
+
+
+ @media only screen and (max-width: 768px) {
+    
+      #sideMenu {
+        display: none;
+      }
+      
+     #content{
+      padding-left: 40px !important;
+     }
+     
+     #togglesidemenu {
+        display: block;
+
+      }
+     
+      
+      
+    }
+
+    .pushable > .pusher {
+  background-color: #eaf0f2 !important ;
+  padding-top: 5em;
+}
+
+
+
+@@media only screen and (max-width: 700px) {
+  #sideMenu{
+    display: none;
+  }
+}
+
+#content{
+    
+    padding-left: 160px;
+    margin-bottom: 2em !important;
+  }
+
+  /* frrom here Css for test9 main 4*/
+
+/*
+  body {
+  background-color: #eaf0f2;
+  padding-top: 40px;
+}
+
+a {
+  cursor: pointer;
+}
+
+
+
+.user {
+  cursor: pointer;
+}
+
+.horizontal {
+  font-weight: normal !important;
+}
+
+.password {
+  cursor: pointer;
+}
+
+.breadcrumb {
+  padding: 20px 0px 10px 0px;
+}
+
+.avatar {
+  width: 50px;
+  height: auto;
+  border-radius: 50%;
+}
+
+.image {
+  margin-top: -100px;
+}
+
+.ui.segment {
+  padding: 2rem;
+}
+
+.ui.head {
+  height: 46px;
+}
+
+.logo {
+  height: 26px !important;
+  width: auto;
+}
+
+.greeting {
+  color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.greeting::after,
+.logout::before {
+  content: "\00a0";
+}
+
+
+.ui.table thead th {
+  cursor: auto;
+  background: #FFF;
+  text-align: inherit;
+  color: rgba(0, 0, 0, 0.87);
+  padding: 0.92857143em 1em;
+  vertical-align: inherit;
+  font-style: none;
+  font-weight: bold;
+  text-transform: none;
+  border-bottom: 1px solid rgba(34, 36, 38, 0.1);
+  border-left: none;
+}
+
+.ui.table tfoot th {
+  cursor: auto;
+  border-top: 1px solid rgba(34, 36, 38, 0.15);
+  background: #FFF;
+  text-align: inherit;
+  color: rgba(0, 0, 0, 0.87);
+  padding: 1em 1em;
+  vertical-align: middle;
+  font-style: normal;
+  font-weight: normal;
+  text-transform: none;
+}
+
+.logout,
+.logout a,
+.logout a:visited {
+  color: rgba(255, 255, 255, 0.5) !important;
+  font-weight: 300 !important;
+}
+
+.logout a:hover {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.main.container {
+  position: relative;
+  max-width: 940px !important;
+  left: 0px;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding: 2em 0em 7em;
+}
+
+.inverted {
+  background-color: #28556f !important;
+  border-radius: 4px;
+}
+
+.company-name {
+  font-weight: bold !important;
+  color: #212121;
+}
+
+.company-logo {
+  max-width: 100%;
+}
+
+.compact {
+  max-width: 250px !important;
+  max-height: 250px !important;
+}
+
+.square-logo {
+  max-width: 200px !important;
+  max-height: 200px !important;
+}
+
+.company-name:hover {
+  color: #212121;
+}
+
+.checkbox label {
+  font-weight: bold;
+}
+
+.ui.segment:last-child {
+  padding: 1.5rem 2rem 1.5rem 1rem;
+}
+.skip {
+  border-left: 0px !important;
+}
+
+@media only screen and (max-width: 767px) {
+  .ui.table[class*="center aligned"],
+  .ui.table [class*="center aligned"] {
+    text-align: left;
+  }
+}
+
+*/
