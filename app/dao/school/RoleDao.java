@@ -42,7 +42,7 @@ public class RoleDao {
 				roleForm.setRoleName(resultSet.getString(Tables.Role.roleName));
 				roleForm.setRoleDescription(resultSet.getString(Tables.Role.roleDescription));
 				roleForm.setRoleCreatedBy(resultSet.getString(Tables.Role.roleAddedBy));
-				String roleCreatedAt = resultSet.getDate(Tables.Role.createdAt) != null ? resultSet.getDate(Tables.Role.createdAt).toString() : "";
+				String roleCreatedAt = resultSet.getDate(Tables.Role.createdAt).toString();
 				roleForm.setRoleCreatedAt(roleCreatedAt);
 				roleForm.setEditable(resultSet.getBoolean(Tables.Role.isEditable));
 				roleForm.setPermission(resultSet.getString(Tables.Role.permission));

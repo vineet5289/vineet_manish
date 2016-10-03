@@ -223,4 +223,17 @@ public class Tables {
 		public static String createdAt = "created_at";
 		public static String updatedAt = "updated_at";
 	}
+
+	public static class Group {
+		public static String table = "groups";
+		public static String id = "id";
+		public static String groupName = "group_name";
+		public static String groupDescription = "group_description";
+		public static String groupAddedBy = "group_added_by";
+		public static String instituteId = "institute_id";
+		public static String headInstituteId = "head_institute_id";
+		public static String isActive = "is_active";
+		public static String createdAt = "created_at";
+		public static String updatedAt = "updated_at";
+	}
 }

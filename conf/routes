@@ -122,6 +122,11 @@ GET			/role										controllers.institute.RoleController.preAddRole()
 POST		/add_role									controllers.institute.RoleController.postAddRole()
 POST		/disable_role								controllers.institute.RoleController.disableRole()
 
+#role
+GET			/group										controllers.institute.RoleController.preAddGroup()
+POST		/add_group									controllers.institute.RoleController.postAddGroup()
+POST		/disable_group								controllers.institute.RoleController.disableGroup()
+
 # permission
 POST		/edit_permission							controllers.institute.RoleController.editPermission()
 
