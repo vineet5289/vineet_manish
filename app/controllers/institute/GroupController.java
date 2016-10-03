@@ -10,7 +10,6 @@ import play.data.Form;
 import play.data.FormFactory;
 import play.mvc.Result;
 import views.forms.institute.GroupForm;
-import views.forms.institute.RoleForm;
 import controllers.CustomController;
 import dao.school.GroupDao;
 import enum_package.SessionKey;
@@ -46,7 +45,7 @@ public class GroupController extends CustomController {
 		return ok();
 	}
 
-	public Result disableRole() {
+	public Result disableGroup() {
 		return ok();
 	}
 }

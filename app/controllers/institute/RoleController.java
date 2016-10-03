@@ -47,7 +47,7 @@ public class RoleController extends CustomController {
 		return ok("");
 	}
 
-	public Result postAddGroup() {
+	public Result postAddRole() {
 		RoleForm addNewRole = formFactory.form(RoleForm.class).get();
 		Long roleKey = 0l;
 		List<PermissionModel> permissions = new ArrayList<PermissionModel>();
