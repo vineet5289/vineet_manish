@@ -16,6 +16,8 @@ import controllers.CustomController;
 import dao.PermissionDAO;
 import dao.school.RoleDao;
 import enum_package.SessionKey;
+import views.html.viewClass.School.addRoles;
+import views.html.viewClass.School.addRolePermissions;
 
 public class RoleController extends CustomController {
 
@@ -44,7 +46,7 @@ public class RoleController extends CustomController {
 		}
 
 //		return (rolePresent, activeRoles, inactiveRoles);
-		return ok("");
+		return ok(addRoles.render(activeRoles, inactiveRoles,addNewRole));
 	}
 
 	public Result postAddRole() {
@@ -73,7 +75,7 @@ public class RoleController extends CustomController {
 
 		Form<PermissionForm> permissionForm = formFactory.form(PermissionForm.class);
 		//permissionForm, roleName, roleDescription, roleKey, permissions
-		return ok("");
+		return ok(addRolePermissions.render(permissionForm, roleName, roleDescription, roleKey, permissions));
 	}
 
 	public Result editPermission() {
