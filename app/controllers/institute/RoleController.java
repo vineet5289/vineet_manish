@@ -50,7 +50,11 @@ public class RoleController extends CustomController {
 	}
 
 	public Result postAddRole() {
-		RoleForm addNewRole = formFactory.form(RoleForm.class).get();
+		System.out.println("====> 1");
+		Form<RoleForm> addNewRoleForm = formFactory.form(RoleForm.class).bindFromRequest();;
+		System.out.println("====> 2");
+		RoleForm addNewRole = addNewRoleForm.get();
+		System.out.println("====> 3");
 		Long roleKey = 0l;
 		List<PermissionModel> permissions = new ArrayList<PermissionModel>();
 		String roleName = addNewRole.getRoleName();

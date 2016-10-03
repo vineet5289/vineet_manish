@@ -77,11 +77,12 @@ public class RoleDao {
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		Long roleId = 0l;
-		String query = String.format("INSERT INTO %s SET %s=?, %s=?, %s=?;", Tables.Role.table, Tables.Role.roleName,
+		String query = String.format("INSERT INTO %s SET %s=?, %s=?, %s=?, %s=?;", Tables.Role.table, Tables.Role.roleName,
 				Tables.Role.roleDescription, Tables.Role.roleAddedBy, Tables.Role.instituteId);
 		try {
 			connection = db.getConnection();
-			preparedStatement = connection.prepareStatement(query, ResultSet.TYPE_FORWARD_ONLY, Statement.RETURN_GENERATED_KEYS);
+			connection.setAutoCommit(false);
+			preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 			preparedStatement.setString(1, roleName);
 			preparedStatement.setString(2, roleDescription);
 			preparedStatement.setString(3, userName);
@@ -93,7 +94,9 @@ public class RoleDao {
 			} else {
 				System.out.println("==> role addition problem");
 			}
+			connection.commit();
 		} catch(Exception exception) {
+			connection.rollback();
 			exception.printStackTrace();
 		} finally {
 			if(preparedStatement != null) {
