@@ -1,0 +1,66 @@
+@(permisionForm:Form[views.forms.institute.PermissionForm],
+roleName:String,
+roleDescription:String,
+roleKey:Long,
+permissionList:List[models.PermissionModel])
+
+@viewClass.main("HOME | INSTITUTE")(""){
+	<div class="main container">
+      <div clas="ui grid">
+         <div class="sixteen wide column">
+
+
+      <div class="ui top attached tabular menu">
+        
+        <a href="#" class="item active" style="background-color: whitesmoke;">Active Roles</a>
+        <a href="#" class="item">Disabled Roles</a>
+        
+      </div>
+
+              <table class="ui  single line roletable table selectable">
+                <thead>
+                  <tr>
+                    <th class="one wide"></th>
+                    <th class="five wide">Permissions</th>
+                    <th class="six wide">Description</th>
+                    <th class="four wide"></th>
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                	@for((permission,index) <- permissionList.zipWithIndex){
+                	<tr class="role">
+                		<td class="collapsing">
+                      <img class="avatar" src="https://randomuser.me/api/portraits/men/51.jpg">
+                    </td>
+                		<td>@roleName</td>
+                		<td>@roleName , roleDescription,roleKey</td>
+                		
+                		 <td>
+                            <div class="middle aligned content">
+                               <a href=""><button class="ui classic gray button">ADD
+                               </button></a>
+                             </div>
+                          </td>
+                      </tr>
+                }
+                
+            </tbody>
+            <tfoot>
+              <tr>
+                <th colspan="7">
+                  <div class="ui right floated pagination basic menu tiny">
+                    <a class="item">1</a>
+                    <a class="item">2</a>
+                    <a class="icon item">
+                      <i class="right chevron icon"></i>
+                    </a>
+                  </div>
+                </th>
+              </tr>
+            </tfoot>
+            </table>
+          </div>
+      </div>
+	</div>
+}
