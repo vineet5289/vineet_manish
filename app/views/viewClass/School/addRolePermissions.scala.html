@@ -5,19 +5,58 @@ roleKey:Long,
 permissionList:List[models.PermissionModel])
 
 @viewClass.main("HOME | INSTITUTE")(""){
-	<div class="main container">
+
+  <div class="main container">
       <div clas="ui grid">
+          <div class="field">
+            <div class="label">Role Name</div>
+            <input type="text" name="roleName" value="@roleName">
+          </div>
+
+          <div class="field">
+            <div class="label">Role Descriptions</div>
+            <input type="text" name="roleName" value="@roleDescription">
+          </div>
+
+        <form class="ui form permissionForm" method="Post" action="/edit_permission">
+        
+      <input type="hidden" name="roleId" value="@roleKey">    
+  <div class="field">
+    <label>Permission Added</label>
+  
+    <select class="ui fluid multiple dropdown permission"  multiple="" name="permissions">
+           
+            
+    </select>
+ 
+    
+    <!--<div class="ui fluid selection multiple dropdown">
+     <div class="text">No permission added</div>
+     <input name='permissions' type="hidden">
+     <div class="menu">
+       
+     </div>
+    </div> -->
+    <!--<div class="ui fluid selection multiple dropdown">
+     <div class="text">No permission added</div>
+     <input name='permisionForm(permissions)' type="hidden">
+     <div class="menu">
+       <div class="item" data-value="@roleKey">@roleKey</div>
+       <div class="item" data-value="1234">1234</div>
+     </div>
+  </div> 
+  <input type="text" value="1234" name="permissions[0]">
+  <input type="text" value="5234" name="permissions[1]"> -->
+
+  <button type="submit" class="ui basic green button savepermissionbtn" id="savepermissionbtn">SAVE</button>
+</form>
+
+      <!--<div class="cart-ctn"><span class="cart"></span></div></br></br> -->
+      
          <div class="sixteen wide column">
 
-
-      <div class="ui top attached tabular menu">
-        
-        <a href="#" class="item active" style="background-color: whitesmoke;">Active Roles</a>
-        <a href="#" class="item">Disabled Roles</a>
-        
-      </div>
-
-              <table class="ui  single line roletable table selectable">
+<div class="products">
+ <table class="ui  single line roletable table ">
                 <thead>
                   <tr>
                     <th class="one wide"></th>
@@ -28,18 +67,18 @@ permissionList:List[models.PermissionModel])
                   </tr>
                 </thead>
                 <tbody>
-                	@for((permission,index) <- permissionList.zipWithIndex){
-                	<tr class="role">
-                		<td class="collapsing">
+                  @for((permission,index) <- permissionList.zipWithIndex){
+               
+                  <tr>
+                    <td>
                       <img class="avatar" src="https://randomuser.me/api/portraits/men/51.jpg">
                     </td>
-                		<td>@permission.permissionName</td>
-                		<td>@permission.permissionDescription ,roleName , roleDescription,roleKey</td>
-                		
-                		 <td>
-                            <div class="middle aligned content">
-                               <a href=""><button class="ui classic gray button">ADD
-                               </button></a>
+                    <td>@permission.permissionName</td>
+                    <td><div class="ui segment">@permission.permissionDescription ,@roleKey,@index</div></td>
+                    
+                     <td>
+                            <div class="middle aligned content permissionBtn">
+                                <button class="ui basic green button" data-permission-id="@roleKey" data-permission-index="@permission.id" data-permission-name="@permission.permissionName">Add</button>
                              </div>
                           </td>
                       </tr>
@@ -60,7 +99,10 @@ permissionList:List[models.PermissionModel])
               </tr>
             </tfoot>
             </table>
+              </div>
+             
           </div>
       </div>
-	</div>
+  </div>
+  
 }

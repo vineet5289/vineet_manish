@@ -70,7 +70,8 @@ addRoleForm:Form[views.forms.institute.RoleForm])
 
           </div>
 
-          <div class="ui grid">
+          
+            <div class="ui grid">
             <div class="sixteen wide column">
 
 
@@ -80,27 +81,25 @@ addRoleForm:Form[views.forms.institute.RoleForm])
         <a href="#" class="item">Disabled Roles</a>
         
       </div>
-
-              <table class="ui  single line roletable table selectable">
+              
+              <table class="ui fixed table">
                 <thead>
                   <tr>
-                    <th class="one wide"></th>
-                    <th class="three wide">Role</th>
-                    <th class="four wide">Description</th>
-                    <th class="four wide">Permission</th>
-                    <th class="four wide">Edit / Disable</th>
+                    <th class="one wide column"></th>
+                    <th class="three wide column">Role</th>
+                    <th class="six wide column">Description</th>
+                    <th class="six wide column">Permission</th>
+                    <th class="four wide column"></th>
                   </tr>
                 </thead>
                 <tbody>
-                	@for(activeRole <- activeRoleList){
+                	@for((activeRole,index) <- activeRoleList.zipWithIndex){
                 	<tr class="role">
-                		<td class="collapsing">
-                      <img class="avatar" src="https://randomuser.me/api/portraits/men/51.jpg">
-                    </td>
-                		<td>@activeRole.roleName</td>
+                		<td class="right aligned collapsing">@(index + 1).</td>
+                		<td class="collapsing">@activeRole.roleName</td>
                 		<td>@activeRole.roleDescription</td>
                 		<td>@activeRole.permission</td>
-                		 <td>
+                		 <td class="right aligned collapsing">
                             <div class="middle aligned content">
                                <a href=""><button class="ui classic gray button">edit
                                </button></a>
@@ -126,7 +125,8 @@ addRoleForm:Form[views.forms.institute.RoleForm])
               </tr>
             </tfoot>
             </table>
-          </div>
+            </div>
+         
       </div>
 
       </div>
