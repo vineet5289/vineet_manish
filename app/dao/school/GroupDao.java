@@ -67,4 +67,64 @@ public class GroupDao {
 		instituteGroup.put(false, inactiveGroup);
 		return instituteGroup;
 	}
+
+	public boolean addGroup(Long instituteId, String groupName, String groupDescription, String userName) throws SQLException {
+		boolean isGroupAdded = false;
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		String query = String.format("INSERT INTO %s (%s, %s, %s, %s) VALUES (?, ?, ?, ?);", Tables.Group.table,
+				Tables.Group.groupName, Tables.Group.groupDescription, Tables.Group.groupAddedBy, Tables.Group.instituteId);;
+		
+		try {
+			connection = db.getConnection();
+			preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setString(1, groupName);
+			preparedStatement.setString(2, groupDescription);
+			preparedStatement.setString(3, userName);
+			preparedStatement.setLong(4, instituteId);
+			isGroupAdded = preparedStatement.execute();
+		} catch(Exception exception) {
+			exception.printStackTrace();
+			isGroupAdded = false;
+		} finally {
+			if(preparedStatement != null) {
+				preparedStatement.close();
+			}
+			if(connection != null) {
+				connection.close();
+			}
+		}
+		return isGroupAdded;
+	}
+
+	public boolean addDisabled(Long instituteId, Long groupId, String userName) throws SQLException {
+		boolean isGroupDisabled = false;
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		String query = String.format("UPDATE %s SET %s=?, %s=? WHERE %s=? AND %s=? LIMIT 1;", Tables.Group.table,
+				Tables.Group.isActive, Tables.Group.groupAddedBy, Tables.Group.instituteId, Tables.Group.id);
+		try {
+			connection = db.getConnection();
+			preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setBoolean(1, false);
+			preparedStatement.setString(2, userName);
+			preparedStatement.setLong(3, instituteId);
+			preparedStatement.setLong(4, groupId);
+			int noOfRowUpdated = preparedStatement.executeUpdate();
+			if(noOfRowUpdated == 1) {
+				isGroupDisabled = true;
+			}
+		} catch(Exception exception) {
+			exception.printStackTrace();
+			isGroupDisabled = false;
+		} finally {
+			if(preparedStatement != null) {
+				preparedStatement.close();
+			}
+			if(connection != null) {
+				connection.close();
+			}
+		}
+		return isGroupDisabled;
+	}
 }

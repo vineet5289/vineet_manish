@@ -42,10 +42,51 @@ public class GroupController extends CustomController {
 	}
 
 	public Result postAddGroup() {
-		return ok();
+		Form<GroupForm> addNewRoleForm = formFactory.form(GroupForm.class).bindFromRequest();;
+		GroupForm addNewRole = addNewRoleForm.get();
+		boolean isGroupAdded = false;
+		try {
+			String instituteIdFromSession = session().get(SessionKey.of(SessionKey.instituteid));
+			String userName = session().get(SessionKey.of(SessionKey.username));
+			if(instituteIdFromSession != null) {
+				Long instituteId = Long.parseLong(instituteIdFromSession);
+				isGroupAdded = groupDao.addGroup(instituteId, addNewRole.getGroupName(), addNewRole.getGroupDescription(),
+						userName);
+			}
+		} catch(Exception exception) {
+			exception.printStackTrace();
+			isGroupAdded = false;
+		}
+
+		if(!isGroupAdded) {
+			flash("error", "Got some error during request processing.");
+		} else {
+			flash("success", "Your request for adding group has been completed.");
+		}
+		return redirect(controllers.institute.routes.GroupController.preAddGroup());
 	}
 
 	public Result disableGroup() {
-		return ok();
+		Form<GroupForm> addNewRoleForm = formFactory.form(GroupForm.class).bindFromRequest();;
+		GroupForm addNewRole = addNewRoleForm.get();
+		boolean isGroupDisabled = false;
+		try {
+			String instituteIdFromSession = session().get(SessionKey.of(SessionKey.instituteid));
+			String userName = session().get(SessionKey.of(SessionKey.username));
+			if(instituteIdFromSession != null) {
+				Long instituteId = Long.parseLong(instituteIdFromSession);
+				isGroupDisabled = groupDao.addDisabled(instituteId, addNewRole.getId(), userName);
+			}
+		} catch(Exception exception) {
+			exception.printStackTrace();
+			isGroupDisabled = false;
+		}
+
+		if(!isGroupDisabled) {
+			flash("error", "Got some error during request processing.");
+		} else {
+			flash("success", "Your request for disabled group has been completed.");
+		}
+		return redirect(controllers.institute.routes.GroupController.preAddGroup());
 	}
 }
