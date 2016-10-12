@@ -8,7 +8,11 @@ permissionList:List[models.PermissionModel])
 
   <div class="main container">
       <div clas="ui grid">
-          <div class="field">
+        
+
+        <form class="ui form permissionForm" method="Post" action="/edit_permission">
+        
+        <div class="field">
             <div class="label">Role Name</div>
             <input type="text" name="roleName" value="@roleName">
           </div>
@@ -17,14 +21,11 @@ permissionList:List[models.PermissionModel])
             <div class="label">Role Descriptions</div>
             <input type="text" name="roleName" value="@roleDescription">
           </div>
-
-        <form class="ui form permissionForm" method="Post" action="/edit_permission">
-        
       <input type="hidden" name="roleId" value="@roleKey">    
   <div class="field">
     <label>Permission Added</label>
   
-    <select class="ui fluid multiple dropdown permission"  multiple="" name="permissions">
+    <select class="ui fluid multiple dropdown permission"  multiple="" name="permissions[]">
            
             
     </select>
@@ -78,7 +79,7 @@ permissionList:List[models.PermissionModel])
                     
                      <td>
                             <div class="middle aligned content permissionBtn">
-                                <button class="ui basic green button" data-permission-id="@roleKey" data-permission-index="@permission.id" data-permission-name="@permission.permissionName">Add</button>
+                                <button id="btn-@permission.id" class="ui basic green button" data-permission-id="@permission.id" data-permission-name="@permission.permissionName">Add</button>
                              </div>
                           </td>
                       </tr>
