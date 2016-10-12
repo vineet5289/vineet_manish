@@ -155,7 +155,7 @@ public class RoleDao {
 			preparedStatement.setLong(4, instituteId);
 			preparedStatement.setBoolean(5, true);
 			int numberOfRoleUpdated = preparedStatement.executeUpdate();
-			while (numberOfRoleUpdated == 1) {
+			if(numberOfRoleUpdated == 1) {
 				isUpdated = true;
 			}
 		} catch(Exception exception) {
@@ -178,6 +178,7 @@ public class RoleDao {
 
 		StringBuilder sb = new StringBuilder();
 		for (Long s : permissionIds) {
+			System.out.println("inside for loop");
 		    sb.append(s);
 		    sb.append(",");
 		}

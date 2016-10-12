@@ -76,31 +76,31 @@ public class EmployesDAO {
 			resultSet = empSelectPS.executeQuery();
 			while(resultSet.next()) {
 				EmployeeDetailsForm employeeDetailsForm = new EmployeeDetailsForm();
-				employeeDetailsForm.setId();
-				employeeDetailsForm.setInstituteId();
-				employeeDetailsForm.setRequestedUserName();
-
-				employeeDetailsForm.setName();
-				employeeDetailsForm.setGender();
-				employeeDetailsForm.setJobTitles();
-
-				employeeDetailsForm.setUserName();
-				employeeDetailsForm.setPhoneNumber();
-				employeeDetailsForm.setEmpCode();
-				employeeDetailsForm.setEmpPreferedName();
-				employeeDetailsForm.setEmpAlternativeEmail();
-				employeeDetailsForm.setAlternativeNumber();
-				employeeDetailsForm.setEmpEmail();
-				employeeDetailsForm.setDob();
-				employeeDetailsForm.setJoiningDate();
-				employeeDetailsForm.setAddressLine1();
-				employeeDetailsForm.setAddressLine2();
-				employeeDetailsForm.setCity();
-				employeeDetailsForm.setState();
-				employeeDetailsForm.setPinCode();
-				employeeDetailsForm.setCountry();
-
-				employeeDetailsForm.setLeavingDate();
+//				employeeDetailsForm.setId();
+//				employeeDetailsForm.setInstituteId();
+//				employeeDetailsForm.setRequestedUserName();
+//
+//				employeeDetailsForm.setName();
+//				employeeDetailsForm.setGender();
+//				employeeDetailsForm.setJobTitles();
+//
+//				employeeDetailsForm.setUserName();
+//				employeeDetailsForm.setPhoneNumber();
+//				employeeDetailsForm.setEmpCode();
+//				employeeDetailsForm.setEmpPreferedName();
+//				employeeDetailsForm.setEmpAlternativeEmail();
+//				employeeDetailsForm.setAlternativeNumber();
+//				employeeDetailsForm.setEmpEmail();
+//				employeeDetailsForm.setDob();
+//				employeeDetailsForm.setJoiningDate();
+//				employeeDetailsForm.setAddressLine1();
+//				employeeDetailsForm.setAddressLine2();
+//				employeeDetailsForm.setCity();
+//				employeeDetailsForm.setState();
+//				employeeDetailsForm.setPinCode();
+//				employeeDetailsForm.setCountry();
+//
+//				employeeDetailsForm.setLeavingDate();
 			}
 			
 		} catch(Exception exception) {

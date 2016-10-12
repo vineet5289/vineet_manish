@@ -29,13 +29,13 @@ public class EmployeeController extends CustomController {
 		Form<AddEmployeeForm> addEmployeeForm = formFactory.form(AddEmployeeForm.class).bindFromRequest();
 		if(addEmployeeForm == null || addEmployeeForm.hasErrors()) {
 			flash("error", "Some errors occur either of some fileds are missing or contains invalid value.");
-			return redirect(controllers.institute.routes.AddOrDeleteEmployee.preAddEmployeeRequest());
+			return redirect(controllers.employee.routes.EmployeeController.preAddEmployeeRequest());
 		}
 
 		AddEmployeeForm addEmployee = addEmployeeForm.get();
 		if(addEmployee == null) {
 			flash("error", "Some errors occur either of some fileds are missing or contains invalid value.");
-			return redirect(controllers.institute.routes.AddOrDeleteEmployee.preAddEmployeeRequest());
+			return redirect(controllers.employee.routes.EmployeeController.preAddEmployeeRequest());
 		}
 
 		boolean isEmpAdded = false;
@@ -57,20 +57,20 @@ public class EmployeeController extends CustomController {
 		Form<EmployeeDetailsForm> addEmployeeForm = formFactory.form(EmployeeDetailsForm.class).bindFromRequest();
 		if(addEmployeeForm == null || addEmployeeForm.hasErrors()) {
 			flash("error", "Some errors occur either of some fileds are missing or contains invalid value.");
-			return redirect(controllers.institute.routes.AddOrDeleteEmployee.preAddEmployeeRequest());
+			return redirect(controllers.employee.routes.EmployeeController.preAddEmployeeRequest());
 		}
 
-		AddEmployeeForm addEmployee = addEmployeeForm.get();
+		EmployeeDetailsForm addEmployee = addEmployeeForm.get();
 		if(addEmployee == null) {
 			flash("error", "Some errors occur either of some fileds are missing or contains invalid value.");
-			return redirect(controllers.institute.routes.AddOrDeleteEmployee.preAddEmployeeRequest());
+			return redirect(controllers.employee.routes.EmployeeController.preAddEmployeeRequest());
 		}
 
 		boolean isEmpAdded = false;
 		try {
 			String userName = session().get(SessionKey.of(SessionKey.username));
 			String instituteId = session().get(SessionKey.of(SessionKey.instituteid));
-			isEmpAdded = employesDAO.addNewEmpRequest(addEmployee, userName, instituteId);
+//			isEmpAdded = employesDAO.addNewEmpRequest(addEmployee, userName, instituteId);
 			
 		} catch(Exception exception) {
 			exception.printStackTrace();
