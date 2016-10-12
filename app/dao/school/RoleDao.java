@@ -124,7 +124,7 @@ public class RoleDao {
 			preparedStatement.setLong(3, roleId);
 			preparedStatement.setLong(4, instituteId);
 			int numberOfRoleDesabled = preparedStatement.executeUpdate();
-			while (numberOfRoleDesabled == 1) {
+			if(numberOfRoleDesabled == 1) {
 				isRoleUpdated = true;
 			}
 		} catch(Exception exception) {

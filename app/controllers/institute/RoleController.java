@@ -100,6 +100,7 @@ public class RoleController extends CustomController {
 	}
 
 	public Result disableRole(Long roleId) {
+		System.out.println("inside disableRole");
 		try {
 			String instituteIdFromSession = session().get(SessionKey.of(SessionKey.instituteid));
 			String userName = session().get(SessionKey.of(SessionKey.username));
