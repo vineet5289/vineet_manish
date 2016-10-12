@@ -80,10 +80,8 @@ public class RoleController extends CustomController {
 	}
 
 	public Result editPermission() {
-		System.out.println("====> inside editPermission");
 		Form<PermissionForm> permissionsForm = formFactory.form(PermissionForm.class).bindFromRequest();
 		PermissionForm permissions = permissionsForm.get();
-		System.out.println("====> permissions:" + permissions);
 		boolean isPermissionEdited = false;
 		try {
 			String instituteIdFromSession = session().get(SessionKey.of(SessionKey.instituteid));
@@ -95,7 +93,6 @@ public class RoleController extends CustomController {
 		} catch(Exception exception) {
 			exception.printStackTrace();
 		}
-		System.out.println("====> done permission");
 		if(!isPermissionEdited) {
 			flash("error", "Permission request processing error.");
 		}

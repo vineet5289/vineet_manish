@@ -28,7 +28,7 @@ public class RoleDao {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
-		String query = String.format("SELECT %s, %s, %s, %s, %s, %s, %s FROM %s WHERE %s = ?;",
+		String query = String.format("SELECT %s, %s, %s, %s, %s, %s, %s, %s FROM %s WHERE %s = ?;", Tables.Role.id,
 				Tables.Role.roleName, Tables.Role.roleDescription, Tables.Role.roleAddedBy, Tables.Role.createdAt,
 				Tables.Role.permission, Tables.Role.isActive, Tables.Role.isEditable, Tables.Role.table,Tables.Role.instituteId);
 		
@@ -39,6 +39,7 @@ public class RoleDao {
 			resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				RoleForm roleForm = new RoleForm();
+				roleForm.setId(resultSet.getLong(Tables.Role.id));
 				roleForm.setRoleName(resultSet.getString(Tables.Role.roleName));
 				roleForm.setRoleDescription(resultSet.getString(Tables.Role.roleDescription));
 				roleForm.setRoleCreatedBy(resultSet.getString(Tables.Role.roleAddedBy));
