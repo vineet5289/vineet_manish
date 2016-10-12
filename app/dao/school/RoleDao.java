@@ -115,7 +115,7 @@ public class RoleDao {
 		PreparedStatement preparedStatement = null;
 		String updateQ = String.format("UPDATE %s SET %s=?, %s=? WHERE %s=? AND %s=? limit 1;", Tables.Role.table,
 				Tables.Role.isActive, Tables.Role.roleAddedBy, Tables.Role.id, Tables.Role.instituteId);
-		boolean isDisabledSuccessfully = false;
+		boolean isRoleUpdated = false;
 		try {
 			connection = db.getConnection();
 			preparedStatement = connection.prepareStatement(updateQ);
@@ -125,7 +125,7 @@ public class RoleDao {
 			preparedStatement.setLong(4, instituteId);
 			int numberOfRoleDesabled = preparedStatement.executeUpdate();
 			while (numberOfRoleDesabled == 1) {
-				isDisabledSuccessfully = true;
+				isRoleUpdated = true;
 			}
 		} catch(Exception exception) {
 			exception.printStackTrace();
@@ -137,7 +137,7 @@ public class RoleDao {
 				connection.close();
 			}
 		}
-		return isDisabledSuccessfully;
+		return isRoleUpdated;
 	}
 
 	public boolean assignPermission(Long instituteId, Long roleId, List<Long> permissionIds, String userName) throws SQLException {

@@ -121,6 +121,7 @@ GET			/registration								controllers.SRPController.preRegistration(reg_user_re
 GET			/role										controllers.institute.RoleController.preAddRole()
 POST		/add_role									controllers.institute.RoleController.postAddRole()
 POST		/disable_role/:roleId						controllers.institute.RoleController.disableRole(roleId: Long)
+POST		/enable_role/:roleId						controllers.institute.RoleController.enableRole(roleId: Long)
 
 #role
 GET			/group										controllers.institute.GroupController.preAddGroup()

@@ -116,4 +116,22 @@ public class RoleController extends CustomController {
 		}
 		return redirect(controllers.institute.routes.RoleController.preAddRole());
 	}
+
+	public Result enableRole(Long roleId) {
+		try {
+			String instituteIdFromSession = session().get(SessionKey.of(SessionKey.instituteid));
+			String userName = session().get(SessionKey.of(SessionKey.username));
+			boolean isRoleEnabled = false;
+			if(instituteIdFromSession != null) {
+				Long instituteId = Long.parseLong(instituteIdFromSession);
+				isRoleEnabled = roleDao.disableEnableRole(roleId, instituteId, userName, false);
+			}
+			if(!isRoleEnabled) {
+				flash("error", "Some problem happend during execution of your request. Please try again.");
+			}
+		} catch(Exception exception) {
+			exception.printStackTrace();
+		}
+		return redirect(controllers.institute.routes.RoleController.preAddRole());
+	}
 }
