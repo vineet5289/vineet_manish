@@ -97,13 +97,13 @@ addRoleForm:Form[views.forms.institute.RoleForm])
                 	<tr class="role">
                 		<td class="right aligned collapsing">@(index + 1).</td>
                 		<td class="collapsing">@activeRole.roleName</td>
-                		<td>@activeRole.roleDescription</td>
-                		<td>@activeRole.permission</td>
+                		<td><span class="text">@activeRole.roleDescription</span></td>
+                		<td><span class="text">@activeRole.permission</span></td>
                 		 <td class="right aligned collapsing">
                             <div class="middle aligned content">
                                <a href=""><button class="ui classic gray button">edit
                                </button></a>
-                                <a href="/disable_role"><button class="ui classic red disableRoleBtn button">disable 
+                                <a href="@institute.routes.RoleController.disableRole(activeRole.id)"><button class="ui classic red disableRoleBtn button">disable 
                                 </button></a>
                              </div>
                           </td>

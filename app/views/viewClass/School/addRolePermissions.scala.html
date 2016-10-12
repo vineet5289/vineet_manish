@@ -29,7 +29,7 @@ permissionList:List[models.PermissionModel])
            
             
     </select>
- 
+   </div>
     
     <!--<div class="ui fluid selection multiple dropdown">
      <div class="text">No permission added</div>
@@ -49,7 +49,7 @@ permissionList:List[models.PermissionModel])
   <input type="text" value="1234" name="permissions[0]">
   <input type="text" value="5234" name="permissions[1]"> -->
 
-  <button type="submit" class="ui basic green button savepermissionbtn" id="savepermissionbtn">SAVE</button>
+  <button type="submit" class="ui basic green button savepermissionbtn" id="savepermissionbtn">SAVE</button></br></br>
 </form>
 
       <!--<div class="cart-ctn"><span class="cart"></span></div></br></br> -->
@@ -75,7 +75,7 @@ permissionList:List[models.PermissionModel])
                       <img class="avatar" src="https://randomuser.me/api/portraits/men/51.jpg">
                     </td>
                     <td>@permission.permissionName</td>
-                    <td><div class="ui segment">@permission.permissionDescription ,@roleKey,@index</div></td>
+                    <td><span class="text">@permission.permissionDescription</span></td>
                     
                      <td>
                             <div class="middle aligned content permissionBtn">
