@@ -56,8 +56,8 @@ POST		/institute/edit/header					   controllers.institute.InstituteInfoControlle
 GET			/institute/mand_info					   controllers.institute.InstituteInfoController.getInstituteMandInfo()
 POST		/institute/mand_info					   controllers.institute.InstituteInfoController.updateInstituteMandInfo()
 # employee registration request
-GET			/add_emp								   controllers.institute.AddOrDeleteEmployee.preAddEmployeeRequest()
-POST		/add_emp							   	   controllers.institute.AddOrDeleteEmployee.postAddEmployeeRequest()
+GET			/add_emp								   controllers.employee.EmployeeController.preAddEmployeeRequest()
+POST		/add_emp							   	   controllers.employee.EmployeeController.postAddEmployeeRequest()
 
 GET      	/registeremp                               controllers.EmployeeController.preEmployeeRegistrationRequest()
 POST     	/registeremp            	               controllers.EmployeeController.postEmployeeRegistrationRequest()

@@ -143,7 +143,7 @@ CREATE TABLE IF NOT EXISTS employee (
   name varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   emp_prefered_name varchar(255) COLLATE utf8_unicode_ci,
   user_name varchar(225) COLLATE utf8_unicode_ci NOT NULL,
-  school_id bigint(20) NOT NULL,
+  institute_id bigint(20) NOT NULL,
   gender enum('M', 'F') NOT NULL,
   phone_number varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   emp_code varchar(100) COLLATE utf8_unicode_ci NOT NULL,
@@ -153,7 +153,6 @@ CREATE TABLE IF NOT EXISTS employee (
   emp_alternative_email varchar(15) COLLATE utf8_unicode_ci,
   joining_date date,
   leaving_date date,
-  departments varchar(255) COLLATE utf8_unicode_ci,
   dob date null,
   address_line1 varchar(255) COLLATE utf8_unicode_ci,
   address_line2 varchar(255) COLLATE utf8_unicode_ci,
@@ -166,8 +165,8 @@ CREATE TABLE IF NOT EXISTS employee (
   is_active tinyint(1) DEFAULT 1 NOT NULL,
   requested_user_name varchar(225) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (id),
-  KEY FK_employee_school_id (school_id),
-  CONSTRAINT FK_employee_school_id FOREIGN KEY (school_id) REFERENCES institute (id),
+  KEY FK_employee_school_id (institute_id),
+  CONSTRAINT FK_employee_institute_id FOREIGN KEY (institute_id) REFERENCES institute (id),
   UNIQUE KEY (user_name)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 

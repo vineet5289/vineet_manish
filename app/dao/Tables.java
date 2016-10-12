@@ -144,7 +144,7 @@ public class Tables {
 		public static String id = "id";
 		public static String name = "name";
 		public static String userName = "user_name";
-		public static String schoolId = "school_id";
+		public static String instituteId = "institute_id";
 		public static String gender = "gender";
 		public static String phoneNumber = "phone_number";
 		public static String requestedUserName = "requested_user_name";
@@ -158,7 +158,6 @@ public class Tables {
 		public static String empEmail = "emp_email";
 		public static String joiningDate = "joining_date";
 		public static String leavingDate = "leaving_date";
-		public static String departments = "departments";
 		public static String dob = "dob";
 		public static String addressLine1 = "address_line1";
 		public static String addressLine2 = "address_line2";

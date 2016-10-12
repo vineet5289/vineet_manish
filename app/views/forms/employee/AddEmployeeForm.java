@@ -18,7 +18,6 @@ public class AddEmployeeForm {
 	//optional field
 	private String empCode;
 	private String empEmail;
-	private String department;
 	private String jobTitle;
 
 	public List<ValidationError> validate() {
