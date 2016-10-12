@@ -99,16 +99,14 @@ public class RoleController extends CustomController {
 		return redirect(controllers.institute.routes.RoleController.preAddRole());
 	}
 
-	public Result disableRole() {
-		RoleForm addNewRole = formFactory.form(RoleForm.class).get();
+	public Result disableRole(Long roleId) {
 		try {
 			String instituteIdFromSession = session().get(SessionKey.of(SessionKey.instituteid));
 			String userName = session().get(SessionKey.of(SessionKey.username));
 			boolean isRoleDisabled = false;
-			if(addNewRole != null && instituteIdFromSession != null) {
-				Long roleId = addNewRole.getId();
+			if(instituteIdFromSession != null) {
 				Long instituteId = Long.parseLong(instituteIdFromSession);
-				isRoleDisabled = roleDao.disableRole(roleId, instituteId, userName);
+				isRoleDisabled = roleDao.disableEnableRole(roleId, instituteId, userName, true);
 			}
 			if(!isRoleDisabled) {
 				flash("error", "Some problem happend during execution of your request. Please try again.");

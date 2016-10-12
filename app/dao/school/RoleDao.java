@@ -110,12 +110,12 @@ public class RoleDao {
 		return roleId;
 	}
 
-	public boolean disableRole(Long roleId, Long instituteId, String userName) throws SQLException {
+	public boolean disableEnableRole(Long roleId, Long instituteId, String userName, boolean isDisabled) throws SQLException {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		String updateQ = String.format("UPDATE %s SET %s=?, %s=? WHERE %s=? AND %s=? limit 1;", Tables.Role.table,
 				Tables.Role.isActive, Tables.Role.roleAddedBy, Tables.Role.id, Tables.Role.instituteId);
-		boolean isDisabled = false;
+		boolean isDisabledSuccessfully = false;
 		try {
 			connection = db.getConnection();
 			preparedStatement = connection.prepareStatement(updateQ);
@@ -125,7 +125,7 @@ public class RoleDao {
 			preparedStatement.setLong(4, instituteId);
 			int numberOfRoleDesabled = preparedStatement.executeUpdate();
 			while (numberOfRoleDesabled == 1) {
-				isDisabled = true;
+				isDisabledSuccessfully = true;
 			}
 		} catch(Exception exception) {
 			exception.printStackTrace();
@@ -137,7 +137,7 @@ public class RoleDao {
 				connection.close();
 			}
 		}
-		return isDisabled;
+		return isDisabledSuccessfully;
 	}
 
 	public boolean assignPermission(Long instituteId, Long roleId, List<Long> permissionIds, String userName) throws SQLException {
