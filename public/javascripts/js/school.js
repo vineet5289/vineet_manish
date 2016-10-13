@@ -3,8 +3,12 @@ $(document).ready(function(){
 $('.ui.dropdown').dropdown();
 
 $('.disableRoleBtn').click(function(e){
-   $(this).closest('tr').remove()
-})
+   $(this).closest('tr').remove();
+});
+
+$('.disableGroupBtn').click(function(e){
+   $(this).closest('tr').remove();
+});
 
  $('.addNewRoleBtn').click(function(){
      $('#addRoleModal').modal('show');

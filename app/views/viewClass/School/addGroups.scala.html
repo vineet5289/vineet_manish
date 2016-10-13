@@ -1,6 +1,6 @@
-@(activeRoleList:List[views.forms.institute.RoleForm],
-inactiveRoleList:List[views.forms.institute.RoleForm],
-addRoleForm:Form[views.forms.institute.RoleForm])
+@(activeGroupList:List[views.forms.institute.GroupForm],
+inactiveGroupList:List[views.forms.institute.GroupForm],
+addGroupForm:Form[views.forms.institute.GroupForm])
 
 @viewClass.main("HOME | INSTITUTE")(""){
 	<div class="main container">
@@ -11,60 +11,59 @@ addRoleForm:Form[views.forms.institute.RoleForm])
      
             <div class="two column row">
               <div class="left floated column  aligned content">
-                <h1 class="ui header"><i class="building icon"></i>   <div class="content">Roles
-  <div class="sub header">Different roles can be assigned to employees. </div> 
+                <h1 class="ui header"><i class="building icon"></i>   <div class="content">Groups
+  <div class="sub header">Different Groups can be assigned to employees. </div> 
   </div>   
 </h1>
               </div>
               <div class="right floated column middle aligned  right aligned">
                 <div class="middle aligned content">
                 
-               <button class="ui right labeled icon button primary addNewRoleBtn">ADD NEW ROLE<i class="add icon"></i>   </button>
+               <button class="ui right labeled icon button primary addNewRoleBtn">ADD NEW GROUP<i class="add icon"></i>   </button>
                 </div>
               </div>
             </div>
             <br><br>
 
           <div class="ui modal" id="addRoleModal">
-    <i class="close icon"></i>
+              <i class="close red icon">CLOSE</i>
     <div class="header" align="center">
-        Add Roles and Permissions
+       <strong>Enter Group name & Description</strong>
     </div>
-
     
         <div class="description">
-             <form
-            class="ui form segment"
-            id="addNewRoleForm"
-            method="POST"
-            action="/add_role"> 
-           
-           
             
-                 <div class="field">
-                     <label>Role</label>
-                     <input name="roleName" placeholder="Enter Role" type="text">
+            <form
+            class="ui form segment"
+            id="addNewGroupForm"
+            method="POST"
+            action="/add_group"> 
+           
+            <div class=" two field">
+             <div class="field">
+                <label>Group Name</label>
+                <input name="groupName" placeholder="Enter Group Name" type="text">
             </div>
             <div class="field">
-                <label>Role Description</label>
-                <input name="roleDescription" placeholder="Enter Role Description" type="text">
+                <label>Group Description</label>
+                <input name="groupDescription" placeholder="Enter Group Description" type="text">
             </div>
-           
+            </div>
            
             
             <div class="actions">
-              
-                   
-                    <button
+                
+                    
+                    <button 
                         type="submit"
-                        id="addNewRoleSubmitbtn"
+                        id="addNewGroupSubmitbtn"
                         class="ui green inverted fluid button">
-                    <i class="checkmark icon"></i>Click to Add Permissions</button>
+                    <i class="checkmark icon"></i>Add Group</button>
                 
             </div>
-            </form>
+            
         </div>
-   
+       </form>
 </div>
 
           </div>
@@ -75,34 +74,34 @@ addRoleForm:Form[views.forms.institute.RoleForm])
 
 
       <div class="ui top attached tabular rolesmenu menu">
-        <a class="active item" data-tab="activerole" style="background-color: whitesmoke;">
-                <i class="home icon"></i>Active Roles</a>
-         <a class="item" data-tab="disablerole" style="background-color: whitesmoke;">
-                <i class="home icon"></i>Disabled Roles</a>
+        <a class="active item" data-tab="activegroup" style="background-color: whitesmoke;">
+                <i class="home icon"></i>Active Group</a>
+         <a class="item" data-tab="disablegroup" style="background-color: whitesmoke;">
+                <i class="home icon"></i>Disabled Groups</a>
       </div></br>
-              <div class="ui bottom attached tab active" data-tab="activerole">
-                 <table class="ui fixed celled table">
+              <div class="ui bottom attached tab active" data-tab="activegroup">
+                 <table class="ui fixed table">
                 <thead>
                   <tr>
                     <th class="one wide column"></th>
-                    <th class="three wide column">Role</th>
+                    <th class="three wide column">Group Name</th>
                     <th class="six wide column">Description</th>
-                    <th class="six wide column">Permission</th>
+                    
                     <th class="four wide column"></th>
                   </tr>
                 </thead>
                 <tbody>
-                  @for((activeRole,index) <- activeRoleList.zipWithIndex){
+                  @for((activeGroup,index) <- activeGroupList.zipWithIndex){
                   <tr class="role">
                     <td class="right aligned collapsing">@(index + 1).</td>
-                    <td class="collapsing">@activeRole.roleName</td>
-                    <td><div class="row">@activeRole.roleDescription</div></td>
-                    <td><div class="row">@activeRole.permission</div></td>
+                    <td class="collapsing">@activeGroup.groupName</td>
+                    <td><span class="text">@activeGroup.groupDescription</span></td>
+                    
                      <td class="right aligned collapsing">
                             <div class="middle aligned content">
-                               <a href=""><button class="ui classic gray button">Edit
+                               <a href=""><button class="ui classic gray button">edit
                                </button></a>
-                                <a href="@institute.routes.RoleController.disableRole(activeRole.id)"><button class="ui classic red disableRoleBtn button">Disable
+                                <a href="/disable_group"><button class="ui classic red disableGroupBtn button">Disable 
                                 </button></a>
                              </div>
                           </td>
@@ -126,29 +125,29 @@ addRoleForm:Form[views.forms.institute.RoleForm])
             </table>
               </div>
 
-              <div class="ui bottom attached tab " data-tab="disablerole">
-                 <table class="ui fixed celled table">
+              <div class="ui bottom attached tab " data-tab="disablegroup">
+                 <table class="ui fixed table">
                 <thead>
                   <tr>
                     <th class="one wide column"></th>
                     <th class="three wide column">Role</th>
                     <th class="six wide column">Description</th>
-                    <th class="six wide column">Permission</th>
+                    
                     <th class="four wide column"></th>
                   </tr>
                 </thead>
                 <tbody>
-                  @for((inactiveRole,index) <- inactiveRoleList.zipWithIndex){
+                  @for((inactiveGroup,index) <- inactiveGroupList.zipWithIndex){
                   <tr class="role">
                     <td class="right aligned collapsing">@(index + 1).</td>
-                    <td class="collapsing">@inactiveRole.roleName</td>
-                    <td><div class="row">@inactiveRole.roleDescription</div></td>
-                    <td><div class="row">@inactiveRole.permission</div></td>
+                    <td class="collapsing">@inactiveGroup.groupName</td>
+                    <td><span class="text">@inactiveGroup.groupDescription</span></td>
+                   
                      <td class="right aligned collapsing">
                             <div class="middle aligned content">
                                <a href=""><button class="ui classic gray button">edit
                                </button></a>
-                                <a href="@institute.routes.RoleController.disableRole(inactiveRole.id)"><button class="ui classic red disableRoleBtn button">Enable
+                                <a href="/disable_group"><button class="ui classic red disableRoleBtn button">enable 
                                 </button></a>
                              </div>
                           </td>

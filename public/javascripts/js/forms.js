@@ -224,6 +224,36 @@ $(function () {
                     type: 'email',
                     prompt: 'EMAIL ID IS NOT CORRECTt'
                 }]
+            },
+
+            groupName:{
+              identifier:'groupName',
+              rules:[{
+                type:'empty',
+                prompt:'GROUP NAME CANNOT BE LEFT EMPTY'
+              }]
+            },
+            groupDescription:{
+              identifier:'groupDescription',
+              rules:[{
+                type:'empty',
+                prompt:'ENTER SOME DESCRIPTION OF GROUP'
+              }]
+            },
+
+             roleName:{
+              identifier:'roleName',
+              rules:[{
+                type:'empty',
+                prompt:'ROLE NAME CANNOT BE LEFT EMPTY'
+              }]
+            },
+            roleDescription:{
+              identifier:'roleDescription',
+              rules:[{
+                type:'empty',
+                prompt:'ENTER SOME DESCRIPTION OF ROLE'
+              }]
             }
             
             
@@ -250,6 +280,34 @@ $(function () {
 
            });
 
+        });
+
+        //add new group Form
+        $('#addNewGroupSubmitbtn').on('click',function(){
+          $('#addNewGroupForm').form(validationObj,{
+            on:'change',
+            inline:true,
+            onSucess:function(){
+              $('#addNewGroupForm').submit(function(e){
+                e.preventDefault();
+                return false;
+              });
+            }
+          })
+        });
+
+        // add new role form
+        $('#addNewRoleSubmitbtn').on('click',function(){
+          $('#addNewRoleForm').form(validationObj,{
+            on:'change',
+            inline:true,
+            onSucess:function(){
+              $('#addNewRoleForm').submit(function(e){
+                e.preventDefault();
+                return false;
+              });
+            }
+          })
         });
 
        

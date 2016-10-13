@@ -1,6 +1,17 @@
+// addRolePermissions.scala.html amd addRoles.scala.htm
 $(function(){
-	
-   
+
+    //active role and inctive roles tab
+    $('.rolesmenu .item').on('click', function() {
+        $('.rolesmenu .item').removeClass('active');
+        $(this).addClass('active');
+    });  
+
+    $('.rolesmenu.menu .item')
+.tab({ history: false })
+;
+   	
+   // for adding ermissions dnamicaaly list in addrolespermission.sca
    var emails=[];
 
 
