@@ -23,8 +23,8 @@ public class EmployesDAO {
   @NamedDatabase("srp")
   private Database db;
 
-  public boolean addNewEmpRequest(AddEmployeeForm addEmployeeDetails,
-      String reuestedPersonUserName, String instituteId) throws SQLException {
+  public boolean addNewEmpRequest(AddEmployeeForm addEmployeeDetails, String userName,
+      long instituteId) throws SQLException {
     Connection connection = null;
     PreparedStatement loginPS = null;
     PreparedStatement empInsertPS = null;

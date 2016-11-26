@@ -1,6 +1,11 @@
 package controllers.employee;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.inject.Inject;
+
+import org.apache.commons.lang3.StringUtils;
 
 import controllers.CustomController;
 import controllers.institute.routes;
@@ -37,44 +42,54 @@ public class EmployeeController extends CustomController {
     if (addEmployeeForm == null || addEmployeeForm.hasErrors()) {
       flash("error",
           "Some errors occur either of some fileds are missing or contains invalid value.");
-      return redirect(controllers.employee.routes.EmployeeController.preAddEmployeeRequest());
+      return redirect(controllers.employee.routes.EmployeeController.viewAllEmployee());
     }
 
     AddEmployeeForm addEmployee = addEmployeeForm.get();
     if (addEmployee == null) {
       flash("error",
           "Some errors occur either of some fileds are missing or contains invalid value.");
-      return redirect(controllers.employee.routes.EmployeeController.preAddEmployeeRequest());
+      return redirect(controllers.employee.routes.EmployeeController.viewAllEmployee());
     }
 
     boolean isEmpAdded = false;
     try {
       String userName = session().get(SessionKey.of(SessionKey.username));
-      String instituteId = session().get(SessionKey.of(SessionKey.instituteid));
-      isEmpAdded = employesDAO.addNewEmpRequest(addEmployee, userName, instituteId);
-
+      String instituteIdFromSession = session().get(SessionKey.of(SessionKey.instituteid));
+      if (StringUtils.isNotBlank(userName) && StringUtils.isNotBlank(instituteIdFromSession)) {
+        long instituteId = Long.parseLong(instituteIdFromSession);
+        isEmpAdded = employesDAO.addNewEmpRequest(addEmployee, userName, instituteId);
+      }
     } catch (Exception exception) {
       exception.printStackTrace();
       isEmpAdded = false;
     }
 
-    return ok("");
+    if (!isEmpAdded) {
+      flash("error", "Some errors occur during employee registration. Please try again.");
+    }
+
+    return redirect(controllers.employee.routes.EmployeeController.viewAllEmployee());
   }
 
   // @Security.Authenticated(HeadInstituteBasicAuthCheck.class)
   public Result viewAllEmployee() {
-    
-    boolean isEmpAdded = false;
+    List<EmployeeDetailsForm> employees = new ArrayList<EmployeeDetailsForm>();
     try {
       String userName = session().get(SessionKey.of(SessionKey.username));
-      String instituteId = session().get(SessionKey.of(SessionKey.instituteid));
-      // isEmpAdded = employesDAO.addNewEmpRequest(addEmployee, userName, instituteId);
-
+      String instituteIdFromSession = session().get(SessionKey.of(SessionKey.instituteid));
+      if (StringUtils.isNotBlank(userName) && StringUtils.isNotBlank(instituteIdFromSession)) {
+        long instituteId = Long.parseLong(instituteIdFromSession);
+        employees = employesDAO.getAllEmp(instituteId, true);
+      }
     } catch (Exception exception) {
       exception.printStackTrace();
-      isEmpAdded = false;
     }
 
+    if (employees == null || employees.size() == 0) {
+      flash("error", "Some errors occur during details fetch.");
+    }
+    // return employees
     return ok("");
   }
 }

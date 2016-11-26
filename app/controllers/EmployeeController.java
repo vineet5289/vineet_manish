@@ -43,7 +43,7 @@ public class EmployeeController extends CustomController {
 		try{
 			String reuestedPersonUserName = session().get(SessionKey.username.name());
 			String schoolId = session().get(SessionKey.instituteid.name());
-			isEmpAdded = employesDAO.addNewEmpRequest(addEmployeeDetails, reuestedPersonUserName, schoolId);
+			isEmpAdded = employesDAO.addNewEmpRequest(addEmployeeDetails, reuestedPersonUserName, 1l);
 		} catch(Exception exception) {
 			exception.printStackTrace();
 		}
