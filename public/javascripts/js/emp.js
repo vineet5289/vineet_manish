@@ -11,4 +11,8 @@ $("#addEmpCode").checkbox({
             $("#empCodeInput").removeClass("disabled");
         }
     });	
+
+ $("#delete-employee").on('click',function(){
+ 	$('#delete-confirm').modal('show');
+ });
 });

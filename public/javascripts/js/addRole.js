@@ -14,12 +14,12 @@ $(function(){
 $('#disableroletable').DataTable();
 
 // pagination on adding permissions addrolepermissions.scala
- var pager = new Pager('permissiontable', 5); 
-        pager.init(); 
-        pager.showPageNav('pager', 'pageNavPosition'); 
-        pager.showPage(2);
+ //var pager = new Pager('permissiontable', 5); 
+       // pager.init(); 
+        //pager.showPageNav('pager', 'pageNavPosition'); 
+        //pager.showPage(2);
    	
-   // for adding ermissions dnamicaaly list in addrolespermission.sca
+   // for adding permissions dnamicaaly list in addrolespermission.sca
    var emails=[];
 
 
