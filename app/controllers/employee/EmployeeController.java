@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import controllers.CustomController;
 import controllers.institute.routes;
+import dao.dao_operation_status.EmployeeDaoActionStatus;
 import dao.employee.EmployesDAO;
 import enum_package.SessionKey;
 import play.data.Form;
@@ -95,22 +96,23 @@ public class EmployeeController extends CustomController {
   }
 
   public Result deleteEmployee(String empUserName) {
-    boolean executedSuccessfully = false;
+    EmployeeDaoActionStatus employeeDaoActionStatus = EmployeeDaoActionStatus.serverexception;
     try {
       String userName = session().get(SessionKey.of(SessionKey.username));
       String instituteIdFromSession = session().get(SessionKey.of(SessionKey.instituteid));
       if (StringUtils.isNotBlank(userName) && StringUtils.isNotBlank(instituteIdFromSession)) {
         long instituteId = Long.parseLong(instituteIdFromSession);
-        executedSuccessfully = employesDAO.enableDisableEmployee(instituteId, empUserName, false, userName);
+        employeeDaoActionStatus = employesDAO.enableDisableEmployee(instituteId, empUserName, false, userName);
       }
     } catch (Exception exception) {
       exception.printStackTrace();
     }
 
-    if (!executedSuccessfully) {
-      flash("error", "Some errors occur during employee deletion.");
+    if (employeeDaoActionStatus != EmployeeDaoActionStatus.successfullyDeleted) {
+      flash("error", employeeDaoActionStatus.getValue());
+    } else {
+      flash("success", employeeDaoActionStatus.getValue());
     }
-    // return employees
     return redirect(controllers.employee.routes.EmployeeController.viewAllEmployee());
   }
 }
