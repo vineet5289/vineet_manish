@@ -59,6 +59,7 @@ POST		/institute/mand_info					   controllers.institute.InstituteInfoController.
 GET			/add_emp								   controllers.employee.EmployeeController.preAddEmployeeRequest()
 POST		/add_emp							   	   controllers.employee.EmployeeController.postAddEmployeeRequest()
 GET			/view_emp							   	   controllers.employee.EmployeeController.viewAllEmployee()
+POST		/delete_emp/:username					   controllers.employee.EmployeeController.deleteEmployee(username: String)
 GET      	/registeremp                               controllers.EmployeeController.preEmployeeRegistrationRequest()
 POST     	/registeremp            	               controllers.EmployeeController.postEmployeeRegistrationRequest()
 

@@ -38,13 +38,9 @@ public class EmployeeController extends CustomController {
 
   // @Security.Authenticated(HeadInstituteBasicAuthCheck.class)
   public Result postAddEmployeeRequest() {
-    System.out.println("****************** 1");
     Form<AddEmployeeForm> addEmployeeForm =
         formFactory.form(AddEmployeeForm.class).bindFromRequest();
-    System.out.println("****************** 2");
     if (addEmployeeForm == null || addEmployeeForm.hasErrors()) {
-      System.out.println("====== 1");
-      System.out.println("addEmployeeForm.hasErrors() => "+ addEmployeeForm.errors());
       flash("error",
           "Some errors occur either of some fileds are missing or contains invalid value.");
       return redirect(controllers.employee.routes.EmployeeController.viewAllEmployee());
@@ -52,13 +48,11 @@ public class EmployeeController extends CustomController {
 
     AddEmployeeForm addEmployee = addEmployeeForm.get();
     if (addEmployee == null) {
-      System.out.println("====== 2");
       flash("error",
           "Some errors occur either of some fileds are missing or contains invalid value.");
       return redirect(controllers.employee.routes.EmployeeController.viewAllEmployee());
     }
 
-    System.out.println("====> "+ addEmployee);
     boolean isEmpAdded = false;
     try {
       String userName = session().get(SessionKey.of(SessionKey.username));
@@ -98,5 +92,25 @@ public class EmployeeController extends CustomController {
     }
     // return employees
     return ok(employeeList.render(employees));
+  }
+
+  public Result deleteEmployee(String empUserName) {
+    boolean executedSuccessfully = false;
+    try {
+      String userName = session().get(SessionKey.of(SessionKey.username));
+      String instituteIdFromSession = session().get(SessionKey.of(SessionKey.instituteid));
+      if (StringUtils.isNotBlank(userName) && StringUtils.isNotBlank(instituteIdFromSession)) {
+        long instituteId = Long.parseLong(instituteIdFromSession);
+        executedSuccessfully = employesDAO.enableDisableEmployee(instituteId, empUserName, false, userName);
+      }
+    } catch (Exception exception) {
+      exception.printStackTrace();
+    }
+
+    if (!executedSuccessfully) {
+      flash("error", "Some errors occur during employee deletion.");
+    }
+    // return employees
+    return redirect(controllers.employee.routes.EmployeeController.viewAllEmployee());
   }
 }
