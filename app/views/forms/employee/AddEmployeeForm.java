@@ -14,9 +14,9 @@ public class AddEmployeeForm {
 	private String empName;
 	private String empPhoneNumber;
 	private String gender;
-
-	//optional field
 	private String empCode;
+	private boolean isAutoGenerate;
+	//optional field
 	private String empEmail;
 	private String jobTitle;
 
