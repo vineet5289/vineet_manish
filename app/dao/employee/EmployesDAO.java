@@ -18,6 +18,7 @@ import utils.RandomGenerator;
 import views.forms.employee.AddEmployeeForm;
 import views.forms.employee.EmployeeDetailsForm;
 import dao.Tables;
+import dao.dao_operation_status.EmployeeDaoActionStatus;
 import enum_package.LoginState;
 
 public class EmployesDAO {
@@ -167,8 +168,8 @@ public class EmployesDAO {
     return employees;
   }
 
-  public boolean enableDisableEmployee(long instituteId, String empUserName, boolean status, String requestedUserName) throws SQLException {
-    boolean executedSuccessfully = false;
+  public EmployeeDaoActionStatus enableDisableEmployee(long instituteId, String empUserName, boolean status, String requestedUserName) throws SQLException {
+    EmployeeDaoActionStatus employeeDaoActionStatus = EmployeeDaoActionStatus.norecordfoundforgivenusername;
     Connection connection = null;
     PreparedStatement empUpdatePS = null;
     PreparedStatement loginUpdatePS = null;
@@ -198,13 +199,14 @@ public class EmployesDAO {
 
       if (empUpdatePS.executeUpdate() == 1 && loginUpdatePS.executeUpdate() == 1) {
         connection.commit();
-        executedSuccessfully = true;
+        employeeDaoActionStatus = EmployeeDaoActionStatus.successfullyDeleted;
       } else {
-        throw new Exception("Update falied.");
+        connection.rollback();
       }
     } catch (Exception exception) {
       exception.printStackTrace();
       connection.rollback();
+      employeeDaoActionStatus = EmployeeDaoActionStatus.serverexception;
     } finally {
       if (loginUpdatePS != null)
         loginUpdatePS.close();
@@ -213,6 +215,6 @@ public class EmployesDAO {
       if (connection != null)
         connection.close();
     }
-    return executedSuccessfully;
+    return employeeDaoActionStatus;
   }
 }
