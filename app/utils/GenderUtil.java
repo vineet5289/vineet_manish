@@ -10,8 +10,7 @@ public class GenderUtil {
       return false;
     }
 
-    if (gender.equalsIgnoreCase(Gender.MALE.getValue())
-        || gender.equalsIgnoreCase(Gender.FEMALE.getValue())) {
+    if (gender.equalsIgnoreCase(Gender.M.name()) || gender.equalsIgnoreCase(Gender.F.name())) {
       return true;
     }
     return false;

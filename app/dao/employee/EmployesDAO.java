@@ -5,9 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -38,10 +36,10 @@ public class EmployesDAO {
 
     boolean executedSuccessfully = false;
     String loginQ =
-        String.format("INSERT INTO %s (%s, %s, %s, %s, %s, %s) VALUES (?, ?, ?, ?, ?, ?);",
+        String.format("INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s) VALUES (?, ?, ?, ?, ?, ?, ?);",
             Tables.Login.table, Tables.Login.userName, Tables.Login.password,
             Tables.Login.passwordState, Tables.Login.name, Tables.Login.emailId,
-            Tables.Login.instituteId);
+            Tables.Login.instituteId, Tables.Login.role);
 
     String empInsertQ =
         String
@@ -85,7 +83,7 @@ public class EmployesDAO {
       empInsertPS.setString(1, addEmployeeDetails.getEmpName().trim());
       empInsertPS.setString(2, empUserName);
       empInsertPS.setLong(3, instituteId);
-      empInsertPS.setString(4, addEmployeeDetails.getGender().trim().toUpperCase());
+      empInsertPS.setString(4, addEmployeeDetails.getGender());
       empInsertPS.setString(5, addEmployeeDetails.getEmpPhoneNumber().trim());
       empInsertPS.setString(6, empCode);
       empInsertPS.setString(7, addEmployeeDetails.getEmpEmail());
@@ -98,6 +96,7 @@ public class EmployesDAO {
         loginPS.setString(4, addEmployeeDetails.getEmpName().trim());
         loginPS.setString(5, addEmployeeDetails.getEmpEmail());
         loginPS.setLong(6, instituteId);
+        loginPS.setString(7, "emp"); //todo: set proper role
         if (loginPS.executeUpdate() > 0) {
           connection.commit();
           executedSuccessfully = true;
@@ -131,7 +130,7 @@ public class EmployesDAO {
     PreparedStatement empSelectPS = null;
     ResultSet resultSet = null;
     String empSelectQ =
-        String.format("SELECT %s, %s, %s, %s, %s FROM %s WHERE %s=? AND s%=?;", Tables.Employee.id,
+        String.format("SELECT %s, %s, %s, %s, %s FROM %s WHERE %s=? AND %s=?;", Tables.Employee.id,
             Tables.Employee.name, Tables.Employee.userName, Tables.Employee.jobTitles,
             Tables.Employee.empCode, Tables.Employee.table, Tables.Employee.isActive,
             Tables.Employee.instituteId);
@@ -189,7 +188,7 @@ public class EmployesDAO {
       empUpdatePS.setString(2, requestedUserName);
       empUpdatePS.setLong(3, instituteId);
       empUpdatePS.setString(4, empUserName);
-      resultSet = empUpdatePS.executeUpdate()
+//      resultSet = empUpdatePS.executeUpdate();
       while (resultSet.next()) {
         EmployeeDetailsForm employeeDetailsForm = new EmployeeDetailsForm();
         employeeDetailsForm.setId(resultSet.getLong(Tables.Employee.id));
@@ -208,12 +207,12 @@ public class EmployesDAO {
       if (resultSet != null) {
         resultSet.close();
       }
-      if (empSelectPS != null) {
-        empSelectPS.close();
-      }
+//      if (empSelectPS != null) {
+//        empSelectPS.close();
+//      }
       if (connection != null)
         connection.close();
     }
-    return employees;
+    return true;
   }
 }

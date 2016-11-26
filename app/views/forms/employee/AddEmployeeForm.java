@@ -3,6 +3,9 @@ package views.forms.employee;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
+import enum_package.Gender;
 import lombok.Data;
 import play.data.validation.ValidationError;
 import utils.EmployeeUtil;
@@ -17,7 +20,8 @@ public class AddEmployeeForm {
   private String empPhoneNumber;
   private String gender;
   private String empCode;
-  private boolean isAutoGenerate = false;
+  private boolean isAutoGenerate;
+  private String isAutoGenerate1;
   // optional field
   private String empEmail;
   private String jobTitle;
@@ -38,21 +42,23 @@ public class AddEmployeeForm {
       errors.add(new ValidationError("gender", "Select valid gender M for Male or F for Female."));
     }
 
+    System.out.println("isAutoGenerate=>" + isAutoGenerate + ", empCode" + empCode + ", isAutoGenerate1=>" + isAutoGenerate1);
     if (!isAutoGenerate && !EmployeeUtil.isValidEmpCodePattern(empCode)) {
       errors.add(new ValidationError("empCode",
           "Only alphanumerics, hypen and dot are allowed in empCode"));
 
     }
 
-    if (empEmail != null && !ValidateFields.isValidEmailId(empEmail)) {
+    if (StringUtils.isNotBlank(empEmail) && !ValidateFields.isValidEmailId(empEmail)) {
       errors.add(new ValidationError("empEmail", "Enter valid email id like abcd@xyz.com"));
     }
 
-    if(jobTitle != null && EmployeeUtil.isValidJobTitlePattern(jobTitle)) {
+    if(StringUtils.isNotBlank(jobTitle) && !EmployeeUtil.isValidJobTitlePattern(jobTitle)) {
       errors.add(new ValidationError("jobTitle", "Only alphanumerics, space and dot are allowed in jobTitle"));
     }
 
     if (errors.size() > 0) {
+      System.out.println("****** error ************");
       return errors;
     }
 

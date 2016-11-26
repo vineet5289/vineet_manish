@@ -38,9 +38,13 @@ public class EmployeeController extends CustomController {
 
   // @Security.Authenticated(HeadInstituteBasicAuthCheck.class)
   public Result postAddEmployeeRequest() {
+    System.out.println("****************** 1");
     Form<AddEmployeeForm> addEmployeeForm =
         formFactory.form(AddEmployeeForm.class).bindFromRequest();
+    System.out.println("****************** 2");
     if (addEmployeeForm == null || addEmployeeForm.hasErrors()) {
+      System.out.println("====== 1");
+      System.out.println("addEmployeeForm.hasErrors() => "+ addEmployeeForm.errors());
       flash("error",
           "Some errors occur either of some fileds are missing or contains invalid value.");
       return redirect(controllers.employee.routes.EmployeeController.viewAllEmployee());
@@ -48,11 +52,13 @@ public class EmployeeController extends CustomController {
 
     AddEmployeeForm addEmployee = addEmployeeForm.get();
     if (addEmployee == null) {
+      System.out.println("====== 2");
       flash("error",
           "Some errors occur either of some fileds are missing or contains invalid value.");
       return redirect(controllers.employee.routes.EmployeeController.viewAllEmployee());
     }
 
+    System.out.println("====> "+ addEmployee);
     boolean isEmpAdded = false;
     try {
       String userName = session().get(SessionKey.of(SessionKey.username));

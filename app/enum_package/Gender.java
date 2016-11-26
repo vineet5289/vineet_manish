@@ -1,10 +1,10 @@
 package enum_package;
 
 public enum Gender {
-  MALE("male"),
-  FEMALE("female");
+  M("M"), F("F");
 
   private String value;
+
   private Gender(String value) {
     this.value = value;
   }
