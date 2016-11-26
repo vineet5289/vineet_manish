@@ -254,7 +254,75 @@ $(function () {
                 type:'empty',
                 prompt:'ENTER SOME DESCRIPTION OF ROLE'
               }]
-            }
+            },
+            empName:{
+              identifier:'empName',
+              rules:[{
+                type:'empty',
+                prompt:'ENTER EMPLOYEE NAME'
+              }]
+            },
+            empName:{
+              identifier:'empName',
+              rules:[{
+                type:'empty',
+                prompt:'ENTER EMPLOYEE NAME'
+              }]
+            },
+             empEmail:{
+                 identifier:'empEmail',
+                 optional:true,
+                 rules:[{
+                      type:'empty',
+                      prompt:'PLEASE ENTER E-MAIL ID'
+                 },
+                 {
+                    type: 'email',
+                    prompt: 'EMAIL ID IS NOT CORRECTt'
+                }]
+            },
+             empPhoneNumber: {
+                identifier: 'empPhoneNumber',
+                rules: [
+                {
+                    type:'empty',
+                    prompt: 'PLEASE ENTER MOBILE NUMBER'
+                },
+                {
+                  type:'number',
+                  prompt:'NUMBERS ALLOWED ONLY'
+                },
+                {
+                    type:'exactLength[10]',
+                    prompt: 'MOBILE NUMBER SHOULD BE OF  LENGTH 10'
+                }
+                
+                ]
+                 
+            },
+            gender: {
+        identifier: 'gender',
+        rules: [
+          {
+            type   : 'empty',
+            prompt : 'Please select a gender'
+          }
+        ]
+      },
+
+       isAutoGenerate: {
+        identifier : 'isAutoGenerate',
+        depends    : 'empCode',
+        rules      : [
+          {
+            type   : 'empty',
+            prompt : 'PLEASE ENTER EMPLOYEE CODE'
+          }
+        ]
+      }
+
+
+
             
             
     };
@@ -309,6 +377,25 @@ $(function () {
               });
             }
           })
+        });
+
+
+
+        // new employee add 
+         $('#New-employee-submit').on('click',function(){
+           $('#employeeRegistrationForm').form(validationObj,{
+              on:'change',
+             inline:true,
+             onSuccess:function(){
+              $('#employeeRegistrationForm').submit(function(e){
+
+                e.preventDefault();
+                 return false;
+              });
+             }
+
+           });
+
         });
 
        
