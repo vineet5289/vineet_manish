@@ -19,6 +19,7 @@ import security.institute.HeadInstituteBasicAuthCheck;
 import views.forms.employee.AddEmployeeForm;
 import views.forms.employee.EmployeeDetailsForm;
 import views.html.Employee.addEmployee;
+import views.html.Employee.employeeList;
 
 public class EmployeeController extends CustomController {
   @Inject
@@ -90,6 +91,6 @@ public class EmployeeController extends CustomController {
       flash("error", "Some errors occur during details fetch.");
     }
     // return employees
-    return ok("");
+    return ok(employeeList.render(employees));
   }
 }
