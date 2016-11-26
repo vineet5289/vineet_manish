@@ -20,8 +20,8 @@ public class AddEmployeeForm {
   private String empPhoneNumber;
   private String gender;
   private String empCode;
-  private boolean isAutoGenerate;
-  private String isAutoGenerate1;
+  private boolean isAutoGenerate = false;
+  private String autoGenerate;
   // optional field
   private String empEmail;
   private String jobTitle;
@@ -40,6 +40,10 @@ public class AddEmployeeForm {
 
     if (!GenderUtil.isValidGenderValue(gender)) {
       errors.add(new ValidationError("gender", "Select valid gender M for Male or F for Female."));
+    }
+
+    if(StringUtils.isNoneBlank(autoGenerate) && autoGenerate.equalsIgnoreCase("true")) {
+      isAutoGenerate = true;
     }
 
     System.out.println("isAutoGenerate=>" + isAutoGenerate + ", empCode" + empCode + ", isAutoGenerate1=>" + isAutoGenerate1);
