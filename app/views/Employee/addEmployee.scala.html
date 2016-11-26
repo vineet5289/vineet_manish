@@ -100,7 +100,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
                      <!--<div class="ui basic blue label">SCHOOL REGISTRATION ID</div> -->
                      <div class="label"><span>Employee Code</span></div>
                     <div class="ui left icon disabled input" id="empCodeInput">
-                        <input type="text" name="empCode" id="empCode" placeholder="Employee Code">
+                        <input type="text" name="empCode" id="empCode" placeholder="Employee Code" tabindex="-1" autocomplete="off">
                         <i class="user icon"></i>
                      </div>
                   </div>
@@ -141,7 +141,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
                   <div class="ui hidden divider"></div>
                   <div class="two fields">
                      <div class="field">
-                        <button class="ui green fluid left floated button" id="New-employee-submit">SAVE</button>
+                        <button class="ui green fluid left floated button" type="submit" id="New-employee-submit">SAVE</button>
                      </div>
                      <div class="field">
                         <div class="ui teal reset fluid right floated button">RESET</div>

@@ -262,13 +262,6 @@ $(function () {
                 prompt:'ENTER EMPLOYEE NAME'
               }]
             },
-            empName:{
-              identifier:'empName',
-              rules:[{
-                type:'empty',
-                prompt:'ENTER EMPLOYEE NAME'
-              }]
-            },
              empEmail:{
                  identifier:'empEmail',
                  optional:true,
