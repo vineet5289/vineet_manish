@@ -46,7 +46,7 @@ public class AddEmployeeForm {
       isAutoGenerate = true;
     }
 
-    System.out.println("isAutoGenerate=>" + isAutoGenerate + ", empCode" + empCode + ", isAutoGenerate1=>" + isAutoGenerate1);
+    System.out.println("isAutoGenerate=>" + isAutoGenerate + ", empCode" + empCode + ", isAutoGenerate1=>" + autoGenerate);
     if (!isAutoGenerate && !EmployeeUtil.isValidEmpCodePattern(empCode)) {
       errors.add(new ValidationError("empCode",
           "Only alphanumerics, hypen and dot are allowed in empCode"));
