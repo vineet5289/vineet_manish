@@ -127,7 +127,7 @@ addRoleForm:Form[views.forms.institute.RoleForm])
               </div>
 
               <div class="ui bottom attached tab " data-tab="disablerole">
-                 <table class="ui fixed celled table">
+                 <table class="ui fixed celled table" id="disableroletable">
                 <thead>
                   <tr>
                     <th class="one wide column"></th>
@@ -144,10 +144,9 @@ addRoleForm:Form[views.forms.institute.RoleForm])
                     <td class="collapsing">@inactiveRole.roleName</td>
                     <td><div class="row">@inactiveRole.roleDescription</div></td>
                     <td><div class="row">@inactiveRole.permission</div></td>
-                     <td class="right aligned collapsing">
+                     <td >
                             <div class="middle aligned content">
-                               <a href=""><button class="ui classic gray button">edit
-                               </button></a>
+                              
                                 <a href="@institute.routes.RoleController.disableRole(inactiveRole.id)"><button class="ui classic red disableRoleBtn button">Enable
                                 </button></a>
                              </div>
@@ -156,19 +155,7 @@ addRoleForm:Form[views.forms.institute.RoleForm])
                 }
                 
             </tbody>
-            <tfoot>
-              <tr>
-                <th colspan="7">
-                  <div class="ui right floated pagination basic menu tiny">
-                    <a class="item">1</a>
-                    <a class="item">2</a>
-                    <a class="icon item">
-                      <i class="right chevron icon"></i>
-                    </a>
-                  </div>
-                </th>
-              </tr>
-            </tfoot>
+            
             </table>  
               </div>
              

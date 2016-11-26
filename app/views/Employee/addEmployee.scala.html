@@ -1,5 +1,5 @@
 @(addEmployeeForm:Form[views.forms.employee.AddEmployeeForm])
-@viewClass.main3("Employee|Add")(""){
+@viewClass.main7("Employee|Add")(""){
 <style>
 .ui.form input[type="text"],.ui.form input[type="email"]{
    border: 1px solid #055020;
@@ -23,35 +23,32 @@ input::-moz-placeholder, textarea::-moz-placeholder {
 input:-ms-input-placeholder, textarea:-ms-input-placeholder { 
     color:    red;
 }
-
 </style>
 
-<div class="stripe">
-<div class="main container">
-   <div class="ui page grid">
-      <div class="column">
+<div class="ui main container" id="content">
+  
+      
          <h2 class="ui center aligned icon header">
             <i class="circular emphasized users icon"></i>
             <div class="content">
-               Request for Your School Registration
+               Employee Info
                <div class="sub header"></div>
             </div>
          </h2>
          <div class="ui horizontal divider">
             <i class="circular heart icon"></i>
          </div>
-         <div class="item">
-            <div class="image">
+        
                <!--  New School request  -->
                <label>field marked with * are mandatory</label>
                <div class="ui hidden divider"></div>
                <form
-                  id="addEmployeeForm"
+                  id="employeeRegistrationForm"
                   class="ui form "
                   method="Post"
                   action="/add_emp" >
 
-                  <h4 class="ui dividing header">Basic Info</h4>
+                  <h4 class="ui dividing header"> Info</h4>
                   <div class="ui segment">
                   <div class="field">
                      <div class="label"><span>*Employee Name</span></div>
@@ -64,58 +61,97 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
                         <i class="user icon"></i>
                      </div>
                   </div>
-                  <div class="field">
+                    
+                  <div class="two fields">
+                   <div class="field">
+                        <div class="label"><span>*Gender</span></div>
+                        <div class="ui fluid selection dropdown">
+                           <div class="text">Select</div>
+                           <i class="dropdown icon"></i>
+                           <input name="gender" type="hidden">
+                           <div class="menu">
+                              <div class="item" data-value="MALE">MALE</div> 
+                              <div class="item" data-value="FEMALE">FEMALE</div>
+                              
+                           </div>
+                        </div>
+                     </div>
+
+                      <div class="field">
                      <!--<div class="ui basic blue label">SCHOOL REGISTRATION ID</div> -->
-                     <div class="label"><span>Employee Job Title (Optional)</span></div>
+                     <div class="label"><span>Contact No.</span></div>
                     <div class="ui left icon input">
-                        <input type="text" name="empJobTitles" placeholder="Job Title">
+                        <input type="text" name="empPhoneNumber" placeholder="Phone Number">
                         <i class="user icon"></i>
                      </div>
                   </div>
 
-                    <div class="field">
-                     <div class="label"><span>Employee Id (Optional)</span></div>
-                     <div class="ui left icon input">
-                        <input type="text" name="empCode" placeholder="Employee Id">
-                        <i class="home icon"></i>
-                     </div>
                   </div>
 
+                   <div class="inline field">
+                       <div class="ui checkbox addEmpCode" id="addEmpCode">
+                     <input type="checkbox" name="isAutoGenerate" id="empCodeAutoGenerate" checked="">
+                          <label>Auto Generate Employee Code ?</label> 
+                       </div>
+                 
+                 </div>
+               <div class="two fields">
+                  <div class="field">
+                     <!--<div class="ui basic blue label">SCHOOL REGISTRATION ID</div> -->
+                     <div class="label"><span>Employee Code</span></div>
+                    <div class="ui left icon disabled input" id="empCodeInput">
+                        <input type="text" name="empCode" id="empCode" placeholder="Employee Code">
+                        <i class="user icon"></i>
+                     </div>
+                  </div>
+                  
                    <div class="field">
-                        <div class="label"><span>*Employee Mobile No.</span></div>
-                        <div class="ui left icon input">
-                           <input type="text" name="empPhoneNumber" placeholder="Mobile Number">
-                           <i class="phone square icon"></i>
-                        </div>
-                     </div>
-
-                     <div class="field">
-                     <div class="label"><span>Email Id (Optional)</span></div>
-                     <div class="ui left icon input">
-                        <input type="email" name="empEmail" placeholder="Employee mail-Id">
-                        <i class="mail icon"></i>
+                     <!--<div class="ui basic blue label">SCHOOL REGISTRATION ID</div> -->
+                     <div class="label"><span>Job Title(Optional)</span></div>
+                    <div class="ui left icon input">
+                        <input type="text" name="jobTitle" placeholder="Employee Job Title">
+                        <i class="user icon"></i>
                      </div>
                   </div>
-
                </div>
 
+                   <div class="field">
+                     <!--<div class="ui basic blue label">SCHOOL REGISTRATION ID</div> -->
+                     <div class="label"><span>Email ID(Optional)</span></div>
+                    <div class="ui left icon input">
+                        <input type="text" name="empEmail" placeholder="Mail ID">
+                        <i class="user icon"></i>
+                     </div>
+                  </div>
+
+                
+
+                  
+               </div>
+
+                
+
+                    
+
+
+                   
+                 
+                  
+               
                   <div class="ui hidden divider"></div>
                   <div class="two fields">
                      <div class="field">
-                        <button class="ui green fluid left floated button" id="add-employee-submit" type="submit">Send Request</button>
+                        <button class="ui green fluid left floated button" id="New-employee-submit">SAVE</button>
                      </div>
                      <div class="field">
-                        <div class="ui teal reset fluid right floated button">Reset</div>
+                        <div class="ui teal reset fluid right floated button">RESET</div>
                      </div>
                   </div>
                   <div class="ui error message"></div>
                </form>
             </div>
-         </div>
-      </div>
-   </div>
-</div>
-</div>
+      
+
 @if(flash.containsKey("success")) {
 <div class="ui segment">
    <div class="ui green success message" id="success-message">
@@ -143,5 +179,4 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
    </div>
 </div>
 }
-
 }

@@ -303,6 +303,7 @@ $(function () {
             inline:true,
             onSucess:function(){
               $('#addNewRoleForm').submit(function(e){
+                
                 e.preventDefault();
                 return false;
               });
@@ -805,17 +806,3 @@ function captchaCode() {
     $('#completeSchoolRegistrationOTPForm').trigger('reset');
    }
 
-
-
-
-   
-   
-
-
-
-
-
-
-
-
-    
