@@ -5,7 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -49,5 +51,36 @@ public class PermissionDAO {
 			}
 		}
 		return permissions;
+	}
+
+	public Map<Long, String> getPermissions(List<Long> permissionIds) throws SQLException {
+		Map<Long, String> assignedPermission = new HashMap<Long, String>();
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		String query = String.format("SELECT %s, %s FROM %s WHERE %s = ? AND id in;", Tables.Permissions.id, Tables.Permissions.permissionName,
+				Tables.Permissions.table, Tables.Permissions.isActive);
+		try {
+			connection = db.getConnection();
+			preparedStatement = connection.prepareStatement(query, ResultSet.TYPE_FORWARD_ONLY);
+			preparedStatement.setBoolean(1, true);
+			resultSet = preparedStatement.executeQuery();
+			while(resultSet.next()) {
+				assignedPermission.put(resultSet.getLong(Tables.Permissions.id), resultSet.getString(Tables.Permissions.permissionName));
+			}
+		} catch(Exception exception) {
+			exception.printStackTrace();
+		} finally {
+			if(resultSet != null) {
+				resultSet.close();
+			}
+			if(preparedStatement != null) {
+				preparedStatement.close();
+			}
+			if(connection != null) {
+				connection.close();
+			}
+		}
+		return assignedPermission;
 	}
 }

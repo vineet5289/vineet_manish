@@ -49,19 +49,27 @@ public class RoleController extends CustomController {
 		return ok(addRoles.render(activeRoles, inactiveRoles,addNewRole));
 	}
 
-	public Result postAddRole() {
+	public Result createOrEditRole(String edit) {
 		Form<RoleForm> addNewRoleForm = formFactory.form(RoleForm.class).bindFromRequest();;
 		RoleForm addNewRole = addNewRoleForm.get();
 		Long roleKey = 0l;
 		List<PermissionModel> permissions = new ArrayList<PermissionModel>();
 		String roleName = addNewRole.getRoleName();
 		String roleDescription = addNewRole.getRoleDescription();
+		Map<Long, String> assignedPermission = null;
 		try {
 			String instituteIdFromSession = session().get(SessionKey.of(SessionKey.instituteid));
 			String userName = session().get(SessionKey.of(SessionKey.username));
 			if(addNewRole != null && instituteIdFromSession != null) {
 				Long instituteId = Long.parseLong(instituteIdFromSession);
-				roleKey = roleDao.addNewRole(instituteId, userName, roleName, roleDescription);
+				if(edit != null && edit.equalsIgnoreCase("true")) {
+					roleKey = addNewRole.getId();
+					List<Long> permissionIdList = roleDao.getAllPermissionForRole(roleKey, instituteId);
+					assignedPermission = permissionDAO.getPermissions(permissionIdList);
+				} else {
+					roleKey = roleDao.addNewRole(instituteId, userName, roleName, roleDescription);
+				}
+
 				if(roleKey != 0) {
 					permissions = permissionDAO.getAllPermissionInSystem();
 				}

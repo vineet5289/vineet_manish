@@ -141,7 +141,7 @@ public class RoleDao {
 	}
 
 	public boolean assignPermission(Long instituteId, Long roleId, List<Long> permissionIds, String userName) throws SQLException {
-		String permissions = getPermissionString(permissionIds);
+		String permissions = serializePermission(permissionIds);
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		String updateQ = String.format("UPDATE %s SET %s=?, %s=? WHERE %s=? AND %s=? AND %s=? limit 1;", Tables.Role.table,
@@ -172,7 +172,44 @@ public class RoleDao {
 		return isUpdated;
 	}
 
-	private String getPermissionString(List<Long> permissionIds) {
+	public  List<Long> getAllPermissionForRole(Long roleId, Long instituteId) throws SQLException {
+		List<Long> permissionIdList = null;
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		String query = String.format("SELECT %s FROM %s WHERE %s=? AND %s=? AND %s=? AND %s=?;", Tables.Role.permission, Tables.Role.table,
+				Tables.Role.instituteId, Tables.Role.id, Tables.Role.isActive, Tables.Role.isEditable);
+		
+		try {
+			connection = db.getConnection();
+			preparedStatement = connection.prepareStatement(query, ResultSet.TYPE_FORWARD_ONLY);
+			preparedStatement.setLong(1, instituteId);
+			preparedStatement.setLong(2, roleId);
+			preparedStatement.setBoolean(3, true);
+			preparedStatement.setBoolean(4, true);
+
+			resultSet = preparedStatement.executeQuery();
+			if(resultSet.next()) {
+				String permissions = resultSet.getString(Tables.Role.permission);
+				permissionIdList = deserializePermission(permissions);
+			}
+		} catch(Exception exception) {
+			exception.printStackTrace();
+		} finally {
+			if(resultSet != null) {
+				resultSet.close();
+			}
+			if(preparedStatement != null) {
+				preparedStatement.close();
+			}
+			if(connection != null) {
+				connection.close();
+			}
+		}
+		return permissionIdList;
+	}
+
+	private String serializePermission(List<Long> permissionIds) {
 		if(permissionIds == null || permissionIds.size() == 0) {
 			return "";
 		}
@@ -185,4 +222,24 @@ public class RoleDao {
 		}
 		return sb.toString();
 	}
+
+	private List<Long> deserializePermission(String permissionIds) {
+		if(permissionIds == null || permissionIds.isEmpty()) {
+			return null;
+		}
+		List<Long> permissionIdList = new ArrayList<Long>();
+		String[] permissionIdArray = permissionIds.split(",");
+		for(String permissionId : permissionIdArray) {
+			if(permissionId == null || permissionId.trim().isEmpty())
+				continue;
+			try {
+				Long id = Long.parseLong(permissionId.trim());
+				permissionIdList.add(id);
+			} catch(Exception exception) {
+				exception.printStackTrace();
+			}
+		}
+		return permissionIdList;
+	}
+	
 }
