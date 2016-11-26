@@ -16,68 +16,65 @@ import views.forms.employee.EmployeeDetailsForm;
 import views.html.Employee.addEmployee;
 
 public class EmployeeController extends CustomController {
-	@Inject
-	private FormFactory formFactory;
-	@Inject EmployesDAO employesDAO;
-//	@Security.Authenticated(HeadInstituteBasicAuthCheck.class)
-	public Result preAddEmployeeRequest() {
-		Form<AddEmployeeForm> addEmployeeForm = formFactory.form(AddEmployeeForm.class);
-		return ok(addEmployee.render(addEmployeeForm));
-	}
+  @Inject
+  private FormFactory formFactory;
+  @Inject
+  EmployesDAO employesDAO;
 
-//	@Security.Authenticated(HeadInstituteBasicAuthCheck.class)
-	public Result postAddEmployeeRequest() {
-		Form<AddEmployeeForm> addEmployeeForm = formFactory.form(AddEmployeeForm.class).bindFromRequest();
-		if(addEmployeeForm == null || addEmployeeForm.hasErrors()) {
-			flash("error", "Some errors occur either of some fileds are missing or contains invalid value.");
-			return redirect(controllers.employee.routes.EmployeeController.preAddEmployeeRequest());
-		}
+  // @Security.Authenticated(HeadInstituteBasicAuthCheck.class)
+  public Result preAddEmployeeRequest() {
+    Form<AddEmployeeForm> addEmployeeForm = formFactory.form(AddEmployeeForm.class);
+    /*
+     * TODO: 1. Send list of all available job titles with other option
+     */
+    return ok(addEmployee.render(addEmployeeForm));
+  }
 
-		AddEmployeeForm addEmployee = addEmployeeForm.get();
-		if(addEmployee == null) {
-			flash("error", "Some errors occur either of some fileds are missing or contains invalid value.");
-			return redirect(controllers.employee.routes.EmployeeController.preAddEmployeeRequest());
-		}
+  // @Security.Authenticated(HeadInstituteBasicAuthCheck.class)
+  public Result postAddEmployeeRequest() {
+    Form<AddEmployeeForm> addEmployeeForm =
+        formFactory.form(AddEmployeeForm.class).bindFromRequest();
+    if (addEmployeeForm == null || addEmployeeForm.hasErrors()) {
+      flash("error",
+          "Some errors occur either of some fileds are missing or contains invalid value.");
+      return redirect(controllers.employee.routes.EmployeeController.preAddEmployeeRequest());
+    }
 
-		boolean isEmpAdded = false;
-		try {
-			String userName = session().get(SessionKey.of(SessionKey.username));
-			String instituteId = session().get(SessionKey.of(SessionKey.instituteid));
-			isEmpAdded = employesDAO.addNewEmpRequest(addEmployee, userName, instituteId);
-			
-		} catch(Exception exception) {
-			exception.printStackTrace();
-			isEmpAdded = false;
-		}
+    AddEmployeeForm addEmployee = addEmployeeForm.get();
+    if (addEmployee == null) {
+      flash("error",
+          "Some errors occur either of some fileds are missing or contains invalid value.");
+      return redirect(controllers.employee.routes.EmployeeController.preAddEmployeeRequest());
+    }
 
-		return ok("");
-	}
+    boolean isEmpAdded = false;
+    try {
+      String userName = session().get(SessionKey.of(SessionKey.username));
+      String instituteId = session().get(SessionKey.of(SessionKey.instituteid));
+      isEmpAdded = employesDAO.addNewEmpRequest(addEmployee, userName, instituteId);
 
-//	@Security.Authenticated(HeadInstituteBasicAuthCheck.class)
-	public Result viewAllEmployee() {
-		Form<EmployeeDetailsForm> addEmployeeForm = formFactory.form(EmployeeDetailsForm.class).bindFromRequest();
-		if(addEmployeeForm == null || addEmployeeForm.hasErrors()) {
-			flash("error", "Some errors occur either of some fileds are missing or contains invalid value.");
-			return redirect(controllers.employee.routes.EmployeeController.preAddEmployeeRequest());
-		}
+    } catch (Exception exception) {
+      exception.printStackTrace();
+      isEmpAdded = false;
+    }
 
-		EmployeeDetailsForm addEmployee = addEmployeeForm.get();
-		if(addEmployee == null) {
-			flash("error", "Some errors occur either of some fileds are missing or contains invalid value.");
-			return redirect(controllers.employee.routes.EmployeeController.preAddEmployeeRequest());
-		}
+    return ok("");
+  }
 
-		boolean isEmpAdded = false;
-		try {
-			String userName = session().get(SessionKey.of(SessionKey.username));
-			String instituteId = session().get(SessionKey.of(SessionKey.instituteid));
-//			isEmpAdded = employesDAO.addNewEmpRequest(addEmployee, userName, instituteId);
-			
-		} catch(Exception exception) {
-			exception.printStackTrace();
-			isEmpAdded = false;
-		}
+  // @Security.Authenticated(HeadInstituteBasicAuthCheck.class)
+  public Result viewAllEmployee() {
+    
+    boolean isEmpAdded = false;
+    try {
+      String userName = session().get(SessionKey.of(SessionKey.username));
+      String instituteId = session().get(SessionKey.of(SessionKey.instituteid));
+      // isEmpAdded = employesDAO.addNewEmpRequest(addEmployee, userName, instituteId);
 
-		return ok("");
-	}
+    } catch (Exception exception) {
+      exception.printStackTrace();
+      isEmpAdded = false;
+    }
+
+    return ok("");
+  }
 }

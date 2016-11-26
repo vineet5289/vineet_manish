@@ -5,6 +5,22 @@ roleKey:Long,
 permissionList:List[models.PermissionModel])
 
 @viewClass.main("HOME | INSTITUTE")(""){
+ <style type="text/css">    
+            .pg-normal {
+                color: black;
+                font-weight: normal;
+                text-decoration: none;    
+                cursor: pointer;    
+            }
+            .pg-selected {
+                color: black;
+                font-weight: bold;        
+                text-decoration: underline;
+                cursor: pointer;
+            }
+        </style>
+
+
 
   <div class="main container">
       <div clas="ui grid">
@@ -56,8 +72,8 @@ permissionList:List[models.PermissionModel])
       
          <div class="sixteen wide column">
 
-<div class="products">
- <table class="ui  single line roletable table ">
+
+ <table class="ui  single line roletable table " id="permissiontable">
                 <thead>
                   <tr>
                     <th class="one wide"></th>
@@ -86,24 +102,14 @@ permissionList:List[models.PermissionModel])
                 }
                 
             </tbody>
-            <tfoot>
-              <tr>
-                <th colspan="7">
-                  <div class="ui right floated pagination basic menu tiny">
-                    <a class="item">1</a>
-                    <a class="item">2</a>
-                    <a class="icon item">
-                      <i class="right chevron icon"></i>
-                    </a>
-                  </div>
-                </th>
-              </tr>
-            </tfoot>
+           
             </table>
-              </div>
+            <div id="pageNavPosition"></div>
+              
              
           </div>
       </div>
   </div>
+  
   
 }

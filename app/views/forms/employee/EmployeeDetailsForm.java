@@ -12,14 +12,15 @@ public class EmployeeDetailsForm {
 	public String requestedUserName;
 
 	//public information for every user inside institute
-	public String name;
-	public String gender;
-	public String jobTitles;
+	public String name;//dashboard
+	public String jobTitles;//dashboard
+	
 
 	//information that is visable to only authroized person
-	public String userName;
+	public String gender;
+	public String userName;//dashboard
 	public String phoneNumber;
-	public String empCode;
+	public String empCode;//dashboard
 	public String empPreferedName;
 	public String empAlternativeEmail;
 	public String alternativeNumber;
