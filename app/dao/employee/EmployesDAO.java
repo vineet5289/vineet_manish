@@ -167,4 +167,53 @@ public class EmployesDAO {
     }
     return employees;
   }
+
+  public boolean enableDisableEmployee(long instituteId, String empUserName, boolean status, String requestedUserName) throws SQLException {
+    List<EmployeeDetailsForm> employees = new ArrayList<EmployeeDetailsForm>();
+    Connection connection = null;
+    PreparedStatement empUpdatePS = null;
+    ResultSet resultSet = null;
+    String empUpdateQ =
+        String.format("UPDATE %s SET %s=?, %s=? WHERE %s=? AND %s=? LIMIT 1;", Tables.Employee.table,
+            Tables.Employee.isActive, Tables.Employee.requestedUserName, Tables.Employee.instituteId,
+            Tables.Employee.userName);
+
+    String loginUpdateQ =
+        String.format("UPDATE %s SET %s=?, %s=? WHERE %s=? AND %s=? LIMIT 1;", Tables.Login.table,
+            Tables.Employee.isActive, Tables.Employee.requestedUserName, Tables.Employee.instituteId,
+            Tables.Employee.userName);
+    try {
+      connection = db.getConnection();
+      empUpdatePS = connection.prepareStatement(empUpdateQ, ResultSet.TYPE_FORWARD_ONLY);
+      empUpdatePS.setBoolean(1, status);
+      empUpdatePS.setString(2, requestedUserName);
+      empUpdatePS.setLong(3, instituteId);
+      empUpdatePS.setString(4, empUserName);
+      resultSet = empUpdatePS.executeUpdate()
+      while (resultSet.next()) {
+        EmployeeDetailsForm employeeDetailsForm = new EmployeeDetailsForm();
+        employeeDetailsForm.setId(resultSet.getLong(Tables.Employee.id));
+        employeeDetailsForm.setInstituteId(instituteId);
+        employeeDetailsForm.setName(resultSet.getString(Tables.Employee.name));
+        employeeDetailsForm.setUserName(resultSet.getString(Tables.Employee.userName));
+        employeeDetailsForm.setJobTitles(resultSet.getString(Tables.Employee.jobTitles));
+        employeeDetailsForm.setEmpCode(resultSet.getString(Tables.Employee.empCode));
+        employeeDetailsForm.setActiveEmployee(status);
+        employees.add(employeeDetailsForm);
+      }
+    } catch (Exception exception) {
+      exception.printStackTrace();
+      employees = null;
+    } finally {
+      if (resultSet != null) {
+        resultSet.close();
+      }
+      if (empSelectPS != null) {
+        empSelectPS.close();
+      }
+      if (connection != null)
+        connection.close();
+    }
+    return employees;
+  }
 }
