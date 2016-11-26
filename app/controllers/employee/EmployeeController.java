@@ -54,21 +54,22 @@ public class EmployeeController extends CustomController {
       return redirect(controllers.employee.routes.EmployeeController.viewAllEmployee());
     }
 
-    boolean isEmpAdded = false;
+    EmployeeDaoActionStatus employeeDaoActionStatus = EmployeeDaoActionStatus.serverexception;
     try {
       String userName = session().get(SessionKey.of(SessionKey.username));
       String instituteIdFromSession = session().get(SessionKey.of(SessionKey.instituteid));
       if (StringUtils.isNotBlank(userName) && StringUtils.isNotBlank(instituteIdFromSession)) {
         long instituteId = Long.parseLong(instituteIdFromSession);
-        isEmpAdded = employesDAO.addNewEmpRequest(addEmployee, userName, instituteId);
+        employeeDaoActionStatus = employesDAO.addNewEmpRequest(addEmployee, userName, instituteId);
       }
     } catch (Exception exception) {
       exception.printStackTrace();
-      isEmpAdded = false;
     }
 
-    if (!isEmpAdded) {
-      flash("error", "Some errors occur during employee registration. Please try again.");
+    if (employeeDaoActionStatus != EmployeeDaoActionStatus.successfullyAdded) {
+      flash("error", employeeDaoActionStatus.getValue());
+    } else {
+      flash("success", employeeDaoActionStatus.getValue());
     }
 
     return redirect(controllers.employee.routes.EmployeeController.viewAllEmployee());
@@ -91,7 +92,6 @@ public class EmployeeController extends CustomController {
     if (employees == null || employees.size() == 0) {
       flash("error", "Some errors occur during details fetch.");
     }
-    // return employees
     return ok(employeeList.render(employees));
   }
 

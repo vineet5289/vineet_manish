@@ -19,6 +19,7 @@ import views.forms.employee.AddEmployeeForm;
 import views.forms.employee.EmployeeDetailsForm;
 import dao.Tables;
 import dao.dao_operation_status.EmployeeDaoActionStatus;
+import enum_package.InstituteUserRole;
 import enum_package.LoginState;
 
 public class EmployesDAO {
@@ -27,15 +28,15 @@ public class EmployesDAO {
   @NamedDatabase("srp")
   private Database db;
 
-  public boolean addNewEmpRequest(AddEmployeeForm addEmployeeDetails, String userName,
-      long instituteId) throws SQLException {
+  public EmployeeDaoActionStatus addNewEmpRequest(AddEmployeeForm addEmployeeDetails,
+      String userName, long instituteId) throws SQLException {
     Connection connection = null;
     PreparedStatement loginPS = null;
     PreparedStatement empInsertPS = null;
     PreparedStatement empSelectPS = null;
     ResultSet empSelectRS = null;
 
-    boolean executedSuccessfully = false;
+    EmployeeDaoActionStatus employeeDaoActionStatus = EmployeeDaoActionStatus.serverexception;
     String loginQ =
         String.format("INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s) VALUES (?, ?, ?, ?, ?, ?, ?);",
             Tables.Login.table, Tables.Login.userName, Tables.Login.password,
@@ -90,26 +91,23 @@ public class EmployesDAO {
       empInsertPS.setString(7, addEmployeeDetails.getEmpEmail());
       empInsertPS.setString(8, addEmployeeDetails.getJobTitle());
       empInsertPS.setString(9, userName);
-      if (empInsertPS.executeUpdate() > 0) {
-        loginPS.setString(1, empUserName);
-        loginPS.setString(2, RandomGenerator.getBCryptPassword(empUserName));
-        loginPS.setString(3, LoginState.firststate.name());
-        loginPS.setString(4, addEmployeeDetails.getEmpName().trim());
-        loginPS.setString(5, addEmployeeDetails.getEmpEmail());
-        loginPS.setLong(6, instituteId);
-        loginPS.setString(7, "emp"); //todo: set proper role
-        if (loginPS.executeUpdate() > 0) {
-          connection.commit();
-          executedSuccessfully = true;
-        } else {
-          throw new Exception("Employee Registration failed");
-        }
+      loginPS.setString(1, empUserName);
+      loginPS.setString(2, RandomGenerator.getBCryptPassword(empUserName));
+      loginPS.setString(3, LoginState.firststate.name());
+      loginPS.setString(4, addEmployeeDetails.getEmpName().trim());
+      loginPS.setString(5, addEmployeeDetails.getEmpEmail());
+      loginPS.setLong(6, instituteId);
+      loginPS.setString(7, InstituteUserRole.of(InstituteUserRole.employee));
+
+      if (empInsertPS.execute() && loginPS.execute()) {
+        connection.commit();
+        employeeDaoActionStatus = EmployeeDaoActionStatus.successfullyAdded;
       } else {
         throw new Exception("Employee Registration failed");
       }
     } catch (Exception exception) {
       connection.rollback();
-      executedSuccessfully = false;
+      employeeDaoActionStatus = EmployeeDaoActionStatus.serverexception;
     } finally {
       if (empSelectRS != null)
         empSelectRS.close();
@@ -122,7 +120,7 @@ public class EmployesDAO {
       if (connection != null)
         connection.close();
     }
-    return executedSuccessfully;
+    return employeeDaoActionStatus;
   }
 
   public List<EmployeeDetailsForm> getAllEmp(Long instituteId, boolean status) throws SQLException {
@@ -168,15 +166,17 @@ public class EmployesDAO {
     return employees;
   }
 
-  public EmployeeDaoActionStatus enableDisableEmployee(long instituteId, String empUserName, boolean status, String requestedUserName) throws SQLException {
-    EmployeeDaoActionStatus employeeDaoActionStatus = EmployeeDaoActionStatus.norecordfoundforgivenusername;
+  public EmployeeDaoActionStatus enableDisableEmployee(long instituteId, String empUserName,
+      boolean status, String requestedUserName) throws SQLException {
+    EmployeeDaoActionStatus employeeDaoActionStatus =
+        EmployeeDaoActionStatus.norecordfoundforgivenusername;
     Connection connection = null;
     PreparedStatement empUpdatePS = null;
     PreparedStatement loginUpdatePS = null;
     String empUpdateQ =
-        String.format("UPDATE %s SET %s=?, %s=? WHERE %s=? AND %s=? LIMIT 1;", Tables.Employee.table,
-            Tables.Employee.isActive, Tables.Employee.requestedUserName, Tables.Employee.instituteId,
-            Tables.Employee.userName);
+        String.format("UPDATE %s SET %s=?, %s=? WHERE %s=? AND %s=? LIMIT 1;",
+            Tables.Employee.table, Tables.Employee.isActive, Tables.Employee.requestedUserName,
+            Tables.Employee.instituteId, Tables.Employee.userName);
 
     String loginUpdateQ =
         String.format("UPDATE %s SET %s=?, %s=? WHERE %s=? AND %s=? LIMIT 1;", Tables.Login.table,

@@ -60,8 +60,8 @@ GET			/add_emp								   controllers.employee.EmployeeController.preAddEmployeeR
 POST		/add_emp							   	   controllers.employee.EmployeeController.postAddEmployeeRequest()
 GET			/view_emp							   	   controllers.employee.EmployeeController.viewAllEmployee()
 POST		/delete_emp/:username					   controllers.employee.EmployeeController.deleteEmployee(username: String)
-GET      	/registeremp                               controllers.EmployeeController.preEmployeeRegistrationRequest()
-POST     	/registeremp            	               controllers.EmployeeController.postEmployeeRegistrationRequest()
+#GET      	/registeremp                               controllers.EmployeeController.preEmployeeRegistrationRequest()
+#POST     	/registeremp            	               controllers.EmployeeController.postEmployeeRegistrationRequest()
 
 # students registration request
 GET      	/registerstudent                 		   controllers.StudentController.preStudentRegistrationRequest()

@@ -7,6 +7,7 @@ import enum_package.FileUploadStatus;
 
 public enum EmployeeDaoActionStatus {
   successfullyDeleted("Employee has been successfully deleted."),
+  successfullyAdded("Employee has been successfully added."),
   norecordfoundforgivenusername("No record found for given employee."),
   serverexception("Some internal error occur during request processing. Please try after sometime.");
 
