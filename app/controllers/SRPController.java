@@ -110,6 +110,11 @@ public class SRPController extends CustomController {
 		return ok("");
 	}
 
+//	@Security.Authenticated(BasicAuthRequirement.class)
+    public Result employeeHome() {
+        return ok("");
+    }
+
 	public Result preRegistration(String userType) {
 		if(userType.trim().equalsIgnoreCase("school")) {
 			session().clear();

@@ -21,6 +21,7 @@ import dao.Tables;
 import dao.dao_operation_status.EmployeeDaoActionStatus;
 import enum_package.InstituteUserRole;
 import enum_package.LoginState;
+import enum_package.LoginType;
 
 public class EmployesDAO {
 
@@ -38,10 +39,10 @@ public class EmployesDAO {
 
     EmployeeDaoActionStatus employeeDaoActionStatus = EmployeeDaoActionStatus.serverexception;
     String loginQ =
-        String.format("INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s) VALUES (?, ?, ?, ?, ?, ?, ?);",
+        String.format("INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s, %s) VALUES (?, ?, ?, ?, ?, ?, ?, ?);",
             Tables.Login.table, Tables.Login.userName, Tables.Login.password,
             Tables.Login.passwordState, Tables.Login.name, Tables.Login.emailId,
-            Tables.Login.instituteId, Tables.Login.role);
+            Tables.Login.instituteId, Tables.Login.role, Tables.Login.type);
 
     String empInsertQ =
         String
@@ -91,6 +92,7 @@ public class EmployesDAO {
       empInsertPS.setString(7, addEmployeeDetails.getEmpEmail());
       empInsertPS.setString(8, addEmployeeDetails.getJobTitle());
       empInsertPS.setString(9, userName);
+
       loginPS.setString(1, empUserName);
       loginPS.setString(2, RandomGenerator.getBCryptPassword(empUserName));
       loginPS.setString(3, LoginState.firststate.name());
@@ -98,14 +100,15 @@ public class EmployesDAO {
       loginPS.setString(5, addEmployeeDetails.getEmpEmail());
       loginPS.setLong(6, instituteId);
       loginPS.setString(7, InstituteUserRole.of(InstituteUserRole.employee));
-
-      if (empInsertPS.execute() && loginPS.execute()) {
+      loginPS.setString(8, LoginType.of(LoginType.emp));
+      if (empInsertPS.executeUpdate() == 1 && loginPS.executeUpdate() == 1) {
         connection.commit();
         employeeDaoActionStatus = EmployeeDaoActionStatus.successfullyAdded;
       } else {
         throw new Exception("Employee Registration failed");
       }
     } catch (Exception exception) {
+      exception.printStackTrace();
       connection.rollback();
       employeeDaoActionStatus = EmployeeDaoActionStatus.serverexception;
     } finally {

@@ -42,6 +42,7 @@ public class EmployeeController extends CustomController {
     Form<AddEmployeeForm> addEmployeeForm =
         formFactory.form(AddEmployeeForm.class).bindFromRequest();
     if (addEmployeeForm == null || addEmployeeForm.hasErrors()) {
+      System.out.println("====>1");
       flash("error",
           "Some errors occur either of some fileds are missing or contains invalid value.");
       return redirect(controllers.employee.routes.EmployeeController.viewAllEmployee());
@@ -49,6 +50,7 @@ public class EmployeeController extends CustomController {
 
     AddEmployeeForm addEmployee = addEmployeeForm.get();
     if (addEmployee == null) {
+      System.out.println("====>2");
       flash("error",
           "Some errors occur either of some fileds are missing or contains invalid value.");
       return redirect(controllers.employee.routes.EmployeeController.viewAllEmployee());
@@ -56,13 +58,16 @@ public class EmployeeController extends CustomController {
 
     EmployeeDaoActionStatus employeeDaoActionStatus = EmployeeDaoActionStatus.serverexception;
     try {
+      System.out.println("====>3");
       String userName = session().get(SessionKey.of(SessionKey.username));
       String instituteIdFromSession = session().get(SessionKey.of(SessionKey.instituteid));
       if (StringUtils.isNotBlank(userName) && StringUtils.isNotBlank(instituteIdFromSession)) {
+        System.out.println("====>3.1");
         long instituteId = Long.parseLong(instituteIdFromSession);
         employeeDaoActionStatus = employesDAO.addNewEmpRequest(addEmployee, userName, instituteId);
       }
     } catch (Exception exception) {
+      System.out.println("====>4");
       exception.printStackTrace();
     }
 
