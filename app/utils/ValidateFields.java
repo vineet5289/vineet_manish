@@ -11,7 +11,7 @@ public class ValidateFields {
 	private static Pattern userNamePattern;
 	private static final String USERNAME_PATTERN = "^[a-z0-9.@_-]{5,20}$";
 
-	private static final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$";
+	private static final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=-])(?=\\S+$).{6,}$";
 	private static Pattern passwordPattern;
 
 	private static final String ACCESS_RIGHTS_PATTERN = "^[a-z0-9=,]{1,}$";
@@ -32,7 +32,7 @@ public class ValidateFields {
 
 	static {
 		userNamePattern = Pattern.compile(USERNAME_PATTERN, Pattern.CASE_INSENSITIVE);
-		passwordPattern = Pattern.compile(PASSWORD_PATTERN);
+		passwordPattern = Pattern.compile(PASSWORD_PATTERN, Pattern.CASE_INSENSITIVE);
 		emailPattern = Pattern.compile(EMAIL_PATTERN, Pattern.CASE_INSENSITIVE);
 		accessRightsPattern = Pattern.compile(ACCESS_RIGHTS_PATTERN, Pattern.CASE_INSENSITIVE);
 		mobileNumberPatter = Pattern.compile(MOBILE_NUMBER_PATTERN);
