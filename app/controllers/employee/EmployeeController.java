@@ -118,14 +118,14 @@ public class EmployeeController extends CustomController {
         formFactory.form(EmployeeDetailsForm.class).bindFromRequest();
     if (upldateEmpDetailsForm == null || upldateEmpDetailsForm.hasErrors()) {
       flash("error", "Some errors occur either of some fileds are missing or contains invalid value.");
-      return redirect(controllers.employee.routes.EmployeeController.viewAllEmployee());//TODO: send to profile page
+      return redirect(controllers.employee.routes.EmployeeController.showEmployeeInfo(username, section, type));//TODO: send to profile page
     }
 
     EmployeeDetailsForm upldateEmpDetails = upldateEmpDetailsForm.get();
     if (upldateEmpDetails == null) {
       flash("error",
           "Some errors occur either of some fileds are missing or contains invalid value.");
-      return redirect(controllers.employee.routes.EmployeeController.viewAllEmployee());//TODO: send to profile page
+      return redirect(controllers.employee.routes.EmployeeController.showEmployeeInfo(username, section, type));//TODO: send to profile page
     }
 
     EmployeeDaoActionStatus employeeDaoActionStatus = EmployeeDaoActionStatus.serverexception;
@@ -140,6 +140,10 @@ public class EmployeeController extends CustomController {
     } else {
       flash("success", employeeDaoActionStatus.getValue());
     }
-    return redirect(controllers.employee.routes.EmployeeController.viewAllEmployee());//TODO: send to profile page
+    return redirect(controllers.employee.routes.EmployeeController.showEmployeeInfo(username, section, type));//TODO: send to profile page
+  }
+
+  public Result showEmployeeInfo(String username, String section, String type) {
+    return ok("username:" +username + ", section" + section + ",type" + type);
   }
 }
