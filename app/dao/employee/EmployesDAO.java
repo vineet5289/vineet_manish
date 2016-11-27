@@ -39,7 +39,8 @@ public class EmployesDAO {
 
     EmployeeDaoActionStatus employeeDaoActionStatus = EmployeeDaoActionStatus.serverexception;
     String loginQ =
-        String.format("INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s, %s) VALUES (?, ?, ?, ?, ?, ?, ?, ?);",
+        String.format(
+            "INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s, %s) VALUES (?, ?, ?, ?, ?, ?, ?, ?);",
             Tables.Login.table, Tables.Login.userName, Tables.Login.password,
             Tables.Login.passwordState, Tables.Login.name, Tables.Login.emailId,
             Tables.Login.instituteId, Tables.Login.role, Tables.Login.type);
@@ -221,24 +222,73 @@ public class EmployesDAO {
     return employeeDaoActionStatus;
   }
 
-  public EmployeeDaoActionStatus updateByEmployee(EmployeeDetailsForm employeeDetails) throws SQLException {
-    EmployeeDaoActionStatus employeeDaoActionStatus = EmployeeDaoActionStatus.norecordfoundforgivenusername;
+  public EmployeeDaoActionStatus updateEmployeeInfo(EmployeeDetailsForm employeeDetails,
+      String section, String type) throws SQLException {
+    EmployeeDaoActionStatus employeeDaoActionStatus =
+        EmployeeDaoActionStatus.norecordfoundforgivenusername;
+    if (section.equalsIgnoreCase("general") && type.equalsIgnoreCase("self")) {
+      employeeDaoActionStatus = generalInfoUpdateByEmployee(employeeDetails);
+    }
+    return employeeDaoActionStatus;
+  }
+
+  private EmployeeDaoActionStatus generalInfoUpdateByEmployee(EmployeeDetailsForm employeeDetails)
+      throws SQLException {
+    EmployeeDaoActionStatus employeeDaoActionStatus =
+        EmployeeDaoActionStatus.norecordfoundforgivenusername;
     Connection connection = null;
     PreparedStatement empUpdatePS = null;
     PreparedStatement loginUpdatePS = null;
     String empUpdateQ =
-        String.format("UPDATE %s SET %s=?, %s=? WHERE %s=? AND %s=? LIMIT 1;",
-            Tables.Employee.table, Tables.Employee.isActive, Tables.Employee.requestedUserName,
-            Tables.Employee.instituteId, Tables.Employee.userName);
+        String.format(
+            "UPDATE %s SET %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, "
+                + "%s=?, %s=?, %s=? WHERE %s=? AND %s=? AND %s=? LIMIT 1;", Tables.Employee.table,
+            Tables.Employee.name, Tables.Employee.gender, Tables.Employee.phoneNumber,
+            Tables.Employee.empPreferedName, Tables.Employee.empAlternativeEmail,
+            Tables.Employee.alternativeNumber, Tables.Employee.dob, Tables.Employee.addressLine1,
+            Tables.Employee.addressLine2, Tables.Employee.city, Tables.Employee.state,
+            Tables.Employee.country, Tables.Employee.pinCode, Tables.Employee.requestedUserName,
+            Tables.Employee.userName, Tables.Employee.instituteId, Tables.Employee.isActive);
 
     String loginUpdateQ =
-        String.format("UPDATE %s SET %s=?, %s=? WHERE %s=? AND %s=? LIMIT 1;", Tables.Login.table,
-            Tables.Login.isActive, Tables.Login.passwordState, Tables.Login.instituteId,
-            Tables.Login.userName);
+        String.format("UPDATE %s SET %s=? WHERE %s=? AND %s=? AND %s=? LIMIT 1;",
+            Tables.Login.table, Tables.Login.name, Tables.Login.userName, Tables.Login.instituteId,
+            Tables.Login.isActive);
     try {
       connection = db.getConnection();
       connection.setAutoCommit(false);
-      connection.commit();
+      empUpdatePS = connection.prepareStatement(empUpdateQ);
+      loginUpdatePS = connection.prepareStatement(loginUpdateQ);
+
+      empUpdatePS.setString(1, employeeDetails.getName());
+      empUpdatePS.setString(2, employeeDetails.getGender());
+      empUpdatePS.setString(3, employeeDetails.getPhoneNumber());
+      empUpdatePS.setString(4, employeeDetails.getEmpPreferedName());
+      empUpdatePS.setString(5, employeeDetails.getEmpAlternativeEmail());
+      empUpdatePS.setString(6, employeeDetails.getAlternativeNumber());
+      empUpdatePS.setString(7, employeeDetails.getDob());
+      empUpdatePS.setString(8, employeeDetails.getAddressLine1());
+      empUpdatePS.setString(9, employeeDetails.getAddressLine2());
+      empUpdatePS.setString(10, employeeDetails.getCity());
+      empUpdatePS.setString(11, employeeDetails.getState());
+      empUpdatePS.setString(12, employeeDetails.getCountry());
+      empUpdatePS.setString(13, employeeDetails.getPinCode());
+      empUpdatePS.setString(14, employeeDetails.getUserName());
+      empUpdatePS.setString(15, employeeDetails.getUserName());
+      empUpdatePS.setLong(16, employeeDetails.getInstituteId());
+      empUpdatePS.setBoolean(17, true);
+
+      loginUpdatePS.setString(1, employeeDetails.getName());
+      loginUpdatePS.setString(2, employeeDetails.getUserName());
+      loginUpdatePS.setLong(3, employeeDetails.getInstituteId());
+      loginUpdatePS.setBoolean(4, true);
+
+      if (empUpdatePS.executeUpdate() == 1 && loginUpdatePS.executeUpdate() == 1) {
+        connection.commit();
+        employeeDaoActionStatus = EmployeeDaoActionStatus.successfullyUpdated;
+      } else {
+        connection.rollback();
+      }
     } catch (Exception exception) {
       exception.printStackTrace();
       connection.rollback();

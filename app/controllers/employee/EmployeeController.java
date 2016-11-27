@@ -130,7 +130,7 @@ public class EmployeeController extends CustomController {
 
     EmployeeDaoActionStatus employeeDaoActionStatus = EmployeeDaoActionStatus.serverexception;
     try {
-        employeeDaoActionStatus = employesDAO.updateByEmployee(upldateEmpDetails);
+        employeeDaoActionStatus = employesDAO.updateEmployeeInfo(upldateEmpDetails, section, type);
     } catch (Exception exception) {
       exception.printStackTrace();
     }
