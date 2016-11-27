@@ -13,6 +13,7 @@ import views.forms.institute.GroupForm;
 import controllers.CustomController;
 import dao.school.GroupDao;
 import enum_package.SessionKey;
+import views.html.viewClass.School.addGroups;
 
 public class GroupController extends CustomController {
 
@@ -38,7 +39,7 @@ public class GroupController extends CustomController {
 		}
 
 //		return (rolePresent, activeGroup, inactiveGroup);
-		return ok("");
+		return ok(addGroups.render(activeGroup, inactiveGroup,addNewGroup));
 	}
 
 	public Result postAddGroup() {
@@ -61,6 +62,7 @@ public class GroupController extends CustomController {
 		if(!isGroupAdded) {
 			flash("error", "Got some error during request processing.");
 		} else {
+			System.out.println("Yes ..the  group is added");
 			flash("success", "Your request for adding group has been completed.");
 		}
 		return redirect(controllers.institute.routes.GroupController.preAddGroup());
