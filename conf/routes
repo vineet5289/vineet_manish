@@ -60,9 +60,8 @@ POST		/institute/mand_info					   controllers.institute.InstituteInfoController.
 GET			/add_emp								   controllers.employee.EmployeeController.preAddEmployeeRequest()
 POST		/add_emp							   	   controllers.employee.EmployeeController.postAddEmployeeRequest()
 GET			/view_emp							   	   controllers.employee.EmployeeController.viewAllEmployee()
-
-GET		/delete_emp/:username					   controllers.employee.EmployeeController.deleteEmployee(username: String)
-
+GET			/delete_emp/:username					   controllers.employee.EmployeeController.deleteEmployee(username: String)
+POST		/edit/:username/emp					   	   controllers.employee.EmployeeController.editEmployee(username:String, section:String ?= "general", type:String ?= "self")
 
 # students registration request
 GET      	/registerstudent                 		   controllers.StudentController.preStudentRegistrationRequest()

@@ -2,6 +2,8 @@ package controllers;
 
 import javax.inject.Inject;
 
+import org.apache.commons.lang3.StringUtils;
+
 import models.HeadInstituteLoginDetails;
 import play.Logger;
 import play.data.FormFactory;
@@ -9,6 +11,7 @@ import play.mvc.Result;
 import play.mvc.Security;
 import security.BasicAuthRequirement;
 import security.institute.HeadInstituteBasicAuthCheck;
+import views.forms.UserHomePageForm;
 import views.html.homePage.schoolRequestHomepage;
 import views.html.viewClass.dashboard;
 import views.html.viewClass.School.instituteGroupHome;
@@ -111,8 +114,29 @@ public class SRPController extends CustomController {
 	}
 
 //	@Security.Authenticated(BasicAuthRequirement.class)
+	/*
+	 * TODO:
+	 * 1. get all field from redis and session and if not present in redis then quesy
+	 * DB. Update redis as well as set this field in UserHomePageForm
+	 * */
     public Result employeeHome() {
-        return ok("");
+      UserHomePageForm userHomePageForm = new UserHomePageForm();
+      String userName = session().get(SessionKey.of(SessionKey.username));
+      String instituteIdFromSession = session().get(SessionKey.of(SessionKey.instituteid));
+      if (StringUtils.isNotBlank(userName) && StringUtils.isNotBlank(instituteIdFromSession)) {
+        long instituteId = Long.parseLong(instituteIdFromSession);
+        userHomePageForm.setImageUrl("");
+        userHomePageForm.setUserName(userName);
+        userHomePageForm.setUserId(1l);
+        userHomePageForm.setName("");
+        userHomePageForm.setInstituteId(instituteId);
+        userHomePageForm.setInstituteName("");
+        userHomePageForm.setInstituteLogoUrl("");
+        //in case of every this is correct.... upload user
+      } else {
+        // some error occur. logout user
+      }
+      return ok("userHomePageForm");
     }
 
 	public Result preRegistration(String userType) {

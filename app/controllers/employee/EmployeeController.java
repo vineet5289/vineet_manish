@@ -7,20 +7,17 @@ import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
 
-import controllers.CustomController;
-import controllers.institute.routes;
-import dao.dao_operation_status.EmployeeDaoActionStatus;
-import dao.employee.EmployesDAO;
-import enum_package.SessionKey;
 import play.data.Form;
 import play.data.FormFactory;
 import play.mvc.Result;
-import play.mvc.Security;
-import security.institute.HeadInstituteBasicAuthCheck;
 import views.forms.employee.AddEmployeeForm;
 import views.forms.employee.EmployeeDetailsForm;
 import views.html.Employee.addEmployee;
 import views.html.Employee.employeeList;
+import controllers.CustomController;
+import dao.dao_operation_status.EmployeeDaoActionStatus;
+import dao.employee.EmployesDAO;
+import enum_package.SessionKey;
 
 public class EmployeeController extends CustomController {
   @Inject
@@ -42,7 +39,6 @@ public class EmployeeController extends CustomController {
     Form<AddEmployeeForm> addEmployeeForm =
         formFactory.form(AddEmployeeForm.class).bindFromRequest();
     if (addEmployeeForm == null || addEmployeeForm.hasErrors()) {
-      System.out.println("====>1");
       flash("error",
           "Some errors occur either of some fileds are missing or contains invalid value.");
       return redirect(controllers.employee.routes.EmployeeController.viewAllEmployee());
@@ -50,7 +46,6 @@ public class EmployeeController extends CustomController {
 
     AddEmployeeForm addEmployee = addEmployeeForm.get();
     if (addEmployee == null) {
-      System.out.println("====>2");
       flash("error",
           "Some errors occur either of some fileds are missing or contains invalid value.");
       return redirect(controllers.employee.routes.EmployeeController.viewAllEmployee());
@@ -58,16 +53,13 @@ public class EmployeeController extends CustomController {
 
     EmployeeDaoActionStatus employeeDaoActionStatus = EmployeeDaoActionStatus.serverexception;
     try {
-      System.out.println("====>3");
       String userName = session().get(SessionKey.of(SessionKey.username));
       String instituteIdFromSession = session().get(SessionKey.of(SessionKey.instituteid));
       if (StringUtils.isNotBlank(userName) && StringUtils.isNotBlank(instituteIdFromSession)) {
-        System.out.println("====>3.1");
         long instituteId = Long.parseLong(instituteIdFromSession);
         employeeDaoActionStatus = employesDAO.addNewEmpRequest(addEmployee, userName, instituteId);
       }
     } catch (Exception exception) {
-      System.out.println("====>4");
       exception.printStackTrace();
     }
 
@@ -119,5 +111,35 @@ public class EmployeeController extends CustomController {
       flash("success", employeeDaoActionStatus.getValue());
     }
     return redirect(controllers.employee.routes.EmployeeController.viewAllEmployee());
+  }
+
+  public Result editEmployee(String username, String section, String type) {
+    Form<EmployeeDetailsForm> upldateEmpDetailsForm =
+        formFactory.form(EmployeeDetailsForm.class).bindFromRequest();
+    if (upldateEmpDetailsForm == null || upldateEmpDetailsForm.hasErrors()) {
+      flash("error", "Some errors occur either of some fileds are missing or contains invalid value.");
+      return redirect(controllers.employee.routes.EmployeeController.viewAllEmployee());//TODO: send to profile page
+    }
+
+    EmployeeDetailsForm upldateEmpDetails = upldateEmpDetailsForm.get();
+    if (upldateEmpDetails == null) {
+      flash("error",
+          "Some errors occur either of some fileds are missing or contains invalid value.");
+      return redirect(controllers.employee.routes.EmployeeController.viewAllEmployee());//TODO: send to profile page
+    }
+
+    EmployeeDaoActionStatus employeeDaoActionStatus = EmployeeDaoActionStatus.serverexception;
+    try {
+        employeeDaoActionStatus = employesDAO.updateByEmployee(upldateEmpDetails);
+    } catch (Exception exception) {
+      exception.printStackTrace();
+    }
+
+    if (employeeDaoActionStatus != EmployeeDaoActionStatus.successfullyUpdated) {
+      flash("error", employeeDaoActionStatus.getValue());
+    } else {
+      flash("success", employeeDaoActionStatus.getValue());
+    }
+    return redirect(controllers.employee.routes.EmployeeController.viewAllEmployee());//TODO: send to profile page
   }
 }

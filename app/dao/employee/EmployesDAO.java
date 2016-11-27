@@ -220,4 +220,37 @@ public class EmployesDAO {
     }
     return employeeDaoActionStatus;
   }
+
+  public EmployeeDaoActionStatus updateByEmployee(EmployeeDetailsForm employeeDetails) throws SQLException {
+    EmployeeDaoActionStatus employeeDaoActionStatus = EmployeeDaoActionStatus.norecordfoundforgivenusername;
+    Connection connection = null;
+    PreparedStatement empUpdatePS = null;
+    PreparedStatement loginUpdatePS = null;
+    String empUpdateQ =
+        String.format("UPDATE %s SET %s=?, %s=? WHERE %s=? AND %s=? LIMIT 1;",
+            Tables.Employee.table, Tables.Employee.isActive, Tables.Employee.requestedUserName,
+            Tables.Employee.instituteId, Tables.Employee.userName);
+
+    String loginUpdateQ =
+        String.format("UPDATE %s SET %s=?, %s=? WHERE %s=? AND %s=? LIMIT 1;", Tables.Login.table,
+            Tables.Login.isActive, Tables.Login.passwordState, Tables.Login.instituteId,
+            Tables.Login.userName);
+    try {
+      connection = db.getConnection();
+      connection.setAutoCommit(false);
+      connection.commit();
+    } catch (Exception exception) {
+      exception.printStackTrace();
+      connection.rollback();
+      employeeDaoActionStatus = EmployeeDaoActionStatus.serverexception;
+    } finally {
+      if (loginUpdatePS != null)
+        loginUpdatePS.close();
+      if (empUpdatePS != null)
+        empUpdatePS.close();
+      if (connection != null)
+        connection.close();
+    }
+    return employeeDaoActionStatus;
+  }
 }
