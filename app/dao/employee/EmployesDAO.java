@@ -78,10 +78,10 @@ public class EmployesDAO {
       if (addEmployeeDetails.isAutoGenerate()
           || StringUtils.isBlank(addEmployeeDetails.getEmpCode())) {
         empUserName = EmployeeUtil.getEmpUserName(instituteId, numberOfEmp);
-        empCode = empUserName;
+        empCode = EmployeeUtil.getEmpCode(numberOfEmp);
       } else {
         empCode = addEmployeeDetails.getEmpCode().trim();
-        empUserName = EmployeeUtil.getEmpUserName(instituteId, empCode, numberOfEmp);
+        empUserName = EmployeeUtil.getEmpUserName(instituteId, numberOfEmp);
       }
 
       empInsertPS.setString(1, addEmployeeDetails.getEmpName().trim());

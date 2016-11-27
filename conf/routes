@@ -62,7 +62,7 @@ POST		/add_emp							   	   controllers.employee.EmployeeController.postAddEmplo
 GET			/view_emp							   	   controllers.employee.EmployeeController.viewAllEmployee()
 GET			/delete_emp/:username					   controllers.employee.EmployeeController.deleteEmployee(username: String)
 POST		/edit/:username/emp					   	   controllers.employee.EmployeeController.editEmployee(username:String, section:String ?= "general", type:String ?= "self")
-GET			/show/:username/emp						   controllers.employee.EmployeeController.showEmployeeInfo(username:String, section:String ?= "general", type:String ?= "self")
+GET			/show/:username/emp						   controllers.employee.EmployeeController.showEmployeeInfo(username:String, section:String ?= "general", type:String ?= " ")
 
 # students registration request
 GET      	/registerstudent                 		   controllers.StudentController.preStudentRegistrationRequest()
