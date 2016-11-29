@@ -39,7 +39,7 @@ public class LoginController extends CustomController {
 
     Form<LoginForm> loginForm = formFactory.form(LoginForm.class).bindFromRequest();
     if (loginForm == null || loginForm.hasErrors()) {
-      Logger.debug("login form contains error");
+      Logger.debug("login form contains error" + loginForm.errors());
       flash("error", "Login credentials are not valid.");
       return redirect(controllers.login_logout.routes.LoginController.preLogin());
     }
@@ -49,6 +49,7 @@ public class LoginController extends CustomController {
     LoginForm loginUserCredentials = loginForm.get();
     String userName = loginUserCredentials.getUserName();
     String password = loginUserCredentials.getPassword();
+    System.out.println("username:" + userName + ", password:" + password);
     try {
       CommonUserCredentials commonUserCredentials =
           userLoginDAO.getValidUserCredentials(userName, password, redisSessionDao);
@@ -82,7 +83,7 @@ public class LoginController extends CustomController {
     } else if (loginType != null && loginType.equals(LoginType.of(LoginType.institute))) {
       Logger.info(String.format("messgae: username:%s, is loggin as %s user", userName, loginType));
       return redirect(routes.SRPController.instituteHome());
-    } else if (loginType != null && loginType.equals(LoginType.emp)) {
+    } else if (loginType != null && loginType.equals(LoginType.of(LoginType.emp))) {
       Logger.info(String.format("messgae: username:%s, is loggin as %s user", userName,
           LoginType.of(LoginType.emp)));
       return redirect(routes.SRPController.employeeHome());

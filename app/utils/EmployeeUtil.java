@@ -43,7 +43,7 @@ public class EmployeeUtil {
 
   public static String getEmpCode(long numberOfEmp) {
     StringBuilder sb = new StringBuilder();
-    sb.append("E-");
+    sb.append("E");
     sb.append(getFixedLengthString(numberOfEmp, lengthOfNumberOfEmp));
     return sb.toString();
   }
@@ -51,7 +51,7 @@ public class EmployeeUtil {
 
   public static String getEmpUserName(long schoolId, long numberOfEmp) {
     StringBuilder sb = new StringBuilder();
-    sb.append("E-");
+    sb.append("E");
     sb.append(getFixedLengthString(schoolId, lengthOfSchoolId));
     sb.append(getFixedLengthString(numberOfEmp, lengthOfNumberOfEmp));
     return sb.toString();

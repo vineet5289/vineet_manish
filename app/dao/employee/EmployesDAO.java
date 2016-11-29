@@ -68,11 +68,11 @@ public class EmployesDAO {
       loginPS = connection.prepareStatement(loginQ);
       empSelectPS.setLong(1, instituteId);
 
-      int numberOfEmp = 0;
+      int numberOfEmp = 1;
       empSelectRS = empSelectPS.executeQuery();
 
       if (empSelectRS.next()) {
-        numberOfEmp = empSelectRS.getInt(1);
+        numberOfEmp += empSelectRS.getInt(1);
       }
 
       if (addEmployeeDetails.isAutoGenerate()
@@ -94,8 +94,12 @@ public class EmployesDAO {
       empInsertPS.setString(8, addEmployeeDetails.getJobTitle());
       empInsertPS.setString(9, userName);
 
+      //TODO: write algorithm to generate random passord
+      String randomPassword = "varanasi@89";
+//      String randomPassword = RandomGenerator.getRandomPassword("E-");
+      System.out.println("randomPassword=>" + randomPassword);
       loginPS.setString(1, empUserName);
-      loginPS.setString(2, RandomGenerator.getBCryptPassword(empUserName));
+      loginPS.setString(2, getEncryptPass(randomPassword));
       loginPS.setString(3, LoginState.firststate.name());
       loginPS.setString(4, addEmployeeDetails.getEmpName().trim());
       loginPS.setString(5, addEmployeeDetails.getEmpEmail());
@@ -302,5 +306,9 @@ public class EmployesDAO {
         connection.close();
     }
     return employeeDaoActionStatus;
+  }
+
+  private String getEncryptPass(String password) {
+    return RandomGenerator.getBCryptPassword(password);
   }
 }
