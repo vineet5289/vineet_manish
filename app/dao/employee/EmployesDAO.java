@@ -94,10 +94,8 @@ public class EmployesDAO {
       empInsertPS.setString(8, addEmployeeDetails.getJobTitle());
       empInsertPS.setString(9, userName);
 
-      //TODO: write algorithm to generate random passord
-      String randomPassword = "varanasi@89";
-//      String randomPassword = RandomGenerator.getRandomPassword("E-");
-      System.out.println("randomPassword=>" + randomPassword);
+      String randomPassword = RandomGenerator.getRandomPassword("E-");
+      System.out.println("**********randomPassword*************" + randomPassword);
       loginPS.setString(1, empUserName);
       loginPS.setString(2, getEncryptPass(randomPassword));
       loginPS.setString(3, LoginState.firststate.name());

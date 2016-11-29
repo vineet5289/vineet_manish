@@ -7,11 +7,11 @@ import java.security.SecureRandom;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.mindrot.jbcrypt.BCrypt;
 
-import views.html.main;
-
 public class RandomGenerator {
   private static final char[] characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$&".toCharArray();
+  private static final char[] numbers = "0123456789".toCharArray();
   private static final int lengthOfRandomPassword = 10;
+
   public static String nextSessionId(int length, SecureRandom random) {
     return new BigInteger(length, random).toString(32);
   }
@@ -26,10 +26,18 @@ public class RandomGenerator {
     return otp;
   }
 
-  public static String getRandomPassword(String prefixChar) {
+  public static String getRandomPassword(String prefix) {
     StringBuilder sb = new StringBuilder();
-    sb.append(prefixChar);
-    sb.append(RandomStringUtils.random( lengthOfRandomPassword, 0, 0, false, false, characters, new SecureRandom() ));
+    int randno =  (int)(Math.random() * ((9) + 1));
+    randno = (randno >= 0 && randno <= 9) ? randno : 0;
+    sb.append(prefix);
+    sb.append(numbers[randno]);
+    randno =  (int)(Math.random() * ((25) + 1));
+    randno = (randno >= 0 && randno <= 25) ? randno : 0;
+    sb.append(characters[randno + 26]);
+    sb.append(RandomStringUtils.random(lengthOfRandomPassword, 0, 0, false, false, characters,
+        new SecureRandom()));
+    
     return sb.toString();
   }
 
