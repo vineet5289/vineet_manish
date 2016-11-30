@@ -234,6 +234,15 @@ public class EmployesDAO {
     return employeeDaoActionStatus;
   }
 
+  public EmployeeDetailsForm getEmployeeInfo(long instituteId,
+      String section, String type, String empUsername) throws SQLException {
+    EmployeeDetailsForm employeeDetails = null;
+    if (section.equalsIgnoreCase("general") && type.equalsIgnoreCase("self")) {
+      employeeDetails = getGeneralEmpInfo(instituteId, true, empUsername);
+    }
+    return employeeDetails;
+  }
+
   private EmployeeDaoActionStatus generalInfoUpdateByEmployee(EmployeeDetailsForm employeeDetails)
       throws SQLException {
     EmployeeDaoActionStatus employeeDaoActionStatus =
@@ -304,6 +313,71 @@ public class EmployesDAO {
         connection.close();
     }
     return employeeDaoActionStatus;
+  }
+
+  private EmployeeDetailsForm getGeneralEmpInfo(long instituteId, boolean isActive,
+      String empUserName) throws SQLException {
+    EmployeeDetailsForm employees = null;
+    Connection connection = null;
+    PreparedStatement empSelectPS = null;
+    ResultSet resultSet = null;
+    String empSelectQ =
+        String.format(
+            "SELECT %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s FROM %s "
+                + "WHERE %s=? AND %s=? AND %s=?;", Tables.Employee.id, Tables.Employee.name,
+            Tables.Employee.userName, Tables.Employee.jobTitles, Tables.Employee.gender,
+            Tables.Employee.empCode, Tables.Employee.phoneNumber,
+            Tables.Employee.alternativeNumber, Tables.Employee.empEmail,
+            Tables.Employee.empAlternativeEmail, Tables.Employee.empPreferedName,
+            Tables.Employee.joiningDate, Tables.Employee.dob, Tables.Employee.addressLine1,
+            Tables.Employee.addressLine2, Tables.Employee.city, Tables.Employee.state,
+            Tables.Employee.country, Tables.Employee.pinCode, Tables.Employee.table,
+            Tables.Employee.isActive, Tables.Employee.instituteId, Tables.Employee.userName);
+    try {
+      connection = db.getConnection();
+      empSelectPS = connection.prepareStatement(empSelectQ, ResultSet.TYPE_FORWARD_ONLY);
+      empSelectPS.setBoolean(1, isActive);
+      empSelectPS.setLong(2, instituteId);
+      empSelectPS.setString(3, empUserName);
+      resultSet = empSelectPS.executeQuery();
+      if (resultSet.next()) {
+        employees = new EmployeeDetailsForm();
+        employees.setId(resultSet.getLong(Tables.Employee.id));
+        employees.setInstituteId(instituteId);
+        employees.setName(resultSet.getString(Tables.Employee.name));
+        employees.setUserName(resultSet.getString(Tables.Employee.userName));
+        employees.setJobTitles(resultSet.getString(Tables.Employee.jobTitles));
+        employees.setGender(resultSet.getString(Tables.Employee.gender));
+        employees.setEmpCode(resultSet.getString(Tables.Employee.empCode));
+        employees.setPhoneNumber(resultSet.getString(Tables.Employee.phoneNumber));
+        employees.setAlternativeNumber(resultSet.getString(Tables.Employee.alternativeNumber));
+        employees.setEmpEmail(resultSet.getString(Tables.Employee.empEmail));
+        employees.setEmpAlternativeEmail(resultSet.getString(Tables.Employee.empAlternativeEmail));
+        employees.setEmpPreferedName(resultSet.getString(Tables.Employee.empPreferedName));
+        employees.setJoiningDate(resultSet.getString(Tables.Employee.joiningDate));
+        employees.setDob(resultSet.getString(Tables.Employee.dob));
+        employees.setAddressLine1(resultSet.getString(Tables.Employee.addressLine1));
+        employees.setAddressLine2(resultSet.getString(Tables.Employee.addressLine2));
+        employees.setCity(resultSet.getString(Tables.Employee.city));
+        employees.setState(resultSet.getString(Tables.Employee.state));
+        employees.setCountry(resultSet.getString(Tables.Employee.country));
+        employees.setPinCode(resultSet.getString(Tables.Employee.pinCode));
+        employees.setActiveEmployee(isActive);
+      }
+    } catch (Exception exception) {
+      exception.printStackTrace();
+      employees = null;
+    } finally {
+      if (resultSet != null) {
+        resultSet.close();
+      }
+      if (empSelectPS != null) {
+        empSelectPS.close();
+      }
+      if (connection != null)
+        connection.close();
+    }
+    return employees;
   }
 
   private String getEncryptPass(String password) {

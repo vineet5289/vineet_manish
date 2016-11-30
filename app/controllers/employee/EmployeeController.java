@@ -15,6 +15,7 @@ import views.forms.employee.EmployeeDetailsForm;
 import views.html.Employee.addEmployee;
 import views.html.Employee.employeeList;
 import controllers.CustomController;
+import controllers.routes;
 import dao.dao_operation_status.EmployeeDaoActionStatus;
 import dao.employee.EmployesDAO;
 import enum_package.SessionKey;
@@ -143,7 +144,23 @@ public class EmployeeController extends CustomController {
     return redirect(controllers.employee.routes.EmployeeController.showEmployeeInfo(username, section, type));//TODO: send to profile page
   }
 
-  public Result showEmployeeInfo(String username, String section, String type) {
-    return ok("username:" +username + ", section" + section + ",type" + type);
+  public Result showEmployeeInfo(String empUsername, String section, String type) {
+    EmployeeDetailsForm employeeDetails = null;
+    try {
+      String userName = session().get(SessionKey.of(SessionKey.username));
+      String instituteIdFromSession = session().get(SessionKey.of(SessionKey.instituteid));
+      if (StringUtils.isNotBlank(userName) && StringUtils.isNotBlank(instituteIdFromSession)) {
+        long instituteId = Long.parseLong(instituteIdFromSession);
+        employeeDetails = employesDAO.getEmployeeInfo(instituteId, section, type, empUsername);
+      }
+    } catch (Exception exception) {
+      exception.printStackTrace();
+    }
+
+    if (employeeDetails == null) {
+      flash("error", "Error fetching employee details. Please try again or check you have correct permission.");
+      return redirect(routes.SRPController.employeeHome());
+    }    
+    return ok("username:" +empUsername + ", section" + section + ",type" + type);
   }
 }

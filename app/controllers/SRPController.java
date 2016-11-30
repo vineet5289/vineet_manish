@@ -123,13 +123,14 @@ public class SRPController extends CustomController {
       UserHomePageForm userHomePageForm = new UserHomePageForm();
       String userName = session().get(SessionKey.of(SessionKey.username));
       String instituteIdFromSession = session().get(SessionKey.of(SessionKey.instituteid));
-      if (StringUtils.isNotBlank(userName) && StringUtils.isNotBlank(instituteIdFromSession)) {
-        long instituteId = Long.parseLong(instituteIdFromSession);
+//      if (StringUtils.isNotBlank(userName) && StringUtils.isNotBlank(instituteIdFromSession)) {
+      if (StringUtils.isNotBlank(userName)) {
+//        long instituteId = Long.parseLong(instituteIdFromSession);
         userHomePageForm.setImageUrl("");
         userHomePageForm.setUserName(userName);
         userHomePageForm.setUserId(1l);
         userHomePageForm.setName("");
-        userHomePageForm.setInstituteId(instituteId);
+//        userHomePageForm.setInstituteId(instituteId);
         userHomePageForm.setInstituteName("");
         userHomePageForm.setInstituteLogoUrl("");
         //in case of every this is correct.... upload user
