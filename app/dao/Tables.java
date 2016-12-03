@@ -235,4 +235,20 @@ public class Tables {
 		public static String createdAt = "created_at";
 		public static String updatedAt = "updated_at";
 	}
+
+	public static class Subject {
+      public static String table = "subject";
+      public static String id = "id";
+      public static String subjectName = "subject_name";
+      public static String classId = "class_id";
+      public static String instituteId = "institute_id";
+      public static String subjectCode = "subject_code";
+      public static String headInstituteId = "head_institute_id";
+      public static String isActive = "is_active";
+      public static String createdBy = "created_by";
+      public static String description = "description";
+      public static String recommendedBook = "recommended_book";
+      public static String createdAt = "created_at";
+      public static String updatedAt = "updated_at";
+  }
 }

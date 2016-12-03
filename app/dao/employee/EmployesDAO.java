@@ -234,11 +234,19 @@ public class EmployesDAO {
     return employeeDaoActionStatus;
   }
 
-  public EmployeeDetailsForm getEmployeeInfo(long instituteId,
-      String section, String type, String empUsername) throws SQLException {
+  /*
+   * @param action: show or edit. For action=edit during edit we have to fetch less info as compare
+   * to action show.
+   */
+  public EmployeeDetailsForm getEmployeeInfo(long instituteId, String section, String type,
+      String empUsername, String action) throws SQLException {
     EmployeeDetailsForm employeeDetails = null;
-    if (section.equalsIgnoreCase("general") && type.equalsIgnoreCase("self")) {
-      employeeDetails = getGeneralEmpInfo(instituteId, true, empUsername);
+    if (section.equalsIgnoreCase("general") && type.equalsIgnoreCase("self")
+        && action.equalsIgnoreCase("show")) {
+      employeeDetails = getGeneralEmpInfoForShow(instituteId, true, empUsername);
+    } else if (section.equalsIgnoreCase("general") && type.equalsIgnoreCase("self")
+        && action.equalsIgnoreCase("show")) {
+      employeeDetails = getGeneralEmpInfoForEdit(instituteId, true, empUsername);
     }
     return employeeDetails;
   }
@@ -315,7 +323,7 @@ public class EmployesDAO {
     return employeeDaoActionStatus;
   }
 
-  private EmployeeDetailsForm getGeneralEmpInfo(long instituteId, boolean isActive,
+  private EmployeeDetailsForm getGeneralEmpInfoForShow(long instituteId, boolean isActive,
       String empUserName) throws SQLException {
     EmployeeDetailsForm employees = null;
     Connection connection = null;
@@ -355,6 +363,63 @@ public class EmployesDAO {
         employees.setEmpAlternativeEmail(resultSet.getString(Tables.Employee.empAlternativeEmail));
         employees.setEmpPreferedName(resultSet.getString(Tables.Employee.empPreferedName));
         employees.setJoiningDate(resultSet.getString(Tables.Employee.joiningDate));
+        employees.setDob(resultSet.getString(Tables.Employee.dob));
+        employees.setAddressLine1(resultSet.getString(Tables.Employee.addressLine1));
+        employees.setAddressLine2(resultSet.getString(Tables.Employee.addressLine2));
+        employees.setCity(resultSet.getString(Tables.Employee.city));
+        employees.setState(resultSet.getString(Tables.Employee.state));
+        employees.setCountry(resultSet.getString(Tables.Employee.country));
+        employees.setPinCode(resultSet.getString(Tables.Employee.pinCode));
+        employees.setActiveEmployee(isActive);
+      }
+    } catch (Exception exception) {
+      exception.printStackTrace();
+      employees = null;
+    } finally {
+      if (resultSet != null) {
+        resultSet.close();
+      }
+      if (empSelectPS != null) {
+        empSelectPS.close();
+      }
+      if (connection != null)
+        connection.close();
+    }
+    return employees;
+  }
+
+  private EmployeeDetailsForm getGeneralEmpInfoForEdit(long instituteId, boolean isActive,
+      String empUserName) throws SQLException {
+    EmployeeDetailsForm employees = null;
+    Connection connection = null;
+    PreparedStatement empSelectPS = null;
+    ResultSet resultSet = null;
+    String empSelectQ =
+        String.format("SELECT %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s FROM %s "
+            + "WHERE %s=? AND %s=? AND %s=?;", Tables.Employee.id, Tables.Employee.name,
+            Tables.Employee.gender, Tables.Employee.phoneNumber, Tables.Employee.alternativeNumber,
+            Tables.Employee.empAlternativeEmail, Tables.Employee.empPreferedName,
+            Tables.Employee.dob, Tables.Employee.addressLine1, Tables.Employee.addressLine2,
+            Tables.Employee.city, Tables.Employee.state, Tables.Employee.country,
+            Tables.Employee.pinCode, Tables.Employee.table, Tables.Employee.isActive,
+            Tables.Employee.instituteId, Tables.Employee.userName);
+    try {
+      connection = db.getConnection();
+      empSelectPS = connection.prepareStatement(empSelectQ, ResultSet.TYPE_FORWARD_ONLY);
+      empSelectPS.setBoolean(1, isActive);
+      empSelectPS.setLong(2, instituteId);
+      empSelectPS.setString(3, empUserName);
+      resultSet = empSelectPS.executeQuery();
+      if (resultSet.next()) {
+        employees = new EmployeeDetailsForm();
+        employees.setId(resultSet.getLong(Tables.Employee.id));
+        employees.setInstituteId(instituteId);
+        employees.setName(resultSet.getString(Tables.Employee.name));
+        employees.setGender(resultSet.getString(Tables.Employee.gender));
+        employees.setPhoneNumber(resultSet.getString(Tables.Employee.phoneNumber));
+        employees.setAlternativeNumber(resultSet.getString(Tables.Employee.alternativeNumber));
+        employees.setEmpAlternativeEmail(resultSet.getString(Tables.Employee.empAlternativeEmail));
+        employees.setEmpPreferedName(resultSet.getString(Tables.Employee.empPreferedName));
         employees.setDob(resultSet.getString(Tables.Employee.dob));
         employees.setAddressLine1(resultSet.getString(Tables.Employee.addressLine1));
         employees.setAddressLine2(resultSet.getString(Tables.Employee.addressLine2));

@@ -683,7 +683,10 @@ $('.message .close').on('click', function() {
 
     // up to here dynamically adding shifts
 
-
+  // upload 
+  $("#fileUpload").on("click", function() {
+     $('#new-file-upload').click(); 
+   });
     
 });
 

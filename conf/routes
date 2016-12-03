@@ -61,8 +61,10 @@ GET			/add_emp								   controllers.employee.EmployeeController.preAddEmployeeR
 POST		/add_emp							   	   controllers.employee.EmployeeController.postAddEmployeeRequest()
 GET			/view_emp							   	   controllers.employee.EmployeeController.viewAllEmployee()
 GET			/delete_emp/:username					   controllers.employee.EmployeeController.deleteEmployee(username: String)
-POST		/edit/:username/emp					   	   controllers.employee.EmployeeController.editEmployee(username:String, section:String ?= "general", type:String ?= "self")
-GET			/show/:username/emp						   controllers.employee.EmployeeController.showEmployeeInfo(username:String, section:String ?= "general", type:String ?= " ")
+GET			/edit/:username/emp					   	   controllers.employee.EmployeeController.preEditEmployee(username:String, section:String ?= "general", type:String ?= "self")
+POST		/edit/:username/emp					   	   controllers.employee.EmployeeController.postEditEmployee(username:String, section:String ?= "general", type:String ?= "self")
+GET			/show/:username/emp						   controllers.employee.EmployeeController.showEmployeeInfo(username:String, section:String ?= "general", type:String ?= "self")
+POST		/upload/emp/add_emp						   controllers.employee.EmployeeController.uploadEmpDetailsFile()
 
 # students registration request
 GET      	/registerstudent                 		   controllers.StudentController.preStudentRegistrationRequest()
@@ -96,10 +98,10 @@ POST		/addSection/:className						controllers.institute.ClassController.addSecti
 # subject
 
 GET			/addSubjects							   controllers.institute.SubjectController.preAddSubjects()
-POST		/addSubjects							   controllers.institute.SubjectController.postAddSubjects()
 GET			/viewSubjects							   controllers.institute.SubjectController.viewsSubjects()
-POST		/editSubjects/:subjectId				   controllers.institute.SubjectController.editSubject(subjectId: Long)
-POST		/editSubjects/:subjectId				   controllers.institute.SubjectController.deleteSubjects(subjectId: Long)
+POST		/subject/add							   controllers.institute.SubjectController.postAddSubjects()
+POST		/subject/:subjectId				   		   controllers.institute.SubjectController.editSubject(subjectId: Long, action: String ?="edit")
+
 
 #test
 GET			/addTest							   		controllers.CustomController.testRoute()

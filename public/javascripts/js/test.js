@@ -1,5 +1,9 @@
 //testpage  javascript file
 $(function(){
+	 /*upload file*/
+	 $("#fileUpload").on("click", function() {
+   52:    $('#new-file-upload').click(); 
+   53  });
    /*  this is the js file for profile design test5 6 7 8..                                */
     $('#delete-confirm-button').click(function(e){
          $('#delete-confirm').modal('show');

@@ -1,5 +1,6 @@
 package controllers.employee;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +10,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import play.data.Form;
 import play.data.FormFactory;
+import play.mvc.BodyParser;
+import play.mvc.Http;
 import play.mvc.Result;
 import views.forms.employee.AddEmployeeForm;
 import views.forms.employee.EmployeeDetailsForm;
@@ -114,7 +117,27 @@ public class EmployeeController extends CustomController {
     return redirect(controllers.employee.routes.EmployeeController.viewAllEmployee());
   }
 
-  public Result editEmployee(String username, String section, String type) {
+  public Result preEditEmployee(String username, String section, String type) {
+    Form<EmployeeDetailsForm> empDetailsForm = formFactory.form(EmployeeDetailsForm.class);
+    EmployeeDetailsForm employeeDetails = null;
+    try {
+        long instituteId = Long.parseLong("1");
+        employeeDetails = employesDAO.getEmployeeInfo(instituteId, section, type, username, "edit");
+    } catch (Exception exception) {
+      exception.printStackTrace();
+    }
+
+    if (employeeDetails == null) {
+      System.out.println("=== employee details is null during edit request");
+      
+      // flash error and redirect to some page
+    }
+
+    
+    return redirect(controllers.employee.routes.EmployeeController.showEmployeeInfo(username, section, type));//TODO: send to profile page
+  }
+
+  public Result postEditEmployee(String username, String section, String type) {
     Form<EmployeeDetailsForm> upldateEmpDetailsForm =
         formFactory.form(EmployeeDetailsForm.class).bindFromRequest();
     if (upldateEmpDetailsForm == null || upldateEmpDetailsForm.hasErrors()) {
@@ -151,7 +174,7 @@ public class EmployeeController extends CustomController {
       String instituteIdFromSession = session().get(SessionKey.of(SessionKey.instituteid));
       if (StringUtils.isNotBlank(userName) && StringUtils.isNotBlank(instituteIdFromSession)) {
         long instituteId = Long.parseLong(instituteIdFromSession);
-        employeeDetails = employesDAO.getEmployeeInfo(instituteId, section, type, empUsername);
+        employeeDetails = employesDAO.getEmployeeInfo(instituteId, section, type, empUsername, "show");
       }
     } catch (Exception exception) {
       exception.printStackTrace();
@@ -163,4 +186,23 @@ public class EmployeeController extends CustomController {
     }    
     return ok("username:" +empUsername + ", section" + section + ",type" + type);
   }
+
+  @BodyParser.Of(BodyParser.MultipartFormData.class)
+  public Result uploadEmpDetailsFile() {
+    final Http.MultipartFormData<File> formData = request().body().asMultipartFormData();
+    final Http.MultipartFormData.FilePart<File> filePart = formData.getFile("name");
+    
+    final File file = filePart.getFile();
+//    try {
+//      BufferedWriter bw = new BufferedWriter(new FileWriter(file));
+//      bw.flush();
+//      bw.close();
+//    } catch (IOException exception) {
+//      // TODO Auto-generated catch block
+//      exception.printStackTrace();
+//    }
+//    
+    return ok("file is uploaded : " + file.getName() + ", "+ filePart.getFilename() + ", " + filePart.getContentType());
+  }
+  
 }
