@@ -45,7 +45,7 @@ public class ClassController extends CustomController {
     Form<ClassForm> classForm = formFactory.form(ClassForm.class).bindFromRequest();
     if (classForm == null || classForm.hasErrors()) {
       flash("error", "Some field are missing happen. Please check and submit again.");
-      return redirect(controllers.institute.routes.ClassController.preAddClass());
+      return redirect(controllers.institute.routes.ClassController.preAddClass(section));
     }
 
     String userName = session().get(SessionKey.username.name());
@@ -58,7 +58,7 @@ public class ClassController extends CustomController {
       flash("error", "Some server exception happen");
       exception.printStackTrace();
     }
-    return redirect(controllers.institute.routes.ClassController.preAddClass());
+    return redirect(controllers.institute.routes.ClassController.preAddClass(section));
   }
 
   public Result viewAllClass(String action) {
@@ -77,13 +77,13 @@ public class ClassController extends CustomController {
     Form<ClassForm> editClassForm = formFactory.form(ClassForm.class).bindFromRequest();
     if (editClassForm == null || editClassForm.hasErrors()) {
       flash("error", "Some server exception happen");
-      return redirect(controllers.institute.routes.ClassController.preAddClass());
+      return redirect(controllers.institute.routes.ClassController.preAddClass(sec));
     }
 
     ClassForm editClass = editClassForm.get();
     if (editClass == null) {
       flash("error", "Some server exception happen");
-      return redirect(controllers.institute.routes.ClassController.preAddClass());
+      return redirect(controllers.institute.routes.ClassController.preAddClass(sec));
     }
 
     String instituteIdFromSession = "1";// session().get(SessionKey.SCHOOL_ID.name());
@@ -98,6 +98,6 @@ public class ClassController extends CustomController {
     if (!isSuccessful) {
       flash("warn", "Some server exception happen during deletion. Please try after some time.");
     }
-    return redirect(controllers.institute.routes.ClassController.preAddClass());
+    return redirect(controllers.institute.routes.ClassController.preAddClass(sec));
   }
 }
