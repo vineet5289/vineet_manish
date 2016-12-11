@@ -71,7 +71,6 @@ public class ClassForm {
       updateSection = updateSectionFormValue.equalsIgnoreCase("true") ? true : false;
     }
 
-    if()
     if (errors.size() > 0)
       return errors;
     return null;
