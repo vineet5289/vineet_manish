@@ -17,6 +17,8 @@ import views.forms.employee.AddEmployeeForm;
 import views.forms.employee.EmployeeDetailsForm;
 import views.html.Employee.addEmployee;
 import views.html.Employee.employeeList;
+import views.html.Employee.employeeProfile;
+import views.html.Employee.editEmployeeProfile;
 import controllers.CustomController;
 import controllers.routes;
 import dao.dao_operation_status.EmployeeDaoActionStatus;
@@ -132,7 +134,7 @@ public class EmployeeController extends CustomController {
       // flash error and redirect to some page
     }
     Form<EmployeeDetailsForm> empDetailsForm = formFactory.form(EmployeeDetailsForm.class).fill(employeeDetails);
-    return redirect(controllers.employee.routes.EmployeeController.showEmployeeInfo(username, section, type));//TODO: send to profile page
+    return ok(editEmployeeProfile.render(empDetailsForm));
   }
 
   public Result postEditEmployee(String username, String section, String type) {
@@ -169,8 +171,8 @@ public class EmployeeController extends CustomController {
     EmployeeDetailsForm employeeDetails = null;
     try {
       String userName = session().get(SessionKey.of(SessionKey.username));
-      String instituteIdFromSession = session().get(SessionKey.of(SessionKey.instituteid));
-      if (StringUtils.isNotBlank(userName) && StringUtils.isNotBlank(instituteIdFromSession)) {
+      String instituteIdFromSession = "1";//session().get(SessionKey.of(SessionKey.instituteid));
+      if (StringUtils.isNotBlank(userName)) {
         long instituteId = Long.parseLong(instituteIdFromSession);
         employeeDetails = employesDAO.getEmployeeInfo(instituteId, section, type, empUsername, "show");
       }
@@ -182,7 +184,7 @@ public class EmployeeController extends CustomController {
       flash("error", "Error fetching employee details. Please try again or check you have correct permission.");
       return redirect(routes.SRPController.employeeHome());
     }    
-    return ok("username:" +empUsername + ", section" + section + ",type" + type);
+    return ok(employeeProfile.render(employeeDetails));
   }
 
   @BodyParser.Of(BodyParser.MultipartFormData.class)
