@@ -94,8 +94,8 @@ GET			/viewClass							   		controllers.institute.ClassController.viewAllClass(a
 
 # subject
 
-GET			/subject/:classId/add						controllers.institute.SubjectController.preAddSubjects(classId: Long, sec ?="no")
-POST		/subject/:classId/add						controllers.institute.SubjectController.postAddSubjects(classId: Long, sec ?="no")
+GET			/subject/:classId/add						controllers.institute.SubjectController.preAddSubjects(classId: Long, secId: Long ?= 0, sec ?="no")
+POST		/subject/:classId/add						controllers.institute.SubjectController.postAddSubjects(classId: Long, secId: Long ?= 0, sec ?="no")
 GET			/subject/:subjectId/view				    controllers.institute.SubjectController.viewsSubjects(subjectId: Long, action: String ?="edit")
 POST		/subject/:subjectId/edit				    controllers.institute.SubjectController.editSubject(subjectId: Long, action: String ?="edit")
 

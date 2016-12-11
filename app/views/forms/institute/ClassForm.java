@@ -6,12 +6,14 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
 import play.data.validation.ValidationError;
+import utils.TimeUtiles;
 import lombok.Data;
 
 @Data
 public class ClassForm {
   public long instituteId;
   public long classId;// during display form
+
   public String className;
   public String classStartTime;
   public String classEndTime;
@@ -31,25 +33,28 @@ public class ClassForm {
 
   public List<ValidationError> validate() {
     List<ValidationError> errors = new ArrayList<>();
-    if (instituteId <= 0) {
-      errors.add(new ValidationError("error",
-          "Some error during request serving. Please try after sometime."));
-    }
 
     if (StringUtils.isBlank(className)) {
-      errors.add(new ValidationError("className", "Class name shouldn't be empty."));
+      errors.add(new ValidationError("className", "Class/Section name shouldn't be empty."));
     }
 
     if (numberOfPeriod <= 0) {
       errors.add(new ValidationError("numberOfPeriod", "Class must have atleast one period."));
     }
 
-    if (StringUtils.isBlank(classStartTime)) {
+    boolean isValidTimeFormat = true;
+    if (!TimeUtiles.isValidTime(classStartTime)) {
+      isValidTimeFormat = false;
       errors.add(new ValidationError("classStartTime", "Class start time is mandatory and should be valid."));
     }
 
-    if (StringUtils.isBlank(classEndTime)) {
+    if (!TimeUtiles.isValidTime(classEndTime)) {
+      isValidTimeFormat = false;
       errors.add(new ValidationError("classEndTime", "Class end time is mandatory and should be valid."));
+    }
+
+    if(isValidTimeFormat && !TimeUtiles.isValidTimeRange(classStartTime, classEndTime)) {
+      errors.add(new ValidationError("error", "You have entered wrong class time information."));
     }
 
     for (int currentSection = 0; currentSection < numberOfsection
@@ -58,6 +63,15 @@ public class ClassForm {
       sectionNames.add(section);
     }
 
+    if(StringUtils.isNotBlank(isSectionFormValue)) {
+      isSection = isSectionFormValue.equalsIgnoreCase("true") ? true : false;
+    }
+
+    if(StringUtils.isNotBlank(updateSectionFormValue)) {
+      updateSection = updateSectionFormValue.equalsIgnoreCase("true") ? true : false;
+    }
+
+    if()
     if (errors.size() > 0)
       return errors;
     return null;

@@ -21,25 +21,23 @@ public class SubjectController extends CustomController {
   @Inject
   private SubjectDAO subjectDAO;
 
-  public Result preAddSubjects(Long classId, String sec) {
+  public Result preAddSubjects(long classId, long sectionId, String sec) {
     Form<SubjectForm> subjectForm = formFactory.form(SubjectForm.class);
     // pass class ID and sec information from here
     return ok(test.render(subjectForm));
   }
 
-  public Result postAddSubjects(Long classId, String sec) {
+  public Result postAddSubjects(long classId, long sectionId, String sec) {
     Form<SubjectForm> subjectForm = formFactory.form(SubjectForm.class).bindFromRequest();
     if (subjectForm == null || subjectForm.hasErrors()) {
       flash("error", "Please check field details");
-   // TODO: pass is to view class dashboard
-      return redirect(controllers.institute.routes.SubjectController.preAddSubjects()); 
+      return redirect(controllers.institute.routes.ClassController.preAddClass()); 
     }
 
     SubjectForm subjectsDetails = subjectForm.get();
     if (subjectsDetails == null || classId <= 0) {
-      // TODO: pass is to view class dashboard
       flash("error", "Please check field details");
-      return redirect(controllers.institute.routes.SubjectController.preAddSubjects()); 
+      return redirect(controllers.institute.routes.ClassController.preAddClass()); 
     }
 
     SubjectDaoActionStatus subjectDaoActionStatus = SubjectDaoActionStatus.serverexception;
