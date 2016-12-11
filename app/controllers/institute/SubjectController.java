@@ -53,7 +53,7 @@ public class SubjectController extends CustomController {
     return ok("true");
   }
 
-  public Result viewsSubjects() {
+  public Result viewsSubjects(long subjectId, String action) {
     return ok("");
   }
 
