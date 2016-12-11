@@ -49,7 +49,7 @@ public class ClassController extends CustomController {
     }
 
     String userName = session().get(SessionKey.username.name());
-    String instituteIdFromSession = "1"; //session().get(SessionKey.instituteid.name());
+    String instituteIdFromSession = "1"; // session().get(SessionKey.instituteid.name());
     ClassForm classFormDetails = classForm.get();
     try {
       long instituteId = Long.parseLong(instituteIdFromSession);
@@ -63,15 +63,13 @@ public class ClassController extends CustomController {
 
   public Result viewAllClass(String action) {
     Map<String, List<ClassForm>> classes = null;
+    String instituteIdFromSession = "1";// session().get(SessionKey.SCHOOL_ID.name());
     try {
-      String instituteIdFromSession = "1";// session().get(SessionKey.SCHOOL_ID.name());
-      try {
-        long instituteId = Long.parseLong(instituteIdFromSession);
-        classes = classDAO.getClasses(instituteId);
-      } catch (Exception exception) {
-        classes = new HashMap<String, List<ClassForm>>();
-      }
-      //return classes
+      long instituteId = Long.parseLong(instituteIdFromSession);
+      classes = classDAO.getClasses(instituteId);
+    } catch (Exception exception) {
+      classes = new HashMap<String, List<ClassForm>>();
+    }
     return ok(viewclasses.render(classes));
   }
 
