@@ -11,12 +11,15 @@ import lombok.Data;
 @Data
 public class SubjectForm {
   public long classId;
+  public long sectionId;
   public String subjectName;
   public String subjectCode;
   public String autoGenerateSCString;
   public String description;
   public String recommendedBook;
   public boolean autoGenerateSC = false;
+  public boolean isSection = false;
+  public String requestedUsername;
 
   public List<ValidationError> validate() {
     List<ValidationError> errors = new ArrayList<>();

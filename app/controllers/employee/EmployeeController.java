@@ -118,7 +118,6 @@ public class EmployeeController extends CustomController {
   }
 
   public Result preEditEmployee(String username, String section, String type) {
-    Form<EmployeeDetailsForm> empDetailsForm = formFactory.form(EmployeeDetailsForm.class);
     EmployeeDetailsForm employeeDetails = null;
     try {
         long instituteId = Long.parseLong("1");
@@ -132,8 +131,7 @@ public class EmployeeController extends CustomController {
       
       // flash error and redirect to some page
     }
-
-    
+    Form<EmployeeDetailsForm> empDetailsForm = formFactory.form(EmployeeDetailsForm.class).fill(employeeDetails);
     return redirect(controllers.employee.routes.EmployeeController.showEmployeeInfo(username, section, type));//TODO: send to profile page
   }
 

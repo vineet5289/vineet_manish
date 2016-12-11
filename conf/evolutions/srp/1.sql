@@ -184,18 +184,19 @@ CREATE TABLE IF NOT EXISTS school_principle (
 CREATE TABLE IF NOT EXISTS class (
   id bigint(11) NOT NULL AUTO_INCREMENT,
   class_name varchar(120) COLLATE utf8_unicode_ci NOT NULL,
-  school_id bigint(11) NOT NULL,
+  institute_id bigint(11) NOT NULL,
   class_start_time varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   class_end_time varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   no_of_period int(11) NOT NULL,
-  parent_class varchar(120) COLLATE utf8_unicode_ci NOT NULL,
+  parent_class_id bigint(11),
+  parent_class_name varchar(120) COLLATE utf8_unicode_ci,
   created_at timestamp DEFAULT CURRENT_TIMESTAMP,
   updated_at timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   is_active tinyint(1) DEFAULT 1,
   user_name varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (id),
-  KEY FK_class_school_id (school_id),
-  CONSTRAINT FK_class_school_id FOREIGN KEY (school_id) REFERENCES institute (id)
+  KEY FK_class_institute_id (institute_id),
+  CONSTRAINT FK_class_institute_id FOREIGN KEY (institute_id) REFERENCES institute (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS employee_class (

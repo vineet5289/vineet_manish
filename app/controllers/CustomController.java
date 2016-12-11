@@ -19,7 +19,7 @@ public class CustomController extends Controller {
 	private FormFactory formFactory;
 
 	public Result testRoute() {
-		return ok(testPage.render());
+		return ok(testAddClass.render());
 	}
 	
 	public Result postRoute() {

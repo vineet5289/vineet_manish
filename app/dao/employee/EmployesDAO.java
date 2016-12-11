@@ -245,7 +245,7 @@ public class EmployesDAO {
         && action.equalsIgnoreCase("show")) {
       employeeDetails = getGeneralEmpInfoForShow(instituteId, true, empUsername);
     } else if (section.equalsIgnoreCase("general") && type.equalsIgnoreCase("self")
-        && action.equalsIgnoreCase("show")) {
+        && action.equalsIgnoreCase("edit")) {
       employeeDetails = getGeneralEmpInfoForEdit(instituteId, true, empUsername);
     }
     return employeeDetails;

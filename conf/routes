@@ -87,20 +87,17 @@ POST		/addnewstudents							   controllers.students_guardians.StudenstGuardian.p
 
 # class
 
-GET			/addClass							   		controllers.institute.ClassController.preAddClass()
-POST		/addClass							   		controllers.institute.ClassController.postAddClass()
-POST		/editClass/:className				   		controllers.institute.ClassController.editClass(className: String)
-POST		/deleteClass/:className				   		controllers.institute.ClassController.deleteClass(className: String)
-GET			/viewClass							   		controllers.institute.ClassController.viewAllClass()
-POST		/addSection/:className						controllers.institute.ClassController.addSection(className: String)
-
+GET			/class/add							   		controllers.institute.ClassController.preAddClass(sec: String ?="no")
+POST		/class/add							   		controllers.institute.ClassController.postAddClass(classId: Long ?= 0, sec: String ?="no")
+POST		/class/edit/:classId				   		controllers.institute.ClassController.editClass(classId: Long, sec: String ?="no", action: String ?="edit")
+GET			/viewClass							   		controllers.institute.ClassController.viewAllClass(action: String ?="all")
 
 # subject
 
-GET			/addSubjects							   controllers.institute.SubjectController.preAddSubjects()
-GET			/viewSubjects							   controllers.institute.SubjectController.viewsSubjects()
-POST		/subject/add							   controllers.institute.SubjectController.postAddSubjects()
-POST		/subject/:subjectId				   		   controllers.institute.SubjectController.editSubject(subjectId: Long, action: String ?="edit")
+GET			/subject/:classId/add						controllers.institute.SubjectController.preAddSubjects(classId: Long, sec ?="no")
+POST		/subject/:classId/add						controllers.institute.SubjectController.postAddSubjects(classId: Long, sec ?="no")
+GET			/subject/:subjectId/view				    controllers.institute.SubjectController.viewsSubjects(subjectId: Long, action: String ?="edit")
+POST		/subject/:subjectId/edit				    controllers.institute.SubjectController.editSubject(subjectId: Long, action: String ?="edit")
 
 
 #test

@@ -11,6 +11,7 @@ import play.mvc.Result;
 import views.forms.institute.SubjectForm;
 import views.html.test;
 import dao.SubjectDAO;
+import dao.dao_operation_status.SubjectDaoActionStatus;
 import enum_package.SessionKey;
 
 public class SubjectController extends CustomController {
@@ -20,35 +21,33 @@ public class SubjectController extends CustomController {
   @Inject
   private SubjectDAO subjectDAO;
 
-  public Result preAddSubjects() {
+  public Result preAddSubjects(Long classId, String sec) {
     Form<SubjectForm> subjectForm = formFactory.form(SubjectForm.class);
+    // pass class ID and sec information from here
     return ok(test.render(subjectForm));
   }
 
-  public Result postAddSubjects() {
+  public Result postAddSubjects(Long classId, String sec) {
     Form<SubjectForm> subjectForm = formFactory.form(SubjectForm.class).bindFromRequest();
     if (subjectForm == null || subjectForm.hasErrors()) {
+      flash("error", "Please check field details");
+   // TODO: pass is to view class dashboard
+      return redirect(controllers.institute.routes.SubjectController.preAddSubjects()); 
+    }
+
+    SubjectForm subjectsDetails = subjectForm.get();
+    if (subjectsDetails == null || classId <= 0) {
+      // TODO: pass is to view class dashboard
       flash("error", "Please check field details");
       return redirect(controllers.institute.routes.SubjectController.preAddSubjects()); 
     }
 
+    SubjectDaoActionStatus subjectDaoActionStatus = SubjectDaoActionStatus.serverexception;
     String userName = session().get(SessionKey.username.name());
-    String schoolIdFromSession = "1";// session().get(SessionKey.SCHOOL_ID.name());
-    SubjectForm subjectsDetails = subjectForm.get();
-    long schoolId = -1l;
+    String instituteIdFromSession = "1";// session().get(SessionKey.SCHOOL_ID.name());
     try {
-      schoolId = Long.parseLong(schoolIdFromSession);
-    } catch (Exception exception) {
-      flash("error", "Some server exception happen");
-      return redirect(controllers.login_logout.routes.LoginController.preLogin()); // check for
-                                                                                   // correct
-                                                                                   // redirection
-    }
-
-    Long classId = 1L;// subjectsDetails.getClassId();
-    boolean isSuccessful = false;
-    try {
-//      isSuccessful = subjectDAO.addSubjects(classId, schoolId, subjects, userName);
+      long instituteId = Long.parseLong(instituteIdFromSession);
+      subjectDaoActionStatus = subjectDAO.addSubjects(subjectsDetails, classId, userName, instituteId);
     } catch (Exception exception) {
       exception.printStackTrace();
     }
@@ -60,7 +59,7 @@ public class SubjectController extends CustomController {
     return ok("");
   }
 
-  public Result editSubject(Long subjectId) {
+  public Result editSubject(Long subjectId, String action) {
     return ok("");
   }
 

@@ -28,7 +28,7 @@ public enum EmployeeDaoActionStatus {
     return value;
   }
 
-  public static String of(FileUploadStatus key) {
+  public static String of(EmployeeDaoActionStatus key) {
       String statusMessage = statusToValue.get(key);
       if(statusMessage == null)
           return "";
