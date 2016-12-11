@@ -19,7 +19,7 @@ public class SubjectDAO {
   @NamedDatabase("srp")
   private Database db;
 
-  public SubjectDaoActionStatus addSubjects(SubjectForm subjectDetails, long classId,
+  public SubjectDaoActionStatus addSubjects(SubjectForm subjectDetails, long classId, long secId,
       String userName, long institute, String sec) throws SQLException {
     SubjectDaoActionStatus subjectDaoActionStatus =
         SubjectDaoActionStatus.norecordfoundforgivenclass;

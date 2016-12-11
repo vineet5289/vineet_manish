@@ -45,7 +45,7 @@ public class SubjectController extends CustomController {
     String instituteIdFromSession = "1";// session().get(SessionKey.SCHOOL_ID.name());
     try {
       long instituteId = Long.parseLong(instituteIdFromSession);
-      subjectDaoActionStatus = subjectDAO.addSubjects(subjectsDetails, classId, userName, instituteId);
+      subjectDaoActionStatus = subjectDAO.addSubjects(subjectsDetails, classId, sectionId, userName, instituteId, sec);
     } catch (Exception exception) {
       exception.printStackTrace();
     }
