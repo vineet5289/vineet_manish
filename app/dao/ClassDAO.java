@@ -26,11 +26,14 @@ public class ClassDAO {
   public boolean add(ClassForm classe, long instituteId, String userName, String section, long classId)
       throws SQLException {
     boolean isSuccessfull = false;
-    if(StringUtils.isBlank(section) || section.equalsIgnoreCase("yes")) {
+    if(StringUtils.isBlank(section) || section.equalsIgnoreCase("no")) {
+      System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&  ere");
       isSuccessfull = addClass(instituteId, classe, userName);
-    } else if(section.equalsIgnoreCase("no")) {
+    } else if(section.equalsIgnoreCase("yes")) {
+      System.out.println("%%%%%%%% else part");
       isSuccessfull = addSection(instituteId, classe, userName, classId);
     }
+    System.out.println("claases success "+isSuccessfull);
     return isSuccessfull;
   }
 
@@ -44,11 +47,12 @@ public class ClassDAO {
     String insertClassQ =
         String
             .format(
-                "INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s) SELECT * FROM (SELECT ?, ?, ?, ?,"
-                    + "?, ?, ?) AS tmp WHERE NOT EXITS (SELECT %s FROM %s WHERE %s=? AND %s=? limit 1);",
+                "INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s) SELECT * FROM (SELECT ? as className, ? as instituteId, ? as classStartTime, ? as classEndTime,"
+                    + "? as noOfPeriod, ? as pclassName, ? as userName) AS tmp WHERE NOT EXISTS (SELECT %s FROM %s WHERE %s=? AND %s=? AND %s=? ) limit 1;",
                 Tables.Class.table, Tables.Class.className, Tables.Class.instituteId,Tables.Class.classStartTime,
                 Tables.Class.classEndTime, Tables.Class.noOfPeriod, Tables.Class.parentClassName, Tables.Class.userName,
-                Tables.Class.className, Tables.Class.table, Tables.Class.instituteId, Tables.Class.isActive);
+                Tables.Class.className, Tables.Class.table, Tables.Class.instituteId, Tables.Class.isActive, Tables.Class.className);
+
     String insertSectionQ =
         String
             .format(
@@ -70,8 +74,9 @@ public class ClassDAO {
       insertClassPS.setString(7, userName);
       insertClassPS.setLong(8, instituteId);
       insertClassPS.setBoolean(9, true);
+      insertClassPS.setString(10, classDetails.getClassName());
 
-      insertClassPS.executeQuery();
+      insertClassPS.executeUpdate();
       insertClassRs = insertClassPS.getGeneratedKeys();
       Long generatedClassId = -1L;
       if(insertClassRs.next()) {
@@ -79,11 +84,14 @@ public class ClassDAO {
       }
 
       List<String> sectionNames = classDetails.getSectionNames();
-
+System.out.println("*************************inside class ection "+sectionNames + ", " + classDetails.numberOfsection + ", generatedClassId" + generatedClassId);
       if(generatedClassId > 0 && sectionNames != null && sectionNames.size() > 0 &&
           classDetails.numberOfsection > 0) {
+           System.out.println(".....inside class ection "+sectionNames);
+         insertSectionPS = connection.prepareStatement(insertSectionQ);
         for(String sectionName : sectionNames) {
-          insertSectionPS = connection.prepareStatement(insertSectionQ);
+          System.out.println(".....inside class ection "+sectionName);
+          
           insertSectionPS.setString(1, sectionName);
           insertSectionPS.setLong(2, instituteId);
           insertSectionPS.setString(3, classDetails.getClassStartTime());
@@ -97,6 +105,7 @@ public class ClassDAO {
 
         int[] results = insertSectionPS.executeBatch();
         for(int result : results) {
+          System.out.println(" results print ***"+result);
           if(result < 0)
             throw new Exception("Section insert error.");
           }

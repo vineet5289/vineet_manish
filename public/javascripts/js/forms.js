@@ -34,6 +34,25 @@ $(function () {
                                prompt : 'PLEASE ENTER THE SAME VALUE IN BOTH FIELDS'
                           }   ]
              },
+
+             institutePassword: {
+                     identifier  : 'institutePassword',
+                      rules: [
+                      {
+                          type: 'empty',
+                          prompt: 'PLEASE ENTER THE PASSWORD'
+                      }]
+                       
+          },
+                        
+         instituteConfirmPassword: {
+                        identifier  : 'instituteConfirmPassword',
+                        rules: [
+                         {
+                               type   : 'match[institutePassword]',
+                               prompt : 'PLEASE ENTER THE SAME VALUE IN BOTH FIELDS'
+                          }   ]
+             },
         
         
        
@@ -312,7 +331,42 @@ $(function () {
             prompt : 'PLEASE ENTER EMPLOYEE CODE'
           }
         ]
-      }
+      },
+       className:{
+              identifier:'className',
+              rules:[{
+                type:'empty',
+                prompt:'CLASS NAME CANNOT BE LEFT EMPTY'
+              }]
+            },
+            numberOfPeriod: {
+                identifier: 'numberOfPeriod',
+                
+                 rules: [
+                 {
+                    type: 'empty',
+                    prompt: 'PLEASE ENTER NUMBER OF PERIOD'
+                },
+                {
+                    type: 'number',
+                    prompt: 'PLEASE ENTER VALID NUMBER'
+                }]
+            },
+            numberOfsection: {
+                identifier: 'numberOfsection',
+                
+                 rules: [
+                 {
+                    type: 'empty',
+                    prompt: 'PLEASE ENTER NUMBER OF SECTION'
+                },
+                {
+                    type: 'number',
+                    prompt: 'PLEASE ENTER VALID NUMBER'
+                }]
+            }
+
+
 
 
 
@@ -325,7 +379,38 @@ $(function () {
     $('.ui.dropdown').dropdown();
     
     //resetform
-      
+    // AddClass Form
+      $('#addNewClassSubmitbtn').on('click',function(){
+           $('#addNewClassForm').form(validationObj,{
+              on:'change',
+             inline:true,
+             onSuccess:function(){
+              $('#addNewClassForm').submit(function(e){
+
+                e.preventDefault();
+                 return false;
+              });
+             }
+
+           });
+
+        });
+      //InstituteRegistrationAfterOTPForm
+         $('#InstituteRegistrationAfterOTP_SubmitBtn').on('click',function(){
+           $('#InstituteRegistrationAfterOTPForm').form(validationObj,{
+              on:'change',
+             inline:true,
+             onSuccess:function(){
+              $('#InstituteRegistrationAfterOTPForm').submit(function(e){
+
+                e.preventDefault();
+                 return false;
+              });
+             }
+
+           });
+
+        });
     // New School Request Form
         $('#New-schoolRequest-submit').on('click',function(){
            $('#newSchoolRegistrationForm').form(validationObj,{
@@ -412,7 +497,6 @@ $(function () {
     
     
     // For adding new Class
-    
     $('#addNewClass').click(function(){
     $('#addSchool_modal').modal('show');
     });

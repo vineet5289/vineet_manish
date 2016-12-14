@@ -1,0 +1,257 @@
+@(employeeProfileForm:Form[views.forms.employee.EmployeeDetailsForm])
+@viewClass.main("Profile | Info")("form"){
+  @viewClass.topProfileMenu()
+  <style type="text/css">
+      .form-row {
+  display: flex;
+}
+
+.form-row:not(:first-child) {
+  margin-top: 10px;
+}
+
+.form-row .field> div {
+  flex-direction: column;
+}
+
+.form-row > div:first-child {
+  width: 20%;
+  align-self: center;
+}
+
+.form-row > div:last-child {
+  width: 50%;
+}
+
+
+
+#editinfoemp{
+  background: #eaf0f2;
+}
+    </style>
+  <div class="wrapper" style="padding-top:30px">
+    <div class="ui grid container" id="proCon">
+       <div class="introduction">
+            <div class="ui doubling grid">
+  <div class="row">
+    <div class="three wide column">
+      <div class="blurring dimmable image">
+          <div class="ui inverted dimmer">
+           <div class="content">
+             <div class="center">
+               <div class="ui red button view"><a href="">CHANGE</a></div>
+             </div>
+           </div>
+           </div>
+          <img class="ui medium circular image" src="@routes.Assets.versioned("images/ID.jpg")">
+        </div>
+  </div>
+    <div class="ten wide column">
+         <div class="ui header">@employeeProfileForm("name").value</div>
+        <div class="content">
+            <div class="meta">
+                       <div class="ui tiny teal header"><i class="info icon"></i>Personal Details</div>
+                        <span>
+                            <i class="in flag"></i>
+                            @employeeProfileForm("country").value</span>
+
+                             @if(employeeProfileForm("gender").value=="M"){
+                             <span>
+                            <i class="man icon"></i>
+                            Male</span>
+                        <span>
+                           }else{
+                            <span>
+                            <i class="woman icon"></i>
+                            Female</span>
+                        
+                         }
+                            <span>
+                            <i class="gift icon"></i>
+                            @employeeProfileForm("dob").value</span>
+                            <span>@employeeProfileForm("userName").value</span>
+                    </div>
+          </div>
+    </div>
+    <div class="three wide column">
+      <img>
+    </div>
+  </div>
+</div>
+        </div>
+    </div>
+    <div class="ui hidden divider"></div>
+    <div class="ui divider"></div>
+<div class="ui divided stackable grid container">
+  <div class="three wide column">
+      <div class="ui hidden divider"></div>
+  
+    <a href="http://s.codepen.io/nivassri_k/debug/vOVxPP?"><h3 class="ui blue medium header" align="center" >E-Mail</h3></a>
+
+     <div class="ui hidden divider"></div>   
+    <a href="http://s.codepen.io/nivassri_k/debug/vOVxPP?"><h3 class="ui blue medium header" align="center" >E-Mail</h3></a>
+  
+  </div>
+  <div class="ten wide column">
+   
+    <div class="ui container editinfoemp">
+          <form class="ui form" method="post" action="/edit/@employeeProfileForm("userName").value/emp">
+    <div class="form-row">
+      <div>
+        <label>Name</label>
+      </div>
+      <div class="field">
+        <div class="ui input">
+          <input type="text" name="name" value="@employeeProfileForm("name").value" tab-index="0">
+        </div>
+      </div>
+    </div>
+    <div class="form-row">
+      <div>
+        <label>Preffered Name</label>
+      </div>
+      <div>
+        <input type="text" name="empPreferedName" value="@employeeProfileForm("empPreferedName").value"/>
+      </div>
+    </div>
+     <div class="form-row">
+      <div>
+        <label>Gender</label>
+      </div>
+      <div>
+        <div class="ui fluid selection dropdown">
+                           <div class="text">Select</div>
+                           <i class="dropdown icon"></i>
+                           <input name="gender" type="hidden" value="@employeeProfileForm("gender").value">
+                           <div class="menu">
+                              <div class="item" data-value="M">MALE</div> 
+                              <div class="item" data-value="F">FEMALE</div>
+                              
+                           </div>
+                        </div>
+      </div>
+    </div>
+    <div class="form-row">
+      <div>
+        <label>Contact</label>
+      </div>
+      <div>
+        <input type="text" name="phoneNumber" value="@employeeProfileForm("phoneNumber").value"/>
+      </div>
+    </div>
+
+     <div class="form-row">
+      <div>
+        <label>Alternative Contact</label>
+      </div>
+      <div>
+        <input type="text" name="alternativeNumber" value="@employeeProfileForm("alternativeNumber").value"/>
+      </div>
+    </div>
+
+     <div class="form-row">
+      <div>
+        <label>Alternative Email</label>
+      </div>
+      <div>
+        <input type="text" name="empAlternativeEmail" value="@employeeProfileForm("empAlternativeEmail").value"/>
+      </div>
+    </div>
+
+     <div class="form-row">
+      <div>
+        <label>Address Line1</label>
+      </div>
+      <div>
+        <input type="text" name="addressLine1" value="@employeeProfileForm("addressLine1").value"/>
+      </div>
+    </div>
+
+     <div class="form-row">
+      <div>
+        <label>Address Line2</label>
+      </div>
+      <div>
+        <input type="text" name="addressLine2" value="@employeeProfileForm("addressLine1").value"/>
+      </div>
+    </div>
+
+     <div class="form-row">
+      <div>
+        <label>City</label>
+      </div>
+      <div>
+        <input type="text" name="city" value="@employeeProfileForm("city").value"/>
+      </div>
+    </div>
+
+     <div class="form-row">
+      <div>
+        <label>State</label>
+      </div>
+      <div>
+        <input type="text" name="state" value="@employeeProfileForm("state").value"/>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div>
+        <label>PinCode</label>
+      </div>
+      <div>
+        <input type="text" name="pinCode" value="@employeeProfileForm("pinCode").value"/>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div>
+        <label>Country</label>
+      </div>
+      <div>
+        <input type="text" name="country" value="@employeeProfileForm("country").value"/>
+      </div>
+    </div>
+    <div class="field">
+    <button class="ui green button" type="submit">Save Changes</button>
+    </div>
+  </form>
+ 
+    </div>
+  </div>
+  <div class="three wide column">
+    <section class="ui main segment">
+
+          <div style="font-family: 'PT Sans'; font-size: 18px; color: white; border: solid 1px grey; padding: 7px; background-color: #49A2A2; border-radius: 3px ; margin-left:10px;">
+            <i class="user icon"></i>Личный кабинет
+          </div>
+          <div class="ui relaxed list">
+            <div class="item">
+              <i class="large add square icon"></i>
+              <div class="content" style="vertical-align: middle">
+                <a href="#" style="font-family: 'PT Sans Narrow'; font-size: 18px;">Добавить прогноз</a>
+              </div>
+            </div>
+            <div class="item">
+              <i class="large configure icon"></i>
+              <div class="content" style="vertical-align: middle">
+                <a href="#" style="font-family: 'PT Sans Narrow'; font-size: 18px;  font-weight: bold;">Мои настройки</a>
+              </div>
+            </div>
+            <div class="item">
+              <i class="large bar chart icon"></i>
+              <div class="content" style="vertical-align: middle">
+                <a href="#" style="font-family: 'PT Sans Narrow'; font-size: 18px;">Статистика</a>
+              </div>
+            </div>
+            <div class="item">
+              <i class="large star icon"></i>
+              <div class="content" style="vertical-align: middle">
+                <a href="#" style="font-family: 'PT Sans Narrow'; font-size: 18px;">Мои прогнозы</a>
+              </div>
+            </div>
+          </div>
+        </section>
+  </div>
+</div>
+  </div>
+}

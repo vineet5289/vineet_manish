@@ -27,26 +27,32 @@ public class TimeUtiles {
 	  if(StringUtils.isBlank(startTime) || StringUtils.isBlank(endTime))
         return false;
 	  String[] startParam = startTime.split(" ");
-	  String[] endParam = startTime.split(" ");
+	  String[] endParam = endTime.split(" ");
+	  System.out.println("Start Time *********** 1");
 	  if(startParam.length != 2 || endParam.length != 2)
 	    return false;
+	  System.out.println("Start Time *********** 2");
 	  if(startParam[1].equalsIgnoreCase("AM") && endParam[1].equalsIgnoreCase("PM"))
 	    return true;
+	System.out.println("Start Time *********** 3");
 
 	  if(startParam[1].equalsIgnoreCase(endParam[1])) {
+	  	System.out.println("Start Time *********** 4");
 	    String[] startHHMM = startParam[0].split(":");
 	    String[] endHHMM = endParam[0].split(":");
 	    if(startHHMM.length != 2 || endHHMM.length != 2) {
 	      return false;
 	    }
-
+     System.out.println("Start Time *********** 5");
 	    int startHour = Integer.parseInt(startHHMM[0]);
 	    int startMin = Integer.parseInt(startHHMM[1]);
 	    int endHour = Integer.parseInt(endHHMM[0]);
 	    int endMin = Integer.parseInt(endHHMM[1]);
+	    System.out.println("St"+startHour+" "+startMin+" "+endHour+" "+endMin);
 	    if(startHour < endHour || (startHour == endHour && startMin < endMin)) {
 	      return true;
 	    }
+	    System.out.println("Start Time *********** 6" );
 	  }
 	  return false;
 	}

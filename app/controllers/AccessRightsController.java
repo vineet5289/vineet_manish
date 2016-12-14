@@ -28,13 +28,13 @@ public class AccessRightsController extends Controller {
 		Form<AccessRightsForm> accessRightsForm = formFactory.form(AccessRightsForm.class).bindFromRequest();
 		if(accessRightsForm == null || accessRightsForm.hasErrors()) {
 			flash("error", "please check whether correct user or access right is selected");
-			return redirect(controllers.institute.routes.SubjectController.preAddSubjects()); // check for correct redirection
+			return ok(""); // check for correct redirection
 		}
 
 		List<AccessRightsForm.UserAccessRights> userAccessRights = accessRightsForm.get().getAccessRights();
 		if(userAccessRights == null || userAccessRights.size() == 0) {
 			flash("error", "please check whether correct user or access right is selected");
-			return redirect(controllers.institute.routes.SubjectController.preAddSubjects()); // check for correct redirection
+			return ok(""); // check for correct redirection
 		}
 
 		boolean isSuccessful = true;
@@ -47,7 +47,8 @@ public class AccessRightsController extends Controller {
 
 		if(!isSuccessful) {
 			flash("error", "please check whether correct user or access right is selected");
-			return redirect(controllers.institute.routes.SubjectController.preAddSubjects()); // check for correct redirection
+			//return redirect(controllers.institute.routes.SubjectController.preAddSubjects()); // check for correct redirection
+		    return ok("");
 		}
 
 		return redirect(routes.SRPController.index()); // check for correct redirection

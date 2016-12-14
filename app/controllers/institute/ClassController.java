@@ -44,8 +44,9 @@ public class ClassController extends CustomController {
   public Result postAddClass(long classId, String section) {
     Form<ClassForm> classForm = formFactory.form(ClassForm.class).bindFromRequest();
     if (classForm == null || classForm.hasErrors()) {
+      System.out.println("claases printed here"+classForm);
       flash("error", "Some field are missing happen. Please check and submit again.");
-      return redirect(controllers.institute.routes.ClassController.preAddClass(section));
+      return redirect(controllers.institute.routes.ClassController.viewAllClass("all"));
     }
 
     String userName = session().get(SessionKey.username.name());
@@ -53,12 +54,13 @@ public class ClassController extends CustomController {
     ClassForm classFormDetails = classForm.get();
     try {
       long instituteId = Long.parseLong(instituteIdFromSession);
+      System.out.println("claa++++++++++++++++++ printed here");
       classDAO.add(classFormDetails, instituteId, userName, section, classId);
     } catch (SQLException exception) {
       flash("error", "Some server exception happen");
       exception.printStackTrace();
     }
-    return redirect(controllers.institute.routes.ClassController.preAddClass(section));
+    return redirect(controllers.institute.routes.ClassController.viewAllClass("all"));
   }
 
   public Result viewAllClass(String action) {

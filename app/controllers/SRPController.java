@@ -15,6 +15,8 @@ import views.forms.UserHomePageForm;
 import views.html.homePage.schoolRequestHomepage;
 import views.html.viewClass.dashboard;
 import views.html.viewClass.School.instituteGroupHome;
+import views.html.Employee.employeeHomePage;
+import views.html.Employee.employeeProfile;
 import dao.UserLoginDAO;
 import dao.impl.RedisSessionDao;
 import enum_package.LoginState;
@@ -137,7 +139,7 @@ public class SRPController extends CustomController {
       } else {
         // some error occur. logout user
       }
-      return ok("userHomePageForm");
+      return ok(employeeHomePage.render(userHomePageForm));
     }
 
 	public Result preRegistration(String userType) {

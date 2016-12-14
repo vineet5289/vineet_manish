@@ -14,6 +14,7 @@ $("#addEmpCode").checkbox({
 
 
  $("#delete-employee").click(function(){
- 	$('#delete-confirm-employee').modal('show');
+ 	alert("hiiiiii");
+ 	//$('#delete-confirm-employee').modal('show');
  });
 });

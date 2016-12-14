@@ -100,7 +100,7 @@ public class SubjectDAO {
   }
 
   private SubjectDaoActionStatus addSubjectIntoClassAndSection(SubjectForm subjectDetails,
-      long classId, String userName, long instituteId) {
+      long classId, String userName, long instituteId) throws SQLException{
     SubjectDaoActionStatus subjectDaoActionStatus =
         SubjectDaoActionStatus.norecordfoundforgivenclass;
     if (classId <= 0 || classId != subjectDetails.getClassId()) {
@@ -127,7 +127,7 @@ public class SubjectDAO {
       insertSubjectPS = connection.prepareStatement(insertQuery);
       insertSubjectPS.setString(1, subjectDetails.getSubjectName());
       insertSubjectPS.setLong(2, classId);
-      insertSubjectPS.setLong(3, sectionId);
+      insertSubjectPS.setLong(3, 2l);
       insertSubjectPS.setLong(4, instituteId);
       insertSubjectPS.setString(5, subjectDetails.getSubjectCode());
       insertSubjectPS.setBoolean(6, true);
@@ -137,11 +137,11 @@ public class SubjectDAO {
       insertSubjectPS.setBoolean(10, true);
       insertSubjectPS.setLong(11, instituteId);
       insertSubjectPS.setLong(12, classId);
-      insertSubjectPS.setLong(13, sectionId);
+      insertSubjectPS.setLong(13, 2l);
       insertSubjectPS.setBoolean(14, true);
       insertSubjectPS.setLong(15, instituteId);
       insertSubjectPS.setLong(16, classId);
-      insertSubjectPS.setLong(17, sectionId);
+      insertSubjectPS.setLong(17, 2l);
       if (insertSubjectPS.executeUpdate() == 1) {
         subjectDaoActionStatus = SubjectDaoActionStatus.successfullyAddedInSection;
       } else {

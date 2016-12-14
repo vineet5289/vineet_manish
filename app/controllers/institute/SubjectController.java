@@ -24,20 +24,20 @@ public class SubjectController extends CustomController {
   public Result preAddSubjects(long classId, long sectionId, String sec) {
     Form<SubjectForm> subjectForm = formFactory.form(SubjectForm.class);
     // pass class ID and sec information from here
-    return ok(test.render(subjectForm));
+    return ok("");
   }
 
   public Result postAddSubjects(long classId, long sectionId, String sec) {
     Form<SubjectForm> subjectForm = formFactory.form(SubjectForm.class).bindFromRequest();
     if (subjectForm == null || subjectForm.hasErrors()) {
       flash("error", "Please check field details");
-      return redirect(controllers.institute.routes.ClassController.preAddClass()); 
+      return redirect(controllers.institute.routes.ClassController.preAddClass(sec)); 
     }
 
     SubjectForm subjectsDetails = subjectForm.get();
     if (subjectsDetails == null || classId <= 0) {
       flash("error", "Please check field details");
-      return redirect(controllers.institute.routes.ClassController.preAddClass()); 
+      return redirect(controllers.institute.routes.ClassController.preAddClass(sec)); 
     }
 
     SubjectDaoActionStatus subjectDaoActionStatus = SubjectDaoActionStatus.serverexception;
