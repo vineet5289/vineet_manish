@@ -268,4 +268,41 @@ public class Tables {
     public static String isActive = "is_active";
     public static String userName = "user_name";
   }
+
+  public static class Timetable {
+    public static String table = "timetable";
+    public static String id = "id";
+    public static String day = "day";
+    public static String periodNo = "period_no";
+    public static String startTime = "start_time";
+    public static String endTime = "end_time";
+    public static String instituteId = "institute_id";
+    public static String classId = "class_id";
+    public static String sectionId = "section_id";
+    public static String professorId = "professor_id";
+    public static String subjectId = "subject_id";
+    public static String timeTableUpdatedBy = "time_table_updated_by";
+    public static String isActive = "is_active";
+    public static String createdAt = "created_at";
+    public static String updatedAt = "updated_at";
+  }
+
+  public static class Attendance {
+    public static String table = "attendance";
+    public static String id = "id";
+    public static String date = "attendance_date";
+    public static String instituteId = "institute_id";
+    public static String classId = "class_id";
+    public static String sectionId = "section_id";
+    public static String attendanceValue = "attendance_value";
+    public static String attendanceType = "attendance_type";
+    public static String periodId = "period_id";
+    public static String noOfPresentStudents = "no_of_present_students";
+    public static String noOfAbsentStudents = "no_of_absent_students";
+    public static String totalNoOfStudents = "total_no_of_students";
+    public static String attendanceTakenBy = "attendance_taken_by";
+    public static String isActive = "is_active";
+    public static String createdAt = "created_at";
+    public static String updatedAt = "updated_at";
+  }
 }
