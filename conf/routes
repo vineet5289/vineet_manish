@@ -130,6 +130,10 @@ GET			/group										controllers.institute.GroupController.preAddGroup()
 POST		/add_group									controllers.institute.GroupController.postAddGroup()
 POST		/disable_group								controllers.institute.GroupController.disableGroup()
 
+#role
+GET			/timetabel/create							controllers.institute.TimeTableController.preCreateTimeTable()
+POST		/timetabel/create							controllers.institute.TimeTableController.postCreateTimeTable()
+
 # permission
 POST		/edit_permission							controllers.institute.RoleController.editPermission()
 
