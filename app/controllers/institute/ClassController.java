@@ -9,6 +9,7 @@ import javax.inject.Inject;
 
 import controllers.CustomController;
 import dao.ClassDAO;
+import dao.dao_operation_status.ClassDaoActionStatus;
 import enum_package.SessionKey;
 import play.data.Form;
 import play.data.FormFactory;
@@ -42,7 +43,6 @@ public class ClassController extends CustomController {
   public Result postAddClass(long classId, String section) {
     Form<ClassForm> classForm = formFactory.form(ClassForm.class).bindFromRequest();
     if (classForm == null || classForm.hasErrors()) {
-      System.out.println("claases printed here"+classForm);
       flash("error", "Some field are missing happen. Please check and submit again.");
       return redirect(controllers.institute.routes.ClassController.viewAllClass("all"));
     }
@@ -50,14 +50,34 @@ public class ClassController extends CustomController {
     String userName = "vineet5289"; //session().get(SessionKey.username.name());
     String instituteIdFromSession = "1"; // session().get(SessionKey.instituteid.name());
     ClassForm classFormDetails = classForm.get();
+    ClassDaoActionStatus classDaoActionStatus = ClassDaoActionStatus.serverexception;
     try {
       long instituteId = Long.parseLong(instituteIdFromSession);
-      classDAO.add(classFormDetails, instituteId, userName, section, classId);
+      classDaoActionStatus = classDAO.add(classFormDetails, instituteId, userName, section, classId);
     } catch (SQLException exception) {
       flash("error", "Some server exception happen");
       exception.printStackTrace();
     }
-    return redirect(controllers.institute.routes.ClassController.viewAllClass("all"));
+    return ok(classDaoActionStatus.getValue());
+    //return redirect(controllers.institute.routes.ClassController.viewAllClass("all"));
+  }
+
+  public Result deleteClass(long classId, String sec, long sectionId, long instId) {
+    if(classId <= 0) {
+      badRequest("class ID is not valid");
+    }
+
+    String userName = "vineet5289"; //session().get(SessionKey.username.name());
+    String instituteIdFromSession = "1"; // session().get(SessionKey.instituteid.name());
+    ClassDaoActionStatus classDaoActionStatus = ClassDaoActionStatus.serverexception;
+    try {
+      long instituteId = Long.parseLong(instituteIdFromSession);
+      classDaoActionStatus = classDAO.delete(instituteId, classId, sectionId, userName, sec);
+    } catch (SQLException exception) {
+      exception.printStackTrace();
+    }
+   return ok(classDaoActionStatus.getValue());
+    //return redirect(controllers.institute.routes.ClassController.preAddClass(sec));
   }
 
   public Result viewAllClass(String action) {

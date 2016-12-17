@@ -14,40 +14,52 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import dao.dao_operation_status.ClassDaoActionStatus;
 import play.db.Database;
 import play.db.NamedDatabase;
 import views.forms.institute.ClassForm;
+
+import static dao.Tables.Class.parentClassId;
 
 public class ClassDAO {
   @Inject
   @NamedDatabase("srp")
   private Database db;
 
-  public boolean add(ClassForm classe, long instituteId, String userName, String section, long classId)
+  public ClassDaoActionStatus add(ClassForm classe, long instituteId, String userName, String section, long classId)
       throws SQLException {
-    boolean isSuccessfull = false;
-    if(StringUtils.isBlank(section) || section.equalsIgnoreCase("no")) {
-      isSuccessfull = addClass(instituteId, classe, userName);
-    } else if(section.equalsIgnoreCase("yes")) {
-      isSuccessfull = addSection(instituteId, classe, userName, classId);
+    ClassDaoActionStatus classDaoActionStatus = ClassDaoActionStatus.serverexception;
+    if (StringUtils.isBlank(section) || section.equalsIgnoreCase("no")) {
+      classDaoActionStatus = addClass(instituteId, classe, userName);
+    } else if (section.equalsIgnoreCase("yes")) {
+      classDaoActionStatus = addSection(instituteId, classe, userName, classId);
     }
-    System.out.println("claases success "+isSuccessfull);
-    return isSuccessfull;
+    return classDaoActionStatus;
   }
 
-  private boolean addClass(long instituteId, ClassForm classDetails, String userName)
+  public ClassDaoActionStatus delete(long instituteId, long classId, long sectionId, String userName, String section) throws SQLException {
+    ClassDaoActionStatus classDaoActionStatus = ClassDaoActionStatus.serverexception;
+    if (StringUtils.isBlank(section) || section.equalsIgnoreCase("no")) {
+      classDaoActionStatus = deleteClass(instituteId, classId, userName);
+    } else if (section.equalsIgnoreCase("yes")) {
+      classDaoActionStatus = deleteSection(instituteId, sectionId, classId, userName);
+    }
+    return classDaoActionStatus;
+  }
+
+  private ClassDaoActionStatus addClass(long instituteId, ClassForm classDetails, String userName)
       throws SQLException {
-    boolean isSuccessful = false;
+    ClassDaoActionStatus classDaoActionStatus = ClassDaoActionStatus.serverexception;
     Connection connection = null;
     PreparedStatement insertClassPS = null;
-    PreparedStatement insertSectionPS  = null;
+    PreparedStatement insertSectionPS = null;
     ResultSet insertClassRs = null;
     String insertClassQ =
         String
             .format(
                 "INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s) SELECT * FROM (SELECT ? as className, ? as instituteId, ? as classStartTime, ? as classEndTime,"
                     + "? as noOfPeriod, ? as pclassName, ? as userName) AS tmp WHERE NOT EXISTS (SELECT %s FROM %s WHERE %s=? AND %s=? AND %s=? ) limit 1;",
-                Tables.Class.table, Tables.Class.className, Tables.Class.instituteId,Tables.Class.classStartTime,
+                Tables.Class.table, Tables.Class.className, Tables.Class.instituteId, Tables.Class.classStartTime,
                 Tables.Class.classEndTime, Tables.Class.noOfPeriod, Tables.Class.parentClassName, Tables.Class.userName,
                 Tables.Class.className, Tables.Class.table, Tables.Class.instituteId, Tables.Class.isActive, Tables.Class.className);
 
@@ -57,7 +69,7 @@ public class ClassDAO {
                 "INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s, %s) VALUES (?, ?, ?, ?, ?, ?, ?, ?);",
                 Tables.Class.table, Tables.Class.className, Tables.Class.instituteId,
                 Tables.Class.classStartTime, Tables.Class.classEndTime, Tables.Class.noOfPeriod,
-                Tables.Class.parentClassId, Tables.Class.parentClassName, Tables.Class.userName);
+                parentClassId, Tables.Class.parentClassName, Tables.Class.userName);
 
     try {
       connection = db.getConnection();
@@ -77,19 +89,15 @@ public class ClassDAO {
       insertClassPS.executeUpdate();
       insertClassRs = insertClassPS.getGeneratedKeys();
       Long generatedClassId = -1L;
-      if(insertClassRs.next()) {
+      if (insertClassRs.next()) {
         generatedClassId = insertClassRs.getLong(1);
       }
 
       List<String> sectionNames = classDetails.getSectionNames();
-System.out.println("*************************inside class ection "+sectionNames + ", " + classDetails.numberOfsection + ", generatedClassId" + generatedClassId);
-      if(generatedClassId > 0 && sectionNames != null && sectionNames.size() > 0 &&
+      if (generatedClassId > 0 && sectionNames != null && sectionNames.size() > 0 &&
           classDetails.numberOfsection > 0) {
-           System.out.println(".....inside class ection "+sectionNames);
-         insertSectionPS = connection.prepareStatement(insertSectionQ);
-        for(String sectionName : sectionNames) {
-          System.out.println(".....inside class ection "+sectionName);
-          
+        insertSectionPS = connection.prepareStatement(insertSectionQ);
+        for (String sectionName : sectionNames) {
           insertSectionPS.setString(1, sectionName);
           insertSectionPS.setLong(2, instituteId);
           insertSectionPS.setString(3, classDetails.getClassStartTime());
@@ -102,22 +110,22 @@ System.out.println("*************************inside class ection "+sectionNames 
         }
 
         int[] results = insertSectionPS.executeBatch();
-        for(int result : results) {
-          System.out.println(" results print ***"+result);
-          if(result < 0)
+        for (int result : results) {
+          if (result < 0)
             throw new Exception("Section insert error.");
-          }
+        }
       }
 
-      if(generatedClassId > 0) {
+      if (generatedClassId > 0) {
         connection.commit();
-        isSuccessful = true;
+        classDaoActionStatus = ClassDaoActionStatus.classSuccessfullyAdded;
       } else {
-        throw new Exception("Section insert error.");
+        connection.rollback();
+        classDaoActionStatus = ClassDaoActionStatus.serverexception;
       }
     } catch (Exception exception) {
       exception.printStackTrace();
-      isSuccessful = false;
+      classDaoActionStatus = ClassDaoActionStatus.serverexception;
       connection.rollback();
     } finally {
       if (insertClassRs != null)
@@ -132,30 +140,28 @@ System.out.println("*************************inside class ection "+sectionNames 
       if (connection != null)
         connection.close();
     }
-    return isSuccessful;
+    return classDaoActionStatus;
   }
 
-  private boolean addSection(long instituteId, ClassForm sectionDetails, String userName,
-      long classId) throws SQLException {
-   if(classId != sectionDetails.getClassId() || !sectionDetails.isSection()) {
-     return false;
-   }
-    boolean isSuccessful = false;
+  private ClassDaoActionStatus addSection(long instituteId, ClassForm sectionDetails, String userName,
+                                          long classId) throws SQLException {
+    if (classId != sectionDetails.getClassId() || !sectionDetails.isSection()) {
+      return ClassDaoActionStatus.invalidRequest;
+    }
+    ClassDaoActionStatus classDaoActionStatus = ClassDaoActionStatus.serverexception;
     Connection connection = null;
     PreparedStatement insertPS = null;
     String insertQuery =
         String
             .format(
-                "INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s, %s) SELECT * FROM (SELECT ?, ?, ?, ?,"
-                    + "?, ?, ?, ?) AS tmp WHERE %s=(SELECT %s FROM %s WHERE %s=? AND %s=? AND %s=?) AND NOT EXITS "
-                    + "(SELECT %s FROM %s WHERE %s=? AND %s=? AND %s=?);",
-                Tables.Class.table, Tables.Class.className, Tables.Class.instituteId,
-                Tables.Class.classStartTime, Tables.Class.classEndTime, Tables.Class.noOfPeriod,
-                Tables.Class.parentClassId, Tables.Class.parentClassName, Tables.Class.userName,
-                Tables.Class.id, Tables.Class.id, Tables.Class.table, Tables.Class.id,
-                Tables.Class.instituteId, Tables.Class.isActive, Tables.Class.className,
-                Tables.Class.table, Tables.Class.parentClassId, Tables.Class.instituteId,
-                Tables.Class.isActive);
+                "INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s, %s) SELECT * FROM (SELECT ? as secName, ? as insId, ? as cstime, " +
+                    "? as cetime, ? as nofperiod, ? as pclassId, ? as pClassName, ? as uname) AS tmp WHERE ?=(SELECT %s FROM %s " +
+                    "WHERE %s=? AND %s=? AND %s=?) AND NOT EXISTS (SELECT %s FROM %s WHERE %s=? AND %s=? AND %s=? AND %s=?);",
+                Tables.Class.table, Tables.Class.className, Tables.Class.instituteId, Tables.Class.classStartTime,
+                Tables.Class.classEndTime, Tables.Class.noOfPeriod, parentClassId, Tables.Class.parentClassName,
+                Tables.Class.userName, Tables.Class.id, Tables.Class.table, Tables.Class.id, Tables.Class.instituteId,
+                Tables.Class.isActive, Tables.Class.className, Tables.Class.table, parentClassId, Tables.Class.instituteId,
+                Tables.Class.isActive, Tables.Class.className);
     try {
       connection = db.getConnection();
       insertPS = connection.prepareStatement(insertQuery);
@@ -168,19 +174,21 @@ System.out.println("*************************inside class ection "+sectionNames 
       insertPS.setString(7, sectionDetails.getParentClassName());
       insertPS.setString(8, userName);
       insertPS.setLong(9, sectionDetails.getParentClassId());
-      insertPS.setLong(10, instituteId);
-      insertPS.setBoolean(11, true);
-      insertPS.setLong(12, sectionDetails.getParentClassId());
-      insertPS.setLong(10, instituteId);
-      insertPS.setBoolean(11, true);
+      insertPS.setLong(10, sectionDetails.getParentClassId());
+      insertPS.setLong(11, instituteId);
+      insertPS.setBoolean(12, true);
+      insertPS.setLong(13, sectionDetails.getParentClassId());
+      insertPS.setLong(14, instituteId);
+      insertPS.setBoolean(15, true);
+      insertPS.setString(16, sectionDetails.getClassName());
       if (insertPS.executeUpdate() == 1) {
-        isSuccessful = true;
+        classDaoActionStatus = ClassDaoActionStatus.sectionSuccessfullyAdded;
       } else {
-        isSuccessful = false;
+        classDaoActionStatus = ClassDaoActionStatus.serverexception;
       }
     } catch (Exception exception) {
       exception.printStackTrace();
-      isSuccessful = false;
+      classDaoActionStatus = ClassDaoActionStatus.serverexception;
     } finally {
       if (insertPS != null)
         insertPS.close();
@@ -188,7 +196,7 @@ System.out.println("*************************inside class ection "+sectionNames 
       if (connection != null)
         connection.close();
     }
-    return isSuccessful;
+    return classDaoActionStatus;
   }
 
   public Map<String, List<ClassForm>> getClasses(long instituteId) throws SQLException {
@@ -199,7 +207,7 @@ System.out.println("*************************inside class ection "+sectionNames 
     String selectQuery =
         String.format("Select %s, %s, %s, %s, %s, %s, %s FROM %s WHERE %s=? AND %s=?;",
             Tables.Class.id, Tables.Class.className, Tables.Class.classStartTime,
-            Tables.Class.classEndTime, Tables.Class.noOfPeriod, Tables.Class.parentClassId,
+            Tables.Class.classEndTime, Tables.Class.noOfPeriod, parentClassId,
             Tables.Class.parentClassName, Tables.Class.table, Tables.Class.instituteId,
             Tables.Class.isActive);
     try {
@@ -216,10 +224,10 @@ System.out.println("*************************inside class ection "+sectionNames 
         addClass.setClassStartTime(resultSet.getString(Tables.Class.classStartTime));
         addClass.setClassEndTime(resultSet.getString(Tables.Class.classEndTime));
         addClass.setNumberOfPeriod(resultSet.getInt(Tables.Class.noOfPeriod));
-        if (resultSet.getLong(Tables.Class.parentClassId) != 0
-            && resultSet.getLong(Tables.Class.parentClassId) != resultSet.getLong(Tables.Class.id)) {
+        if (resultSet.getLong(parentClassId) != 0
+            && resultSet.getLong(parentClassId) != resultSet.getLong(Tables.Class.id)) {
           addClass.setParentClassName(resultSet.getString(Tables.Class.parentClassName));
-          addClass.setParentClassId(resultSet.getLong(Tables.Class.parentClassId));
+          addClass.setParentClassId(resultSet.getLong(parentClassId));
           addClass.setSection(true);
         }
 
@@ -247,21 +255,95 @@ System.out.println("*************************inside class ection "+sectionNames 
   }
 
   /*
+   * need to delete all section related to this class, all subject, etc
+   */
+  private ClassDaoActionStatus deleteClass(long instituteId, long classId, String username) throws SQLException {
+    ClassDaoActionStatus classDaoActionStatus = ClassDaoActionStatus.serverexception;
+    Connection connection = null;
+    PreparedStatement updateStatement = null;
+    String updateQ =
+        String
+            .format(
+                "UPDATE %s SET %s=?, %s=? WHERE %s=? AND %s=? AND ((%s IS NULL AND %s=?) OR (%s IS NOT NULL AND %s=?)) ;",
+                Tables.Class.table, Tables.Class.isActive, Tables.Class.userName, Tables.Class.instituteId, Tables.Class.isActive,
+                Tables.Class.parentClassId, Tables.Class.id, Tables.Class.parentClassId, Tables.Class.parentClassId);
+    try {
+      connection = db.getConnection();
+      updateStatement = connection.prepareStatement(updateQ);
+      updateStatement.setBoolean(1, false);
+      updateStatement.setString(2, username);
+      updateStatement.setLong(3, instituteId);
+      updateStatement.setBoolean(4, true);
+      updateStatement.setLong(5, classId);
+      updateStatement.setLong(6, classId);
+      if (updateStatement.executeUpdate() >= 1) {
+        classDaoActionStatus = ClassDaoActionStatus.classSuccessfullyDeleted;
+      } else {
+        classDaoActionStatus = ClassDaoActionStatus.norecordfoundforgivenclass;
+      }
+    } catch (Exception exception) {
+      exception.printStackTrace();
+      classDaoActionStatus = ClassDaoActionStatus.serverexception;
+    } finally {
+      if (updateStatement != null)
+        updateStatement.close();
+      if (connection != null)
+        connection.close();
+    }
+    return classDaoActionStatus;
+  }
+
+  /**
+   * need to deactivate all other informationrelated to this section like attendence, subject, students, role.. etc
+   *
+   */
+  private ClassDaoActionStatus deleteSection(long instituteId, long sectionId, long parentClassId, String username)
+      throws SQLException {
+    ClassDaoActionStatus classDaoActionStatus = ClassDaoActionStatus.serverexception;
+    Connection connection = null;
+    PreparedStatement updateStatement = null;
+    String updateQuery =
+        String.format(
+            "UPDATE %s SET %s=?, %s=? WHERE %s=? AND %s=? AND %s IS NOT NULL AND %s=? AND %s=? LIMIT 1;",
+            Tables.Class.table, Tables.Class.isActive, Tables.Class.userName, Tables.Class.instituteId,
+            Tables.Class.isActive, Tables.Class.parentClassId, Tables.Class.parentClassId, Tables.Class.id);
+    try {
+      connection = db.getConnection();
+      updateStatement = connection.prepareStatement(updateQuery);
+      updateStatement.setBoolean(1, false);
+      updateStatement.setString(2, username);
+      updateStatement.setLong(3, instituteId);
+      updateStatement.setBoolean(4, true);
+      updateStatement.setLong(5, parentClassId);
+      updateStatement.setLong(6, sectionId);
+      if (updateStatement.executeUpdate() == 1) {
+        System.out.println("==============> " + updateStatement.toString());
+        classDaoActionStatus = ClassDaoActionStatus.sectionSuccessfullyDeleted;
+      } else {
+        System.out.println("************* " + updateStatement.toString());
+        classDaoActionStatus = ClassDaoActionStatus.norecordfoundforgivenclass;
+      }
+    } catch (Exception exception) {
+      exception.printStackTrace();
+      classDaoActionStatus = ClassDaoActionStatus.serverexception;
+    } finally {
+      if (updateStatement != null)
+        updateStatement.close();
+      if (connection != null)
+        connection.close();
+    }
+    return classDaoActionStatus;
+  }
+
+  /*
    * assume: 1. ParentClassId is null for class and not null for section 2. if sec is null or empty
    * or no that means it's represent Class 3. if sec if not null and not empty and value is yes that
    * means request is for section TODO: we need to consider sectionId and put validation on this
    */
 
   public boolean editClass(long instituteId, long classId, String userName, ClassForm editClass,
-      String section, String action) throws SQLException {
-    
-   if(StringUtils.isBlank(action) || action.equalsIgnoreCase("edit")) {
-     edit(instituteId, classId, userName, editClass, section);
-   } else if(action.equalsIgnoreCase("delete")) {
-     delete(instituteId, classId, userName, editClass, section);
-   } else {
-     
-   }
+                           String section, String action) throws SQLException {
+
     return true;
   }
 
@@ -274,9 +356,9 @@ System.out.println("*************************inside class ection "+sectionNames 
     }
     return isEdited;
   }
-  
+
   private boolean editClass(long instituteId, long classId, String username, ClassForm classDetails) throws SQLException {
-    if(classId != classDetails.getClassId() || classDetails.isSection()) {
+    if (classId != classDetails.getClassId() || classDetails.isSection()) {
       return false;
     }
     boolean isEdited = false;
@@ -289,10 +371,10 @@ System.out.println("*************************inside class ection "+sectionNames 
         Tables.Class.userName, Tables.Class.instituteId, Tables.Class.id, Tables.Class.isActive);
     String updateSectionQ = String.format("UPDATE %s SET %s=?, %s=?, %s=?, %s=?, %s=? WHERE %s=? AND %s IN NOT NULL AND %s=? AND %s=? LIMIT 1",
         Tables.Class.table, Tables.Class.classStartTime, Tables.Class.classEndTime, Tables.Class.noOfPeriod, Tables.Class.parentClassName,
-        Tables.Class.userName, Tables.Class.instituteId, Tables.Class.parentClassId, Tables.Class.parentClassId, Tables.Class.isActive);
+        Tables.Class.userName, Tables.Class.instituteId, parentClassId, parentClassId, Tables.Class.isActive);
     String updateParentNameQ = String.format("UPDATE %s SET %s=?, %s=? WHERE %s=? AND %s IN NOT NULL AND %s=? AND %s=?",
-        Tables.Class.table, Tables.Class.parentClassName, Tables.Class.userName, Tables.Class.instituteId, Tables.Class.parentClassId,
-        Tables.Class.parentClassId, Tables.Class.isActive);
+        Tables.Class.table, Tables.Class.parentClassName, Tables.Class.userName, Tables.Class.instituteId, parentClassId,
+        parentClassId, Tables.Class.isActive);
     try {
       connection = db.getConnection();
       connection.setAutoCommit(false);
@@ -305,7 +387,7 @@ System.out.println("*************************inside class ection "+sectionNames 
       updateClassPS.setLong(6, instituteId);
       updateClassPS.setLong(7, classDetails.getClassId());
       updateClassPS.setBoolean(8, true);
-      if(classDetails.isUpdateSection()) {
+      if (classDetails.isUpdateSection()) {
         updateSectionPS = connection.prepareStatement(updateSectionQ);
         updateSectionPS.setString(1, classDetails.getClassStartTime());
         updateSectionPS.setString(2, classDetails.getClassEndTime());
@@ -315,7 +397,7 @@ System.out.println("*************************inside class ection "+sectionNames 
         updateSectionPS.setLong(6, instituteId);
         updateSectionPS.setLong(7, classDetails.getClassId());
         updateSectionPS.setBoolean(8, true);
-        if(updateClassPS.executeUpdate() == 1) {
+        if (updateClassPS.executeUpdate() == 1) {
           updateSectionPS.executeUpdate();
           isEdited = true;
         }
@@ -326,35 +408,35 @@ System.out.println("*************************inside class ection "+sectionNames 
         updateParentNamePS.setLong(3, instituteId);
         updateParentNamePS.setLong(4, classDetails.getClassId());
         updateParentNamePS.setBoolean(4, true);
-        if(updateClassPS.executeUpdate() == 1) {
+        if (updateClassPS.executeUpdate() == 1) {
           updateParentNamePS.executeUpdate();
           isEdited = true;
         }
       }
-      if(isEdited) {
+      if (isEdited) {
         connection.commit();
       } else {
         connection.rollback();
       }
-    } catch(Exception exception) {
+    } catch (Exception exception) {
       connection.rollback();
       isEdited = false;
       exception.printStackTrace();
     } finally {
-      if(updateClassPS != null)
+      if (updateClassPS != null)
         updateClassPS.close();
-      if(updateParentNamePS != null)
+      if (updateParentNamePS != null)
         updateParentNamePS.close();
-      if(updateSectionPS != null)
+      if (updateSectionPS != null)
         updateSectionPS.close();
-      if(connection != null)
+      if (connection != null)
         connection.close();
     }
     return isEdited;
   }
 
   private boolean editSection(long instituteId, long parentClassId, String username, ClassForm classDetails) throws SQLException {
-    if(classDetails.getParentClassId() != parentClassId || classDetails.getClassId() <= 0 || !classDetails.isSection()) {
+    if (classDetails.getParentClassId() != parentClassId || classDetails.getClassId() <= 0 || !classDetails.isSection()) {
       return false;
     }
     boolean isEdited = false;
@@ -362,7 +444,7 @@ System.out.println("*************************inside class ection "+sectionNames 
     PreparedStatement insertPS = null;
     String insertQuery = String.format("UPDATE %s SET %s=?, %s=?, %s=?, %s=?, %s=? WHERE %s=? AND %s IN NOT NULL AND %s=? AND %s=? LIMIT 1",
         Tables.Class.table, Tables.Class.className, Tables.Class.classStartTime, Tables.Class.classEndTime, Tables.Class.noOfPeriod,
-        Tables.Class.userName, Tables.Class.instituteId, Tables.Class.parentClassId, Tables.Class.parentClassId, Tables.Class.id);
+        Tables.Class.userName, Tables.Class.instituteId, parentClassId, parentClassId, Tables.Class.id);
     try {
       connection = db.getConnection();
       insertPS = connection.prepareStatement(insertQuery);
@@ -374,110 +456,19 @@ System.out.println("*************************inside class ection "+sectionNames 
       insertPS.setLong(6, instituteId);
       insertPS.setLong(7, parentClassId);
       insertPS.setLong(8, classDetails.getClassId());
-      if(insertPS.executeUpdate() == 1) {
+      if (insertPS.executeUpdate() == 1) {
         isEdited = true;
       }
-    } catch(Exception exception) {
+    } catch (Exception exception) {
       isEdited = false;
       exception.printStackTrace();
     } finally {
-      if(insertPS != null)
+      if (insertPS != null)
         insertPS.close();
-      if(connection != null)
+      if (connection != null)
         connection.close();
     }
 
     return isEdited;
   }
-
-  private boolean delete(long instituteId, long classId, String username, ClassForm classDetails, String sec)
-      throws SQLException {
-    boolean isDeleted = false;
-    if ((StringUtils.isBlank(sec) || sec.equalsIgnoreCase("no")) && classId > 0) {
-      isDeleted = deleteClass(instituteId, classId, username, classDetails);
-    } else if (sec.equalsIgnoreCase("yes")) {
-      isDeleted = deleteSection(instituteId, classId, username, classDetails);
-    }
-    return isDeleted;
-  }
-
-  /*
-   * assume: ParentClassId is null for class and not null for section
-   */
-  private boolean deleteSection(long instituteId, long parentClassId, String username, ClassForm classDetails)
-      throws SQLException {
-    boolean isDeleted = false;
-    Connection connection = null;
-    PreparedStatement updateStatement = null;
-    String updateQuery =
-        String.format(
-            "UPDATE %s SET %s=?, %s=? WHERE %s=? AND %s IS NOT NULL AND %s=? AND %s=? LIMIT 1;",
-            Tables.Class.table, Tables.Class.isActive, Tables.Class.instituteId,
-            Tables.Class.parentClassId, Tables.Class.parentClassId, Tables.Class.id);
-    try {
-      long sectionId = classDetails.getClassId();
-      if(sectionId <= 0 || parentClassId != classDetails.getParentClassId()) {
-        return false;
-      }
-      connection = db.getConnection();
-      updateStatement = connection.prepareStatement(updateQuery);
-      updateStatement.setBoolean(1, false);
-      updateStatement.setString(2, username);
-      updateStatement.setLong(3, instituteId);
-      updateStatement.setLong(4, parentClassId);
-      updateStatement.setLong(5, sectionId);
-      if (updateStatement.executeUpdate() == 1) {
-        isDeleted = true;
-      }
-    } catch (Exception exception) {
-      exception.printStackTrace();
-    } finally {
-      if (updateStatement != null)
-        updateStatement.close();
-      if (connection != null)
-        connection.close();
-    }
-    return isDeleted;
-  }
-
-  /*
-   * assume: ParentClassId is null for class and not null for section
-   */
-  private boolean deleteClass(long instituteId, long classId, String username, ClassForm classDetails) throws SQLException {
-    if(classId != classDetails.getClassId() || classDetails.isSection()) {
-      return false;
-    }
-
-    boolean isDeleted = false;
-    Connection connection = null;
-    PreparedStatement updateStatement = null;
-    String updateQ =
-        String
-            .format(
-                "UPDATE %s SET %s=?, %s=? WHERE %s=? AND ((%s IS NULL AND %s=?) OR (%s IS NOT NULL AND %s=?)) ;",
-                Tables.Class.table, Tables.Class.isActive, Tables.Class.instituteId,
-                Tables.Class.parentClassId, Tables.Class.id, Tables.Class.parentClassId,
-                Tables.Class.parentClassId);
-    try {
-      connection = db.getConnection();
-      updateStatement = connection.prepareStatement(updateQ);
-      updateStatement.setBoolean(1, false);
-      updateStatement.setString(2, username);
-      updateStatement.setLong(3, instituteId);
-      updateStatement.setLong(4, classId);
-      updateStatement.setLong(5, classId);
-      if (updateStatement.executeUpdate() >= 1) {
-        isDeleted = true;
-      }
-    } catch (Exception exception) {
-      exception.printStackTrace();
-    } finally {
-      if (updateStatement != null)
-        updateStatement.close();
-      if (connection != null)
-        connection.close();
-    }
-    return isDeleted;
-  }
-
 }

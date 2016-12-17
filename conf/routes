@@ -89,7 +89,8 @@ POST		/addnewstudents							   controllers.students_guardians.StudenstGuardian.p
 
 GET			/class/add							   		controllers.institute.ClassController.preAddClass(sec: String ?="no")
 POST		/class/add							   		controllers.institute.ClassController.postAddClass(classId: Long ?= 0, sec: String ?="no")
-POST		/class/edit/:classId				   		controllers.institute.ClassController.editClass(classId: Long, sec: String ?="no", action: String ?="edit")
+POST		/class/:classId/edit				   		controllers.institute.ClassController.editClass(classId: Long, sec: String ?="no", action: String ?="edit")
+GET		    /class/:classId/delete				   		controllers.institute.ClassController.deleteClass(classId: Long, sec: String ?="no", sid: Long ?= 0, iid: Long ?= 0)
 GET			/viewClass							   		controllers.institute.ClassController.viewAllClass(action: String ?="all")
 
 # subject
@@ -98,7 +99,7 @@ GET			/subject/:classId/add						controllers.institute.SubjectController.preAddS
 POST		/subject/:classId/add						controllers.institute.SubjectController.postAddSubjects(classId: Long, secId: Long ?= 0, sec ?="no")
 GET			/subject/:subjectId/view				    controllers.institute.SubjectController.viewsSubjects(subjectId: Long)
 POST		/subject/:subjectId/edit				    controllers.institute.SubjectController.editSubject(subjectId: Long, action: String ?="edit")
-GET		/subject/:classId/delete/:subjectId			controllers.institute.SubjectController.deleteSubjects(subjectId: Long, classId: Long, sid: Long ?=0, sec: String ?= "no")
+GET		    /subject/:classId/delete/:subjectId			controllers.institute.SubjectController.deleteSubjects(subjectId: Long, classId: Long, sid: Long ?=0, sec: String ?= "no")
 
 
 #test
