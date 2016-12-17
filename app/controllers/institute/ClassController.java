@@ -7,17 +7,15 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-import com.typesafe.config.ConfigException.Parse;
-
 import controllers.CustomController;
+import dao.ClassDAO;
+import enum_package.SessionKey;
 import play.data.Form;
 import play.data.FormFactory;
 import play.mvc.Result;
 import views.forms.institute.ClassForm;
-import dao.ClassDAO;
-import enum_package.SessionKey;
-import views.html.viewClass.viewclasses;
 import views.html.viewClass.addClasses;
+import views.html.viewClass.viewclasses;
 
 
 public class ClassController extends CustomController {
@@ -49,12 +47,11 @@ public class ClassController extends CustomController {
       return redirect(controllers.institute.routes.ClassController.viewAllClass("all"));
     }
 
-    String userName = session().get(SessionKey.username.name());
+    String userName = "vineet5289"; //session().get(SessionKey.username.name());
     String instituteIdFromSession = "1"; // session().get(SessionKey.instituteid.name());
     ClassForm classFormDetails = classForm.get();
     try {
       long instituteId = Long.parseLong(instituteIdFromSession);
-      System.out.println("claa++++++++++++++++++ printed here");
       classDAO.add(classFormDetails, instituteId, userName, section, classId);
     } catch (SQLException exception) {
       flash("error", "Some server exception happen");

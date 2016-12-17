@@ -1,5 +1,7 @@
 package dao;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,8 +13,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
-
-import org.apache.commons.lang3.StringUtils;
 
 import play.db.Database;
 import play.db.NamedDatabase;
@@ -27,10 +27,8 @@ public class ClassDAO {
       throws SQLException {
     boolean isSuccessfull = false;
     if(StringUtils.isBlank(section) || section.equalsIgnoreCase("no")) {
-      System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&  ere");
       isSuccessfull = addClass(instituteId, classe, userName);
     } else if(section.equalsIgnoreCase("yes")) {
-      System.out.println("%%%%%%%% else part");
       isSuccessfull = addSection(instituteId, classe, userName, classId);
     }
     System.out.println("claases success "+isSuccessfull);
@@ -97,8 +95,8 @@ System.out.println("*************************inside class ection "+sectionNames 
           insertSectionPS.setString(3, classDetails.getClassStartTime());
           insertSectionPS.setString(4, classDetails.getClassEndTime());
           insertSectionPS.setInt(5, classDetails.getNumberOfPeriod());
-          insertSectionPS.setString(6, classDetails.getClassName());
-          insertSectionPS.setLong(7, generatedClassId);
+          insertSectionPS.setLong(6, generatedClassId);
+          insertSectionPS.setString(7, classDetails.getClassName());
           insertSectionPS.setString(8, userName);
           insertSectionPS.addBatch();
         }
