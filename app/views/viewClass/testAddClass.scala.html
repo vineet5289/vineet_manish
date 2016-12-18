@@ -37,12 +37,15 @@
   Vote
 </button>
 
-
-<div class="ui icon big button" id="fileUpload">File Upload
-        <i class="cloud icon"></i>
+<form method="post" action="/upload/emp/add_emp" enctype="multipart/form-data">
+                     <div class="ui icon big button" id="fileUpload">File Upload
+                            <i class="cloud icon"></i>
         
- </div>
-<input type="file" id="new-file-upload" style="display: none">  
+                      </div>
+                       <input type="file" id="new-file-upload" name="name" style="display: none" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel,text/comma-separated-values, text/csv, application/csv">
+                       <button class="ui green button" type="submit">Send</button>
+                   </form>
+          
 
 
 <button class="show">Open</button>
