@@ -1,0 +1,285 @@
+@(employeeProfileObj:views.forms.employee.EmployeeDetailsForm)
+@viewClass.main("Profile | Info")("form"){
+  @viewClass.topProfileMenu()
+  <style type="text/css">
+      .form-row {
+  display: flex;
+}
+
+.form-row:not(:first-child) {
+  margin-top: 10px;
+}
+
+.form-row .field> div {
+  flex-direction: column;
+}
+
+.form-row > div:first-child {
+  width: 20%;
+  align-self: center;
+}
+
+.form-row > div:last-child {
+  width: 50%;
+}
+
+.form-row[attr:input]{
+  margin-bottom: 30px;
+}
+
+#editinfoemp{
+  background: #eaf0f2;
+}
+    </style>
+  <div class="wrapper" style="padding-top:30px">
+    <div class="ui grid container" id="proCon">
+       <div class="introduction">
+            
+            
+
+            <div class="ui doubling grid">
+
+  <div class="row">
+    <div class="three wide column">
+      <img>
+    </div>
+    <div class="ten wide column">
+       <h3>
+                  <a href="/edit/@employeeProfileObj.userName/emp" id="edit-details"><i class="edit icon">edit</i></a>  
+       </h3>
+
+    </div>
+    <div class="three wide column">
+      
+    </div>
+  </div>
+  <div class="row">
+    <div class="three wide column">
+        <img class="ui circular medium image" align="center" src="@routes.Assets.versioned("images/ID.jpg")">
+    </div>
+    <div class="ten wide column">
+         <div class="header">@employeeProfileObj.name</div>
+        <div class="content">
+            <div class="meta">
+                       <div class="ui tiny teal header"><i class="info icon"></i>Personal Details</div>
+                        <span>
+                            <i class="in flag"></i>
+                            India</span>
+
+                             @if(employeeProfileObj.gender=="M"){
+                             <span>
+                            <i class="man icon"></i>
+                            Male</span>
+                        <span>
+                           }else{
+                            <span>
+                            <i class="woman icon"></i>
+                            Female</span>
+                        <span>
+                         }
+                        
+                            <i class="gift icon"></i>
+                            @employeeProfileObj.dob</span>
+                    </div>
+          </div>
+    </div>
+    <div class="three wide column">
+      <img>
+    </div>
+  </div>
+</div>
+        </div>
+    </div>
+    <div class="ui hidden divider"></div>
+    <div class="ui divider"></div>
+<div class="ui divided stackable grid container">
+  <div class="three wide column">
+    <div class="ui hidden divider"></div>
+  
+    <a href="http://s.codepen.io/nivassri_k/debug/vOVxPP?"><h4 class="ui blue header" align="center" >E-Mail</h4></a>
+    <div class="ui divider"></div>
+   
+    <a href="http://s.codepen.io/nivassri_k/debug/vOVxPP?"><h4 class="ui blue header" align="center" >E-Mail</h4></a>
+    <div class="ui divider"></div>
+  
+    <a href="http://s.codepen.io/nivassri_k/debug/vOVxPP?"><h4 class="ui blue header" align="center" >E-Mail</h4></a>
+    <div class="ui divider"></div>
+    
+    <a href="http://s.codepen.io/nivassri_k/debug/vOVxPP?"><h4 class="ui blue header" align="center" >E-Mail</h4></a>
+    <div class="ui divider"></div>
+
+    <a href="http://s.codepen.io/nivassri_k/debug/vOVxPP?"><h4 class="ui blue header" align="center" >E-Mail</h4></a>
+    <div class="ui divider"></div>
+
+    <a href="http://s.codepen.io/nivassri_k/debug/vOVxPP?"><h4 class="ui blue header" align="center" >E-Mail</h4></a>
+    <div class="ui divider"></div>
+  </div>
+
+  <div class="ten wide column">
+    <div class="ui segment">
+      <img class="ui small left floated image" src="http://www.futureinusa.com/wp-content/uploads/2015/05/cpt-and-opt-1024x770.png">
+      <b>CPT and OPT for MS in US:</b>
+      <p>CPT What is CPT? It stands for Curriculum Practical Training. It is a type of employment granted to students on F1 visa Many programs in US require a student to work to gain on-the-job experience. CPT is needed to do an internship/job during the course of your MS in US More About CPT...</p>
+      <div class="meta">
+        <a href="http://s.codepen.io/nivassri_k/debug/vOVxPP?">Continue Reading <i class="pointing right icon"></i></a>
+      </div>
+    </div> 
+    <div class="ui container editinfoemp">
+          <div class="ui form">
+    <div class="form-row">
+      <div>
+        <label>Name</label>
+      </div>
+      <div class="field">
+        <div class="ui input">
+          <input type="text" value="mike"/>
+        </div>
+      </div>
+    </div>
+    <div class="form-row">
+      <div>
+        <label>Preffered Name</label>
+      </div>
+      <div>
+        <input type="text" value="Michael"/>
+      </div>
+    </div>
+    <div class="form-row">
+      <div>
+        <label>Contact</label>
+      </div>
+      <div>
+        <input type="text" value="R"/>
+      </div>
+    </div>
+
+     <div class="form-row">
+      <div>
+        <label>Alternative Contact</label>
+      </div>
+      <div>
+        <input type="text" value="R"/>
+      </div>
+    </div>
+
+     <div class="form-row">
+      <div>
+        <label>Alternative Email</label>
+      </div>
+      <div>
+        <input type="text" value="R"/>
+      </div>
+    </div>
+
+     <div class="form-row">
+      <div>
+        <label>Address Line1</label>
+      </div>
+      <div>
+        <input type="text" value="R"/>
+      </div>
+    </div>
+
+     <div class="form-row">
+      <div>
+        <label>Address Line2</label>
+      </div>
+      <div>
+        <input type="text" value="R"/>
+      </div>
+    </div>
+
+     <div class="form-row">
+      <div>
+        <label>City</label>
+      </div>
+      <div>
+        <input type="text" value="R"/>
+      </div>
+    </div>
+
+     <div class="form-row">
+      <div>
+        <label>State</label>
+      </div>
+      <div>
+        <input type="text" value="R"/>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div>
+        <label>PinCode</label>
+      </div>
+      <div>
+        <input type="text" value="R"/>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div>
+        <label>Country</label>
+      </div>
+      <div>
+        <input type="text" value="R"/>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div>
+        <label>Gender</label>
+      </div>
+      <div>
+        <div class="ui fluid selection dropdown">
+                           <div class="text">Select</div>
+                           <i class="dropdown icon"></i>
+                           <input name="gender" type="hidden">
+                           <div class="menu">
+                              <div class="item" data-value="M">MALE</div> 
+                              <div class="item" data-value="F">FEMALE</div>
+                              
+                           </div>
+                        </div>
+      </div>
+    </div>
+  </div>
+ 
+    </div>
+  </div>
+  <div class="three wide column">
+    <section class="ui main segment">
+
+          <div style="font-family: 'PT Sans'; font-size: 18px; color: white; border: solid 1px grey; padding: 7px; background-color: #49A2A2; border-radius: 3px ; margin-left:10px;">
+            <i class="user icon"></i>Личный кабинет
+          </div>
+          <div class="ui relaxed list">
+            <div class="item">
+              <i class="large add square icon"></i>
+              <div class="content" style="vertical-align: middle">
+                <a href="#" style="font-family: 'PT Sans Narrow'; font-size: 18px;">Добавить прогноз</a>
+              </div>
+            </div>
+            <div class="item">
+              <i class="large configure icon"></i>
+              <div class="content" style="vertical-align: middle">
+                <a href="#" style="font-family: 'PT Sans Narrow'; font-size: 18px;  font-weight: bold;">Мои настройки</a>
+              </div>
+            </div>
+            <div class="item">
+              <i class="large bar chart icon"></i>
+              <div class="content" style="vertical-align: middle">
+                <a href="#" style="font-family: 'PT Sans Narrow'; font-size: 18px;">Статистика</a>
+              </div>
+            </div>
+            <div class="item">
+              <i class="large star icon"></i>
+              <div class="content" style="vertical-align: middle">
+                <a href="#" style="font-family: 'PT Sans Narrow'; font-size: 18px;">Мои прогнозы</a>
+              </div>
+            </div>
+          </div>
+        </section>
+  </div>
+</div>
+  </div>
+}

@@ -29,7 +29,7 @@ public class HeadInstituteBasicAuthCheck extends Security.Authenticator {
 		}
 
 		try {
-			Map<String, String> otherUserCredentials = redisSessionDao.get(userName , RedisKeyPrefix.of(RedisKeyPrefix.buc));
+			Map<String, String> otherUserCredentials = redisSessionDao.get(userName , RedisKeyPrefix.of(RedisKeyPrefix.bui));
 			Map<String, String> authCredentials = redisSessionDao.get(userName , RedisKeyPrefix.of(RedisKeyPrefix.auth));
 			if(otherUserCredentials == null || otherUserCredentials.size() == 0 || authCredentials == null
 					|| authCredentials.size() == 0 || !authCredentials.containsKey(userAuth)) {

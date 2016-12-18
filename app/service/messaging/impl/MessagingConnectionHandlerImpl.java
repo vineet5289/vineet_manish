@@ -1,12 +1,12 @@
 package service.messaging.impl;
 
 import java.io.IOException;
+import java.util.concurrent.CompletableFuture;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import play.inject.ApplicationLifecycle;
-import play.libs.F;
 import service.messaging.MessagingConnectionHandler;
 
 import com.rabbitmq.client.Channel;
@@ -34,7 +34,7 @@ public class MessagingConnectionHandlerImpl implements MessagingConnectionHandle
 		connection = connectionFactory.newConnection();
 		applicationLifeycle.addStopHook(() -> {
 		connection.close();
-		return F.Promise.pure(null);
+		return CompletableFuture.completedFuture(null);
 		});
 	}
 

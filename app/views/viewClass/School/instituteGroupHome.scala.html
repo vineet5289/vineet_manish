@@ -1,9 +1,14 @@
-@(headInstitute:List[models.HeadInstituteLoginDetails.BranchDetails],username:String
-)
-@viewClass.main4("HOME | INSTITUTE")(""){
+@(headInstitute:List[models.HeadInstituteLoginDetails.BranchDetails],username:String , logoURL:String)
+@viewClass.main("HOME | INSTITUTE")(""){
 @viewClass.School.headInstituteProfileTopMenu(headInstitute)
 <div class="ui horizontal segment">
-   <a href="/institute/add/branch" class="ui  green button">ADD BRANCH</a>
+   <a href="/institute/add/branch" class="ui green button">ADD BRANCH</a>
+   <a href="/add_emp" class="ui green button">ADD EMPLOYEE</a>
+   <a href="/role" class="ui green button">ADD ROLES</a>
+   <a href="/group" class="ui green button">ADD GROUPS</a>
+   <a href="/view_emp" class="ui green button">SHOW EMPLOYEES</a>
+   <a href="/viewClass" class="ui green button">ADD CLASS</a>
+
 </div>
 <div class="main container">
 <div class="ui stackable cards">
@@ -11,27 +16,21 @@
   @for(institute <- headInstitute){
     
    
-    <input type="hidden" name="@institute.instituteId">
-  <div class="ui form" method="post" action="/institute/switch/branch">
+    
+    <input type="hidden" name="@institute.instituteId"/>
    <a class="ui card">
     
   <div class="content">
      <div class="ui teal medium header">
     
-<img class="ui avatar image" src="http://semantic-ui.com/images/avatar/large/elliot.jpg">
+<img class="ui avatar image" src="@logoURL">
 @institute.instituteName
   </div>
-  <div class="meta"> @institute.instituteUserName</div>
+  <div class="meta"> @institute.instituteName</div>
   </div>
   
   <div class="content">
-    <div class="ui small header">Address</div>
-    
-    <div class="two fields">
-    <div class="field">Koramangala 8th block</div>
-    <div class="field">Bangalore</div>
-
-    </div>
+    <div class="field">@institute.address</div>
   </div>
   <div class="content">
     <span class="right floated">
@@ -45,13 +44,12 @@
     <div class="ui basic fluid green button">Enter</div>
   </div>
 </a>
-</div>
 
 
 }
 
 </div>
-	
+  
 
 </div>
-	}
+  }

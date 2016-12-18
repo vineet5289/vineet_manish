@@ -7,21 +7,26 @@ GET     /        	                        	   controllers.SRPController.index()
 GET		/gp_institute							   controllers.SRPController.headInstituteHome()
 GET		/institute								   controllers.SRPController.instituteHome()
 GET		/students								   controllers.SRPController.studentsHome()
+GET		/employee								   controllers.SRPController.employeeHome()
+GET		/test_deadbolt_1						   controllers.TestController.subjectPresent()
+GET		/test_deadbolt_2						   controllers.TestController.subjectPresent2()
+GET		/test_deadbolt_3						   controllers.TestController.subjectPresent3()
+GET		/test_deadbolt_4						   controllers.TestController.subjectPresent4()
+GET		/test_deadbolt_5						   controllers.TestController.subjectPresent5()
+GET		/test_deadbolt_6/:schoolId					controllers.TestController.subjectPresent6(schoolId: Long)
+GET		/test_deadbolt_7/:schoolId					controllers.TestController.subjectPresent7(schoolId: Long)
 
 # login handler
 GET     /login                       			   controllers.login_logout.LoginController.preLogin()
 POST    /login                       			   controllers.login_logout.LoginController.postLogin(phone: String ?="")
 GET     /logout                       			   controllers.login_logout.LoginController.logout()
 
-# mailer
-GET       /sendmail                           	   controllers.MailController.sendMailTest()
-
 # Message Api
 GET			/sendMessage							   controllers.message.MobileMessageController.sendMessage()
 
 # Notification Listening Controller
-GET     	/listen                           		   controllers.message.NotificationListeningController.listen()
-GET     	/listeningWS                     		   controllers.message.NotificationListeningController.listeningSocket()
+#GET     	/listen                           		   controllers.message.NotificationListeningController.listen()
+#GET     	/listeningWS                     		   controllers.message.NotificationListeningController.listeningSocket()
 
 # Notification Controller
 POST     	/notification                              controllers.message.NotificationController.notification()
@@ -52,11 +57,14 @@ POST		/institute/edit/header					   controllers.institute.InstituteInfoControlle
 GET			/institute/mand_info					   controllers.institute.InstituteInfoController.getInstituteMandInfo()
 POST		/institute/mand_info					   controllers.institute.InstituteInfoController.updateInstituteMandInfo()
 # employee registration request
-GET			/addemp									   controllers.EmployeeController.preAddEmployeeRequest()
-GET			/addemp									   controllers.EmployeeController.postAddEmployeeRequest()
-
-GET      	/registeremp                               controllers.EmployeeController.preEmployeeRegistrationRequest()
-POST     	/registeremp            	               controllers.EmployeeController.postEmployeeRegistrationRequest()
+GET			/add_emp								   controllers.employee.EmployeeController.preAddEmployeeRequest()
+POST		/add_emp							   	   controllers.employee.EmployeeController.postAddEmployeeRequest()
+GET			/view_emp							   	   controllers.employee.EmployeeController.viewAllEmployee()
+GET			/delete_emp/:username					   controllers.employee.EmployeeController.deleteEmployee(username: String)
+GET			/edit/:username/emp					   	   controllers.employee.EmployeeController.preEditEmployee(username:String, section:String ?= "general", type:String ?= "self")
+POST		/edit/:username/emp					   	   controllers.employee.EmployeeController.postEditEmployee(username:String, section:String ?= "general", type:String ?= "self")
+GET			/show/:username/emp						   controllers.employee.EmployeeController.showEmployeeInfo(username:String, section:String ?= "general", type:String ?= "self")
+POST		/upload/emp/add_emp						   controllers.employee.EmployeeController.uploadEmpDetailsFile()
 
 # students registration request
 GET      	/registerstudent                 		   controllers.StudentController.preStudentRegistrationRequest()
@@ -79,25 +87,25 @@ POST		/addnewstudents							   controllers.students_guardians.StudenstGuardian.p
 
 # class
 
-GET			/addClass							   		controllers.institute.ClassController.preAddClass()
-POST		/addClass							   		controllers.institute.ClassController.postAddClass()
-POST		/editClass/:className				   		controllers.institute.ClassController.editClass(className: String)
-POST		/deleteClass/:className				   		controllers.institute.ClassController.deleteClass(className: String)
-GET			/viewClass							   		controllers.institute.ClassController.viewAllClass()
-POST		/addSection/:className						controllers.institute.ClassController.addSection(className: String)
-
+GET			/class/add							   		controllers.institute.ClassController.preAddClass(sec: String ?="no")
+POST		/class/add							   		controllers.institute.ClassController.postAddClass(classId: Long ?= 0, sec: String ?="no")
+POST		/class/:classId/edit				   		controllers.institute.ClassController.editClass(classId: Long, sec: String ?="no", action: String ?="edit")
+GET		    /class/:classId/delete				   		controllers.institute.ClassController.deleteClass(classId: Long, sec: String ?="no", sid: Long ?= 0, iid: Long ?= 0)
+GET			/viewClass							   		controllers.institute.ClassController.viewAllClass(action: String ?="all")
 
 # subject
 
-GET			/addSubjects							   controllers.institute.SubjectController.preAddSubjects()
-POST		/addSubjects							   controllers.institute.SubjectController.postAddSubjects()
-GET			/viewSubjects							   controllers.institute.SubjectController.viewsSubjects()
-POST		/editSubjects/:subjectId				   controllers.institute.SubjectController.editSubject(subjectId: Long)
-POST		/editSubjects/:subjectId				   controllers.institute.SubjectController.deleteSubjects(subjectId: Long)
+GET			/subject/:classId/add						controllers.institute.SubjectController.preAddSubjects(classId: Long, secId: Long ?= 0, sec ?="no")
+POST		/subject/:classId/add						controllers.institute.SubjectController.postAddSubjects(classId: Long, secId: Long ?= 0, sec ?="no")
+GET			/subject/:subjectId/view				    controllers.institute.SubjectController.viewsSubjects(subjectId: Long)
+POST		/subject/:subjectId/edit				    controllers.institute.SubjectController.editSubject(subjectId: Long, action: String ?="edit")
+GET		    /subject/:classId/delete/:subjectId			controllers.institute.SubjectController.deleteSubjects(subjectId: Long, classId: Long, sid: Long ?=0, sec: String ?= "no")
+
 
 #test
 GET			/addTest							   		controllers.CustomController.testRoute()
 POST		/addTest							   		controllers.CustomController.postRoute()
+GET			/shift/:shiftId							    controllers.CustomController.returnShiftDetails(shiftId: Long)
 
 
 # access rights
@@ -111,3 +119,27 @@ GET			/userInfo/:schoolId/:userName				controllers.user.UserController.getUser(s
 
 # initial registration
 GET			/registration								controllers.SRPController.preRegistration(reg_user_request : String ?="ERROR")
+
+#role
+GET			/role										controllers.institute.RoleController.preAddRole()
+POST		/add_role/:edit								controllers.institute.RoleController.createOrEditRole(edit : String)
+POST		/edit_role/:edit							controllers.institute.RoleController.createOrEditRole(edit : String)
+GET			/disable_role/:roleId						controllers.institute.RoleController.disableRole(roleId: Long)
+GET			/enable_role/:roleId						controllers.institute.RoleController.enableRole(roleId: Long)
+
+#role
+GET			/group										controllers.institute.GroupController.preAddGroup()
+POST		/add_group									controllers.institute.GroupController.postAddGroup()
+POST		/disable_group								controllers.institute.GroupController.disableGroup()
+
+#role
+GET			/timetabel/create							controllers.institute.TimeTableController.preCreateTimeTable()
+POST		/timetabel/create							controllers.institute.TimeTableController.postCreateTimeTable()
+
+# permission
+POST		/edit_permission							controllers.institute.RoleController.editPermission()
+
+# file or image upload 
+
+POST		/upload/:username/prof_img					controllers.file_controller.ImageController.uploadProfileImage(username) 
+

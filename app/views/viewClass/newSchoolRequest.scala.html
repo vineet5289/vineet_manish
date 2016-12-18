@@ -1,7 +1,35 @@
 @(schoolRegister:Form[views.forms.institute.AddNewInstituteRequest], schoolCountry:
 List[String], state: Map[String, String])
 @main3("Register")("index"){
-<div class="main container">
+
+<style>
+.ui.form input[type="text"],.ui.form input[type="email"]{
+   border: 1px solid #055020;
+   color: #1134F5 ;
+   background: #fff;
+}
+.ui.selection.dropdown{
+   border: 1px solid rgba(1, 8, 15, 0.7);
+   color: rgba(248, 119, 59, 0.9);
+}
+
+input::-webkit-input-placeholder, textarea::-webkit-input-placeholder { 
+    color:    red;
+}
+input:-moz-placeholder, textarea:-moz-placeholder { 
+    color:    red;
+}
+input::-moz-placeholder, textarea::-moz-placeholder { 
+    color:    red !important;
+}
+input:-ms-input-placeholder, textarea:-ms-input-placeholder { 
+    color:    red;
+}
+
+</style>
+
+<div class="stripe">
+<div class="ui container">
    <div class="ui page grid">
       <div class="column">
          <h2 class="ui center aligned icon header">
@@ -16,20 +44,23 @@ List[String], state: Map[String, String])
          </div>
          <div class="item">
             <div class="image">
+               <div class="tooltip"  data-tooltip="Some epic tooltip!" data-position="top right">
+      Top Center
+    </div>
                <!--  New School request  -->
                <label>field marked with * are mandatory</label>
+               <div class="ui hidden divider"></div>
                <form
+                  class="ui form"
                   id="newSchoolRegistrationForm"
-                  class="ui green form segment"
                   method="Post"
-                  action="@institute.routes.NewInstituteRequestController.preAddNewInstituteRequest()" autocomplete='off'>
+                  action="@institute.routes.NewInstituteRequestController.preAddNewInstituteRequest()" >
 
-
-              
-
-                   <div class="two fields">
+                 <h4 class="ui dividing header">Institute Info</h4>
+                 <div class="ui segment">
+                 <div class="two fields">
                    <div class="field">
-                        <div class="ui label">*Type Of Institute</div>
+                        <div class="label"><span>*Type Of Institute</span></div>
                         <div class="ui fluid selection state dropdown">
                            <div class="text">SELECT</div>
                            <i class="dropdown icon"></i>
@@ -40,8 +71,14 @@ List[String], state: Map[String, String])
                            </div>
                         </div>
                      </div>
+
+
+
+      
+
                      <div class="field">
-                     <label>Number of Institutes</label>
+                     <div class="label"><span>*No Of Institute</span></div>
+                     
                      <div class="ui left icon input">
                         <input
                            type="text"
@@ -50,55 +87,83 @@ List[String], state: Map[String, String])
                            >
                         <i class="user icon"></i>
                      </div>
+                     
                      </div>
                   </div>
 
 
 
 
-                  <div class="field">
-                     <label>*School Name</label>
+                   <div class="field">
+                     <div class="label"><span>*Institute Name</span></div>
+                   
                      <div class="ui left icon input">
                         <input
                            type="text"
                            name="instituteName"
-                           placeholder="name"
-                           style="text-transform:uppercase">
-                        <i class="user icon"></i>
+                           placeholder="Institute Name"
+                           data-content="Please enter Your school"
+                           >
+                        <i class="secondary blue user icon"></i>
                      </div>
                   </div>
-                  <div class="field">
-                     <!--<div class="ui basic blue label">SCHOOL REGISTRATION ID</div> -->
-                     <label>Institute Registration Id</label>
+
+
+
+
+                   <div class="field">
+                     <div class="label"><span>Institute Registration Id (Optional)</span></div>
+                    
                      <div class="ui left icon input">
-                        <input type="text" name="instituteRegistrationId" placeholder="Registration Id">
-                        <i class="user icon"></i>
+                        <input
+                           type="text"
+                           name="instituteRegistrationId"
+                           placeholder="Institute Registration id"
+                           >
+                        <i class="secondary blue user icon"></i>
                      </div>
                   </div>
-                  <div class="field">
-                     <div class="ui label">*ADDRESS</div>
+                  </div>
+                  
+                   <h4 class="ui dividing header">Contact Info</h4>
+                    <div class="ui segment">
+                    <div class="field">
+                     <div class="label"><span>*ADDRESS</span></div>
+                    
                      <div class="ui left icon input">
-                        <input type="text" name="instituteAddressLine1" placeholder="*Address Line 1">
-                        <i class="home icon"></i>
+                        <input
+                           type="text"
+                           name="instituteAddressLine1"
+                           placeholder="*Address Line 1"
+                           >
+                        <i class="secondary blue user icon"></i>
                      </div>
                   </div>
+
+                 
+                
                   <div class="field">
                      <div class="ui left icon input">
-                        <input type="text" name="instituteAddressLine2" placeholder="Address Line2">
-                        <i class="home icon"></i>
+                        <input type="text" name="instituteAddressLine2" placeholder="Address Line2 (Optional)">
+                        <i class="secondary blue home icon"></i>
                      </div>
                   </div>
                   <div class="two fields">
-                     <div class="field">
-                        <div class="ui label">*CITY</div>
-                        <div class="ui left icon input">
-                           <input type="text" name="instituteCity" placeholder="city">
-                           <i class="home icon"></i>
-                        </div>
+
+                       <div class="field">
+                     <div class="label"><span>*CITY</span></div>
+                     
+                     <div class="ui left icon input">
+                        <input type="text" name="instituteCity" placeholder="*city">
+                        <i class="secondary blue home icon"></i>
                      </div>
+                  
+                  </div>
+
+                    
 
                      <div class="field">
-                        <div class="ui label ">*STATE</div>
+                        <div class="label "><span>*STATE</span></div>
                         <div class="ui fluid selection state dropdown">
                            <div class="text">Select</div>
                            <i class="dropdown icon"></i>
@@ -114,73 +179,93 @@ List[String], state: Map[String, String])
 
                   <div class="two fields">
                      <div class="field">
-                        <div class="ui label">*COUNTRY</div>
+                        <div class="label"><span>*COUNTRY</span></div>
+                        
                         <div class="ui left icon input">
                            <input type="text" name="instituteCountry" placeholder="Country">
-                           <i class="home icon"></i>
+                           <i class="secondary blue home icon"></i>
                         </div>
+                    
                      </div>
+
                      <div class="field">
-                        <div class="ui label">*PINCODE</div>
+                        <div class="label"><span>*PINCODE</span></div>
+                        
                         <div class="ui left icon input">
                            <input type="text" name="institutePinCode" placeholder="pincode">
-                           <i class="home icon"></i>
+                           <i class="secondary blue home icon"></i>
                         </div>
+                     
                      </div>
                   </div>
-                  <div class="field">
-                     <div class="ui label">*School E-Mail</div>
-                     <div class="ui left icon input">
-                        <input type="email" name="instituteEmail" placeholder="Institute Email">
-                        <i class="mail icon"></i>
-                     </div>
-                  </div>
-                  <div class="field">
-                     <div class="ui label">*YOUR NAME</div>
-                     <div class="ui left icon input">
-                        <input
-                           type="text"
-                           name="contactPersonName"
-                           placeholder="Your Name (Who is Contacting)">
-                        <i class="user icon"></i>
-                     </div>
-                  </div>
-                  <div class="two fields">
+
+                     <div class="two fields">
                      <div class="field">
-                        <div class="ui label">*Mobile No.</div>
+                        <div class="label"><span>*Mobile No.</span></div>
+                        <div class="ui focus input">
                         <div class="ui left icon input">
                            <input type="text" name="institutePhoneNumber" placeholder="Institute Mobile Number">
-                           <i class="phone square icon"></i>
+                           <i class="secondary blue phone square icon"></i>
                         </div>
                      </div>
+                     </div>
                      <div class="field">
-                        <div class="ui label ">*SCHOOL ALTERNATIVE NO.</div>
+                        <div class="label "><span>SCHOOL ALTERNATIVE NO. (Optional)</span></div>
                         <div class="ui left icon input">
                            <input
                               type="text"
                               name="instituteOfficeNumber"
                               placeholder="Alternative  Mobile Number">
-                           <i class="phone square icon"></i>
+                           <i class="secondary blue phone square icon"></i>
                         </div>
                      </div>
                   </div>
+               </div>
+
+                  <h4 class="ui dividing header">Mail & Other Info</h4>
+                  <div class="ui segment">
                   <div class="field">
-                     <div class="ui label pointing below">QUERY</div>
+                     <div class="label"><span>*School E-Mail</span></div>
+                     
+                     <div class="ui left icon input">
+                        <input type="email" name="instituteEmail" placeholder="Institute Email">
+                        <i class="secondary blue mail icon"></i>
+                     </div>
+                  
+                  </div>
+                  <div class="field">
+                     <div class="label"><span>*YOUR NAME</span></div>
+                     <div class="ui focus input">
+                     <div class="ui left icon input">
+                        <input
+                           type="text"
+                           name="contactPersonName"
+                           placeholder="Your Name (Who is Contacting)">
+                        <i class="secondary blue user icon"></i>
+                     </div>
+                  </div>
+                  </div>
+
+               
+                  <div class="field">
+                     <div class="label"><span>QUERY (Optional)</span></div>
                      <div class="ui left icon input">
                         <input
                            type="text"
                            name="query"
                            placeholder="query"
                            help="Please Enter Your Query">
-                        <i class="comment icon"></i>
+                        <i class="secondary blue comment icon"></i>
                      </div>
                   </div>
+               </div>
+                  <div class="ui hidden divider"></div>
                   <div class="two fields">
                      <div class="field">
                         <button class="ui green fluid left floated button" id="New-schoolRequest-submit">Send Request</button>
                      </div>
                      <div class="field">
-                        <div class="ui teal reset fluid right floated button">Reset</div>
+                        <div class="ui blue reset fluid right floated secondary button">Reset</div>
                      </div>
                   </div>
                   <div class="ui error message"></div>
@@ -189,6 +274,7 @@ List[String], state: Map[String, String])
          </div>
       </div>
    </div>
+</div>
 </div>
 @if(flash.containsKey("success")) {
 <div class="ui segment">

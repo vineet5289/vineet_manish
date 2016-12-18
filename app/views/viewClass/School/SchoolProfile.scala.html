@@ -54,6 +54,20 @@ shiftAndTimingForm:Form[views.forms.institute.InstituteShiftAndClassTimingInfoFo
                                 @schoolHeaderForm("schoolWebsiteUrl").value
                             </div>
                         </div>
+                        <div class="item">
+                         <div class="content">
+                         <h4 class="ui blue header">Logo</h4>
+                         <form method="post" action="/upload/vineet5289/prof_img" enctype="multipart/form-data">
+                     <div class="ui icon big button" id="fileUpload">File Upload
+                            <i class="cloud icon"></i>
+        
+                      </div>
+                       <input type="file" id="new-file-upload" name="fileName" style="display: none">
+                       <button class="ui green button" type="submit">Send</button>
+                   </form>
+        
+                         </div>
+                        </div>
                     </div>
                 </div>
             </div>

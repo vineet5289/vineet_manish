@@ -6,7 +6,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import play.db.DB;
+import javax.inject.Inject;
+
+import play.db.Database;
+import play.db.NamedDatabase;
 import utils.RandomGenerator;
 import utils.StringUtils;
 import views.forms.institute.InstituteFormData;
@@ -15,9 +18,10 @@ import enum_package.InstituteDaoProcessStatus;
 import enum_package.LoginType;
 import enum_package.LoginState;
 import enum_package.RequestedStatus;
-import enum_package.Role;
+import enum_package.InstituteUserRole;
 
 public class SchoolRegistrationDAO {
+	@Inject @NamedDatabase("srp") private Database db;
 
 	public InstituteDaoProcessStatus registerInstitute(InstituteFormData schoolData, String referenceNumber, String authToken,
 			Long regInstituteRequestId) throws SQLException {
@@ -55,7 +59,7 @@ public class SchoolRegistrationDAO {
 
 		try {
 			String bCryptPassword = RandomGenerator.getBCryptPassword(schoolData.getInstitutePassword());
-			connection = DB.getDataSource("srp").getConnection();
+			connection = db.getConnection();
 			connection.setAutoCommit(false);
 
 			headInstituteRegistrationPS = connection.prepareStatement(headInstituteInsertQ, Statement.RETURN_GENERATED_KEYS);
@@ -154,7 +158,7 @@ public class SchoolRegistrationDAO {
 			instituteLoginPS.setString(1, schoolData.getInstituteEmail().trim());
 			instituteLoginPS.setString(2, schoolData.getInstituteEmail().trim());
 			instituteLoginPS.setString(3, bCryptPassword);
-			instituteLoginPS.setString(5, Role.institutegroupadmin.name());
+			instituteLoginPS.setString(5, InstituteUserRole.institutegroupadmin.name());
 			instituteLoginPS.setString(6, "ALL=1");
 			instituteLoginPS.setBoolean(7, true);
 			instituteLoginPS.setString(8, schoolData.getInstituteName().trim());

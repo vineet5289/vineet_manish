@@ -9,7 +9,7 @@ import java.util.Map;
 import controllers.CustomController;
 import models.UserInfo;
 import dao.UserFetchDAO;
-import enum_package.Role;
+import enum_package.InstituteUserRole;
 import play.mvc.Result;
 import play.mvc.Security;
 import security.ActionAuthenticator;
@@ -55,9 +55,9 @@ public class UserController extends CustomController {
 		UserFetchDAO userFetchDAO = new UserFetchDAO();
 		UserInfo userInfos = null;
 		try {
-			if(category.equals(Role.GUARDIAN.name())) {
+			if(category.equals(InstituteUserRole.guardian.name())) {
 //				userInfos = userFetchDAO.getAllGuardian(schoolId);
-			} else if(category.equalsIgnoreCase(Role.STUDENT.name())) {
+			} else if(category.equalsIgnoreCase(InstituteUserRole.student.name())) {
 //				userInfos = userFetchDAO.getAllStudents(schoolId);
 			} else {
 				System.out.println("===========> 1");

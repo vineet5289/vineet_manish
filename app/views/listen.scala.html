@@ -2,8 +2,7 @@
 
 <script type="text/javascript">
 	var WS = window['MozWebSocket'] ? MozWebSocket : WebSocket
-	var listeningSocket = new WS(
-			"@message.routes.NotificationListeningController.listeningSocket().webSocketURL(request)");
+	var listeningSocket = new WS("");
 	alert(listeningSocket);
 	alert(listeningSocket);
 	var receiveEvent = function(event) {

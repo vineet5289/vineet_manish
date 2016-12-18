@@ -1,95 +1,88 @@
-@(myMap: Map[String, List[views.forms.institute.DisplayClassForm]])
-
-@mainDashboard("View Classes"){
-
-<div class="sixteen wide column" id="content">
-                    <h2><i class="table icon"></i> All Classes Information</h2>
-                    <div class="ui divider"></div>
-
-  <div class="ui one column stackable grid ui form">
-                  <div class="column">
-                            <div class="ui segments">
-                                <div class="ui segment"><h3>Class Name</h3></div>
-                                <div class="ui segment">
-                                
-  
- 
-  
-  @for(((key, value), currentIndex) <- myMap.zipWithIndex) {
-      
-      <div class="ui large olive label">
-       CLASS
-      <div class="detail">@key</div>
-           </div>
-            <div class="ui large left pointing blue label">
-      <a class="ui large blue edit button" onClick="addSection()" >Add More Sections</a>
+@(myMap: Map[String, List[views.forms.institute.ClassForm]])
+@viewClass.main("ADD | CLASS")(""){
+  <div class="main container">
+  <div class="ui grid">
+    <div class="two column row">
+      <div class="left floated column bottom aligned content">
+        <h1 class="ui header">CLASSES</h1>
+      </div>
+      <div class="right floated column right aligned">
+        <div class="middle aligned content">
+          <a href="/class/add"><button class="ui labeled icon button primary button"> <i class="plus icon"></i>ADD NEW CLASS
+    </button></a>
+        </div>
+      </div>
     </div>
-    
-      
-    <table class="ui selectable celled table">
-      <thead>
-    <tr>
-      
-      <th>Section</th>
-      <th>Start Time</th>
-      <th>End Time</th>
-      <th>No of Period</th>
-    </tr>
-  </thead>
-      
-      @for((item,index)<-value.zipWithIndex){
-      
-       <tbody>
-      <tr>
-      
-      <td> @item.className </td>
-      <td> @item.classStartTime </td>
-      <td> @item.classEndTime  </td>
-      <td> @item.noOfPeriod  </td>
-      <td><div class="ui buttons"><a class="ui tiny blue edit button" href="./edit_action.html"><i class="edit icon"></i>edit</a><div class="or"></div> <a class="ui tiny green edit button"><i class="trash icon"></i>delete</a></td>
-     
-      </tr>
-       </tbody>
-       </table>
-       
-       <div class="ui small modal">
-    
-    <div class="header">Add Section to class-@key</div>
-    <div class="content">
-    <form class="ui form" method="POST" action="">
-  <div class="field">
-    <label>Section Name</label>
-    <input name="nameOfSection" placeholder="Section Name" type="text" >
-  </div>
-  <div class="field">
-    <label>Start Time</label>
-    <input name="classStartTime" placeholder="class Start Time " type="text" value="@item.classStartTime" >
-  </div>
-  <div class="field">
-    <label>End Time</label>
-    <input name="classEndTime" placeholder="class End Time " type="text" value="@item.classEndTime">
-  </div>
-  <div class="field">
-    <label>noOfPeriod</label>
-    <input name="noOfPeriod" placeholder="noOfPeriod" type="text" value="@item.noOfPeriod">
-  </div>
-  <button class="ui button" type="submit">Submit</button>
-</form>
-</div>
+    <div class="sixteen wide column ">
+      <table class="ui celled table selectable">
+        <thead>
+          <tr>
+            <th class="center aligned">Class</th>
+            <th class="center aligned">Start Time</th>
+            <th class="center aligned">End Time</th>
+            <th class="center aligned">Period</th>
+            <th class="center aligned">Section</th>
+            <th class="center aligned">Action</th>
+          </tr>
+        </thead>
+          <tbody>
+                  @for(((key, value), currentIndex) <- myMap.zipWithIndex) {
+                  @for((item,index)<-value.zipWithIndex){
+                      <tr>
+                         <td class="center aligned"><a href="">@item.className</a></td>
+                         <td class="center aligned">@item.classStartTime</td>
+                         <td class="center aligned">@item.classEndTime</td>
+                         <td class="center aligned">@item.numberOfPeriod</td>
+                         <td class="center aligned">@item.numberOfsection</td>
+                          <td class="center aligned">
+           <div class="ui basic icon button">
+                  <a href="/class/edit/@item.classId?action=delete"><button class="ui button">
+                    <i class="trash icon"></i>
+              </button>
+              </a>
+             
     </div>
-    
-      
-      }
+    </td>
+                      </tr>
+                     }
+                  }
+                 
+                </tbody>
+<tfoot>
+  <tr>
+    <th colspan="7">
+      <div class="ui right floated pagination menu tiny">
+        <a class="item">1</a>
+        <a class="item">2</a>
+        <a class="icon item">
+          <i class="right chevron icon"></i>
+        </a>
+      </div>
+    </th>
+  </tr>
+</tfoot>
+</table>
+</div>
+</div>
+</div>
 
-  
- 
+
+<div class="ui small delete modal" id="delete-confirm">
+  <div class="header">
+    Delete This Company
+  </div>
+  <div class="content">
+    <p>Are you sure you want to delete this company? </p>
+  </div>
+  <div class="actions">
+    <div class="ui gray button">
+      Cancel
+    </div>
+    <div class="ui blue right button">
+      Delete
+    </div>
+  </div>
+</div>
 }
- 
 
-</div>
-</div>
-</div>
-</div>
-</div>
 
-}
