@@ -1,9 +1,21 @@
 @(schoolRegister:Form[views.forms.institute.AddInstituteBranchForm], schoolCountry:
 List[String], state: Map[String, String])
-@viewClass.main3("Register")("index"){
-<div class="main container">
-   <div class="ui page grid">
-      <div class="column">
+@viewClass.main7("Register")(""){
+<style>
+.ui.form input[type="text"],.ui.form input[type="email"]{
+   border: 1px solid #055020;
+   color: #1134F5 ;
+   background: #fff;
+}
+.ui.selection.dropdown{
+   border: 1px solid rgba(1, 8, 15, 0.7);
+   color: rgba(248, 119, 59, 0.9);
+}
+</style>
+
+<div class="ui main container" id="content">
+  
+      
          <h2 class="ui center aligned icon header">
             <i class="circular emphasized users icon"></i>
             <div class="content">
@@ -14,18 +26,20 @@ List[String], state: Map[String, String])
          <div class="ui horizontal divider">
             <i class="circular heart icon"></i>
          </div>
-         <div class="item">
-            <div class="image">
+        
                <!--  New School request  -->
                <label>field marked with * are mandatory</label>
+               <div class="ui hidden divider"></div>
                <form
                   id="newSchoolRegistrationForm"
-                  class="ui green form segment"
+                  class="ui form "
                   method="Post"
                   action="/institute/add/branch" >
 
+                  <h4 class="ui dividing header">Institute Info</h4>
+                  <div class="ui segment">
                   <div class="field">
-                     <label>*School Name</label>
+                     <div class="label"><span>*Institute Name</span></div>
                      <div class="ui left icon input">
                         <input
                            type="text"
@@ -37,14 +51,18 @@ List[String], state: Map[String, String])
                   </div>
                   <div class="field">
                      <!--<div class="ui basic blue label">SCHOOL REGISTRATION ID</div> -->
-                     <label>Institute Registration Id</label>
-                     <div class="ui left icon input">
+                     <div class="label"><span>Institute Registration Id (Optional)</span></div>
+                    <div class="ui left icon input">
                         <input type="text" name="instituteRegistrationId" placeholder="Registration Id">
                         <i class="user icon"></i>
                      </div>
                   </div>
+               </div>
+
+                  <h4 class="ui dividing header">Location Info</h4>
+                  <div class="ui segment">
                   <div class="field">
-                     <div class="ui label">*ADDRESS</div>
+                     <div class="label"><span>*Address</span></div>
                      <div class="ui left icon input">
                         <input type="text" name="instituteAddressLine1" placeholder="*Address Line 1">
                         <i class="home icon"></i>
@@ -52,13 +70,13 @@ List[String], state: Map[String, String])
                   </div>
                   <div class="field">
                      <div class="ui left icon input">
-                        <input type="text" name="instituteAddressLine2" placeholder="Address Line2">
+                        <input type="text" name="instituteAddressLine2" placeholder="Address Line2 (Optional)">
                         <i class="home icon"></i>
                      </div>
                   </div>
                   <div class="two fields">
                      <div class="field">
-                        <div class="ui label">*CITY</div>
+                        <div class="label"></span>*City</span></div>
                         <div class="ui left icon input">
                            <input type="text" name="instituteCity" placeholder="city">
                            <i class="home icon"></i>
@@ -66,7 +84,7 @@ List[String], state: Map[String, String])
                      </div>
 
                      <div class="field">
-                        <div class="ui label ">*STATE</div>
+                        <div class="label"><span>*State</span></div>
                         <div class="ui fluid selection state dropdown">
                            <div class="text">Select</div>
                            <i class="dropdown icon"></i>
@@ -82,38 +100,34 @@ List[String], state: Map[String, String])
 
                   <div class="two fields">
                      <div class="field">
-                        <div class="ui label">*COUNTRY</div>
+                        <div class="label"><span>*Country</span></div>
                         <div class="ui left icon input">
                            <input type="text" name="instituteCountry" placeholder="Country">
                            <i class="home icon"></i>
                         </div>
                      </div>
                      <div class="field">
-                        <div class="ui label">*PINCODE</div>
+                        <div class="label"><span>*Pincode</span></div>
                         <div class="ui left icon input">
                            <input type="text" name="institutePinCode" placeholder="pincode">
                            <i class="home icon"></i>
                         </div>
                      </div>
                   </div>
-                  <div class="field">
-                     <div class="ui label">*School E-Mail</div>
-                     <div class="ui left icon input">
-                        <input type="email" name="instituteEmail" placeholder="Institute Email">
-                        <i class="mail icon"></i>
-                     </div>
-                  </div>
-                  
-                  <div class="two fields">
+               </div>
+
+                    <h4 class="ui dividing header">Contact & Mail Info</h4>
+                    <div class="ui segment">
+                         <div class="two fields">
                      <div class="field">
-                        <div class="ui label">*Mobile No.</div>
+                        <div class="label"><span>*Mobile No.</span></div>
                         <div class="ui left icon input">
                            <input type="text" name="institutePhoneNumber" placeholder="Institute Mobile Number">
                            <i class="phone square icon"></i>
                         </div>
                      </div>
                      <div class="field">
-                        <div class="ui label ">*SCHOOL ALTERNATIVE NO.</div>
+                        <div class="label"><span>Alternative No. (Optional)</span></div>
                         <div class="ui left icon input">
                            <input
                               type="text"
@@ -123,7 +137,22 @@ List[String], state: Map[String, String])
                         </div>
                      </div>
                   </div>
-                
+
+                   <div class="field">
+                     <div class="label"><span>*School E-Mail</span></div>
+                     <div class="ui left icon input">
+                        <input type="email" name="instituteEmail" placeholder="Institute Email">
+                        <i class="mail icon"></i>
+                     </div>
+                  </div>
+                    </div>
+
+
+                   
+                 
+                  
+               
+                  <div class="ui hidden divider"></div>
                   <div class="two fields">
                      <div class="field">
                         <button class="ui green fluid left floated button" id="New-schoolRequest-submit">Send Request</button>
@@ -135,10 +164,8 @@ List[String], state: Map[String, String])
                   <div class="ui error message"></div>
                </form>
             </div>
-         </div>
-      </div>
-   </div>
-</div>
+      
+
 @if(flash.containsKey("success")) {
 <div class="ui segment">
    <div class="ui green success message" id="success-message">

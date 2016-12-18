@@ -2,6 +2,9 @@ package controllers;
 
 import java.io.IOException;
 
+import javax.inject.Inject;
+
+import play.data.FormFactory;
 import play.mvc.Result;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -10,6 +13,9 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import controllers.routes;
 
 public class RegistrationHandler extends CustomController {
+
+	@Inject
+	private FormFactory formFactory;
 
 	public Result preRegistorSchool(String regCat) throws JsonParseException, JsonMappingException, IOException {
 		System.out.println("***" + regCat);

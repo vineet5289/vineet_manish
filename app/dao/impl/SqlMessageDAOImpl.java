@@ -15,14 +15,12 @@ import dao.MessageDAO;
 
 public class SqlMessageDAOImpl implements MessageDAO {
 
+	@Inject @NamedDatabase("srp") private Database db;
 	private final String messageIdField = "id";
 	private final String schoolIdField = "school_id";
 	private final String messageField = "message";
 	private final String createdAtField = "created_at";
 	private final String tableName = "message";
-
-	@Inject @NamedDatabase("srp")
-	Database db;
 
 //	@Inject
 //	public SqlMessageDAOImpl(Database db) {

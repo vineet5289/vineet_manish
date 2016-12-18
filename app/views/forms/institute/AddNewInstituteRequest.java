@@ -23,7 +23,6 @@ public class AddNewInstituteRequest {
 	private String institutePinCode;
 	private String contactPersonName;
 	private String groupOfInstitute;
-	private int noOfInstitute;
 	
 	// optional field
 	private String instituteOfficeNumber;
@@ -78,10 +77,6 @@ public class AddNewInstituteRequest {
 
 		if(groupOfInstitute == null || !(groupOfInstitute.equalsIgnoreCase("single") || groupOfInstitute.equalsIgnoreCase("group"))) {
 			errors.add(new ValidationError("groupOfInstitute", "Please tell us whether registration is for single or group of institute."));
-		}
-
-		if(noOfInstitute < 0) {
-			errors.add(new ValidationError("noOfInstitute", "Please select number of institue/branch."));
 		}
 
 		if(errors.size() > 0)

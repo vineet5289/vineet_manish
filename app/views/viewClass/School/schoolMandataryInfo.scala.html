@@ -5,7 +5,20 @@ attendenceType:List[String],
 instituteBoard: Map[String, String],
 instituteType:  Map[String, String])
 
+
+
 @viewClass.main6("UPDATE | INFO")("index"){
+<style>
+.ui.form input[type="text"]{
+   border: 1px solid #055020;
+   color: #1134F5 ;
+   background: #fff;
+}
+.ui.selection.dropdown{
+   border: 1px solid rgba(1, 8, 15, 0.7);
+   color: rgba(248, 119, 59, 0.9);
+}
+</style>
 <div class="main container">
    <div class="ui page grid">
       <div class="column">
@@ -22,24 +35,14 @@ instituteType:  Map[String, String])
             </div>
             </br>
             <div class="item">
-               <form class="ui green segment  form" id="MandatoryUpdateForm" method="POST" action="/institute/mand_info">
-                  <div class="field">
-                     <label class="ui  teal header">Shift</label>
-                     <div class="ui fluid selection  dropdown" id="shiftNumber">
-                        <div class="text">Select</div>
-                              <i class="dropdown icon"></i>
-                              <input name="numberOfShift" type="hidden" value="1" id="shiftvalue" onChange="shiftbox()">
-                              <div class="menu">
-                                   <div class="item" data-value="1">1 Shift Per Day</div>
-                                   <div class="item" data-value="2">2 Shift Per Day</div>
-                                   <div class="item" data-value="3">3 Shift Per Day</div>
-                                   <div class="item" data-value="4">4 Shift Per Day</div>
-                              </div>
-                        </div>
-                     
-                  </div>
-                  
+                
 
+
+               <form class="ui form" id="MandatoryUpdateForm" method="POST" action="/institute/mand_info">
+                  
+                   <div class="ui form one">
+               
+                     <h4 class="ui dividing header">Institute Board & Type</h4>
                     <div class="two fields">
                      <div class="field">
                        <label class="ui  teal header">Institute Board</label>
@@ -73,7 +76,7 @@ instituteType:  Map[String, String])
                     
                   
 
-                  <h4 class="ui top attached teal inverted header">Hostel</h4>
+                  <h4 class="ui dividing header">Hostel Info</h4>
                   <div class="ui attached  segment">
                      <div class="inline fields">
                         <label>Is Hostel Facilty Available in Your Institute?</label>
@@ -106,7 +109,7 @@ instituteType:  Map[String, String])
                         </div>
                      </div>
                   </div>
-                  <h4 class="ui top attached  teal inverted header">School Week</h4>
+                  <h4 class="ui dividing header">Institute Week Days</h4>
                   <div class="ui attached  segment">
                      <div class="two fields">
                         <div class="field">
@@ -137,7 +140,7 @@ instituteType:  Map[String, String])
                         </div>
                      </div>
                   </div>
-                  <h4 class="ui top attached  teal inverted header">School From</h4>
+                  <h4 class="ui dividing header">Class Info</h4>
                   <div class="ui attached  segment">
                      <div class="two fields">
                         <div class="field">
@@ -168,11 +171,11 @@ instituteType:  Map[String, String])
                         </div>
                      </div>
                   </div>
-                  <h4 class="ui top attached  teal inverted inverted header">School Timing</h4>
+                  <h4 class="ui dividing header">Office Hour Timings</h4>
                   <div class="ui attached  segment">
                      <div class="two fields">
                         <div class="field">
-                           <label>School Start Time</label>
+                           <label>Start Time</label>
                            <div class="ui calendar timeSelect">
                               <div class="ui input left icon">
                                  <i class="time icon"></i>
@@ -181,7 +184,7 @@ instituteType:  Map[String, String])
                            </div>
                         </div>
                         <div class="field">
-                           <label>School End Time</label>
+                           <label>End Time</label>
                            <div class="ui calendar timeSelect">
                               <div class="ui input left icon">
                                  <i class="time icon"></i>
@@ -191,7 +194,7 @@ instituteType:  Map[String, String])
                         </div>
                      </div>
                   </div>
-                  <h4 class="ui top attached  teal inverted header">School Financial Year</h4>
+                  <h4 class="ui dividing header">Financial Year</h4>
                   <div class="ui attached segment">
                      <div class="green field">
                         <label>Choose Date Format</label>
@@ -230,132 +233,64 @@ instituteType:  Map[String, String])
                   </div>
                   </br>
 
+              <div class="ui four column grid">
+                                   <div class="left floated column"></div>
+                                   <div class="right floated column">
+                     <button class="fluid positive ui submit button" id="next">Next</button>
+                                   </div>
+                      </div>
+
+                   </div>
 
 
-
-
-
-                 <!--   SHIFT SEGMENT STARTS HERE-->
-                  <div id="shiftContainer">
-                    
-                  <div class="ui segment">
-                     
-                     <div class="two fields">
-                        <div class="field">
-                           <label>Shift Name</label>
-                           <input name="shiftName" type="text" value=" " placeholder="Enter Shift Name">
-                        </div>
-
-                        <div class="field">
-                           <label>Shift Attendance Type </label>
-                           <div class="ui fluid selection dropdown">
-                              <div class="text">Select</div>
-                              <i class="dropdown icon"></i>
-                              <input name="shifts[0].shiftAttendenceType" type="hidden">
-                              <div class="menu">
-                                 @for(value<- attendenceType){ 
-                                 <div class="item" data-value="@value">@value</div>
-                                 }
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-
-
-                     <div class="two fields">
-                        <div class="field">
-                           <label>Shift Start Time</label>
-                           <div class="ui calendar timeSelect">
-                              <div class="ui input left icon">
-                                 <i class="time icon"></i>
-                                 <input name="shifts[0].shiftClassStartTime" type="text" value='' placeholder="School Start Time">
-                              </div>
-                           </div>
-                        </div>
-                        <div class="field">
-                           <label>Shift End Time</label>
-                           <div class="ui calendar timeSelect">
-                              <div class="ui input left icon">
-                                 <i class="time icon"></i>
-                                 <input name="shiftClassEndTime" type="text" value='' placeholder="School End Time">
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-
-                     <div class="two fields">
-                        <div class="field">
-                           <label>Class From</label>
-                           <div class="ui fluid selection dropdown">
-                              <div class="text">Select</div>
-                              <i class="dropdown icon"></i>
-                              <input name="shiftStartClassFrom" type="hidden">
-                              <div class="menu">
-                                 @for(value<- classes){ 
-                                 <div class="item" data-value="@value">@value</div>
-                                 }
-                              </div>
-                           </div>
-                        </div>
-                        <div class="field">
-                           <label>Class To</label>
-                           <div class="ui fluid selection dropdown">
-                              <div class="text">Select</div>
-                              <i class="dropdown icon"></i>
-                              <input name="shiftEndClassTo" type="hidden">
-                              <div class="menu">
-                                 @for(value<- classes){ 
-                                 <div class="item" data-value="@value">@value</div>
-                                 }
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-
-
-                     <div class="two fields">
-                        <div class="field">
-                           <label>Shift Week Starts on</label>
-                           <div class="ui fluid selection dropdown">
-                              <div class="text">Select</div>
-                              <i class="dropdown icon"></i>
-                              <input name="shiftWeekStartDay" type="hidden">
-                              <div class="menu">
-                                 @for(value<- weekDay){ 
-                                 <div class="item" data-value="@value">@value</div>
-                                 }
-                              </div>
-                           </div>
-                        </div>
-                        <div class="field">
-                           <label>Shift Week Ends on</label>
-                           <div class="ui fluid selection dropdown">
-                              <div class="text">Select</div>
-                              <i class="dropdown icon"></i>
-                              <input name="shiftWeekEndDay" type="hidden">
-                              <div class="menu">
-                                 @for(value<- weekDay){ 
-                                 <div class="item" data-value="@value">@value</div>
-                                 }
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-
-
-                    </div> 
-                     
-                  </div></br>
-
-                  <div class="newShiftContainer"></div></br>
+               <div class="ui form two" style="display:none;">
+                          <div class="ui fluid segment">
+                  <div class="inline field">
+                       <div class="ui checkbox shift">
+                          <input type="checkbox" name="shiftAdd" id="shiftAdd">
+                           <label for="shiftAdd"></label>
+                       </div>
+                  <label>Does Your Institute run into shifts ?</label>
+                 </div>
                  
-                 <div class="field">
-                  <button type="submit" class="ui green fluid button"><label>Let's get started</label></button>
-                 </div></br>
+                <div class="toggle transition" id="toggleShift" style="display:none;">
+                
+                   <div class="field">
+                     <label class="ui  teal header">Select Shift</label>
+                     <div class="ui fluid selection  dropdown shift" id="shiftNumber">
+                        <div class="text">Select</div>
+                              <i class="dropdown icon"></i>
+                              <input name="numberOfShift" type="hidden" id="shiftvalue" onchange="shiftfunction()">
+                              <div class="menu">
+                                   <div class="item" data-value="2">2 Shift Per Day</div>
+                                   <div class="item" data-value="3">3 Shift Per Day</div>
+                                   <div class="item" data-value="4">4 Shift Per Day</div>
+                              </div>
+                        </div>
+                     
+                  </div>
+                </div>
+                  </div>
+                  <!--   SHIFT SEGMENT STARTS HERE-->
+                  <div class="ui shift form" id="shiftContainer">
+                    
+                   </div></br>
 
 
+                   <div class="ui four column grid">
+                                   <div class="left floated column">
+                                 <div class="fluid positive ui submit button back " id="back">Back</div>
+                                   </div>
+                                   <div class="right floated column">
+                     <div class="fluid positive ui submit button" id="submitMandInfobtn" >Submit</div>
+                                   </div>
+                      </div>
+                  </div>
+                
                </form>
-              
+
+                
+
             </div>
          </div>
       </div>
@@ -389,13 +324,345 @@ instituteType:  Map[String, String])
    }
 </div>
 
+<script type="text/javascript">
+$(function(){
+   var iserror=false;
+
+  $('#shiftNumber').on('selected', function() {
+    shiftfunction();
+
+   });
+   
+
+   // for validation in step form new approach
+  $('#next').on('click',function(e){
+    e.preventDefault();
+  
+  $('.ui.form.one').form( { 
+     fields : {
+       "instituteBoard": {
+        "identifier": "instituteBoard",
+        "rules": [{
+          "type": "empty",
+          "prompt": "Please selet Board"
+        }]
+      },
+      "instituteType": {
+        "identifier": "instituteType",
+        "rules": [{
+          "type": "empty",
+          "prompt": "Please selet type"
+        }]
+      },
+
+                     "instituteOfficeWeekStartDay": {
+        "identifier": "instituteOfficeWeekStartDay",
+        "rules": [{
+          "type": "empty",
+          "prompt": "Please Select start day of week"
+        }]
+      },
+      "instituteOfficeWeekEndDay": {
+        "identifier": "instituteOfficeWeekEndDay",
+        "rules": [{
+          "type": "empty",
+          "prompt": "Please selet end day of week"
+        }]
+      },
+      "instituteClassFrom": {
+        "identifier": "instituteClassFrom",
+        "rules": [{
+          "type": "empty",
+          "prompt": "Please selet start class"
+        }]
+      },
+       "instituteClassTo": {
+        "identifier": "instituteClassTo",
+        "rules": [{
+          "type": "empty",
+          "prompt": "Please selet end class"
+        }]
+      },
+      "instituteOfficeStartTime": {
+        "identifier": "instituteOfficeStartTime",
+        "rules": [{
+          "type": "empty",
+          "prompt": "Please Select start time"
+        }]
+      },
+      "instituteOfficeEndTime": {
+        "identifier": "instituteOfficeEndTime",
+        "rules": [{
+          "type": "empty",
+          "prompt": "Please selet end  time"
+        }]
+      },
+      "instituteFinancialStartDate": {
+        "identifier": "instituteFinancialStartDate",
+        "rules": [{
+          "type": "empty",
+          "prompt": "Please selet start date"
+        }]
+      },
+       "instituteFinancialEndDate": {
+        "identifier": "instituteFinancialEndDate",
+        "rules": [{
+          "type": "empty",
+          "prompt": "Please selet end class"
+        }]
+      }
+      
+     },
+     inline : true,
+     onSuccess:function(e){
+      e.preventDefault();
+      $('.ui.form.two').form().show();
+       $(this).form().hide();
+      return false;
+     }
+     
+  });
+
+});
+
+    $('#back').on('click',function(e){
+       e.preventDefault();
+       $('.ui.form.one').form().show();
+       $('.ui.form.two').form().hide();
+    });
+
+    $('#submitMandInfobtn').on('click',function(e){
+      e.preventDefault();
+    $('.ui.form.two').form({
+        fields : {
+           "shiftAdd": {
+        "identifier": "shiftAdd",
+        "rules": [{
+          "type": "checked",
+          "prompt": "You must agree to the terms and conditions"
+        }]
+      },
+      "shiftName": {
+        "identifier": "shiftName",
+        "rules": [{
+          "type": "empty",
+          "prompt": "Please Enter Shift Name"
+        }]
+      },
+      "shiftAttendenceType": {
+        "identifier": "shiftAttendenceType",
+        "rules": [{
+          "type": "empty",
+          "prompt": "Please select attendance type"
+        }]
+      },
+      "shiftClassStartTime": {
+        "identifier": "shiftClassStartTime",
+        "rules": [{
+          "type": "empty",
+          "prompt": "Please selet start time"
+        }]
+      },
+       "shiftClassEndTime": {
+        "identifier": "shiftClassEndTime",
+        "rules": [{
+          "type": "empty",
+          "prompt": "Please selet end class"
+        }]
+      },
+       "shiftStartClassFrom": {
+        "identifier": "shiftStartClassFrom",
+        "rules": [{
+          "type": "empty",
+          "prompt": "Please select class from"
+        }]
+      },
+       "shiftEndClassTo": {
+        "identifier": "shiftEndClassTo",
+        "rules": [{
+          "type": "empty",
+          "prompt": "Please select class to"
+        }]
+      },
+      "shiftWeekStartDay": {
+        "identifier": "shiftWeekStartDay",
+        "rules": [{
+          "type": "empty",
+          "prompt": "Please select start week"
+        }]
+      },
+      "shiftWeekEndDay": {
+        "identifier": "shiftWeekEndDay",
+        "rules": [{
+          "type": "empty",
+          "prompt": "Please select end week"
+        }]
+      }
+       
+        },
+        inline:true,
+        onSuccess:function(e){
+             e.preventDefault();
+         $('#MandatoryUpdateForm').submit();
+          return false;
+        }
+      });
+    }); 
+})
 
 
+function shiftfunction(){
 
+  var container = document.getElementById("shiftContainer");
+ var shift=parseInt(document.getElementById("shiftvalue").value);
+ while (container.hasChildNodes()) {
+             container.removeChild(container.lastChild);
+           }
+      
+      for(var i=0,j=1;i<shift;i++,j++){
 
+            var shiftName = "shifts[" + i + "].shiftName";
+            var shiftAttendenceType = "shifts[" + i + "].shiftAttendenceType";
+            var shiftClassStartTime = "shifts[" + i + "].shiftClassStartTime";
+            var shiftClassEndTime = "shifts[" + i + "].shiftClassEndTime";
+            var shiftStartClassFrom = "shifts[" + i + "].shiftStartClassFrom";
+            var shiftEndClassTo = "shifts[" + i + "].shiftEndClassTo";
+            var shiftWeekStartDay = "shifts[" + i + "].shiftWeekStartDay";
+            var shiftWeekEndDay = "shifts[" + i + "].shiftWeekEndDay";
+            
+
+             
+var htmlshift = '<h4 class="ui top attached  teal inverted header">Shift '+j+'</h4>'+
+'<div class="ui attached segment">'+
+'                     '+
+'                     <div class="two fields">'+
+'                        <div class="field">'+
+'                           <label>Shift Name</label>'+
+'          <input name='+shiftName+' type="text" value=" " placeholder="Enter Shift Name">'+
+'                        </div>'+
+''+
+'                        <div class="field">'+
+'                           <label>Shift Attendance Type </label>'+
+'                           <div class="ui fluid selection dropdown">'+
+'                              <div class="text">Select</div>'+
+'                              <i class="dropdown icon"></i>'+
+'                              <input name='+shiftAttendenceType+' type="hidden">'+
+'                              <div class="menu">'+
+'                                 @for(value<- attendenceType){ '+
+'                                 <div class="item" data-value="@value">@value</div>'+
+'                                 }'+
+'                              </div>'+
+'                           </div>'+
+'                        </div>'+
+'                     </div>'+
+''+
+''+
+'                     <div class="two fields">'+
+'                        <div class="field">'+
+'                           <label>Shift Start Time</label>'+
+'                           <div class="ui calendar timeSelect">'+
+'                              <div class="ui input left icon">'+
+'                                 <i class="time icon"></i>'+
+'                                 <input name='+shiftClassStartTime+' type="text" value=\'\' placeholder="School Start Time">'+
+'                              </div>'+
+'                           </div>'+
+'                        </div>'+
+'                        <div class="field">'+
+'                           <label>Shift End Time</label>'+
+'                           <div class="ui calendar timeSelect">'+
+'                              <div class="ui input left icon">'+
+'                                 <i class="time icon"></i>'+
+'                                 <input name='+shiftClassEndTime+' type="text" value=\'\' placeholder="School End Time">'+
+'                              </div>'+
+'                           </div>'+
+'                        </div>'+
+'                     </div>'+
+''+
+'                     <div class="two fields">'+
+'                        <div class="field">'+
+'                           <label>Class From</label>'+
+'                           <div class="ui fluid selection dropdown">'+
+'                              <div class="text">Select</div>'+
+'                              <i class="dropdown icon"></i>'+
+'                              <input name='+shiftStartClassFrom+' type="hidden">'+
+'                              <div class="menu">'+
+'                                 @for(value<- classes){ '+
+'                                 <div class="item" data-value="@value">@value</div>'+
+'                                 }'+
+'                              </div>'+
+'                           </div>'+
+'                        </div>'+
+'                        <div class="field">'+
+'                           <label>Class To</label>'+
+'                           <div class="ui fluid selection dropdown">'+
+'                              <div class="text">Select</div>'+
+'                              <i class="dropdown icon"></i>'+
+'                              <input name='+shiftEndClassTo+' type="hidden">'+
+'                              <div class="menu">'+
+'                                 @for(value<- classes){ '+
+'                                 <div class="item" data-value="@value">@value</div>'+
+'                                 }'+
+'                              </div>'+
+'                           </div>'+
+'                        </div>'+
+'                     </div>'+
+''+
+''+
+'                     <div class="two fields">'+
+'                        <div class="field">'+
+'                           <label>Shift Week Starts on</label>'+
+'                           <div class="ui fluid selection dropdown">'+
+'                              <div class="text">Select</div>'+
+'                              <i class="dropdown icon"></i>'+
+'                              <input name='+shiftWeekStartDay+' type="hidden">'+
+'                              <div class="menu">'+
+'                                 @for(value<- weekDay){ '+
+'                                 <div class="item" data-value="@value">@value</div>'+
+'                                 }'+
+'                              </div>'+
+'                           </div>'+
+'                        </div>'+
+'                        <div class="field">'+
+'                           <label>Shift Week Ends on</label>'+
+'                           <div class="ui fluid selection dropdown">'+
+'                              <div class="text">Select</div>'+
+'                              <i class="dropdown icon"></i>'+
+'                              <input name='+shiftWeekEndDay+' type="hidden">'+
+'                              <div class="menu">'+
+'                                @for(value<- weekDay){ '+
+'                                 <div class="item" data-value="@value">@value</div>'+
+'                                 }'+
+'                              </div>'+
+'                           </div>'+
+'                        </div>'+
+'                     </div>'+
+''+
+''+
+'                    </div>';
+   
 
 
     
 
+
+
+
+
+
+      //var html = $(html);
+      $(htmlshift).appendTo(container).each(function(){ $('.ui.dropdown').dropdown();
+         $('.timeSelect').calendar({
+  type: 'time'
+      });
+       });
      
+      }
+   
+
+}
+
+
+
+</script>
+
 }

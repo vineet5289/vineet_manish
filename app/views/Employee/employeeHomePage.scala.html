@@ -1,0 +1,708 @@
+@(employeeHomeForm:views.forms.UserHomePageForm)
+
+@viewClass.main7("Employee|HomePage")(""){
+@Employee.employeeSideMenu(employeeHomeForm)
+ <div class="ui main container" id="content">
+  <div class="ui special message">
+  <i class="close icon"></i>
+  <div class="ui header">
+    Welcome back! @employeeHomeForm.userName
+  </div>
+  <p>This is a special notification which you can dismiss if you're bored with it.</p>
+</div>
+
+  <h1 class="ui header">
+  <div class="content">
+  
+  Assigned to you
+  
+    <div class="sub header">22 items</div>
+  </div>
+  </h1>
+
+  <div class="ui hidden divider"></div>
+  <div class="ui cards">
+    <div class="card ui fluid">
+
+
+        <a class="header task ui block large" style="margin-top:2px;margin-bottom:0;"><i class="icon asterisk"></i>Task: CM: drumbeat task to validate / inspect door switches </a>
+      <div class="content">
+
+        <div class="description">
+          <p>Water intrusion caused motor bearing failure. Once the bearing failed, the pump seal allowed motor to be flooded with water causing electrical trip.</p>
+        </div>
+
+      </div>
+      <div class="extra content">
+      
+        <div class="ui relaxed horizontal list">
+        <div class="item">
+        
+        
+ <span class="ui red small label">Open and overdue 4 days</span>
+ </div>
+          <div class="item">
+            <i class="ui icon circle grey" style="font-size:10px;"></i>
+            <div class="content">
+              Assigned To
+              <div class="header">
+                Dan Gerren
+              </div>
+            </div>
+          </div>
+
+          <div class="item">
+            <i class="ui icon circle grey" style="font-size:10px;"></i>
+            <div class="content">
+              Review Meeting
+              <div class="header">
+                Weekly (Maintenance)
+              </div>
+            </div>
+          </div>
+
+
+          <div class="item">
+            <i class="ui icon circle grey" style="font-size:10px;"></i>
+            <div class="content">
+              TPM Pillar
+              <div class="header">
+                Autonomous Maintenance
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="card ui fluid">
+
+
+        <a class="header gemba ui block large" style="margin-top:2px;margin-bottom:0;"><i class="icon check square"></i>Gemba Audit: Line 6 Filler</a>
+      <div class="content">
+
+        <div class="description">
+          <div class="ui label green mini simple" style="width:10%">A</div>
+          <div class="ui label green mini" style="width:10%">B</div>
+          <div class="ui label grey mini" style="width:10%">C</div>
+          <div class="ui label grey mini" style="width:10%">D</div>
+          <div class="ui label grey mini" style="width:10%">E</div>
+          <div class="ui label grey mini" style="width:10%">F</div>
+          <div class="ui label grey mini" style="width:10%">G</div>
+          <div class="ui label grey mini" style="width:10%">H</div>
+          <div class="ui label grey mini" style="width:10%">I</div>
+
+        </div>
+
+      </div>
+      <div class="content">
+        <div class="ui relaxed horizontal list">
+<div class="item">
+
+      <span class="ui grey label">Incomplete</span>
+</div>
+          <div class="item">
+            <i class="ui icon circle grey" style="font-size:10px;"></i>
+            <div class="content">
+              Created
+              <div class="header">
+                Today
+              </div>
+            </div>
+          </div>
+
+          <div class="item">
+            <i class="ui icon circle grey" style="font-size:10px;"></i>
+            <div class="content">
+              Due
+              <div class="header">
+                Feb 3, 2016
+              </div>
+            </div>
+          </div>
+
+
+          <div class="item">
+            <i class="ui icon circle grey" style="font-size:10px;"></i>
+            <div class="content">
+              Assigned To
+              <div class="header">
+                Josh S.
+              </div>
+            </div>
+          </div>
+
+
+          <div class="item">
+            <i class="ui icon circle grey" style="font-size:10px;"></i>
+            <div class="content">
+              Completed
+              <div class="header">
+                2 of 9 checks
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+    
+     <div class="card ui fluid">
+
+<a class="header task ui block large" style="margin-top:2px;margin-bottom:0;"><i class="icon warning sign"></i>Incident: replace water pump P102 at square tank - BOE area </a>
+      <div class="content">
+        <div class="description">
+          <p>Pump replaced - cost of $3300
+
+Part D824</p>
+        </div>
+
+      </div>
+      <div class="extra content">
+      
+        <div class="ui relaxed horizontal list">
+          <div class="item">   
+            <span class="ui green label">Resolved</span>
+          </div>
+
+          <div class="item">
+            <i class="ui icon circle grey" style="font-size:10px;"></i>
+            <div class="content">
+              Review Meeting
+              <div class="header">
+                Weekly (Maintenance)
+              </div>
+            </div>
+          </div>
+
+
+          <div class="item">
+            <i class="ui icon circle grey" style="font-size:10px;"></i>
+            <div class="content">
+              TPM Pillar
+              <div class="header">
+                Autonomous Maintenance
+              </div>
+            </div>
+          </div>
+
+        </div>
+        
+      <h6 class="ui sub header">
+      1 Required Task
+      </h6>
+      <table class="ui basic table small grey">
+        <tbody>
+          <tr>
+          <td><i class="icon check"></i> BDA for pump P102</td>
+            
+            <td class="collapsing">Closed (other)</td>
+            
+            <td class="collapsing">Due Jan 11, 2016</td>
+          </tr>
+        </tbody>
+      </table>
+
+      </div>
+
+    </div>
+  </div>
+
+  <div class="ui modal task-modal large long">
+    <i class="close icon"></i>
+
+
+   
+
+    <div class="ui vertical right floated labeled buttons icon" style="margin:20px 25px;">
+      <button class="ui button">
+
+        <i class="refresh icon"></i> Re-Open...
+      </button>
+      <button class="ui button">
+        <i class="attach icon"></i>Attach files...</button>
+    </div>
+
+    <div class="ui item content" style="padding-right:230px;">
+
+      <div class="ui header large"><i class="icon asterisk"></i>Task: CM: drumbeat task to validate / inspect door switches </div>
+
+
+
+      <div class="ui description">
+        Water intrusion caused motor bearing failure. Once the bearing failed, the pump seal allowed motor to be flooded with water causing electrical trip.
+
+
+      </div>
+      <div class="ui divider clear"></div>
+
+      <div class="ui relaxed horizontal list">
+<div class="item">
+ <div class="ui red label">Open and overdue 4 days</div>
+</div>
+        <div class="item">
+          <i class="ui icon circle grey" style="font-size:10px;"></i>
+          <div class="content">
+            Assigned To
+
+            <div class="header">
+              Dan Gerren
+            </div>
+          </div>
+        </div>
+
+        <div class="item">
+          <i class="ui icon circle grey" style="font-size:10px;"></i>
+          <div class="content">
+            Review Meeting
+            <div class="header">
+              Weekly (Maintenance)
+            </div>
+          </div>
+        </div>
+
+
+        <div class="item">
+          <i class="ui icon circle grey" style="font-size:10px;"></i>
+          <div class="content">
+            TPM Pillar
+            <div class="header">
+              Autonomous Maintenance
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <h3 class="ui header">Activity</h3>
+      <div class="ui form">
+        <div class="field">
+          <textarea rows="2" placeholder="Type a new comment here..."></textarea>
+        </div>
+      </div>
+      <div class="ui feed">
+        <div class="event">
+          <div class="label">
+            <img src="http://semantic-ui.com/images/avatar/small/elliot.jpg">
+          </div>
+          <div class="content">
+            <div class="summary">
+              <a class="user">
+          Elliot Fu
+        </a> closed the task
+              <div class="date">
+                1 Hour Ago
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="event">
+          <div class="label">
+            <img src="http://semantic-ui.com/images/avatar/small/elliot.jpg">
+          </div>
+          <div class="content">
+            <div class="summary">
+              <a>Helen Troy</a> added <a>2 new attachments</a>
+              <div class="date">
+                4 days ago
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="event">
+          <div class="label">
+            <img src="http://semantic-ui.com/images/avatar/small/elliot.jpg">
+          </div>
+          <div class="content">
+            <div class="summary">
+              <a class="user">
+          Jenny Hess
+        </a> reopened the task
+              <div class="date">
+                2 Days Ago
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="event">
+          <div class="label">
+            <img src="http://semantic-ui.com/images/avatar/small/elliot.jpg">
+          </div>
+          <div class="content">
+            <div class="summary">
+              <a>Joe Henderson</a> pushed due date back to Today (1st time)
+              <div class="date">
+                3 days ago
+              </div>
+            </div>
+            <div class="extra text">
+              Need more time
+            </div>
+          </div>
+        </div>
+        <div class="event">
+          <div class="label">
+            <img src="http://semantic-ui.com/images/avatar/small/elliot.jpg">
+          </div>
+          <div class="content">
+            <div class="summary">
+              <a>Justen Kitsune</a> created the task
+              <div class="date">
+                4 days ago
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="ui modal gemba-modal large long" style="min-height:90%;">
+    <i class="close icon"></i>
+
+
+  
+
+ 
+    <div class="ui item content">
+
+      <div class="ui header large"><i class="icon check square"></i>Gemba Audit: Line 6 Filler</div>
+
+
+      <div class="ui relaxed horizontal list">
+
+          <div class="item">
+            <div class="ui grey label ">Incomplete</div>
+          </div>
+          <div class="item">
+            <i class="ui icon user grey" style="font-size:14px;"></i>
+            <div class="content">
+              Created
+              <div class="header">
+                Today
+              </div>
+            </div>
+          </div>
+
+          <div class="item">
+            <i class="ui icon user grey" style="font-size:14px;"></i>
+            <div class="content">
+              Due
+              <div class="header">
+                Feb 3, 2016
+              </div>
+            </div>
+          </div>
+
+
+          <div class="item">
+            <i class="ui icon user grey" style="font-size:14px;"></i>
+            <div class="content">
+              Assigned To
+              <div class="header">
+                Josh S.
+              </div>
+            </div>
+          </div>
+
+
+          <div class="item">
+            <i class="ui icon user grey" style="font-size:14px;"></i>
+            <div class="content">
+              Completed
+              <div class="header">
+                2 of 9 checks
+              </div>
+            </div>
+          </div>
+
+      </div>
+      
+      
+<div class="ui divider hidden"></div>
+
+<div class="ui cards">
+  
+  
+  <div class="card" style="width:450px;">
+    <div class="content">
+      <div class="header small">5S "Filler - Area6" check</div>
+      <div class="description">
+        Review safe and unsafe behaviors of operator. Reinforce behaviors that meet expectation and coach on those that could be improved.
+      </div>
+    </div>
+    <div class="ui two buttons">
+    
+    
+    <div class="ui button ">
+      <i class="thumbs up icon green"></i>
+      Acceptable
+    </div>
+    <div class="ui button ">
+      <i class="thumbs down icon red"></i>
+      Needs improvement
+    </div>
+    </div>
+  </div>
+   
+  <div class="card" style="width:450px;">
+    <div class="content">
+      <div class="header small">5S "Filler - Area6" check</div>
+      <div class="description">
+        Review safe and unsafe behaviors of operator. Reinforce behaviors that meet expectation and coach on those that could be improved.
+      </div>
+    </div>
+    <div class="ui two buttons">
+    
+    
+    <div class="ui button ">
+      <i class="thumbs up icon green"></i>
+      Acceptable
+    </div>
+    <div class="ui button ">
+      <i class="thumbs down icon red"></i>
+      Needs improvement
+    </div>
+    </div>
+  </div> 
+  <div class="card" style="width:450px;">
+    <div class="content">
+      <div class="header small">5S "Filler - Area6" check</div>
+      <div class="description">
+        Review safe and unsafe behaviors of operator. Reinforce behaviors that meet expectation and coach on those that could be improved.
+      </div>
+    </div>
+    <div class="ui two buttons">
+    
+    
+    <div class="ui button ">
+      <i class="thumbs up icon green"></i>
+      Acceptable
+    </div>
+    <div class="ui button ">
+      <i class="thumbs down icon red"></i>
+      Needs improvement
+    </div>
+    </div>
+  </div> 
+  <div class="card" style="width:450px;">
+    <div class="content">
+      <div class="header small">5S "Filler - Area6" check</div>
+      <div class="description">
+        Review safe and unsafe behaviors of operator. Reinforce behaviors that meet expectation and coach on those that could be improved.
+      </div>
+    </div>
+    <div class="ui two buttons">
+    
+    
+    <div class="ui button ">
+      <i class="thumbs up icon green"></i>
+      Acceptable
+    </div>
+    <div class="ui button ">
+      <i class="thumbs down icon red"></i>
+      Needs improvement
+    </div>
+    </div>
+  </div> 
+  
+  <div class="card" style="width:450px;">
+    <div class="content">
+
+      <div class="header small">5S "Filler - Area6" check</div>
+      <div class="description">
+        Review safe and unsafe behaviors of operator. Reinforce behaviors that meet expectation and coach on those that could be improved.
+      </div>
+    </div>
+      <div class="extra content">
+      
+        <img class="small image ui" src="http://www.used-packaging-machinery.eu/images/Pester%20RVS%20Fold%20totaal.jpg"/>
+        <div class="ui divider hidden">
+        
+        </div>
+        
+        
+        <div class="ui green label small"><i class="icon thumbs up"></i> Acceptable</div>
+    </div>
+  </div>
+  <div class="card" style="width:450px;">
+    <div class="content">
+      <div class="header small">5S "Filler - Area6" check</div>
+      <div class="description">
+        Review safe and unsafe behaviors of operator. Reinforce behaviors that meet expectation and coach on those that could be improved.
+      </div>
+    </div>
+    <div class="ui two buttons">
+    
+    
+    <div class="ui button ">
+      <i class="thumbs up icon green"></i>
+      Acceptable
+    </div>
+    <div class="ui button ">
+      <i class="thumbs down icon red"></i>
+      Needs improvement
+    </div>
+    </div>
+  </div> 
+  <div class="card" style="width:450px;">
+    <div class="content">
+      <div class="header small">5S "Filler - Area6" check</div>
+      <div class="description">
+        Review safe and unsafe behaviors of operator. Reinforce behaviors that meet expectation and coach on those that could be improved.
+      </div>
+    </div>
+    <div class="ui two buttons">
+    
+    
+    <div class="ui button ">
+      <i class="thumbs up icon green"></i>
+      Acceptable
+    </div>
+    <div class="ui button ">
+      <i class="thumbs down icon red"></i>
+      Needs improvement
+    </div>
+    </div>
+  </div> 
+  <div class="card" style="width:450px;">
+    <div class="content">
+      <div class="header small">5S "Filler - Area6" check</div>
+      <div class="description">
+        Review safe and unsafe behaviors of operator. Reinforce behaviors that meet expectation and coach on those that could be improved.
+      </div>
+    </div>
+    <div class="ui two buttons">
+    
+    
+    <div class="ui button ">
+      <i class="thumbs up icon green"></i>
+      Acceptable
+    </div>
+    <div class="ui button ">
+      <i class="thumbs down icon red"></i>
+      Needs improvement
+    </div>
+    </div>
+  </div>
+  
+  
+  
+</div>
+
+    </div>
+    </div>
+    <h1 class="ui header ui">
+  <div class="content">
+  
+  Search
+  
+  </div>
+  </h1>
+
+    <form class="ui form">
+
+
+      <div class="ui segment attached">
+        <div class="field">
+          <label>Summary, Details, or Comments</label>
+          <input type="text">
+        </div>
+      </div>
+
+      <div class="ui segment attached secondary">
+        <div class="field">
+          <label>Types</label>
+          <div class="inline field">
+            <div class="ui checkbox">
+              <input type="checkbox">
+              <label>Tasks</label>
+            </div>
+            <div class="ui checkbox">
+              <input type="checkbox">
+              <label>Incidents</label>
+            </div>
+          </div>
+        </div>
+        <div class="fields">
+          <div class="four wide field">
+            <label>Status</label>
+            <select class="ui fluid dropdown">
+              <option value="">State</option>
+              <option value="AL">Alabama</option>
+            </select>
+          </div>
+
+          <div class="four wide field">
+            <label>Due By</label>
+            <input type="date" />
+          </div>
+
+
+          <div class="eight wide field">
+            <label>Created Between</label>
+            <div class="two fields">
+              <div class="field"><input type="date" />-</div>
+              <div class="field"><input type="date" /></div>
+              
+              
+            </div>
+          </div>
+        </div>
+
+
+        <div class="ui button green" tabindex="0">Search</div>
+      </div>
+    </form>
+  </div>
+
+  <div class="ui small test modal">
+          <i class="close icon"></i>
+          <div class="header">
+            Delete Your Account
+          </div>
+          <div class="content">
+            <p>Are you sure you want to delete your account</p>
+          </div>
+          <div class="actions">
+            <div class="ui negative button">
+              No
+            </div>
+            <div class="ui positive right labeled icon button">
+              Yes
+              <i class="checkmark icon"></i>
+            </div>
+          </div>
+          </div>
+          <div class="ui large test modal">
+            <i class="close icon"></i>
+            <div class="header">
+              Changing Your Thing
+            </div>
+            <div class="content">
+              <p>Do you want to change that thing to something else?</p>
+            </div>
+            <div class="actions">
+              <div class="ui negative button">
+                No
+              </div>
+              <div class="ui positive right labeled icon button">
+                Yes
+                <i class="checkmark icon"></i>
+              </div>
+            </div>
+          </div>
+        
+
+
+
+    </div> 
+}

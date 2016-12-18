@@ -3,8 +3,11 @@ package controllers;
 import java.sql.SQLException;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import controllers.routes;
 import play.data.Form;
+import play.data.FormFactory;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
@@ -14,21 +17,26 @@ import dao.UserLoginDAO;
 
 public class AccessRightsController extends Controller {
 
+	
+	@Inject
+	private FormFactory formFactory;
+	@Inject
+	private UserLoginDAO userLoginDAO;
+
 	@Security.Authenticated(ActionAuthenticator.class)
 	public Result addAccessRight() {
-		Form<AccessRightsForm> accessRightsForm = Form.form(AccessRightsForm.class).bindFromRequest();
+		Form<AccessRightsForm> accessRightsForm = formFactory.form(AccessRightsForm.class).bindFromRequest();
 		if(accessRightsForm == null || accessRightsForm.hasErrors()) {
 			flash("error", "please check whether correct user or access right is selected");
-			return redirect(controllers.institute.routes.SubjectController.preAddSubjects()); // check for correct redirection
+			return ok(""); // check for correct redirection
 		}
 
 		List<AccessRightsForm.UserAccessRights> userAccessRights = accessRightsForm.get().getAccessRights();
 		if(userAccessRights == null || userAccessRights.size() == 0) {
 			flash("error", "please check whether correct user or access right is selected");
-			return redirect(controllers.institute.routes.SubjectController.preAddSubjects()); // check for correct redirection
+			return ok(""); // check for correct redirection
 		}
 
-		UserLoginDAO userLoginDAO = new UserLoginDAO();
 		boolean isSuccessful = true;
 		try {
 			isSuccessful = userLoginDAO.updateUserAccessRight(userAccessRights);
@@ -39,7 +47,8 @@ public class AccessRightsController extends Controller {
 
 		if(!isSuccessful) {
 			flash("error", "please check whether correct user or access right is selected");
-			return redirect(controllers.institute.routes.SubjectController.preAddSubjects()); // check for correct redirection
+			//return redirect(controllers.institute.routes.SubjectController.preAddSubjects()); // check for correct redirection
+		    return ok("");
 		}
 
 		return redirect(routes.SRPController.index()); // check for correct redirection

@@ -8,7 +8,9 @@ import java.util.List;
 import java.util.Map;
 
 import lombok.Data;
-import play.db.DB;
+import play.api.db.DB;
+import play.db.DBApi;
+import play.db.Database;
 
 @Data
 public class SchoolBoard {
@@ -112,7 +114,7 @@ public class SchoolBoard {
 		ResultSet resultSet = null;
 		String query = "SELECT id, board_code, board_name, board_display_name, affiliated_to FROM board;";
 		try {
-			connection = DB.getDataSource("srp").getConnection();
+			connection = DB.getDataSource("srp", null).getConnection();
 			preparedStatement = connection.prepareStatement(query);
 			resultSet = preparedStatement.executeQuery();
 			while(resultSet.next()) {

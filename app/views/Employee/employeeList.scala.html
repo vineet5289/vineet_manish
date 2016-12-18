@@ -1,0 +1,83 @@
+@(employeeList:List[views.forms.employee.EmployeeDetailsForm])
+@viewClass.main("Employee|List")(""){
+	<div class="main container">
+  <div class="ui grid">
+    <div class="two column row">
+      <div class="left floated column bottom aligned content">
+        <h1 class="ui header">Dashboard</h1>
+      </div>
+      <div class="right floated column right aligned">
+        <div class="middle aligned content">
+          <a href="/add_emp"><button class="ui labeled icon button primary button"> <i class="plus icon"></i>Add New Employee
+    </button></a>
+        </div>
+      </div>
+    </div>
+    <div class="sixteen wide column ">
+      <table class="ui striped celled table selectable">
+        <thead>
+          <tr>
+            <th>Employee Code</th>
+            <th>Name</th>
+            <th>UserName</th>
+            <th>Job Title</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+        	@for((employeeInfo,index) <- employeeList.zipWithIndex){
+             <tr>
+              <td>@employeeInfo.empCode</td>
+              <td><a>@employeeInfo.name</a></td>
+              <td>@employeeInfo.userName</td>
+              <td>@employeeInfo.jobTitles</td>
+               <td>
+                <div class="ui basic icon buttons">
+                 <a href="@employee.routes.EmployeeController.deleteEmployee(employeeInfo.userName)"><button class="ui button" id="delete-employee">
+                    <i class="trash icon"></i></button>
+                   </a>
+               </div>
+              </td>
+             </tr>
+
+             <!--Confirmation delete modal-->
+             <div class="ui small modal" id="delete-confirm">
+  <div class="header">
+    Delete This Employee
+  </div>
+  <div class="content">
+    <p>Are you sure you want to delete this Employee? </p>
+  </div>
+  <div class="actions">
+    <div class="ui gray button">
+      Cancel
+    </div>
+    <div class="ui blue right button">
+      Delete
+    </div>
+  </div>
+</div>
+            }
+          
+</tbody>
+<tfoot>
+  <tr>
+    <th colspan="7">
+      <div class="ui right floated pagination menu tiny">
+        <a class="item">1</a>
+        <a class="item">2</a>
+        <a class="icon item">
+          <i class="right chevron icon"></i>
+        </a>
+      </div>
+    </th>
+  </tr>
+</tfoot>
+</table>
+</div>
+</div>
+</div>
+
+
+
+}

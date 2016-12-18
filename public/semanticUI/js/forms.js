@@ -1,3 +1,107 @@
+    var shiftid = 0;
+
+
+
+    var html = [
+'<div class="ui segment">',
+'                     <div class="two fields">',
+'                        <div class="field">',
+'                           <label>Shift Name</label>',
+'                           <input name="shiftName" type="text" value=" " placeholder="Enter Shift Name">',
+'                        </div>',
+'                        <div class="field">',
+'                           <label>Shift Attendance Type </label>',
+'                           <div class="ui fluid selection dropdown">',
+'                              <div class="text">Select</div>',
+'                              <i class="dropdown icon"></i>',
+'                              <input name="shifts[0].shiftAttendenceType" type="hidden">',
+'                              <div class="menu">',
+'                                 @for(value<- attendenceType){ ',
+'                                 <div class="item" data-value="@value">@value</div>',
+'                                 }',
+'                              </div>',
+'                           </div>',
+'                        </div>',
+'                     </div>',
+'                     <div class="two fields">',
+'                        <div class="field">',
+'                           <label>Shift Start Time</label>',
+'                           <div class="ui calendar timeSelect">',
+'                              <div class="ui input left icon">',
+'                                 <i class="time icon"></i>',
+'                                 <input name="shifts[0].shiftClassStartTime" type="text" value="" placeholder="School Start Time">',
+'                              </div>',
+'                           </div>',
+'                        </div>',
+'                        <div class="field">',
+'                           <label>Shift End Time</label>',
+'                           <div class="ui calendar timeSelect">',
+'                              <div class="ui input left icon">',
+'                                 <i class="time icon"></i>',
+'                                 <input name="shiftClassEndTime" type="text" value="" placeholder="School End Time">',
+'                              </div>',
+'                           </div>',
+'                        </div>',
+'                     </div>',
+'                     <div class="two fields">',
+'                        <div class="field">',
+'                           <label>Class From</label>',
+'                           <div class="ui fluid selection dropdown">',
+'                              <div class="text">Select</div>',
+'                              <i class="dropdown icon"></i>',
+'                              <input name="shiftStartClassFrom" type="hidden">',
+'                              <div class="menu">',
+'                                 @for(value<- classes){ ',
+'                                 <div class="item" data-value="@value">@value</div>',
+'                                 }',
+'                              </div>',
+'                           </div>',
+'                        </div>',
+'                        <div class="field">',
+'                           <label>Class To</label>',
+'                           <div class="ui fluid selection dropdown">',
+'                              <div class="text">Select</div>',
+'                              <i class="dropdown icon"></i>',
+'                              <input name="shiftEndClassTo" type="hidden">',
+'                              <div class="menu">',
+'                                 @for(value<- classes){ ',
+'                                 <div class="item" data-value="@value">@value</div>',
+'                                 }',
+'                              </div>',
+'                           </div>',
+'                        </div>',
+'                     </div>',
+'                     <div class="two fields">',
+'                        <div class="field">',
+'                           <label>Shift Week Starts on</label>',
+'                           <div class="ui fluid selection dropdown">',
+'                              <div class="text">Select</div>',
+'                              <i class="dropdown icon"></i>',
+'                              <input name="shiftWeekStartDay" type="hidden">',
+'                              <div class="menu">',
+'                                 @for(value<- weekDay){ ',
+'                                 <div class="item" data-value="@value">@value</div>',
+'                                 }',
+'                              </div>',
+'                           </div>',
+'                        </div>',
+'                        <div class="field">',
+'                           <label>Shift Week Ends on</label>',
+'                           <div class="ui fluid selection dropdown">',
+'                              <div class="text">Select</div>',
+'                              <i class="dropdown icon"></i>',
+'                              <input name="shiftWeekEndDay" type="hidden">',
+'                              <div class="menu">',
+'                                 @for(value<- weekDay){ ',
+'                                 <div class="item" data-value="@value">@value</div>',
+'                                 }',
+'                              </div>',
+'                           </div>',
+'                        </div>',
+'                     </div>',
+'                    </div> '
+].join('');
+
 $(function () {
     
     var validationObj = {
@@ -6,7 +110,7 @@ $(function () {
                 rules:[
                 {
                   type:'empty',
-                  prompt:'Please enter UserName'
+                  prompt:'PLEASE ENTER USERNAME'
                 }]
         },
         
@@ -16,7 +120,7 @@ $(function () {
                       rules: [
                       {
                           type: 'empty',
-                          prompt: 'Please enter the password'
+                          prompt: 'PLEASE ENTER THE PASSWORD'
                       }]
                        
           },
@@ -26,139 +130,250 @@ $(function () {
                         rules: [
                          {
                                type   : 'match[password]',
-                               prompt : 'Please enter the same value in both fields'
+                               prompt : 'PLEASE ENTER THE SAME VALUE IN BOTH FIELDS'
                           }   ]
              },
         
         
        
-		schoolName: {
-                identifier: 'schoolName',
+        instituteName: {
+                identifier: 'instituteName',
                 rules: [{
                     type: 'empty',
-                    prompt: 'Please enter School Name'
+                    prompt: 'PLEASE ENTER SCHOOL NAME'
                 }]
             },
-	     schoolRegistrationId: {
-                identifier: 'schoolRegistrationId',
+         instituteRegistrationId: {
+                identifier: 'instituteRegistrationId',
                 optional:true,
                 rules: [{
                     type: 'empty',
-                    prompt: 'Please enter your School Registration Id'
+                    prompt: 'PLEASE ENTER YOUR SCHOOL REGISTRATION ID'
                 }]
             },
-		 schoolAddressLine1: {
-                identifier: 'schoolAddressLine1',
+         instituteAddressLine1: {
+                identifier: 'instituteAddressLine1',
                 rules: [{
                     type: 'empty',
-                    prompt: 'Please enter your School Address'
+                    prompt: 'PLEASE ENTER YOUR SCHOOL ADDRESS'
                 }]
             },
-            schoolAddressLine2: {
-                identifier: 'schoolAddressLine2',
+            instituteAddressLine2: {
+                identifier: 'instituteAddressLine2',
                 optional:true,
                 rules: [{
                     
                     type: 'empty',
-                    prompt: 'Please enter your School Address'
+                    prompt: 'PLEASE ENTER YOUR SCHOOL ADDRESS'
                 }]
             },
-             city: {
-                identifier: 'city',
+             instituteCity: {
+                identifier: 'instituteCity',
                 rules: [{
                     type: 'empty',
-                    prompt: 'Please enter City'
+                    prompt: 'PLEASE ENTER CITY'
                 }]
             },
             
-            state: {
-                identifier: 'state',
+            instituteState: {
+                identifier: 'instituteState',
                 rules: [{
                     type: 'empty',
-                    prompt: 'Please enter State'
+                    prompt: 'PLEASE SELECT STATE'
                 }]
             },
             
-             country: {
-                identifier: 'country',
+             instituteCountry: {
+                identifier: 'instituteCountry',
                 rules: [{
                     type: 'empty',
-                    prompt: 'Please enter City'
+                    prompt: 'PLEASE ENTER COUNTRY NAME'
                 }]
             },
-             pincode: {
-                identifier: 'pincode',
+             institutePinCode: {
+                identifier: 'institutePinCode',
                 rules: [{
                     type: 'empty',
-                    prompt: 'Please enter pincode'
-                }]
+                    prompt: 'PLEASE ENTER PINCODE'
+                },
+                {
+                  type:'number',
+                  prompt:'SIX DIGIT NUMBERS [0....9] ONLY'
+                },
+                {
+                    type:'exactLength[6]',
+                    prompt: 'PINCODE SHOULD BE OF  LENGTH SIX ONLY'
+                }
+                ]
             },
             
-		 contactPersonName: {
+         contactPersonName: {
                 identifier: 'contactPersonName',
                 rules: [{
                     type: 'empty',
-                    prompt: 'Please enter your Name'
+                    prompt: 'PLEASE ENTER YOUR NAME'
+                }]
+            },
+
+            groupOfInstitute: {
+                identifier: 'groupOfInstitute',
+                rules: [{
+                    type: 'empty',
+                    prompt: 'PLEASE SELECT TYPE OF INSTITUTE'
+                }]
+            },
+
+             noOfInstitute: {
+                identifier: 'noOfInstitute',
+                
+                 rules: [
+                 {
+                    type: 'empty',
+                    prompt: 'PLEASE ENTER NUMBER OF INSTITUTE'
+                },
+                {
+                    type: 'number',
+                    prompt: 'PLEASE ENTER VALID NUMBER'
                 }]
             },
             
-            schoolEmail: {
-                identifier: 'schoolEmail',
-                rules: [{
-                    type: 'email',
-                    prompt: 'email Id Format is not correct'
+            instituteEmail: {
+                identifier: 'instituteEmail',
+                rules: [
+                 {
+                    type: 'empty',
+                    prompt: 'PLEASE ENTER SCHOOL EMAIL ID'
                 },
                 {
-                    type: 'empty',
-                    prompt: 'Please enter School email Id'
-                }]
+                    type: 'email',
+                    prompt: 'EMAIL ID IS NOT CORRECTt'
+                }
+                ]
             },
-		schoolMobileNumber: {
-                identifier: 'schoolMobileNumber',
-                rules: [{
-                    type:'exactLength[10]',
-                    prompt: 'Mobile Number Shoud be of 10 Length'
-                },
+        institutePhoneNumber: {
+                identifier: 'institutePhoneNumber',
+                rules: [
                 {
                     type:'empty',
-                    prompt: 'Please Enter proper Mobile Number'
-                }]
+                    prompt: 'PLEASE ENTER MOBILE NUMBER'
+                },
+                {
+                  type:'number',
+                  prompt:'NUMBERS ALLOWED ONLY'
+                },
+                {
+                    type:'exactLength[10]',
+                    prompt: 'MOBILE NUMBER SHOULD BE OF  LENGTH 10'
+                }
+                
+                ]
                  
             },
-		query: {
+
+            instituteOfficeNumber: {
+                identifier: 'instituteOfficeNumber',
+                optional:true,
+                rules: [
+                {
+                    type:'empty',
+                    prompt: 'PLEASE ENTER MOBILE NUMBER'
+                },
+                {
+                  type:'number',
+                  prompt:'NUMBERS ALLOWED ONLY'
+                },
+                {
+                    type:'exactLength[10]',
+                    prompt: 'MOBILE NUMBER SHOULD BE OF  LENGTH 10'
+                }
+                
+                ]
+                 
+            },
+        query: {
                 identifier: 'query',
                 optional:true,
                 rules: [{
                     type: 'empty',
-                    prompt: 'Please enter your Query'
+                    prompt: 'PLEASE ENTER YOUR QUERY'
+                }]
+            },
+            referenceKey:{
+                 identifier:'referenceKey',
+                 rules:[{
+                      type:'empty',
+                      prompt:'PLEASE ENTER REFERENCE KEY'
+                 }]
+            },
+            
+            otp:{
+                 identifier:'otp',
+                 rules:[{
+                      type:'empty',
+                      prompt:'PLEASE ENTER OTP GENERATED'
+                 }]
+            },
+            emailID:{
+                 identifier:'emailID',
+                 rules:[{
+                      type:'empty',
+                      prompt:'PLEASE ENTER E-MAIL ID'
+                 },
+                 {
+                    type: 'email',
+                    prompt: 'EMAIL ID IS NOT CORRECTt'
                 }]
             }
-	};
+            
+            
+    };
     
+    $('.state').dropdown();
+    $('HomePage-DropDown').dropdown();
+    $('.ui.dropdown').dropdown();
+    
+    //resetform
+      
+    // New School Request Form
+        $('#New-schoolRequest-submit').on('click',function(){
+           $('#newSchoolRegistrationForm').form(validationObj,{
+              on:'change',
+             inline:true,
+             onSuccess:function(){
+              $('#newSchoolRegistrationForm').submit(function(e){
 
-	// New School Request Form
+                e.preventDefault();
+                 return false;
+              });
+             }
 
-	   $('#newSchoolRegistrationForm').form(validationObj, {
-		on:'change',
-		inline:false
-	     
-		
-	});
-	
-	
-	// For Main login form
-	$('#loginform').form(validationObj, {
-		inline : true,
-    	on     : 'blur',
-    	transition: 'fade down'
-	
-	}).submit(function(event){
-	  event.preventDefault();
-	});
-	
-	// For adding new Class
-	
-	$('#addNewClass').click(function(){
+           });
+
+        });
+
+       
+
+      
+     $('.ui.dropdown').dropdown();  
+    
+    
+    // For Main login form
+    $('#login-submit').on('click',function(){
+    $('#loginform').form(validationObj, {
+        inline : true,
+        on     : 'blur',
+        transition: 'fade down'
+        
+    
+    });
+    });
+    
+    
+    
+    
+    // For adding new Class
+    
+    $('#addNewClass').click(function(){
     $('#addSchool_modal').modal('show');
     });
     
@@ -174,23 +389,106 @@ $(function () {
     $('#RegisterSchoolButton').click(function(){
      $('#RegisterSchoolModal').modal('show');
     });  
-	
-	$('#cancel-OTP-Send').click(function(){
-		$('#RegisterSchoolModal').modal('show');
-		$('#OTP-modal').modal('hide');		
-	});	
+    
+    $('#cancel-OTP-Send').click(function(){
+        $('#RegisterSchoolModal').modal('show');
+        $('#OTP-modal').modal('hide');      
+    }); 
     
     //OTP modal submit
-    $('#completeSchoolRegistrationOTPForm').form(validationObj, {
-        on:'blur',
-		inline:true
-		
-	});
+ $('#sendSchoolRegistrationOTPForm').on('click',function(){
+           $('#completeSchoolRegistrationOTPForm').form(validationObj,{
+              on:'change',
+             inline:true,
+             onSuccess:function(){
+              $('#completeSchoolRegistrationOTPForm').submit(function(e){
+
+                e.preventDefault();
+                 return false;
+              });
+             }
+
+           });
+
+        });
+
+
+//popup data in input field on school registration and other forms
+
+ $('input')
+      .popup({
+        on: 'focus',
+      });    
+    
     
     // captcha  code on otp form
     captchaCode();
+
+
+
+
+// adding shift box on update
+  //shiftbox();
+$("#btnshift").click(shiftbox());
+
+
+
     
 });
+
+
+function shiftbox_original(){
+
+  /*var shift=parseInt(document.getElementById("shiftvalue").value);
+    
+   for(var i=2;i<=shift;i++){
+  
+    var button=$('#shiftContainer div:first')
+        .clone();
+       
+        button.appendTo($('#shiftContainer'));
+      }*/
+
+      var shift=parseInt(document.getElementById("shiftvalue").value);
+      
+      for(var i=2;i<=shift;i++){
+      var button = $('#shiftContainer').clone(true);
+
+        shiftid++;
+        
+        button.find('input').val('');
+        button.removeAttr('id');
+        button.insertBefore('.newShiftContainer');
+        button.attr('id', 'newShiftContainer' + shiftid);
+      } 
+      
+      
+}
+
+
+function shiftbox(){
+
+
+
+ var shift=parseInt(document.getElementById("shiftvalue").value);
+      
+      for(var i=0;i<shift;i++){
+        var shiftName = "shifts[" + i + "].shiftName";
+            var shiftAttendenceType = "shifts[" + i + "].shiftAttendenceType";
+            var shiftClassStartTime = "shifts[" + i + "].shiftClassStartTime";
+            var shiftClassEndTime = "shifts[" + i + "].shiftClassEndTime";
+            var shiftStartClassFrom = "shifts[" + i + "].shiftStartClassFrom";
+             var shiftEndClassTo = "shifts[" + i + "].shiftEndClassTo";
+             var shiftWeekStartDay = "shifts[" + i + "].shiftWeekStartDay";
+             var shiftWeekEndDay = "shifts[" + i + "].shiftWeekEndDay";
+
+      var html = $(html);
+      $("#shiftContainer").append(html);
+   } 
+
+}
+
+
 
 
 
@@ -216,5 +514,16 @@ function captchaCode() {
         $("#captcha").append("<span id='code'>" + Code+"  " + "</span><input type='button' onclick='captchaCode();'>");
    }
    
+   function resetForm(){
+    $('#completeSchoolRegistrationOTPForm').trigger('reset');
+   }
    
-  
+
+
+
+
+
+
+
+
+    

@@ -3,41 +3,76 @@ package views.forms.institute;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
 import play.data.validation.ValidationError;
+import utils.TimeUtiles;
 import lombok.Data;
 
 @Data
 public class ClassForm {
-	public Long schoolId;
-	public String userName;
-	public List<AddClass> classes = new ArrayList<AddClass>();
+  public long instituteId;
+  public long classId;// during display form
 
-	@Data
-	public static class AddClass {
-		public String className; // acctual class 
-		public String classStartTime; //
-		public String classEndTime; //
-		public int noOfPeriod; //
-		public String nameOfSection; //
-		private boolean isActive;
-		private List<String> sectionNames = new ArrayList<String>();
-	}
+  public String className;
+  public String classStartTime;
+  public String classEndTime;
+  public int numberOfPeriod;
+  public int numberOfsection; // only during edit or add class
+  public String parentClassName;// during display form
+  public long parentClassId;// during display form
+  private List<String> sectionNames = new ArrayList<String>();
+  private boolean isSection = false;
+  private String isSectionFormValue;
 
-	public List<ValidationError> validate() {
-		List<ValidationError> errors = new ArrayList<>();
-		for(AddClass c : classes) {
-			if(c.nameOfSection != null && !c.nameOfSection.trim().isEmpty()) {
-				String[] sections = c.nameOfSection.trim().split(",");
-				for(String section : sections) {
-					String afterTrim = section.trim();
-					if(!afterTrim.isEmpty())
-						c.getSectionNames().add(afterTrim);
-				}
-			}
-		}
+  private boolean updateSection = false;
+  private String updateSectionFormValue;
 
-		if(errors.size() > 0)
-			return errors;
-		return null;
-	}
+  private final char[] sectionSuffix = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
+      'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
+
+  public List<ValidationError> validate() {
+    List<ValidationError> errors = new ArrayList<>();
+
+    if (StringUtils.isBlank(className)) {
+      errors.add(new ValidationError("className", "Class/Section name shouldn't be empty."));
+    }
+
+    if (numberOfPeriod <= 0) {
+      errors.add(new ValidationError("numberOfPeriod", "Class must have atleast one period."));
+    }
+
+    boolean isValidTimeFormat = true;
+    if (!TimeUtiles.isValidTime(classStartTime)) {
+      isValidTimeFormat = false;
+      errors.add(new ValidationError("classStartTime", "Class start time is mandatory and should be valid."));
+    }
+
+    if (!TimeUtiles.isValidTime(classEndTime)) {
+      isValidTimeFormat = false;
+      errors.add(new ValidationError("classEndTime", "Class end time is mandatory and should be valid."));
+    }
+
+    if(isValidTimeFormat && !TimeUtiles.isValidTimeRange(classStartTime, classEndTime)) {
+      errors.add(new ValidationError("error", "You have entered wrong class time information."));
+    }
+
+    for (int currentSection = 0; currentSection < numberOfsection
+        && currentSection < sectionSuffix.length; currentSection++) {
+      String section = className + "-" + sectionSuffix[currentSection];
+      sectionNames.add(section);
+    }
+
+    if(StringUtils.isNotBlank(isSectionFormValue)) {
+      isSection = isSectionFormValue.equalsIgnoreCase("true") ? true : false;
+    }
+
+    if(StringUtils.isNotBlank(updateSectionFormValue)) {
+      updateSection = updateSectionFormValue.equalsIgnoreCase("true") ? true : false;
+    }
+
+    if (errors.size() > 0)
+      return errors;
+    return null;
+  }
 }

@@ -11,7 +11,7 @@ public class ValidateFields {
 	private static Pattern userNamePattern;
 	private static final String USERNAME_PATTERN = "^[a-z0-9.@_-]{5,20}$";
 
-	private static final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$";
+	private static final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=-])(?=\\S+$).{6,}$";
 	private static Pattern passwordPattern;
 
 	private static final String ACCESS_RIGHTS_PATTERN = "^[a-z0-9=,]{1,}$";
@@ -27,14 +27,18 @@ public class ValidateFields {
 	private static final String DATE_FORMAT = "^((d{2}/M{2}/y{4})|(d{2}/y{4}/M{2})|(M{2}/d{2}/y{4})|(M{2}/y{4}/d{2})|"
 			+ "(y{4}/M{2}/d{2})|(y{4}/d{2}/M{2}))$";
 
+	private static Pattern validStringPatter;
+	private static final String VALID_STRING_PATTERN = "^[a-z]{1,}[a-z0-9 ._-[\\(.+\\)]\t&]*$";
+
 	static {
 		userNamePattern = Pattern.compile(USERNAME_PATTERN, Pattern.CASE_INSENSITIVE);
-		passwordPattern = Pattern.compile(PASSWORD_PATTERN);
+		passwordPattern = Pattern.compile(PASSWORD_PATTERN, Pattern.CASE_INSENSITIVE);
 		emailPattern = Pattern.compile(EMAIL_PATTERN, Pattern.CASE_INSENSITIVE);
 		accessRightsPattern = Pattern.compile(ACCESS_RIGHTS_PATTERN, Pattern.CASE_INSENSITIVE);
 		mobileNumberPatter = Pattern.compile(MOBILE_NUMBER_PATTERN);
 		alternativeNumberPatter = Pattern.compile(ALTERNATIVE_NUMBER_PATTERN);
 		dateFormatPattern = Pattern.compile(DATE_FORMAT);
+		validStringPatter = Pattern.compile(VALID_STRING_PATTERN, Pattern.CASE_INSENSITIVE);
 	}
 
 	public static boolean isValidDateFormat(String dateFormat) {
@@ -86,6 +90,13 @@ public class ValidateFields {
 			return false;
 
 		Matcher matcher = passwordPattern.matcher(password);
+		return matcher.matches();
+	}
+
+	public static boolean isValidStringField(String name) {
+		if(name == null)
+			return false;
+		Matcher matcher = validStringPatter.matcher(name.trim());
 		return matcher.matches();
 	}
 }

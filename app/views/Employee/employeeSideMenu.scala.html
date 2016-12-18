@@ -1,0 +1,208 @@
+@(employeeHomeForm:views.forms.UserHomePageForm)
+<div class="ui vertical  side  menu" id="sideMenu">
+   
+      <div align="center" class="profile">
+        <br>
+        <a href=""><img src="http://semantic-ui.com/images/avatar/large/elliot.jpg" alt="Marry Doe" class="ui circular image" width="150px">
+        </a>
+        <div class="ui white header">Marry Doe</div>
+        
+    </div>
+
+    <div class="item">
+        <div class="header" align="center"><a href="/show/@employeeHomeForm.userName/emp">Profile</a></div>
+       
+    </div>
+    <div class="item">
+        <div class="header">CMS Solutions</div>
+        <div class="menu">
+            <a class="item">Rails</a>
+            <a class="item">Python</a>
+            <a class="item">PHP</a>
+        </div>
+    </div>
+    <div class="item">
+        <div class="header">Hosting</div>
+        <div class="menu">
+            <a class="item">Shared</a>
+            <a class="item">Dedicated</a>
+        </div>
+    </div>
+    <div class="item">
+        <div class="header">Support</div>
+        <div class="menu">
+            <a class="item">E-mail Support</a>
+            <a class="item">FAQs</a>
+        </div>
+    </div>
+    
+    <div class="text item"> <a>Join now</a> and save $10 on a pro membership!</div>
+    <div class="item">
+        <p><a>Join tomorrow</a> and save $5 on pro.</p>
+    </div>
+
+    <!--ADD BUTTONS IN SIDE MENU-->
+             <div class="ui inverted horizontal section divider">
+          <i class="green circular basic lightning icon"></i>
+      </div>
+    
+  <div class="ui icon fluid green three buttons">
+        <div class="ui top left pointing dropdown button">
+          <i class="users icon"></i>
+          <div class="menu">
+            <div class="item"><a href=""><i class="users icon"></i>All Users</a></div>
+            <div class="item"><a href=""><i class="users icon"></i>Add Roles</a></div>
+          </div>
+        </div>
+        <div class="ui top left pointing dropdown button">
+          <i class="text file icon"></i>
+          <div class="menu">
+            <div class="item"><a href=""><i class="add icon"></i>New Post</a></div>
+            <div class="item"><a href=""><i class="edit icon"></i>All Posts</a></div>
+          </div>
+        </div>
+        <div class="ui top right pointing dropdown button">
+          <i class="settings icon"></i>
+          <div class="menu">
+            <div class="item"><i class="edit icon"></i>Edit Settings</div>
+          </div>
+        </div>
+
+
+      </div>
+
+
+    <!-- ENDS HERE-->
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- This is for side bar profile-->
+
+
+
+
+<div class="ui left vertical sidebar menu" id="sideBarMenuProfile" style="width:14em;">
+
+     <a class="header item" id="close">
+        <i class="close icon"></i>
+        CLOSE
+      </a>
+   
+
+
+    <div class="item">
+        <div class="header">Products</div>
+        <div class="menu">
+            <a class="item">Enterprise</a>
+            <a class="item">Consumer</a>
+        </div>
+    </div>
+    <div class="item">
+        <div class="header">CMS Solutions</div>
+        <div class="menu">
+            <a class="item">Rails</a>
+            <a class="item">Python</a>
+            <a class="item">PHP</a>
+        </div>
+    </div>
+    <div class="item">
+        <div class="header">Hosting</div>
+        <div class="menu">
+            <a class="item">Shared</a>
+            <a class="item">Dedicated</a>
+        </div>
+    </div>
+    <div class="item">
+        <div class="header">Support</div>
+        <div class="menu">
+            <a class="item">E-mail Support</a>
+            <a class="item">FAQs</a>
+        </div>
+    </div>
+    <div class="item">
+     <div class="ui accordion">
+        <br/>
+        <div class="active title" title="Show the application Settings options">
+            <i class="settings icon"></i>
+            Settings
+            <i class="right dropdown icon" style="float: right"></i>
+        </div>
+        <div class="active content">
+            
+            <h4 class="ui dividing inverted header"> </h4>
+            
+            <div class="field">
+                <i class="right database icon"></i>
+                <label>Knowledge Base</label>
+                <select class="ui fluid selection dropdown" id="kbSelector" name="kbSelector">
+                    <option value="">Select KB...</option>
+                    <option value="1">DB 1</option>
+                    <option value="2">DB 2</option>
+                    
+                </select>
+            </div>
+
+            <div class="field">
+                <br/>
+                <label title="Select the number of results displayed to your search"><i style="font-weight: bold; font-size: 1.3em;">#</i>&nbsp;&nbsp;&nbsp;Number of Results</label>
+                <select class="ui fluid selection dropdown" id="numResults" name="numResults">
+                    <option value="12">12</option>
+                    <option value="20">20</option>
+                    <option value="32">32</option>
+                    <option value="40">40</option>
+                </select>
+            </div>
+            
+            <h4 class="ui dividing inverted header"> </h4>
+
+        </div>
+
+        <br/>
+        <div class="title" title="Show my list of Favorites">
+            <i class="star icon"></i>
+                Favorites
+            <i class="right dropdown icon" style="float: right"></i>
+        </div>
+        <div class="content" style="padding: 6px; margin-bottom: 2px;">
+
+            <h4 class="ui dividing inverted header"> </h4>
+            
+            <div class="ui menu" style="background-color: #CCC; color: #000;">
+
+                <a href="" class="fluid ui button item">
+                    <i class="small user icon" style="float: left"></i> Barack obama
+                    <i class="small right red trash outline icon" style="float: right" title="Remove from Favorites"></i>
+                </a>
+                <a href="" class="fluid ui button item">
+                    <i class="small user icon" style="float: left"></i> U.s.
+                    <i class="small right red trash outline icon" style="float: right" title="Remove from Favorites"></i>
+                </a>
+
+            </div>
+
+            <h4 class="ui dividing inverted header"> </h4>
+        </div>
+
+    </div>
+
+    </div>
+    <div class="text item"> <a>Join now</a> and save $10 on a pro membership!</div>
+    <div class="item">
+        <p><a>Join tomorrow</a> and save $5 on pro.</p>
+    </div>
+</div>

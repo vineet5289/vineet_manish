@@ -1,0 +1,199 @@
+@(activeGroupList:List[views.forms.institute.GroupForm],
+inactiveGroupList:List[views.forms.institute.GroupForm],
+addGroupForm:Form[views.forms.institute.GroupForm])
+
+@viewClass.main("HOME | INSTITUTE")(""){
+	<div class="main container">
+    <div class="ui attached segment">
+
+
+          <div class="ui grid">
+     
+            <div class="two column row">
+              <div class="left floated column  aligned content">
+                <h1 class="ui header"><i class="building icon"></i>   <div class="content">Groups
+  <div class="sub header">Different Groups can be assigned to employees. </div> 
+  </div>   
+</h1>
+              </div>
+              <div class="right floated column middle aligned  right aligned">
+                <div class="middle aligned content">
+                
+               <button class="ui right labeled icon button primary addNewRoleBtn">ADD NEW GROUP<i class="add icon"></i>   </button>
+                </div>
+              </div>
+            </div>
+            <br><br>
+
+          <div class="ui modal" id="addRoleModal">
+              <i class="close red icon">CLOSE</i>
+    <div class="header" align="center">
+       <strong>Enter Group name & Description</strong>
+    </div>
+    
+        <div class="description">
+            
+            <form
+            class="ui form segment"
+            id="addNewGroupForm"
+            method="POST"
+            action="/add_group"> 
+           
+            <div class=" two field">
+             <div class="field">
+                <label>Group Name</label>
+                <input name="groupName" placeholder="Enter Group Name" type="text">
+            </div>
+            <div class="field">
+                <label>Group Description</label>
+                <input name="groupDescription" placeholder="Enter Group Description" type="text">
+            </div>
+            </div>
+           
+            
+            <div class="actions">
+                
+                    
+                    <button 
+                        type="submit"
+                        id="addNewGroupSubmitbtn"
+                        class="ui green inverted fluid button">
+                    <i class="checkmark icon"></i>Add Group</button>
+                
+            </div>
+            
+        </div>
+       </form>
+</div>
+
+          </div>
+
+          
+            <div class="ui grid">
+            <div class="sixteen wide column">
+
+
+      <div class="ui top attached tabular rolesmenu menu">
+        <a class="active item" data-tab="activegroup" style="background-color: whitesmoke;">
+                <i class="home icon"></i>Active Group</a>
+         <a class="item" data-tab="disablegroup" style="background-color: whitesmoke;">
+                <i class="home icon"></i>Disabled Groups</a>
+      </div></br>
+              <div class="ui bottom attached tab active" data-tab="activegroup">
+                 <table class="ui fixed table">
+                <thead>
+                  <tr>
+                    <th class="one wide column"></th>
+                    <th class="three wide column">Group Name</th>
+                    <th class="six wide column">Description</th>
+                    
+                    <th class="four wide column"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for((activeGroup,index) <- activeGroupList.zipWithIndex){
+                  <tr class="role">
+                    <td class="right aligned collapsing">@(index + 1).</td>
+                    <td class="collapsing">@activeGroup.groupName</td>
+                    <td><span class="text">@activeGroup.groupDescription</span></td>
+                    
+                     <td class="right aligned collapsing">
+                            <div class="middle aligned content">
+                               <a href=""><button class="ui classic gray button">edit
+                               </button></a>
+                                <a href="/disable_group"><button class="ui classic red disableGroupBtn button">Disable 
+                                </button></a>
+                             </div>
+                          </td>
+                      </tr>
+                }
+                
+            </tbody>
+            <tfoot>
+              <tr>
+                <th colspan="7">
+                  <div class="ui right floated pagination basic menu tiny">
+                    <a class="item">1</a>
+                    <a class="item">2</a>
+                    <a class="icon item">
+                      <i class="right chevron icon"></i>
+                    </a>
+                  </div>
+                </th>
+              </tr>
+            </tfoot>
+            </table>
+              </div>
+
+              <div class="ui bottom attached tab " data-tab="disablegroup">
+                 <table class="ui fixed table">
+                <thead>
+                  <tr>
+                    <th class="one wide column"></th>
+                    <th class="three wide column">Role</th>
+                    <th class="six wide column">Description</th>
+                    
+                    <th class="four wide column"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for((inactiveGroup,index) <- inactiveGroupList.zipWithIndex){
+                  <tr class="role">
+                    <td class="right aligned collapsing">@(index + 1).</td>
+                    <td class="collapsing">@inactiveGroup.groupName</td>
+                    <td><span class="text">@inactiveGroup.groupDescription</span></td>
+                   
+                     <td class="right aligned collapsing">
+                            <div class="middle aligned content">
+                               <a href=""><button class="ui classic gray button">edit
+                               </button></a>
+                                <a href="/disable_group"><button class="ui classic red disableRoleBtn button">enable 
+                                </button></a>
+                             </div>
+                          </td>
+                      </tr>
+                }
+                
+            </tbody>
+            <tfoot>
+              <tr>
+                <th colspan="7">
+                  <div class="ui right floated pagination basic menu tiny">
+                    <a class="item">1</a>
+                    <a class="item">2</a>
+                    <a class="icon item">
+                      <i class="right chevron icon"></i>
+                    </a>
+                  </div>
+                </th>
+              </tr>
+            </tfoot>
+            </table>  
+              </div>
+             
+            </div>
+         
+      </div>
+
+      </div>
+	</div>
+
+	<div class="ui small test modal">
+          <i class="close icon"></i>
+          <div class="header">
+            Delete Your Account
+          </div>
+          <div class="content">
+            <p>Are you sure you want to delete your account</p>
+          </div>
+          <div class="actions">
+            <div class="ui negative button">
+              No
+            </div>
+            <div class="ui positive right labeled icon button">
+              Yes
+              <i class="checkmark icon"></i>
+            </div>
+          </div>
+          </div>
+}

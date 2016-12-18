@@ -1,0 +1,115 @@
+@(permisionForm:Form[views.forms.institute.PermissionForm],
+roleName:String,
+roleDescription:String,
+roleKey:Long,
+permissionList:List[models.PermissionModel])
+
+@viewClass.main("HOME | INSTITUTE")(""){
+ <style type="text/css">    
+            .pg-normal {
+                color: black;
+                font-weight: normal;
+                text-decoration: none;    
+                cursor: pointer;    
+            }
+            .pg-selected {
+                color: black;
+                font-weight: bold;        
+                text-decoration: underline;
+                cursor: pointer;
+            }
+        </style>
+
+
+
+  <div class="main container">
+      <div clas="ui grid">
+        
+
+        <form class="ui form permissionForm" method="Post" action="/edit_permission">
+        
+        <div class="field">
+            <div class="label">Role Name</div>
+            <input type="text" name="roleName" value="@roleName">
+          </div>
+
+          <div class="field">
+            <div class="label">Role Descriptions</div>
+            <input type="text" name="roleName" value="@roleDescription">
+          </div>
+      <input type="hidden" name="roleId" value="@roleKey">    
+  <div class="field">
+    <label>Permission Added</label>
+  
+    <select class="ui fluid multiple dropdown permission"  multiple="" name="permissions[]">
+           
+            
+    </select>
+   </div>
+    
+    <!--<div class="ui fluid selection multiple dropdown">
+     <div class="text">No permission added</div>
+     <input name='permissions' type="hidden">
+     <div class="menu">
+       
+     </div>
+    </div> -->
+    <!--<div class="ui fluid selection multiple dropdown">
+     <div class="text">No permission added</div>
+     <input name='permisionForm(permissions)' type="hidden">
+     <div class="menu">
+       <div class="item" data-value="@roleKey">@roleKey</div>
+       <div class="item" data-value="1234">1234</div>
+     </div>
+  </div> 
+  <input type="text" value="1234" name="permissions[0]">
+  <input type="text" value="5234" name="permissions[1]"> -->
+
+  <button type="submit" class="ui basic green button savepermissionbtn" id="savepermissionbtn">SAVE</button></br></br>
+</form>
+
+      <!--<div class="cart-ctn"><span class="cart"></span></div></br></br> -->
+      
+         <div class="sixteen wide column">
+
+
+ <table class="ui  single line roletable table " id="permissiontable">
+                <thead>
+                  <tr>
+                    <th class="one wide"></th>
+                    <th class="five wide">Permissions</th>
+                    <th class="six wide">Description</th>
+                    <th class="four wide"></th>
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                  @for((permission,index) <- permissionList.zipWithIndex){
+               
+                  <tr>
+                    <td>
+                      <img class="avatar" src="https://randomuser.me/api/portraits/men/51.jpg">
+                    </td>
+                    <td>@permission.permissionName</td>
+                    <td><div class="row">@permission.permissionDescription</div></td>
+                    
+                     <td>
+                            <div class="middle aligned content permissionBtn">
+                                <button id="btn-@permission.id" class="ui basic green button" data-permission-id="@permission.id" data-permission-name="@permission.permissionName">Add</button>
+                             </div>
+                          </td>
+                      </tr>
+                }
+                
+            </tbody>
+           
+            </table>
+            <div id="pageNavPosition"></div>
+              
+             
+          </div>
+      </div>
+  </div>
+  
+  
+}

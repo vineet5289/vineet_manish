@@ -5,7 +5,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import play.db.DB;
+import javax.inject.Inject;
+
+import play.db.Database;
+import play.db.NamedDatabase;
 import utils.StringUtils;
 import views.forms.institute.AddNewInstituteRequest;
 import views.forms.institute.InstituteFormData;
@@ -14,6 +17,7 @@ import enum_package.RequestedStatus;
 import enum_package.InstituteDaoProcessStatus;
 
 public class AddNewSchoolRequestDAO {
+	@Inject @NamedDatabase("srp") private Database db;
 	public String generateRequest(AddNewInstituteRequest addNewSchoolRequest) throws Exception {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
@@ -28,9 +32,13 @@ public class AddNewSchoolRequestDAO {
 
 		String requestNumber = "";
 		try {
+			int numberOfInstitute = 0;
 			requestNumber = StringUtils.getSchoolRequestRegistrationNumber(addNewSchoolRequest.getInstituteName());
+			if(addNewSchoolRequest.getGroupOfInstitute().trim().equalsIgnoreCase("single")) {
+				numberOfInstitute = 1;
+			}
 
-			connection = DB.getDataSource("srp").getConnection();
+			connection = db.getConnection();
 			preparedStatement = connection.prepareStatement(insertQuery);
 			preparedStatement.setString(1, addNewSchoolRequest.getInstituteName().trim());
 			preparedStatement.setString(2, addNewSchoolRequest.getInstituteEmail().trim());
@@ -45,7 +53,7 @@ public class AddNewSchoolRequestDAO {
 			preparedStatement.setString(11, addNewSchoolRequest.getInstituteCountry().trim());
 			preparedStatement.setString(12, addNewSchoolRequest.getInstitutePinCode().trim());
 			preparedStatement.setString(13, addNewSchoolRequest.getGroupOfInstitute().trim());
-			preparedStatement.setInt(14, addNewSchoolRequest.getNoOfInstitute());
+			preparedStatement.setInt(14, numberOfInstitute);
 			preparedStatement.setString(15, StringUtils.getValidStringValue(addNewSchoolRequest.getQuery()));
 			preparedStatement.setString(16, requestNumber);
 			preparedStatement.execute();
@@ -76,7 +84,7 @@ public class AddNewSchoolRequestDAO {
 //				idField, principalNameField, principalEmailField, mobileNumberField, authTokenField, requestNumberField, alertDoneField, authTokenGenereatedAtField, 
 //				statusField, tableName, requestNumberField, idField);
 //		try {
-//			connection = DB.getDataSource("srp").getConnection();
+//			connection = db.getConnection();
 //			connection.setAutoCommit(false);
 //			preparedStatement = connection.prepareStatement(selectQuery, ResultSet.TYPE_FORWARD_ONLY, ResultSet .CONCUR_UPDATABLE);
 //			preparedStatement.setString(1, referneceNumberValue);
@@ -129,7 +137,7 @@ public class AddNewSchoolRequestDAO {
 //				updatedAtField, contactPersonNameField, tableName, statusField, isActiveField);
 //
 //		try {
-//			connection = DB.getDataSource("srp").getConnection();
+//			connection = db.getConnection();
 //			preparedStatement = connection.prepareStatement(selectQuery, ResultSet.TYPE_FORWARD_ONLY, ResultSet .CONCUR_UPDATABLE);
 //			preparedStatement.setString(1, RequestedStatus.REQUESTED.name());
 //			preparedStatement.setBoolean(2, true);
@@ -186,7 +194,7 @@ public class AddNewSchoolRequestDAO {
 
 		try {
 			
-			connection = DB.getDataSource("srp").getConnection();
+			connection = db.getConnection();
 			preparedStatement = connection.prepareStatement(selectQuery, ResultSet.TYPE_FORWARD_ONLY, ResultSet .CONCUR_UPDATABLE);
 			preparedStatement.setBoolean(1, true);
 			preparedStatement.setString(2, requestNumber.trim());

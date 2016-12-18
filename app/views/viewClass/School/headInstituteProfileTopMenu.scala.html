@@ -1,45 +1,27 @@
 @(headInstitute:List[models.HeadInstituteLoginDetails.BranchDetails])
-<div class="ui fixed transparent inverted main menu">
-    <div class="container">
-      <a class="launch item"><i class="icon list layout"></i> Content</a>
-      <div class="title item">
-        <b><a href="\">SRP</a></b> Introduction
-      </div>
-      
-      <div class="disabled icon item"><i class="left arrow icon"></i></div>
-      
-     
-      
-      <a class="icon item" href="collection.html"><i class="right arrow icon"></i></a>
-      
-      <div class="ui inverted right menu">
 
-        <div class="ui simple dropdown link item">
+  <div class="ui top fixed inverted borderless menu main">
+  <div class="ui head container">
+    <a class="launch item"><i class="icon list layout"></i> Menu</a>
+    <div class="item">
+      <a href="/"><img class="logo" src="http://www.chabot.tv/workangel/image/artboard2x.png"></a>
+    </div>
+
+    <div class="ui simple dropdown link item">
         <i class="location arrow icon"></i>Switch Branch <i class="dropdown icon"></i>
         <div class="menu">
            @for(institute <- headInstitute){
-  <a class="item" href="/institute/switch/branch" datavalue="@institute.instituteId"><i class="location arrow icon"></i>@institute.instituteName</a>
+
+  <a class="item" href="/institute/switch/branch" datavalue=""><i class="location arrow icon"></i></a>
+
+  
+
         }
         </div>
       </div>
-        
-        
-        <a class="popup icon sign out item" data-content="logout" href="@login_logout.routes.LoginController.logout()">
-          LOGOUT
-        </a>
 
-        
-        <!--
-        <div class="ui simple dropdown item">
-          <i class="icon tint"></i> Theme
-          <div class="theme menu">
-            <div class="active item" data-theme="flat">Flat</div>
-            <div class="item" data-theme="shaded">Shaded</div>
-            <div class="item" data-theme="classic">Classic</div>
-          </div>
-        </div>
-        !-->
-      </div>
-    </div>
+    <p class="ui item right"><span class="greeting">Welcome, </span>Manish Kumar<span class="logout">| <a href="@login_logout.routes.LoginController.logout()">Log Out</a></span></p>
   </div>
-  
+</div>
+
+
