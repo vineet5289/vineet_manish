@@ -56,9 +56,10 @@ body {
 }
 
 
+
   
 #sideMenu{
-  width: 18rem !important;
+  width: 16rem !important;
    border-radius: 0;
   box-shadow: none;
   border: none;
@@ -115,7 +116,7 @@ body {
 
 #content{
     
-    padding-left: 160px;
+    padding-left: 240px;
     margin-bottom: 2em !important;
   }
 

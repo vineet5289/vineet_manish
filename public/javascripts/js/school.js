@@ -1,5 +1,27 @@
 //addRole.scala.html js file addRolePermissions.scala.html
 $(document).ready(function(){
+$('#addPeriodBtn').click(function(e){
+    
+        $('#time-table tr').append($("<td>"));
+        $('#time-table thead tr>td:last').html("Period");
+        $('#time-table tbody tr').each(function(){$(this).children('td:last').append($('<input type="checkbox">'))});
+    
+});
+
+   var id = 0;
+      jQuery("#addrow").click(function() {
+        id++;           
+        var row = jQuery('.samplerow tr').clone(true);
+        row.find("input:text").val("");
+        row.attr('id',id); 
+        row.appendTo('#dynamicTable1');        
+        return false;
+    });        
+        
+  $('.remove').on("click", function() {
+  $(this).parents("tr").remove();
+});
+
 $('.ui.dropdown').dropdown();
 
 $('.disableRoleBtn').click(function(e){
