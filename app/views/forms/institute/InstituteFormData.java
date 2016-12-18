@@ -6,7 +6,7 @@ import java.util.List;
 import lombok.Data;
 import play.data.validation.ValidationError;
 import utils.AddressFieldValidationUtils;
-import utils.SchoolSpecificFiledValidation;
+import utils.InstituteSpecificFiledValidation;
 import utils.ValidateFields;
 import enum_package.InstituteDaoProcessStatus;
 
@@ -37,7 +37,7 @@ public class InstituteFormData {
 	public List<ValidationError> validate() {
 		List<ValidationError> errors = new ArrayList<>();
 
-		if (!SchoolSpecificFiledValidation.isValidSchoolName(instituteName)) {
+		if (!InstituteSpecificFiledValidation.isValidInstituteName(instituteName)) {
 			errors.add(new ValidationError("schoolName", "School name should not be empty. And should not contains special characters like ;@[]"));
 		}
 

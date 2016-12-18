@@ -7,7 +7,7 @@ import lombok.Data;
 import models.State;
 import play.data.validation.ValidationError;
 import utils.AddressFieldValidationUtils;
-import utils.SchoolSpecificFiledValidation;
+import utils.InstituteSpecificFiledValidation;
 import utils.ValidateFields;
 
 @Data
@@ -33,8 +33,10 @@ public class AddNewInstituteRequest {
 
 	public List<ValidationError> validate() {
 		List<ValidationError> errors = new ArrayList<>();
-		if (!SchoolSpecificFiledValidation.isValidSchoolName(instituteName)) {
-			errors.add(new ValidationError("schoolName", "School name should not be empty. And should not contains special characters like ;@[]"));
+		if (!InstituteSpecificFiledValidation.isValidInstituteName(instituteName)) {
+			errors.add(new ValidationError("instituteName", "Institute name should not be empty. And should not contains special characters like ;@[]"));
+		} else {
+//			instituteName
 		}
 
 		if (contactPersonName == null || contactPersonName.trim().isEmpty()) {
