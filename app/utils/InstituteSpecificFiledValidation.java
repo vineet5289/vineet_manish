@@ -44,6 +44,11 @@ public class InstituteSpecificFiledValidation {
 		return matcher.matches();
 	}
 
+	/*
+	* 1. Institute @name: 1. Only special char .,&, (, ) bracket allow
+	*             2. 1st char of name must bhe a-Z t.e vineet, v&1, v1, St. vineet (Singh)
+	*
+	* */
 	public static boolean isValidInstituteName(String name) {
 		if(org.apache.commons.lang3.StringUtils.isBlank(name)) {
 			return false;
@@ -51,8 +56,4 @@ public class InstituteSpecificFiledValidation {
 		Matcher matcher = instituteNamePatter.matcher(name.trim());
 		return matcher.matches();
 	}
-
-  public static void main(String[] args) {
-
-  }
 }

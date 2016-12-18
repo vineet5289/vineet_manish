@@ -28,8 +28,7 @@ public class InstituteFormData {
 	private String institutePinCode;
 	private String instituteRegistrationId;
 	private String groupOfInstitute;
-	private int noOfInstitute;
-
+  private int noOfInstitute;
 	//ask school to fill during registration 
 	private String institutePassword;
 	private String instituteConfirmPassword;

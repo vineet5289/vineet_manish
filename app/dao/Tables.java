@@ -27,8 +27,8 @@ public class Tables {
     public static String state = "state";
     public static String country = "country";
     public static String pinCode = "pin_code";
-    public static String groupOfInstitute = "group_of_institute";
     public static String noOfInstitute = "no_of_institute";
+    public static String groupOfInstitute = "group_of_institute";
     public static String query = "query";
     public static String authToken = "auth_token";
     public static String authTokenGenereatedAt = "auth_token_genereated_at";

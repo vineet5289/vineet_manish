@@ -28,13 +28,11 @@ public class InstituteRegistrationController extends CustomController {
 		session().clear();
 		Form<OTPField> otpForm = formFactory.form(OTPField.class).bindFromRequest();
 		if(otpForm == null || otpForm.hasErrors()) {
-			System.out.println("=======> otpForm=" + otpForm);
 			flash("error", "Something parameter is missing or invalid in request. Please check and enter valid value");
 			return redirect(controllers.login_logout.routes.LoginController.preLogin());// same otp page call
 		}
 		Map<String, String> otpFieldsValues = otpForm.data();
 		if(otpFieldsValues == null || otpFieldsValues.size() == 0) {
-			System.out.println("=======> otpFieldsValues" + otpFieldsValues);
 			flash("error", "Something parameter is missing or invalid in request. Please check and enter valid value");
 			return redirect(controllers.login_logout.routes.LoginController.preLogin());// same otp page call
 		}
@@ -42,9 +40,8 @@ public class InstituteRegistrationController extends CustomController {
 		String referenceKey = otpFieldsValues.get("referenceKey");
 		String otp = otpFieldsValues.get("otp");
 		String emailId = otpFieldsValues.get("emailId");
-		System.out.println("=======> referenceKey" + referenceKey);
 		try {
-			InstituteFormData schoolData = addNewSchoolRequestDAO.isValidSchoolRegistrationRequest(referenceKey, otp, emailId);
+			InstituteFormData schoolData = addNewSchoolRequestDAO.validateAndGetInstituteInfoFromRegReqTable(referenceKey, otp, emailId);
 			if(schoolData != null && schoolData.getProcessingStatus() == InstituteDaoProcessStatus.validschool) {
 				session().clear();
 				session(SessionKey.regschoolrequestnumber.name(), referenceKey);
@@ -69,17 +66,18 @@ public class InstituteRegistrationController extends CustomController {
 	public Result postInstituteRegistrationRequest() {
 		Form<InstituteFormData> schoolForm = formFactory.form(InstituteFormData.class).bindFromRequest();
 		if(schoolForm == null || schoolForm.hasErrors()) {
-			System.out.println(schoolForm.errors());
-			flash("error", "Something parameter is missing or invalid in your registration request.");
+      System.out.println("====> exception in 1st if" + schoolForm.toString());
+      flash("error", "Something parameter is missing or invalid in your registration request.");
 			return redirect(controllers.login_logout.routes.LoginController.preLogin());
 		}
 
 		InstituteFormData schoolFormDetails = schoolForm.get();
 		if(schoolFormDetails == null) {
+      System.out.println("====> exception in 2nd if");
 			flash("error", "Something parameter is missing or invalid in your registration request.");
 			return redirect(controllers.login_logout.routes.LoginController.preLogin());
 		}
-		
+    System.out.println("====> just before accessing session key");
 		String referenceNumber = session().get(SessionKey.of(SessionKey.regschoolrequestnumber));
 		session().remove(SessionKey.of(SessionKey.regschoolrequestnumber));
 
@@ -88,7 +86,7 @@ public class InstituteRegistrationController extends CustomController {
 
 		String regInstituteRequestId = session().get(SessionKey.of(SessionKey.reginstituterequestid));
 		session().remove(SessionKey.of(SessionKey.reginstituterequestid));
-
+    System.out.println("====> access session key done");
 		InstituteDaoProcessStatus instituteDaoProcessStatus;
 		try {
 			instituteDaoProcessStatus = schoolRegistrationDAO.registerInstitute(schoolFormDetails, referenceNumber, authToken, Long.valueOf(regInstituteRequestId));
@@ -97,12 +95,14 @@ public class InstituteRegistrationController extends CustomController {
 			instituteDaoProcessStatus = InstituteDaoProcessStatus.servererror;
 		}
 
-		session().clear();
+    System.out.println("db has been updated");
+    session().clear();
 		if(instituteDaoProcessStatus == InstituteDaoProcessStatus.validschool) {
 			flash("success", "School has been successfully registered.");			
 		} else {
 			flash("error", instituteDaoProcessStatus.name());
 		}
-		return redirect(controllers.login_logout.routes.LoginController.preLogin());
+    System.out.println("redirecting to next page");
+    return redirect(controllers.login_logout.routes.LoginController.preLogin());
 	}
 }

@@ -24,29 +24,33 @@ public class AddressFieldValidationUtils {
 	}
 
 	public static boolean isValidPincode(String pincode) {
-		if(pincode == null)
-			return false;
+    if(StringUtils.isBlank(pincode)) {
+      return false;
+    }
 		Matcher matcher = pincodePatter.matcher(pincode.trim());
 		return matcher.matches();
 	}
 
 	public static boolean isValidCity(String city) {
-		if(city == null)
+		if(StringUtils.isBlank(city)) {
 			return false;
+		}
 		Matcher matcher = cityPattern.matcher(city);
 		return matcher.matches();
 	}
 
 	public static boolean isValidState(String state) {
-		if(state == null)
+		if(StringUtils.isBlank(state)) {
 			return false;
+		}
 		Matcher matcher = statePatter.matcher(state);
 		return matcher.matches();
 	}
 
 	public static boolean isValidCountry(String country) {
-		if(country == null)
-			return false;
+    if(StringUtils.isBlank(country)) {
+      return false;
+    }
 		Matcher matcher = countryPatter.matcher(country);
 		return matcher.matches();
 	}

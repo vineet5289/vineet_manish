@@ -37,7 +37,7 @@ POST     	/newinstituterequest                       controllers.institute.NewIn
 
 
 # school registration request
-POST      	/submitopt                            	   controllers.institute.InstituteRegistrationController.submitOTP()
+POST      	/submitotp                            	   controllers.institute.InstituteRegistrationController.submitOTP()
 POST     	/registerinstitute            	           controllers.institute.InstituteRegistrationController.postInstituteRegistrationRequest()
 
 #school info and edit

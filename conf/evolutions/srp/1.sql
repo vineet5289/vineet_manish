@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS institute_registration_request (
   country varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   pin_code varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   group_of_institute enum('single', 'group') DEFAULT 'single' NOT NULL,
-  no_of_institute int NOT NULL DEFAULT 1,
+  no_of_institute int NOT NULL DEFAULT 0,
   query text COLLATE utf8_unicode_ci,
   auth_token varchar(255) COLLATE utf8_unicode_ci,
   auth_token_genereated_at timestamp NULL,

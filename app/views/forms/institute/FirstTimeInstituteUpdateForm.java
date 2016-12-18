@@ -40,8 +40,8 @@ public class FirstTimeInstituteUpdateForm {
 			errors.add(new ValidationError("numberOfShift", "Number Of Shift should be greater then one."));
 		}
 
-		if(shifts == null || shifts.size() != numberOfShift) {
-			errors.add(new ValidationError("shifts", "Please enter shif or class info."));
+		if(numberOfShift > 0 && (shifts == null || shifts.size() != numberOfShift)) {
+			errors.add(new ValidationError("shifts", "Please enter shift or class info."));
 		}
 
 		if(hostelFacilitiesIsAvailable == null || !(hostelFacilitiesIsAvailable.trim().equalsIgnoreCase("true")
