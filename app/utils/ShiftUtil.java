@@ -3,11 +3,10 @@ package utils;
 import java.util.ArrayList;
 import java.util.List;
 
-import enum_package.AttendenceTypeEnum;
 import views.forms.institute.FirstTimeInstituteUpdateForm;
 import views.forms.institute.InstituteShiftAndClassTimingInfoForm;
 
-public class ShiftGenerator {
+public class ShiftUtil {
 	private static final List<String> shiftName = new ArrayList<String>()
 	{{
 	    add("Class Details");

@@ -9,27 +9,25 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import dao.InstituteBoardDAO;
+import dao.Tables;
+import enum_package.FileUploadStatus;
+import enum_package.InstituteDaoProcessStatus;
+import enum_package.LoginState;
+import enum_package.LoginType;
 import play.db.Database;
 import play.db.NamedDatabase;
-import models.SchoolBoard;
 import utils.DateUtiles;
-import utils.file.ImageUtils;
 import views.forms.institute.FirstTimeInstituteUpdateForm;
 import views.forms.institute.InstituteFormData;
 import views.forms.institute.InstituteGeneralInfoForm;
 import views.forms.institute.InstituteHeaderInfoForm;
 import views.forms.institute.InstituteShiftAndClassTimingInfoForm;
-import dao.Tables;
-import enum_package.FileUploadStatus;
-import enum_package.InstituteDaoProcessStatus;
-import enum_package.LoginType;
-import enum_package.LoginState;
-import enum_package.SchoolClassEnum;
-import enum_package.WeekDayEnum;
 
 public class SchoolProfileInfoDAO {
 
 	@Inject @NamedDatabase("srp") private Database db;
+  @Inject private InstituteBoardDAO schoolBoard;
 
 	public InstituteFormData getNumberOfInstituteInGivenGroup(Long schoolId) throws SQLException {
 		Connection connection = null;
@@ -98,9 +96,9 @@ public class SchoolProfileInfoDAO {
 				schoolGeneralInfoFrom.setCountry(getString(resultSet.getString(Tables.Institute.country)));
 				schoolGeneralInfoFrom.setPincode(getString(resultSet.getString(Tables.Institute.pinCode)));
 				StringBuilder sb = new StringBuilder();
-				sb.append(SchoolBoard.getBoardNameGivenId(resultSet.getLong(Tables.Institute.boardId)));
+				sb.append(schoolBoard.getBoardNameGivenId(resultSet.getLong(Tables.Institute.boardId)));
 				sb.append("(");
-				sb.append(SchoolBoard.getBoardCodeGivenId(resultSet.getLong(Tables.Institute.boardId)));
+				sb.append(schoolBoard.getBoardCodeGivenId(resultSet.getLong(Tables.Institute.boardId)));
 				sb.append(")");
 				schoolGeneralInfoFrom.setSchoolBoardName(sb.toString());// get borad name
 				schoolGeneralInfoFrom.setSchoolType(getString(resultSet.getString(Tables.Institute.type)));
@@ -441,27 +439,27 @@ public class SchoolProfileInfoDAO {
 			loginPS.setString(4, LoginState.redirectstate.name());
 			loginPS.setString(5, LoginType.institute.name());
 
-			updateStmtSchoolMadInfoPS.setInt(1, firstTimeInstituteUpdate.getNumberOfShift());
-			updateStmtSchoolMadInfoPS.setBoolean(2, firstTimeInstituteUpdate.isHostelFacilitiesAvailable());
-			updateStmtSchoolMadInfoPS.setBoolean(3, firstTimeInstituteUpdate.isHostelCompulsory());
-			updateStmtSchoolMadInfoPS.setString(4, WeekDayEnum.of(firstTimeInstituteUpdate.getInstituteOfficeWeekEndDay()).name());
-			updateStmtSchoolMadInfoPS.setString(5, WeekDayEnum.of(firstTimeInstituteUpdate.getInstituteOfficeWeekEndDay()).name());
-			updateStmtSchoolMadInfoPS.setString(6, SchoolClassEnum.of(firstTimeInstituteUpdate.getInstituteClassFrom()).name());
-			updateStmtSchoolMadInfoPS.setString(7, SchoolClassEnum.of(firstTimeInstituteUpdate.getInstituteClassTo()).name());
-			updateStmtSchoolMadInfoPS.setString(8, firstTimeInstituteUpdate.getInstituteOfficeStartTime());
-			updateStmtSchoolMadInfoPS.setString(9, firstTimeInstituteUpdate.getInstituteOfficeEndTime());
-			updateStmtSchoolMadInfoPS.setInt(10, startDay);
-			updateStmtSchoolMadInfoPS.setInt(11, endDay);
-			updateStmtSchoolMadInfoPS.setInt(12, startMonth);
-			updateStmtSchoolMadInfoPS.setInt(13, endMonth);
-			updateStmtSchoolMadInfoPS.setInt(14, startYear);
-			updateStmtSchoolMadInfoPS.setInt(15, endYear);
-			updateStmtSchoolMadInfoPS.setString(16, schoolCurrentFinancialYear);
-			updateStmtSchoolMadInfoPS.setString(17, firstTimeInstituteUpdate.getInstituteDateFormat());
-			updateStmtSchoolMadInfoPS.setLong(18, SchoolBoard.getBoardIdGivenAffiliatedTo(firstTimeInstituteUpdate.getInstituteBoard()));
-			updateStmtSchoolMadInfoPS.setString(19, firstTimeInstituteUpdate.getInstituteType().trim().toLowerCase());
-			updateStmtSchoolMadInfoPS.setBoolean(20, true);
-			updateStmtSchoolMadInfoPS.setLong(21, instituteId);
+//			updateStmtSchoolMadInfoPS.setInt(1, firstTimeInstituteUpdate.getNumberOfShift());
+//			updateStmtSchoolMadInfoPS.setBoolean(2, firstTimeInstituteUpdate.isHostelFacilitiesAvailable());
+//			updateStmtSchoolMadInfoPS.setBoolean(3, firstTimeInstituteUpdate.isHostelCompulsory());
+//			updateStmtSchoolMadInfoPS.setString(4, WeekDayEnum.of(firstTimeInstituteUpdate.getInstituteOfficeWeekEndDay()).name());
+//			updateStmtSchoolMadInfoPS.setString(5, WeekDayEnum.of(firstTimeInstituteUpdate.getInstituteOfficeWeekEndDay()).name());
+//			updateStmtSchoolMadInfoPS.setString(6, SchoolClassEnum.of(firstTimeInstituteUpdate.getInstituteClassFrom()).name());
+//			updateStmtSchoolMadInfoPS.setString(7, SchoolClassEnum.of(firstTimeInstituteUpdate.getInstituteClassTo()).name());
+//			updateStmtSchoolMadInfoPS.setString(8, firstTimeInstituteUpdate.getInstituteOfficeStartTime());
+//			updateStmtSchoolMadInfoPS.setString(9, firstTimeInstituteUpdate.getInstituteOfficeEndTime());
+//			updateStmtSchoolMadInfoPS.setInt(10, startDay);
+//			updateStmtSchoolMadInfoPS.setInt(11, endDay);
+//			updateStmtSchoolMadInfoPS.setInt(12, startMonth);
+//			updateStmtSchoolMadInfoPS.setInt(13, endMonth);
+//			updateStmtSchoolMadInfoPS.setInt(14, startYear);
+//			updateStmtSchoolMadInfoPS.setInt(15, endYear);
+//			updateStmtSchoolMadInfoPS.setString(16, schoolCurrentFinancialYear);
+//			updateStmtSchoolMadInfoPS.setString(17, firstTimeInstituteUpdate.getInstituteDateFormat());
+//			updateStmtSchoolMadInfoPS.setLong(18, schoolBoard.getBoardIdGivenAffiliatedTo(firstTimeInstituteUpdate.getInstituteBoard()));
+//			updateStmtSchoolMadInfoPS.setString(19, firstTimeInstituteUpdate.getInstituteType().trim().toLowerCase());
+//			updateStmtSchoolMadInfoPS.setBoolean(20, true);
+//			updateStmtSchoolMadInfoPS.setLong(21, instituteId);
 
 			int[] batchUpdateResult = shiftInfoPS.executeBatch();
 			rowSchoolInfoUpdated = updateStmtSchoolMadInfoPS.executeUpdate();

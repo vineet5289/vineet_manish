@@ -1,13 +1,20 @@
 package controllers.institute;
 
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import javax.inject.Inject;
 
-import models.SchoolBoard;
+import controllers.routes;
+import dao.InstituteBoardDAO;
+import dao.school.SchoolProfileInfoDAO;
+import enum_package.AttendenceTypeEnum;
+import enum_package.InstituteDaoProcessStatus;
+import enum_package.SchoolClassEnum;
+import enum_package.SessionKey;
+import enum_package.WeekDayEnum;
 import models.SchoolType;
 import play.data.Form;
 import play.data.FormFactory;
@@ -20,13 +27,6 @@ import views.forms.institute.InstituteShiftAndClassTimingInfoForm;
 import views.html.viewClass.School.SchoolProfile;
 import views.html.viewClass.School.editSchoolInfo;
 import views.html.viewClass.School.schoolMandataryInfo;
-import controllers.routes;
-import dao.school.SchoolProfileInfoDAO;
-import enum_package.AttendenceTypeEnum;
-import enum_package.InstituteDaoProcessStatus;
-import enum_package.SchoolClassEnum;
-import enum_package.SessionKey;
-import enum_package.WeekDayEnum;
 
 public class InstituteInfoController extends ClassController {
 
@@ -34,7 +34,7 @@ public class InstituteInfoController extends ClassController {
 	private FormFactory formFactory;
 
 	@Inject private SchoolProfileInfoDAO schoolProfileInfoDAO;
-
+  @Inject private InstituteBoardDAO instituteBoardDAO;
 	/*
 	 * check usernaem and auth key validation
 	 * current shift
@@ -196,7 +196,6 @@ public class InstituteInfoController extends ClassController {
 
 	//session validation
 	public Result getInstituteMandInfo() {
-		System.out.println("inside mand info");
 		String schoolId = session().get(SessionKey.instituteid.name());
 		Form<FirstTimeInstituteUpdateForm> firstTimeUpdateForm = formFactory.form(FirstTimeInstituteUpdateForm.class);
 		List<String> weekList = WeekDayEnum.getWeekDisplayName();
@@ -212,13 +211,17 @@ public class InstituteInfoController extends ClassController {
 
 		if(instituteFormData != null && instituteFormData.getGroupOfInstitute().equalsIgnoreCase("single")
 				&& instituteFormData.getNoOfInstitute() == 1) {
-			Map<String, String> schoolBoards = new HashMap<String, String>();
+			Map<String, String> schoolBoards = new TreeMap<String, String>();
 			schoolBoards.put("cbse", "CBSE");
 			schoolBoards.put("icse", "ICSE");
 			schoolBoards.put("ib", "International Baccalaureate");
 			String affiliatedTo = instituteFormData.getInstituteState();
-			String otherBoard = SchoolBoard.getDisplayNameGivenAffiliatedTo(affiliatedTo);
-			schoolBoards.put(affiliatedTo.trim().toLowerCase(), otherBoard);
+      System.out.println("affiliatedTo : " + affiliatedTo);
+			String boardDisplayName = instituteBoardDAO.getDisplayNameGivenAffiliatedTo(affiliatedTo);
+      System.out.println("boardDisplayName : " + affiliatedTo);
+			String boradCode = instituteBoardDAO.getBoardCodeGivenDisplayName(boardDisplayName);
+			System.out.println("boradCode : " + boradCode);
+			schoolBoards.put(boradCode, boardDisplayName);
 			session(SessionKey.numerofinstituteingroup.name(), instituteFormData.getNoOfInstitute() + "");
 			return ok(schoolMandataryInfo.render(firstTimeUpdateForm, weekList, classList, attendenceType, schoolBoards, SchoolType.schoolTypeToValue));
 		}
@@ -242,7 +245,7 @@ public class InstituteInfoController extends ClassController {
 		FirstTimeInstituteUpdateForm firstTimeSchoolUpdate = firstTimeSchoolUpdateForm.get();
 		InstituteDaoProcessStatus instituteDaoProcessStatus = InstituteDaoProcessStatus.invalidschool;
 		try {
-			instituteDaoProcessStatus = schoolProfileInfoDAO.updateSchoolMandInfo(firstTimeSchoolUpdate, Long.valueOf(schoolId), userName);
+//			instituteDaoProcessStatus = schoolProfileInfoDAO.updateSchoolMandInfo(firstTimeSchoolUpdate, Long.valueOf(schoolId), userName);
 		} catch(Exception exception) {
 			flash("error", "Some problem occur during update.");
 			exception.printStackTrace();

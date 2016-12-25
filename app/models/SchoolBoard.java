@@ -10,51 +10,52 @@ import java.util.TreeMap;
 
 import javax.inject.Inject;
 
+import dao.InstituteBoardDAO;
 import dao.Tables;
 import lombok.Data;
 import play.db.Database;
 import play.db.NamedDatabase;
 
 @Data
-public class SchoolBoard {
-  @Inject
-  @NamedDatabase("srp")
+public class SchoolBoard implements InstituteBoardDAO {
   private static Database db;
 
-  private static List<String> schoolBoardList = new ArrayList<String>();
+  @Inject
+	public SchoolBoard(@NamedDatabase("srp") Database db) {
+		System.out.println("***** SchoolBoard*****1");
+		this.db = db;
+    fetchBoardList();
+		System.out.println("***** SchoolBoard*****2");
+	}
 
-  private static Map<String, String> affiliatedToBoardName = new TreeMap<String, String>();
-  private static Map<String, String> affiliatedToDisplayName = new TreeMap<String, String>();
-  private static Map<String, Long> affiliatedToId = new TreeMap<String, Long>();
-  private static Map<String, String> affiliatedToBoardCode = new TreeMap<String, String>();
+  private List<String> schoolBoardList = new ArrayList<String>();
 
-  private static Map<String, String> boardCodeToBoardName = new TreeMap<String, String>();
-  private static Map<String, String> boardCodeToDisplayName = new TreeMap<String, String>();
-  private static Map<String, Long> boardCodeToBoradId = new TreeMap<String, Long>();
-  private static Map<String, String> boardCodeToAffiliatedTo = new TreeMap<String, String>();
+  private Map<String, String> affiliatedToBoardName = new TreeMap<String, String>();
+  private Map<String, String> affiliatedToDisplayName = new TreeMap<String, String>();
+  private Map<String, Long> affiliatedToId = new TreeMap<String, Long>();
+  private Map<String, String> affiliatedToBoardCode = new TreeMap<String, String>();
 
-  private static Map<Long, String> boardIdToBoardCode = new TreeMap<Long, String>();
-  private static Map<Long, String> boardIdToBoardName = new TreeMap<Long, String>();
-  private static Map<Long, String> boardIdToDisplayName = new TreeMap<Long, String>();
-  private static Map<Long, String> boardIdToAffiliatedTo = new TreeMap<Long, String>();
+  private Map<String, String> boardCodeToBoardName = new TreeMap<String, String>();
+  private Map<String, String> boardCodeToDisplayName = new TreeMap<String, String>();
+  private Map<String, Long> boardCodeToBoradId = new TreeMap<String, Long>();
+  private Map<String, String> boardCodeToAffiliatedTo = new TreeMap<String, String>();
 
-  private static Map<String, String> displayNameToBoardName = new TreeMap<String, String>();
-  private static Map<String, String> displayNameToBoardCode = new TreeMap<String, String>();
-  private static Map<String, Long> displayNameToBoradId = new TreeMap<String, Long>();
-  private static Map<String, String> displayNameToAffiliatedTo = new TreeMap<String, String>();
+  private Map<Long, String> boardIdToBoardCode = new TreeMap<Long, String>();
+  private Map<Long, String> boardIdToBoardName = new TreeMap<Long, String>();
+  private Map<Long, String> boardIdToDisplayName = new TreeMap<Long, String>();
+  private Map<Long, String> boardIdToAffiliatedTo = new TreeMap<Long, String>();
 
-  private static Map<String, String> boardNameToBoardCode = new TreeMap<String, String>();
-  private static Map<String, Long> boardNameToId = new TreeMap<String, Long>();
-  private static Map<String, String> boardNameToDisplayName = new TreeMap<String, String>();
-  private static Map<String, String> boardNameToAffiliatedTo = new TreeMap<String, String>();
+  private Map<String, String> displayNameToBoardName = new TreeMap<String, String>();
+  private Map<String, String> displayNameToBoardCode = new TreeMap<String, String>();
+  private Map<String, Long> displayNameToBoradId = new TreeMap<String, Long>();
+  private Map<String, String> displayNameToAffiliatedTo = new TreeMap<String, String>();
 
-  private long id;
-  private String boardName;
-  private String boardCode;
-  private String boardDisplayName;
-  private String affiliatedTo;
+  private Map<String, String> boardNameToBoardCode = new TreeMap<String, String>();
+  private Map<String, Long> boardNameToId = new TreeMap<String, Long>();
+  private Map<String, String> boardNameToDisplayName = new TreeMap<String, String>();
+  private Map<String, String> boardNameToAffiliatedTo = new TreeMap<String, String>();
 
-  private static synchronized void fetchBoardList() {
+  private void fetchBoardList() {
     List<String> schoolBoardNameListTemp = new ArrayList<String>();
 
     Map<String, String> affiliatedToBoardNameTemp = new TreeMap<String, String>();
@@ -88,7 +89,9 @@ public class SchoolBoard {
     String query = String.format("SELECT %s, %s, %s, %s, %s FROM %s;", Tables.Board.id, Tables.Board.boardCode,
         Tables.Board.boardName, Tables.Board.boardDisplayName, Tables.Board.affiliatedTo, Tables.Board.table);
     try {
+      System.out.println("---------------- 1 db = " + db);
       connection = db.getConnection();
+      System.out.println("---------------- 2");
       preparedStatement = connection.prepareStatement(query);
       resultSet = preparedStatement.executeQuery();
       while (resultSet.next()) {
@@ -152,6 +155,7 @@ public class SchoolBoard {
       boardNameToId = boardNameToIdTemp;
       boardNameToDisplayName = boardNameToDisplayNameTemp;
       boardNameToAffiliatedTo = boardNameToAffiliatedToTemp;
+      System.out.println("<======= displayNameToBoardCode======>" + displayNameToBoardCode);
     } catch (Exception exception) {
       exception.printStackTrace();
     } finally {
@@ -171,147 +175,149 @@ public class SchoolBoard {
     }
   }
 
-  public static synchronized List<String> getSchoolboardList() {
+  public List<String> getSchoolboardList() {
     if (schoolBoardList == null || schoolBoardList.isEmpty())
       fetchBoardList();
 
     return schoolBoardList;
   }
 
-  public static synchronized String getDisplayNameGivenBoardCode(String boardCode) {
+  public String getDisplayNameGivenBoardCode(String boardCode) {
     if (boardCodeToDisplayName == null || boardCodeToDisplayName.isEmpty())
       fetchBoardList();
 
     return boardCodeToDisplayName.get(boardCode.trim().toLowerCase());
   }
 
-  public static synchronized String getBoardNameGivenBoardCode(String boardCode) {
+  public String getBoardNameGivenBoardCode(String boardCode) {
     if (boardCodeToBoardName == null || boardCodeToBoardName.isEmpty())
       fetchBoardList();
 
     return boardCodeToBoardName.get(boardCode.trim().toLowerCase());
   }
 
-  public static synchronized Long getIdGivenBoardCode(String boardCode) {
+  public Long getIdGivenBoardCode(String boardCode) {
     if (boardCodeToBoradId == null || boardCodeToBoradId.isEmpty())
       fetchBoardList();
 
     return boardCodeToBoradId.get(boardCode.trim().toLowerCase());
   }
 
-  public static synchronized String getAffiliatedToGivenBoardCode(String boardCode) {
+  public String getAffiliatedToGivenBoardCode(String boardCode) {
     if (boardCodeToAffiliatedTo == null || boardCodeToAffiliatedTo.isEmpty())
       fetchBoardList();
 
     return boardCodeToAffiliatedTo.get(boardCode.trim().toLowerCase());
   }
 
-  public static synchronized String getBoardCodeGivenId(Long id) {
+  public String getBoardCodeGivenId(Long id) {
     if (boardIdToBoardCode == null || boardIdToBoardCode.isEmpty())
       fetchBoardList();
 
     return boardIdToBoardCode.get(id);
   }
 
-  public static synchronized String getBoardNameGivenId(Long id) {
+  public String getBoardNameGivenId(Long id) {
     if (boardIdToBoardName == null || boardIdToBoardName.isEmpty())
       fetchBoardList();
 
     return boardIdToBoardName.get(id);
   }
 
-  public static synchronized String getDisplayNameGivenId(Long id) {
+  public String getDisplayNameGivenId(Long id) {
     if (boardIdToDisplayName == null || boardIdToDisplayName.isEmpty())
       fetchBoardList();
 
     return boardIdToDisplayName.get(id);
   }
 
-  public static synchronized String getAffiliatedToGivenId(Long id) {
+  public String getAffiliatedToGivenId(Long id) {
     if (boardIdToAffiliatedTo == null || boardIdToAffiliatedTo.isEmpty())
       fetchBoardList();
 
     return boardIdToAffiliatedTo.get(id);
   }
 
-  public static synchronized String getDisplayNameGivenAffiliatedTo(String affiliatedTo) {
+  public String getDisplayNameGivenAffiliatedTo(String affiliatedTo) {
     if (affiliatedToDisplayName == null || affiliatedToDisplayName.isEmpty())
       fetchBoardList();
 
     return affiliatedToDisplayName.get(affiliatedTo.trim().toLowerCase());
   }
 
-  public static synchronized String getBoardNameGivenAffiliatedTo(String affiliatedTo) {
+  public String getBoardNameGivenAffiliatedTo(String affiliatedTo) {
     if (affiliatedToBoardName == null || affiliatedToBoardName.isEmpty())
       fetchBoardList();
 
     return affiliatedToBoardName.get(affiliatedTo.trim().toLowerCase());
   }
 
-  public static synchronized String getBoardCodeGivenAffiliatedTo(String affiliatedTo) {
+  public String getBoardCodeGivenAffiliatedTo(String affiliatedTo) {
     if (affiliatedToBoardCode == null || affiliatedToBoardCode.isEmpty())
       fetchBoardList();
 
     return affiliatedToBoardCode.get(affiliatedTo.trim().toLowerCase());
   }
 
-  public static synchronized Long getBoardIdGivenAffiliatedTo(String affiliatedTo) {
+  public Long getBoardIdGivenAffiliatedTo(String affiliatedTo) {
     if (affiliatedToId == null || affiliatedToId.isEmpty())
       fetchBoardList();
 
     return affiliatedToId.get(affiliatedTo.trim().toLowerCase());
   }
 
-  public static synchronized long getBoardIdGivenDisplayName(String displayName) {
+  public long getBoardIdGivenDisplayName(String displayName) {
     if (displayNameToBoradId == null || displayNameToBoradId.isEmpty())
       fetchBoardList();
 
     return displayNameToBoradId.get(displayName.trim().toLowerCase());
   }
 
-  public static synchronized String getBoardNameGivenDisplayName(String displayName) {
+  public String getBoardNameGivenDisplayName(String displayName) {
     if (displayNameToBoardName == null || displayNameToBoardName.isEmpty())
       fetchBoardList();
 
     return displayNameToBoardName.get(displayName.trim().toLowerCase());
   }
 
-  public static synchronized String getBoardCodeGivenDisplayName(String displayName) {
-    if (displayNameToBoardCode == null || displayNameToBoardCode.isEmpty())
+  public String getBoardCodeGivenDisplayName(String displayName) {
+    if (displayNameToBoardCode == null || displayNameToBoardCode.isEmpty()) {
+      System.out.println("againg fetching displayName");
       fetchBoardList();
-
-    return displayNameToBoardCode.get(displayName.trim().toLowerCase());
+    }
+    System.out.println("********* " + displayNameToBoardCode.get(displayName.trim()));
+    return displayNameToBoardCode.get(displayName.trim());
   }
 
-  public static synchronized String getAffiliatedToGivenDisplayName(String displayName) {
+  public String getAffiliatedToGivenDisplayName(String displayName) {
     if (displayNameToAffiliatedTo == null || displayNameToAffiliatedTo.isEmpty())
       fetchBoardList();
 
     return displayNameToAffiliatedTo.get(displayName.trim().toLowerCase());
   }
 
-  public static synchronized Long getBoardIdGivenBoardName(String boardName) {
+  public Long getBoardIdGivenBoardName(String boardName) {
     if (boardNameToId == null || boardNameToId.isEmpty())
       fetchBoardList();
 
     return boardNameToId.get(boardName.trim().toLowerCase());
   }
 
-  public static synchronized String getDisplayNameGivenBoardName(String boardName) {
+  public String getDisplayNameGivenBoardName(String boardName) {
     if (boardNameToDisplayName == null || boardNameToDisplayName.isEmpty())
       fetchBoardList();
 
     return boardNameToDisplayName.get(boardName.trim().toLowerCase());
   }
 
-  public static synchronized String getBoardCodeGivenBoardName(String boardName) {
+  public String getBoardCodeGivenBoardName(String boardName) {
     if (boardNameToBoardCode == null || boardNameToBoardCode.isEmpty())
       fetchBoardList();
 
     return boardNameToBoardCode.get(boardName.trim().toLowerCase());
   }
 
-  public static synchronized String getAffiliatedToGivenBoardName(String boardName) {
+  public String getAffiliatedToGivenBoardName(String boardName) {
     if (boardNameToAffiliatedTo == null || boardNameToAffiliatedTo.isEmpty())
       fetchBoardList();
 

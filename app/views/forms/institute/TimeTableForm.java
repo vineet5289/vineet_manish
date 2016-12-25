@@ -49,17 +49,17 @@ public class TimeTableForm {
 //    }
 //
 //    boolean isValidTimeFormat = true;
-//    if (!TimeUtiles.isValidTime(periodStartTime)) {
+//    if (!TimeUtils.isValidTime(periodStartTime)) {
 //      isValidTimeFormat = false;
 //      errors.add(new ValidationError("periodStartTime", "Please enter valid start time."));
 //    }
 //
-//    if (!TimeUtiles.isValidTime(periodEndTime)) {
+//    if (!TimeUtils.isValidTime(periodEndTime)) {
 //      isValidTimeFormat = false;
 //      errors.add(new ValidationError("periodEndTime", "Please enter valid start time."));
 //    }
 //
-//    if(isValidTimeFormat && !TimeUtiles.isValidTimeRange(periodStartTime, periodEndTime)) {
+//    if(isValidTimeFormat && !TimeUtils.isValidTimeRange(periodStartTime, periodEndTime)) {
 //      errors.add(new ValidationError("error", "You have entered wrong period time information."));
 //    }
 //

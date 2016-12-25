@@ -6,63 +6,70 @@ import java.util.List;
 import java.util.Map;
 
 public enum SchoolClassEnum {
-	Kindergarten("Nursery(Kindergarten)"),
-	Lkg("Lower Kindergarten(LKG)"),
-	Ukg("Upper Kindergarten(UKG)"),
-	First("1st Standard"),
-	Second("2nd Standard"),
-	Third("3rd Standard"),
-	Fourth("4th Standard"),
-	Fifth("5th Standard"),
-	Sixth("6th Standard"),
-	Seventh("7th Standard"),
-	Eighth("8th Standard"),
-	Ninth("9th Standard"),
-	Tenth("10th Standard"),
-	Eleventh("11th Standard"),
-	Twelth("12th Standard");
+	kindergarten("Nursery(Kindergarten)"),
+	lkg("Lower Kindergarten(LKG)"),
+	ukg("Upper Kindergarten(UKG)"),
+	first("1st Standard"),
+	second("2nd Standard"),
+	third("3rd Standard"),
+	fourth("4th Standard"),
+	fifth("5th Standard"),
+	sixth("6th Standard"),
+	seventh("7th Standard"),
+	eighth("8th Standard"),
+	ninth("9th Standard"),
+	tenth("10th Standard"),
+	eleventh("11th Standard"),
+	twelth("12th Standard");
 	
 	private String value;
 	private SchoolClassEnum(String value) {
 		this.value = value;
 	}
+  private static final List<String> classDisplayName = new ArrayList<String>(SchoolClassEnum.values().length);
+  private static final Map<String, Integer> classNameWithSeq = new HashMap<String, Integer>(SchoolClassEnum.values().length);
+  private static final Map<Integer, String> seqToClassName = new HashMap<Integer, String>(SchoolClassEnum.values().length);
+  private static final Map<SchoolClassEnum, Integer> classEnumWithSeq = new HashMap<SchoolClassEnum, Integer>(SchoolClassEnum.values().length);
+  private static final Map<Integer, SchoolClassEnum> seqToClassEnum = new HashMap<Integer, SchoolClassEnum>(SchoolClassEnum.values().length);
 
-	private final static Map<SchoolClassEnum, String> classEnumToDisplayNameMapping = new HashMap<SchoolClassEnum, String>(SchoolClassEnum.values().length);
-	private final static Map<String, SchoolClassEnum> displayNameClassEnumMapping = new HashMap<String, SchoolClassEnum>(SchoolClassEnum.values().length);
-	private static final List<String> classDisplayName = new ArrayList<String>(SchoolClassEnum.values().length);
 	static {
+	  int seq = 1;
 		for(SchoolClassEnum sce : SchoolClassEnum.values()) {
-			classEnumToDisplayNameMapping.put(sce, sce.value);
-			displayNameClassEnumMapping.put(sce.value.toLowerCase(), sce);
 			classDisplayName.add(sce.value);
+      classNameWithSeq.put(sce.value.toLowerCase(), seq);
+      seqToClassName.put(seq, sce.value);
+      classEnumWithSeq.put(sce, seq);
+      seqToClassEnum.put(seq, sce);
+      seq++;
 		}
 	}
 
-	public static SchoolClassEnum of(String className) {
-		SchoolClassEnum result = displayNameClassEnumMapping.get(className.trim().toLowerCase());
-		if(result == null) {
-			throw new IllegalArgumentException("No Class exits for given value = " + className);
-		}
-		return result;
+	public static int of(SchoolClassEnum value) {
+	  return classEnumWithSeq.containsKey(value) ? classEnumWithSeq.get(value) : -1;
+  }
+
+	public static int of(String className) {
+		return classNameWithSeq.containsKey(className.trim().toLowerCase()) ?
+        classNameWithSeq.get(className.trim().toLowerCase()) : -1;
 	}
 
-	public static String of(SchoolClassEnum classEnumName) {
-		String result = classEnumToDisplayNameMapping.get(classEnumName);
-		if(result == null) {
-			throw new IllegalArgumentException("No Class exits for given value = " + classEnumName);
-		}
-		return result;
+	public static String of(int seq) {
+		return seqToClassName.containsKey(seq) ? seqToClassName.get(seq) : "";
 	}
 
-	public static boolean contains(String displayName) {
-		SchoolClassEnum result = displayNameClassEnumMapping.get(displayName.trim().toLowerCase());
-		if(result == null) {
-			return false;
-		}
-		return true;
-	}
+  public static boolean contains(String className) {
+    return classNameWithSeq.containsKey(className.trim().toLowerCase());
+  }
+
+  public static boolean contains(int seq) {
+    return seqToClassName.containsKey(seq);
+  }
 
 	public static List<String> getClassDisplayName() {
 		return classDisplayName;
 	}
+
+  public static Map<Integer, String> seqToClassNameMapping() {
+    return seqToClassName;
+  }
 }

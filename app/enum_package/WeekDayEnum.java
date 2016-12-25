@@ -6,53 +6,45 @@ import java.util.List;
 import java.util.Map;
 
 public enum WeekDayEnum {
-	Sunday(1),
-	Monday(2),
-	Tuesday(3),
-	Wednesday(4),
-	Thursday(5),
-	Friday(6),
-	Saturday(7);
+	sunday("Sunday"),
+	monday("Monday"),
+	tuesday("Tuesday"),
+	wednesday("Wednesday"),
+	thursday("Thursday"),
+	friday("Friday"),
+	saturday("saturday");
 
-	private static final Map<Integer, WeekDayEnum> weekDayValueMapping = new HashMap<Integer, WeekDayEnum>(WeekDayEnum.values().length);
-	private static final Map<String, WeekDayEnum> displayNameToWeekDayMapping = new HashMap<String, WeekDayEnum>(WeekDayEnum.values().length);
+	private static final Map<String, WeekDayEnum> valueToEnumMap = new HashMap<String, WeekDayEnum>(WeekDayEnum.values().length);
+  private static final Map<Integer, String> dayOfWeek = new HashMap<Integer, String>(WeekDayEnum.values().length);
+	private static final Map<WeekDayEnum, String> enumTOValueMap = new HashMap<WeekDayEnum, String>(WeekDayEnum.values().length);
 	private static final List<String> displayName = new ArrayList<String>(WeekDayEnum.values().length);
 	static {
+	  int seq = 1;
 		for(WeekDayEnum wd : WeekDayEnum.values()) {
-			weekDayValueMapping.put(wd.dayValue, wd);
-			displayNameToWeekDayMapping.put(wd.name().toLowerCase(), wd);
+			valueToEnumMap.put(wd.value.toLowerCase(), wd);
+      dayOfWeek.put(seq, wd.value);
+			enumTOValueMap.put(wd, wd.value);
 			displayName.add(wd.name());
 		}
 	}
 
-	private int dayValue;
+	private String value;
 
-	private WeekDayEnum(int dayValue) {
-		this.dayValue = dayValue;
+	private WeekDayEnum(String value) {
+		this.value = value;
 	}
 
-	public static WeekDayEnum of(int dayValue) {
-		WeekDayEnum result = weekDayValueMapping.get(dayValue);
-		if(result == null) {
-			throw new IllegalArgumentException("No Week day exits for given int value = " + dayValue);
-		}
+	public static WeekDayEnum of(String value) {
+		WeekDayEnum result = valueToEnumMap.get(value.trim().toLowerCase());
 		return result;
 	}
 
-	public static WeekDayEnum of(String displayName) {
-		WeekDayEnum result = displayNameToWeekDayMapping.get(displayName.trim().toLowerCase());
-		if(result == null) {
-			throw new IllegalArgumentException("No Week day exits for given int value = " + displayName);
-		}
-		return result;
-	}
+  public static String of(int value) {
+    return dayOfWeek.containsKey(value) ? dayOfWeek.get(value) : "";
+  }
 
-	public static boolean contains(String displayName) {
-		WeekDayEnum result = displayNameToWeekDayMapping.get(displayName.trim().toLowerCase());
-		if(result == null) {
-			return false;
-		}
-		return true;
+	public static boolean contains(String value) {
+    return valueToEnumMap.get(value.trim().toLowerCase()) == null ? false : true;
 	}
 
 	public static List<String> getWeekDisplayName() {

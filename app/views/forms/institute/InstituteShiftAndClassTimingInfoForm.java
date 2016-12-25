@@ -18,7 +18,9 @@ public class InstituteShiftAndClassTimingInfoForm {
 		private String shiftClassEndTime;
 		private String shiftWeekStartDay;
 		private String shiftWeekEndDay;
+		private int shiftStartClassIndex;
 		private String shiftStartClassFrom;
+		private int shiftEndClassIndex;
 		private String shiftEndClassTo;
 		private String shiftAttendenceType;
 	}
