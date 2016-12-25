@@ -35,8 +35,7 @@ public enum WeekDayEnum {
 	}
 
 	public static WeekDayEnum of(String value) {
-		WeekDayEnum result = valueToEnumMap.get(value.trim().toLowerCase());
-		return result;
+    return valueToEnumMap.get(value.trim().toLowerCase());
 	}
 
   public static String of(int value) {
@@ -50,4 +49,8 @@ public enum WeekDayEnum {
 	public static List<String> getWeekDisplayName() {
 		return displayName;
 	}
+
+  public static Map<Integer, String> getDayToWeekMap() {
+    return dayOfWeek;
+  }
 }

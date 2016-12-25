@@ -27,30 +27,22 @@ public enum AttendenceTypeEnum {
 	}
 
 	public static AttendenceTypeEnum of(String key) {
-		AttendenceTypeEnum result = displayNameToAttendenceType.get(key);
-		if(result == null) {
-			throw new IllegalArgumentException("No attendence type exits for given value = " + key);
-		}
-		return result;
+		return displayNameToAttendenceType.containsKey(key.trim()) ? displayNameToAttendenceType.get(key.trim()) : AttendenceTypeEnum.once;
 	}
 
 	public static String of(AttendenceTypeEnum key) {
-		String result = attendenceTypeToDisplayName.get(key);
-		if(result == null) {
-			throw new IllegalArgumentException("No attendence type exits for given value = " + key);
-		}
-		return result;
+		return attendenceTypeToDisplayName.containsKey(key) ? attendenceTypeToDisplayName.get(key) : "";
 	}
 
 	public static List<String> getAttendenceTypeDisplayName() {
 		return attendenceTypeDisplayName;
 	}
 
+	public static Map<AttendenceTypeEnum, String> getEnumToDisplayNameMap() {
+    return attendenceTypeToDisplayName;
+  }
+
 	public static boolean contain(String key) {
-		AttendenceTypeEnum result = displayNameToAttendenceType.get(key.trim());
-		if(result == null) {
-			return false;
-		}
-		return true;
+    return displayNameToAttendenceType.containsKey(key.trim());
 	}
 }

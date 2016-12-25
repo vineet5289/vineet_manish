@@ -198,9 +198,9 @@ public class InstituteInfoController extends ClassController {
 	public Result getInstituteMandInfo() {
 		String schoolId = session().get(SessionKey.instituteid.name());
 		Form<FirstTimeInstituteUpdateForm> firstTimeUpdateForm = formFactory.form(FirstTimeInstituteUpdateForm.class);
-		List<String> weekList = WeekDayEnum.getWeekDisplayName();
-		List<String> classList = SchoolClassEnum.getClassDisplayName();
-		List<String> attendenceType = AttendenceTypeEnum.getAttendenceTypeDisplayName();
+		Map<Integer, String> dayToWeekMap = WeekDayEnum.getDayToWeekMap();
+		Map<Integer, String> classList = SchoolClassEnum.seqToClassNameMapping();
+		Map<AttendenceTypeEnum, String> attendenceType = AttendenceTypeEnum.getEnumToDisplayNameMap();
 		InstituteFormData instituteFormData = null;
 		try {
 			instituteFormData = schoolProfileInfoDAO.getNumberOfInstituteInGivenGroup(Long.valueOf(schoolId));
@@ -216,14 +216,11 @@ public class InstituteInfoController extends ClassController {
 			schoolBoards.put("icse", "ICSE");
 			schoolBoards.put("ib", "International Baccalaureate");
 			String affiliatedTo = instituteFormData.getInstituteState();
-      System.out.println("affiliatedTo : " + affiliatedTo);
 			String boardDisplayName = instituteBoardDAO.getDisplayNameGivenAffiliatedTo(affiliatedTo);
-      System.out.println("boardDisplayName : " + affiliatedTo);
 			String boradCode = instituteBoardDAO.getBoardCodeGivenDisplayName(boardDisplayName);
-			System.out.println("boradCode : " + boradCode);
 			schoolBoards.put(boradCode, boardDisplayName);
 			session(SessionKey.numerofinstituteingroup.name(), instituteFormData.getNoOfInstitute() + "");
-			return ok(schoolMandataryInfo.render(firstTimeUpdateForm, weekList, classList, attendenceType, schoolBoards, SchoolType.schoolTypeToValue));
+			return ok(schoolMandataryInfo.render(firstTimeUpdateForm, dayToWeekMap, classList, attendenceType, schoolBoards, SchoolType.schoolTypeToValue));
 		}
 
 		flash("error", "Some service problem occur during request process. Please login again.");
