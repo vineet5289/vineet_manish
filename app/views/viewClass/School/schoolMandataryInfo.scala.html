@@ -1,7 +1,7 @@
 @(firstTimeUpdateForm:Form[views.forms.institute.FirstTimeInstituteUpdateForm],
-weekDay:List[String],
-classes:List[String],
-attendenceType:List[String],
+weekDay:Map[Integer,String],
+classes:Map[Integer,String],
+attendenceType:Map[enum_package.AttendanceTypeEnum ,String],
 instituteBoard: Map[String, String],
 instituteType:  Map[String, String])
 
@@ -117,10 +117,10 @@ instituteType:  Map[String, String])
                            <div class="ui fluid selection dropdown">
                               <div class="text">Select</div>
                               <i class="dropdown icon"></i>
-                              <input name="instituteOfficeWeekStartDay" type="hidden">
+                              <input name="instituteOfficeWeekStartindex" type="hidden">
                               <div class="menu">
-                                 @for(value<- weekDay){ 
-                                 <div class="item" data-value="@value">@value</div>
+                                 @for((key,value)<- weekDay){ 
+                                 <div class="item" data-value="@key">@value</div>
                                  }
                               </div>
                            </div>
@@ -130,10 +130,10 @@ instituteType:  Map[String, String])
                            <div class="ui fluid selection dropdown">
                               <div class="text">Select</div>
                               <i class="dropdown icon"></i>
-                              <input name="instituteOfficeWeekEndDay" type="hidden">
+                              <input name="instituteOfficeWeekEndIndex" type="hidden">
                               <div class="menu">
-                                 @for(value<- weekDay){ 
-                                 <div class="item" data-value="@value">@value</div>
+                                 @for((key,value)<- weekDay){ 
+                                 <div class="item" data-value="@key">@value</div>
                                  }
                               </div>
                            </div>
@@ -148,10 +148,10 @@ instituteType:  Map[String, String])
                            <div class="ui fluid selection dropdown">
                               <div class="text">Select</div>
                               <i class="dropdown icon"></i>
-                              <input name="instituteClassFrom" type="hidden">
+                              <input name="startClassIndex" type="hidden">
                               <div class="menu">
-                                 @for(value<- classes){ 
-                                 <div class="item" data-value="@value">@value</div>
+                                 @for((key,value)<- classes){ 
+                                 <div class="item" data-value="@key">@value</div>
                                  }
                               </div>
                            </div>
@@ -161,10 +161,10 @@ instituteType:  Map[String, String])
                            <div class="ui fluid selection dropdown">
                               <div class="text">Select</div>
                               <i class="dropdown icon"></i>
-                              <input name="instituteClassTo" type="hidden">
+                              <input name="endClassIndex" type="hidden">
                               <div class="menu">
-                                 @for(value<- classes){ 
-                                 <div class="item" data-value="@value">@value</div>
+                                 @for((key,value)<- classes){ 
+                                 <div class="item" data-value="@key">@value</div>
                                  }
                               </div>
                            </div>
@@ -355,29 +355,29 @@ $(function(){
         }]
       },
 
-                     "instituteOfficeWeekStartDay": {
-        "identifier": "instituteOfficeWeekStartDay",
+                     "instituteOfficeWeekStartIndex": {
+        "identifier": "instituteOfficeWeekStartIndex",
         "rules": [{
           "type": "empty",
           "prompt": "Please Select start day of week"
         }]
       },
-      "instituteOfficeWeekEndDay": {
-        "identifier": "instituteOfficeWeekEndDay",
+      "instituteOfficeWeekEndIndex": {
+        "identifier": "instituteOfficeWeekEndIndex",
         "rules": [{
           "type": "empty",
           "prompt": "Please selet end day of week"
         }]
       },
-      "instituteClassFrom": {
-        "identifier": "instituteClassFrom",
+      "startClassIndex": {
+        "identifier": "startClassIndex",
         "rules": [{
           "type": "empty",
           "prompt": "Please selet start class"
         }]
       },
-       "instituteClassTo": {
-        "identifier": "instituteClassTo",
+       "endClassIndex": {
+        "identifier": "endClassIndex",
         "rules": [{
           "type": "empty",
           "prompt": "Please selet end class"
@@ -525,10 +525,10 @@ function shiftfunction(){
             var shiftAttendenceType = "shifts[" + i + "].shiftAttendenceType";
             var shiftClassStartTime = "shifts[" + i + "].shiftClassStartTime";
             var shiftClassEndTime = "shifts[" + i + "].shiftClassEndTime";
-            var shiftStartClassFrom = "shifts[" + i + "].shiftStartClassFrom";
-            var shiftEndClassTo = "shifts[" + i + "].shiftEndClassTo";
-            var shiftWeekStartDay = "shifts[" + i + "].shiftWeekStartDay";
-            var shiftWeekEndDay = "shifts[" + i + "].shiftWeekEndDay";
+            var shiftStartClassIndex = "shifts[" + i + "].shiftStartClassIndex";
+            var shiftEndClassIndex = "shifts[" + i + "].shiftEndClassIndex";
+            var shiftWeekStartIndex = "shifts[" + i + "].shiftWeekStartIndex";
+            var shiftWeekEndIndex = "shifts[" + i + "].shiftWeekEndIndex";
             
 
              
@@ -548,7 +548,7 @@ var htmlshift = '<h4 class="ui top attached  teal inverted header">Shift '+j+'</
 '                              <i class="dropdown icon"></i>'+
 '                              <input name='+shiftAttendenceType+' type="hidden">'+
 '                              <div class="menu">'+
-'                                 @for(value<- attendenceType){ '+
+'                                 @for((key,value)<- attendenceType){ '+
 '                                 <div class="item" data-value="@value">@value</div>'+
 '                                 }'+
 '                              </div>'+
@@ -584,10 +584,10 @@ var htmlshift = '<h4 class="ui top attached  teal inverted header">Shift '+j+'</
 '                           <div class="ui fluid selection dropdown">'+
 '                              <div class="text">Select</div>'+
 '                              <i class="dropdown icon"></i>'+
-'                              <input name='+shiftStartClassFrom+' type="hidden">'+
+'                              <input name='+shiftStartClassIndex+' type="hidden">'+
 '                              <div class="menu">'+
-'                                 @for(value<- classes){ '+
-'                                 <div class="item" data-value="@value">@value</div>'+
+'                                 @for((key,value)<- classes){ '+
+'                                 <div class="item" data-value="@key">@value</div>'+
 '                                 }'+
 '                              </div>'+
 '                           </div>'+
@@ -597,10 +597,10 @@ var htmlshift = '<h4 class="ui top attached  teal inverted header">Shift '+j+'</
 '                           <div class="ui fluid selection dropdown">'+
 '                              <div class="text">Select</div>'+
 '                              <i class="dropdown icon"></i>'+
-'                              <input name='+shiftEndClassTo+' type="hidden">'+
+'                              <input name='+shiftEndClassIndex+' type="hidden">'+
 '                              <div class="menu">'+
-'                                 @for(value<- classes){ '+
-'                                 <div class="item" data-value="@value">@value</div>'+
+'                                 @for((key,value)<- classes){ '+
+'                                 <div class="item" data-value="@key">@value</div>'+
 '                                 }'+
 '                              </div>'+
 '                           </div>'+
@@ -614,10 +614,10 @@ var htmlshift = '<h4 class="ui top attached  teal inverted header">Shift '+j+'</
 '                           <div class="ui fluid selection dropdown">'+
 '                              <div class="text">Select</div>'+
 '                              <i class="dropdown icon"></i>'+
-'                              <input name='+shiftWeekStartDay+' type="hidden">'+
+'                              <input name='+shiftWeekStartIndex+' type="hidden">'+
 '                              <div class="menu">'+
-'                                 @for(value<- weekDay){ '+
-'                                 <div class="item" data-value="@value">@value</div>'+
+'                                 @for((key,value)<- weekDay){ '+
+'                                 <div class="item" data-value="@key">@value</div>'+
 '                                 }'+
 '                              </div>'+
 '                           </div>'+
@@ -627,10 +627,10 @@ var htmlshift = '<h4 class="ui top attached  teal inverted header">Shift '+j+'</
 '                           <div class="ui fluid selection dropdown">'+
 '                              <div class="text">Select</div>'+
 '                              <i class="dropdown icon"></i>'+
-'                              <input name='+shiftWeekEndDay+' type="hidden">'+
+'                              <input name='+shiftWeekEndIndex+' type="hidden">'+
 '                              <div class="menu">'+
-'                                @for(value<- weekDay){ '+
-'                                 <div class="item" data-value="@value">@value</div>'+
+'                                @for((key,value)<- weekDay){ '+
+'                                 <div class="item" data-value="@key">@value</div>'+
 '                                 }'+
 '                              </div>'+
 '                           </div>'+
