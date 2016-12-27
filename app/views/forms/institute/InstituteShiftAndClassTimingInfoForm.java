@@ -13,7 +13,7 @@ public class InstituteShiftAndClassTimingInfoForm {
 
 	@Data
 	public static class Shift {
-		private String shiftName;
+		private String shiftName = "Class";
 		private String shiftClassStartTime;
 		private String shiftClassEndTime;
 		private int shiftWeekStartIndex;

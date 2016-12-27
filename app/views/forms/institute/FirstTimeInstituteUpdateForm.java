@@ -3,7 +3,7 @@ package views.forms.institute;
 import java.util.ArrayList;
 import java.util.List;
 
-import enum_package.AttendenceTypeEnum;
+import enum_package.AttendanceTypeEnum;
 import enum_package.SchoolClassEnum;
 import enum_package.WeekDayEnum;
 import lombok.Data;
@@ -56,13 +56,15 @@ public class FirstTimeInstituteUpdateForm {
       isHostelCompulsory = (isHostelFacilitiesAvailable && hostelIsCompulsory.trim().equalsIgnoreCase("true"));
     }
 
-    if (instituteOfficeWeekStartIndex < 1  || instituteOfficeWeekStartIndex > 7) {
+    System.out.println("instituteOfficeWeekStartIndex:" + instituteOfficeWeekStartIndex);
+    System.out.println("instituteOfficeWeekEndIndex:" + instituteOfficeWeekEndIndex);
+    if (instituteOfficeWeekStartIndex < 1  || instituteOfficeWeekStartIndex > 7 || WeekDayEnum.of(instituteOfficeWeekStartIndex).isEmpty()) {
       errors.add(new ValidationError("instituteOfficeWeekStartDay", "Please select one of the week day from drop down"));
     } else {
       instituteOfficeWeekStartDay = WeekDayEnum.of(instituteOfficeWeekStartIndex);
     }
 
-    if (instituteOfficeWeekEndIndex < 1 || instituteOfficeWeekEndIndex > 7) {
+    if (instituteOfficeWeekEndIndex < 1 || instituteOfficeWeekEndIndex > 7 || WeekDayEnum.of(instituteOfficeWeekEndIndex).isEmpty()) {
       errors.add(new ValidationError("instituteOfficeWeekEndDay", "Please select one of the week day from drop down"));
     } else {
       instituteOfficeWeekEndDay = WeekDayEnum.of(instituteOfficeWeekEndIndex);
@@ -120,7 +122,7 @@ public class FirstTimeInstituteUpdateForm {
       instituteType = instituteType.trim().toLowerCase();
     }
 
-    if (numberOfShift > 1 && (shifts == null || shifts.size() != numberOfShift || !isValidShiftInfo())) {
+    if (numberOfShift >= 1 && (shifts == null || shifts.size() != numberOfShift || !isValidShiftInfo())) {
       errors.add(new ValidationError("shifts", "Please enter shift info."));
     }
 
@@ -140,10 +142,10 @@ public class FirstTimeInstituteUpdateForm {
       }
 
       if (shiftInfo.getShiftWeekStartIndex() < 1 || shiftInfo.getShiftWeekStartIndex() > 7
-          || shiftInfo.getShiftWeekEndIndex() < 1 || shiftInfo.getShiftWeekEndIndex() > 7) {
+          || shiftInfo.getShiftWeekEndIndex() < 1 || shiftInfo.getShiftWeekEndIndex() > 7
+          || WeekDayEnum.of(shiftInfo.getShiftWeekStartIndex()).isEmpty() || WeekDayEnum.of(shiftInfo.getShiftWeekEndIndex()).isEmpty()) {
         return false;
       } else {
-        WeekDayEnum.of(instituteOfficeWeekEndIndex);
         shiftInfo.setShiftWeekStartDay(WeekDayEnum.of(shiftInfo.getShiftWeekStartIndex()));
         shiftInfo.setShiftWeekEndDay(WeekDayEnum.of(shiftInfo.getShiftWeekEndIndex()));
       }
@@ -157,7 +159,7 @@ public class FirstTimeInstituteUpdateForm {
         shiftInfo.setShiftEndClassTo(SchoolClassEnum.of(shiftInfo.getShiftEndClassIndex()));
       }
 
-      if (shiftInfo.getShiftAttendenceType() == null || !AttendenceTypeEnum.contain(shiftInfo.getShiftAttendenceType())) {
+      if (shiftInfo.getShiftAttendenceType() == null || !AttendanceTypeEnum.contain(shiftInfo.getShiftAttendenceType())) {
         return false;
       } else {
         shiftInfo.setShiftAttendenceType(shiftInfo.getShiftAttendenceType().trim());

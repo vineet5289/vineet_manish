@@ -1,7 +1,6 @@
 package controllers.institute;
 
 import java.sql.SQLException;
-import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -10,7 +9,7 @@ import javax.inject.Inject;
 import controllers.routes;
 import dao.InstituteBoardDAO;
 import dao.school.SchoolProfileInfoDAO;
-import enum_package.AttendenceTypeEnum;
+import enum_package.AttendanceTypeEnum;
 import enum_package.InstituteDaoProcessStatus;
 import enum_package.SchoolClassEnum;
 import enum_package.SessionKey;
@@ -65,7 +64,7 @@ public class InstituteInfoController extends ClassController {
 		return ok(SchoolProfile.render(schoolGeneralInfoForm, schoolHeaderInfoForm, schoolShiftAndClassTimingInfoForm));
 	}
 
-	//auth + only superadmin, schoolId must present
+	//auth + only superadmin, instituteId must present
 	public Result getGeneralInfo() {
 		InstituteGeneralInfoForm schoolGeneralInfo = null;
 		try{
@@ -83,7 +82,7 @@ public class InstituteInfoController extends ClassController {
 		return ok(editSchoolInfo.render(schoolGeneralInfoFrom));
 	}
 
-	//auth + only superadmin, schoolId must present
+	//auth + only superadmin, instituteId must present
 	public Result updateGeneralInfo() {
 		Form<InstituteGeneralInfoForm> schoolGeneralInfoFrom = formFactory.form(InstituteGeneralInfoForm.class).bindFromRequest();
 		System.out.println("inside update => " + schoolGeneralInfoFrom);
@@ -200,10 +199,10 @@ public class InstituteInfoController extends ClassController {
 		Form<FirstTimeInstituteUpdateForm> firstTimeUpdateForm = formFactory.form(FirstTimeInstituteUpdateForm.class);
 		Map<Integer, String> dayToWeekMap = WeekDayEnum.getDayToWeekMap();
 		Map<Integer, String> classList = SchoolClassEnum.seqToClassNameMapping();
-		Map<AttendenceTypeEnum, String> attendenceType = AttendenceTypeEnum.getEnumToDisplayNameMap();
+		Map<String, String> attendenceType = AttendanceTypeEnum.getEnumToDisplayNameMap();
 		InstituteFormData instituteFormData = null;
 		try {
-			instituteFormData = schoolProfileInfoDAO.getNumberOfInstituteInGivenGroup(Long.valueOf(schoolId));
+			instituteFormData = schoolProfileInfoDAO.getNumberOfInstituteInGivenGroup(Long.valueOf("1"));
 		} catch (NumberFormatException | SQLException exception) {
 			exception.printStackTrace();
 			instituteFormData = null;
@@ -229,20 +228,18 @@ public class InstituteInfoController extends ClassController {
 
 	//session validation
 	public Result updateInstituteMandInfo() {
-		System.out.println("======>");
 		Form<FirstTimeInstituteUpdateForm> firstTimeSchoolUpdateForm = formFactory.form(FirstTimeInstituteUpdateForm.class).bindFromRequest();
-		System.out.println("************firstTimeSchoolUpdateForm$$$$$$$$" + firstTimeSchoolUpdateForm);
 		if (firstTimeSchoolUpdateForm == null || firstTimeSchoolUpdateForm.hasErrors()) {
 			flash("error", "Some parameters are missing.");
 			return redirect(controllers.institute.routes.InstituteInfoController.getInstituteMandInfo());
 		}
 
-		String schoolId = session().get(SessionKey.instituteid.name());
-		String userName = session().get(SessionKey.username.name());
+		String instituteId = "1";//session().get(SessionKey.instituteid.name());
+		String userName = "niet.vineet@gmail.com";//session().get(SessionKey.username.name());
 		FirstTimeInstituteUpdateForm firstTimeSchoolUpdate = firstTimeSchoolUpdateForm.get();
 		InstituteDaoProcessStatus instituteDaoProcessStatus = InstituteDaoProcessStatus.invalidschool;
 		try {
-//			instituteDaoProcessStatus = schoolProfileInfoDAO.updateSchoolMandInfo(firstTimeSchoolUpdate, Long.valueOf(schoolId), userName);
+			instituteDaoProcessStatus = schoolProfileInfoDAO.updateSchoolMandInfo(firstTimeSchoolUpdate, Long.valueOf(instituteId), userName);
 		} catch(Exception exception) {
 			flash("error", "Some problem occur during update.");
 			exception.printStackTrace();
@@ -252,7 +249,8 @@ public class InstituteInfoController extends ClassController {
 			flash("error", instituteDaoProcessStatus.name());
 			return redirect(controllers.institute.routes.InstituteInfoController.getInstituteMandInfo());
 		} else {
-			flash("success", "School informations updated successfully.");
+      System.out.println("-----------------------------------");
+      flash("success", "School informations updated successfully.");
 			return redirect(routes.SRPController.index());
 		}
 	}

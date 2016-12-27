@@ -105,9 +105,10 @@ public class Tables {
     public static String financialStartYear = "financial_start_year";
     public static String financialEndYear = "financial_end_year";
     public static String currentFinancialYear = "current_financial_year";
+    public static String financialStartDate = "financial_start_date";
+    public static String financialEndDate = "financial_end_date";
     public static String officeWeekStartDay = "office_week_start_day";
     public static String officeWeekEndDay = "office_week_end_day";
-    public static String dateFormat = "date_format";
     public static String websiteUrl = "website_url";
     public static String logoUrl = "logo_url";
     public static String isActive = "is_active";
@@ -170,8 +171,8 @@ public class Tables {
     public static String isActive = "is_active";
   }
 
-  public static class SchoolShiftInfo {
-    public static String table = "school_shift_info";
+  public static class InstituteShiftInfo {
+    public static String table = "institute_shift_info";
     public static String id = "id";
     public static String shiftName = "shift_name";
     public static String shiftClassStartTime = "shift_class_start_time";
@@ -181,7 +182,7 @@ public class Tables {
     public static String shiftStartClassFrom = "shift_start_class_from";
     public static String shiftEndClassTo = "shift_end_class_To";
     public static String shiftAttendenceType = "shift_attendence_type";
-    public static String schoolId = "school_id";
+    public static String instituteId = "institute_id";
     public static String createdAt = "created_at";
     public static String updatedAt = "updated_at";
     public static String isActive = "is_active";

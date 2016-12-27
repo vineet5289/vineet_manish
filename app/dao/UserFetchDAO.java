@@ -108,7 +108,7 @@ public class UserFetchDAO {
 //		try {
 //			connection = DB.getDataSource("srp").getConnection();
 //			preparedStatement = connection.prepareStatement(selectQuery, ResultSet.TYPE_FORWARD_ONLY);
-//			preparedStatement.setLong(1, schoolId);
+//			preparedStatement.setLong(1, instituteId);
 //			resultSet = preparedStatement.executeQuery();
 //			while (resultSet.next()) {
 //				String userName = resultSet.getString(userNameField);
@@ -116,7 +116,7 @@ public class UserFetchDAO {
 //				UserInfo userInfo = new UserInfo();
 //				userInfo.setName(name);
 //				userInfo.setUserName(userName);
-//				userInfo.setSchoolIds(schoolId.toString());
+//				userInfo.setSchoolIds(instituteId.toString());
 //				teacherInfos.add(userInfo);
 //			}
 //			

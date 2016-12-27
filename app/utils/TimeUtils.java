@@ -63,6 +63,20 @@ public class TimeUtils {
     }
 	}
 
+  public static Date getDate(String date) {
+    if(StringUtils.isBlank(date)) {
+      return null;
+    }
+    Date output = null;
+    try {
+      date = date.trim().replaceAll("[ ]+", " ");
+      output = (Date) formatter.parse(date);
+    } catch (Exception exception) {
+      exception.printStackTrace();
+    }
+    return output;
+  }
+
   public static boolean validDateRange(String startDate, String endDate) {
     if(StringUtils.isBlank(startDate) || StringUtils.isBlank(endDate)) {
       return false;

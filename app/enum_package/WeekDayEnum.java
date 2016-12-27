@@ -12,7 +12,7 @@ public enum WeekDayEnum {
 	wednesday("Wednesday"),
 	thursday("Thursday"),
 	friday("Friday"),
-	saturday("saturday");
+	saturday("Saturday");
 
 	private static final Map<String, WeekDayEnum> valueToEnumMap = new HashMap<String, WeekDayEnum>(WeekDayEnum.values().length);
   private static final Map<Integer, String> dayOfWeek = new HashMap<Integer, String>(WeekDayEnum.values().length);
@@ -25,6 +25,7 @@ public enum WeekDayEnum {
       dayOfWeek.put(seq, wd.value);
 			enumTOValueMap.put(wd, wd.value);
 			displayName.add(wd.name());
+      seq++;
 		}
 	}
 

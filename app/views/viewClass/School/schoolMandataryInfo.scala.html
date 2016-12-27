@@ -1,7 +1,7 @@
 @(firstTimeUpdateForm:Form[views.forms.institute.FirstTimeInstituteUpdateForm],
 weekDay:Map[Integer,String],
 classes:Map[Integer,String],
-attendenceType:Map[enum_package.AttendanceTypeEnum ,String],
+attendenceType:Map[String ,String],
 instituteBoard: Map[String, String],
 instituteType:  Map[String, String])
 
@@ -117,7 +117,7 @@ instituteType:  Map[String, String])
                            <div class="ui fluid selection dropdown">
                               <div class="text">Select</div>
                               <i class="dropdown icon"></i>
-                              <input name="instituteOfficeWeekStartindex" type="hidden">
+                              <input name="instituteOfficeWeekStartIndex" type="hidden">
                               <div class="menu">
                                  @for((key,value)<- weekDay){ 
                                  <div class="item" data-value="@key">@value</div>
@@ -549,7 +549,7 @@ var htmlshift = '<h4 class="ui top attached  teal inverted header">Shift '+j+'</
 '                              <input name='+shiftAttendenceType+' type="hidden">'+
 '                              <div class="menu">'+
 '                                 @for((key,value)<- attendenceType){ '+
-'                                 <div class="item" data-value="@value">@value</div>'+
+'                                 <div class="item" data-value="@key">@value</div>'+
 '                                 }'+
 '                              </div>'+
 '                           </div>'+

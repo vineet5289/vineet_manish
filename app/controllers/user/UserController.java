@@ -27,15 +27,15 @@ public class UserController extends CustomController {
 		try {
 			userInfos = userFetchDAO.getAllUser(schoolId);
 //			if(category == null || category.isEmpty())
-//				userInfos = userFetchDAO.getAllUser(schoolId);
+//				userInfos = userFetchDAO.getAllUser(instituteId);
 //			else if(category.equalsIgnoreCase(Role.TEACHER.name())) {
-//				userInfos = userFetchDAO.getAllTeachers(schoolId);
+//				userInfos = userFetchDAO.getAllTeachers(instituteId);
 //			} else if(category.equals(Role.GUARDIAN.name())) {
-//				userInfos = userFetchDAO.getAllGuardian(schoolId);
+//				userInfos = userFetchDAO.getAllGuardian(instituteId);
 //			} else if(category.equalsIgnoreCase(Role.STUDENT.name())) {
-//				userInfos = userFetchDAO.getAllStudents(schoolId);
+//				userInfos = userFetchDAO.getAllStudents(instituteId);
 //			} else {
-//				userInfos = userFetchDAO.getAllOtherUser(schoolId);
+//				userInfos = userFetchDAO.getAllOtherUser(instituteId);
 //			}
 
 		} catch (SQLException exception) {
@@ -56,9 +56,9 @@ public class UserController extends CustomController {
 		UserInfo userInfos = null;
 		try {
 			if(category.equals(InstituteUserRole.guardian.name())) {
-//				userInfos = userFetchDAO.getAllGuardian(schoolId);
+//				userInfos = userFetchDAO.getAllGuardian(instituteId);
 			} else if(category.equalsIgnoreCase(InstituteUserRole.student.name())) {
-//				userInfos = userFetchDAO.getAllStudents(schoolId);
+//				userInfos = userFetchDAO.getAllStudents(instituteId);
 			} else {
 				System.out.println("===========> 1");
 				userInfos = userFetchDAO.getEmployeeInfo(userName, schoolId);

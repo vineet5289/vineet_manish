@@ -35,7 +35,7 @@ public class ShiftUtil {
 //			shift.setShiftWeekEndDay(firstTimeSchoolUpdate.getSchoolOfficeWeekEndDay());
 //			shift.setShiftStartClassFrom(firstTimeSchoolUpdate.getSchoolClassFrom());
 //			shift.setShiftEndClassTo(firstTimeSchoolUpdate.getSchoolClassTo());
-////			shift.setShiftAttendenceType(AttendenceTypeEnum.of(firstTimeSchoolUpdate.getAttendenceType()).name());
+////			shift.setShiftAttendenceType(AttendanceTypeEnum.of(firstTimeSchoolUpdate.getAttendenceType()).name());
 //			schoolShiftAndClassTimingInfoForm.getShifts().add(shift);
 //		} else {
 //			for(int i = 0; i < numberOfShift; i++) {
@@ -47,7 +47,7 @@ public class ShiftUtil {
 //				shift.setShiftWeekEndDay(firstTimeSchoolUpdate.getSchoolOfficeWeekEndDay());
 //				shift.setShiftStartClassFrom(firstTimeSchoolUpdate.getSchoolClassFrom());
 //				shift.setShiftEndClassTo(firstTimeSchoolUpdate.getSchoolClassTo());
-////				shift.setShiftAttendenceType(AttendenceTypeEnum.of(firstTimeSchoolUpdate.getAttendenceType()).name());
+////				shift.setShiftAttendenceType(AttendanceTypeEnum.of(firstTimeSchoolUpdate.getAttendenceType()).name());
 //				schoolShiftAndClassTimingInfoForm.getShifts().add(shift);
 //			}
 //		}
