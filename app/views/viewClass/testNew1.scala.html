@@ -1,0 +1,773 @@
+@viewClass.main9("View | Design")(""){
+<style type="text/css">
+  
+
+    th,td
+    {
+        margin: 0;
+        text-align: center;
+        border-collapse: collapse;
+        outline: 1px solid #e3e3e3;
+    }
+
+    td
+    {
+        padding: 5px 10px;
+    }
+
+    th
+    {
+        background: #666;
+        color: white;
+        padding: 5px 10px;
+    }
+
+    td:hover
+    {
+        cursor: pointer;
+        background: #666;
+        color: white;
+    }
+    </style>
+	
+  <div class="pc-modal step-1 ui small modal">
+  <h3>
+    <img src="https://googledrive.com/host/0BxdPBs9gGL-DfnVZYkN1MkJKRWFOcnFqa2dpYkxsQ3JBM2UxN2dSYWJxYzRKSGZZZTVUNDQ/logotype-white.png" alt="PaperCut" /> 
+    Smart Stuff
+  </h3>
+  <i class="close icon"></i>
+  <div class="header">
+    <div class="profile-image">
+      <img class="ui avatar image" src="//semantic-ui.com/images/avatar/small/jenny.jpg">
+    </div>
+    <strong>Melissa,</strong>
+    <br /> Just a little bit more
+  </div>
+  <div class="content">
+    <div class="triangle-top-right"></div>
+
+    <form class="ui form">
+      <div class="field">
+        <label>Organisation name</label>
+        <input type="text" name="org-name" placeholder="ACME Industries">
+      </div>
+      <div class="field">
+        <label>Where should we send your printer alerts?</label>
+        <input type="text" name="email" placeholder="melissa@@acme.net">
+      </div>
+    </form>
+  </div>
+  <div class="actions">
+    <button type="button" class="show-step-2 ui green basic button">Let's get started</button>
+  </div>
+</div>
+
+<div class="pc-modal step-2 ui small modal">
+  <h3>
+    <img src="https://googledrive.com/host/0BxdPBs9gGL-DfnVZYkN1MkJKRWFOcnFqa2dpYkxsQ3JBM2UxN2dSYWJxYzRKSGZZZTVUNDQ/logotype-white.png" alt="PaperCut" /> 
+    Smart Stuff
+  </h3>
+  <!--<i class="close icon"></i>-->
+  <div class="header">
+    Hmm. We're having trouble getting your information.
+  </div>
+  <div class="content">
+    <div class="triangle-top-right"></div>
+
+    <h3>You may want to try again?</h3>
+        <p>Keep in mind that we're not going to post anything to you or as you.</p>
+  </div>
+  <div class="actions">
+    <button class="ui green basic button">Try again</button>
+          or
+          <button class="ui green basic button">Use a different account</button>
+  </div>
+</div>
+  
+ 
+  <div class="ui top attached menu" style="background-color: #ebebeb;">
+    <div class="ui icon item" style="background-color: #2abb9d; color: #fff;">
+      <i class="file text icon" style="font-size: 2em;"></i>
+    </div>
+    <div class="right menu">
+      <!--<div class="ui right aligned category search item">
+        <div class="ui transparent icon input">
+          <input class="prompt" type="text" placeholder="Search ...">
+          <i class="search link icon"></i>
+        </div>
+        <div class="results"></div>
+      </div>-->
+      <div class="item author" style="padding: 10px 20px;">
+        <img class="ui avatar image" style="margin-right: 15px;" src="//semantic-ui.com/images/avatar/small/jenny.jpg"> Stevie@@me.com
+      </div>
+    </div>
+  </div>
+
+  <div class="ui container">
+    <h1 class="page-heading">Dashboard</h1>
+
+    <div class="ui equal width stackable grid">
+
+      <div class="row">
+        <div class="sixteen wide column">
+          <h2 class="subpage-heading no-border">Real Time Printing</h2>
+          <div class="content">
+            <table width="80%" align="center" >
+    <div id="head_nav">
+    <tr>
+        <th>Time</th>
+        <th>Monday</th>
+        <th>Tuesday</th>
+        <th>Wednesday</th>
+        <th>Thrusday</th>
+        <th>Friday</th>
+        <th>Saturday</th>
+    </tr>
+</div>  
+
+    <tr>
+        <th>10:00 - 11:00</th>
+        
+           <td data-title="Monday">
+                   <div class="ui selection dropdown">
+                      <input type="hidden" name="anything">
+                      <i class="dropdown icon"></i>
+                      <div class="Default Text">Default Text</div>
+                      <div class="ui menu">
+                          <div class="item" data-value="test">Test</div>
+                      </div>
+                   </div><br>
+                   <div class="ui selection dropdown">
+                      <input type="hidden" name="anything">
+                      <i class="dropdown icon"></i>
+                      <div class="Default Text">Default Text</div>
+                      <div class="ui menu">
+                          <div class="item" data-value="test">Test</div>
+                      </div>
+                   </div>
+              </td>
+              <td data-title="Monday">
+                   <div class="ui selection dropdown">
+                      <input type="hidden" name="anything">
+                      <i class="dropdown icon"></i>
+                      <div class="Default Text">Default Text</div>
+                      <div class="ui menu">
+                          <div class="item" data-value="test">Test</div>
+                      </div>
+                   </div><br>
+                   <div class="ui selection dropdown">
+                      <input type="hidden" name="anything">
+                      <i class="dropdown icon"></i>
+                      <div class="Default Text">Default Text</div>
+                      <div class="ui menu">
+                          <div class="item" data-value="test">Test</div>
+                      </div>
+                   </div>
+              </td>
+              <td data-title="Monday">
+                   <div class="ui selection dropdown">
+                      <input type="hidden" name="anything">
+                      <i class="dropdown icon"></i>
+                      <div class="Default Text">Default Text</div>
+                      <div class="ui menu">
+                          <div class="item" data-value="test">Test</div>
+                      </div>
+                   </div><br>
+                   <div class="ui selection dropdown">
+                      <input type="hidden" name="anything">
+                      <i class="dropdown icon"></i>
+                      <div class="Default Text">Default Text</div>
+                      <div class="ui menu">
+                          <div class="item" data-value="test">Test</div>
+                      </div>
+                   </div>
+              </td>
+              <td data-title="Monday">
+                   <div class="ui selection dropdown">
+                      <input type="hidden" name="anything">
+                      <i class="dropdown icon"></i>
+                      <div class="Default Text">Default Text</div>
+                      <div class="ui menu">
+                          <div class="item" data-value="test">Test</div>
+                      </div>
+                   </div><br>
+                   <div class="ui selection dropdown">
+                      <input type="hidden" name="anything">
+                      <i class="dropdown icon"></i>
+                      <div class="Default Text">Default Text</div>
+                      <div class="ui menu">
+                          <div class="item" data-value="test">Test</div>
+                      </div>
+                   </div>
+              </td>
+              <td data-title="Monday">
+                   <div class="ui selection dropdown">
+                      <input type="hidden" name="anything">
+                      <i class="dropdown icon"></i>
+                      <div class="Default Text">Default Text</div>
+                      <div class="ui menu">
+                          <div class="item" data-value="test">Test</div>
+                      </div>
+                   </div><br>
+                   <div class="ui selection dropdown">
+                      <input type="hidden" name="anything">
+                      <i class="dropdown icon"></i>
+                      <div class="Default Text">Default Text</div>
+                      <div class="ui menu">
+                          <div class="item" data-value="test">Test</div>
+                      </div>
+                   </div>
+              </td>
+              <td data-title="Monday">
+                   <div class="ui selection dropdown">
+                      <input type="hidden" name="anything">
+                      <i class="dropdown icon"></i>
+                      <div class="Default Text">Default Text</div>
+                      <div class="ui menu">
+                          <div class="item" data-value="test">Test</div>
+                      </div>
+                   </div><br>
+                   <div class="ui selection dropdown">
+                      <input type="hidden" name="anything">
+                      <i class="dropdown icon"></i>
+                      <div class="Default Text">Default Text</div>
+                      <div class="ui menu">
+                          <div class="item" data-value="test">Test</div>
+                      </div>
+                   </div>
+              </td>
+        </div>
+    </tr>
+
+    <tr>
+        <th>11:00 - 12:00</td>
+        
+            <td data-title="Monday">
+                   <div class="ui selection dropdown">
+                      <input type="hidden" name="anything">
+                      <i class="dropdown icon"></i>
+                      <div class="Default Text">Default Text</div>
+                      <div class="ui menu">
+                          <div class="item" data-value="test">Test</div>
+                      </div>
+                   </div><br>
+                   <div class="ui selection dropdown">
+                      <input type="hidden" name="anything">
+                      <i class="dropdown icon"></i>
+                      <div class="Default Text">Default Text</div>
+                      <div class="ui menu">
+                          <div class="item" data-value="test">Test</div>
+                      </div>
+                   </div>
+              </td>
+              <td data-title="Monday">
+                   <div class="ui selection dropdown">
+                      <input type="hidden" name="anything">
+                      <i class="dropdown icon"></i>
+                      <div class="Default Text">Default Text</div>
+                      <div class="ui menu">
+                          <div class="item" data-value="test">Test</div>
+                      </div>
+                   </div><br>
+                   <div class="ui selection dropdown">
+                      <input type="hidden" name="anything">
+                      <i class="dropdown icon"></i>
+                      <div class="Default Text">Default Text</div>
+                      <div class="ui menu">
+                          <div class="item" data-value="test">Test</div>
+                      </div>
+                   </div>
+              </td>
+              <td data-title="Monday">
+                   <div class="ui selection dropdown">
+                      <input type="hidden" name="anything">
+                      <i class="dropdown icon"></i>
+                      <div class="Default Text">Default Text</div>
+                      <div class="ui menu">
+                          <div class="item" data-value="test">Test</div>
+                      </div>
+                   </div><br>
+                   <div class="ui selection dropdown">
+                      <input type="hidden" name="anything">
+                      <i class="dropdown icon"></i>
+                      <div class="Default Text">Default Text</div>
+                      <div class="ui menu">
+                          <div class="item" data-value="test">Test</div>
+                      </div>
+                   </div>
+              </td>
+              <td data-title="Monday">
+                   <div class="ui selection dropdown">
+                      <input type="hidden" name="anything">
+                      <i class="dropdown icon"></i>
+                      <div class="Default Text">Default Text</div>
+                      <div class="ui menu">
+                          <div class="item" data-value="test">Test</div>
+                      </div>
+                   </div><br>
+                   <div class="ui selection dropdown">
+                      <input type="hidden" name="anything">
+                      <i class="dropdown icon"></i>
+                      <div class="Default Text">Default Text</div>
+                      <div class="ui menu">
+                          <div class="item" data-value="test">Test</div>
+                      </div>
+                   </div>
+              </td>
+              <td data-title="Monday">
+                   <div class="ui selection dropdown">
+                      <input type="hidden" name="anything">
+                      <i class="dropdown icon"></i>
+                      <div class="Default Text">Default Text</div>
+                      <div class="ui menu">
+                          <div class="item" data-value="test">Test</div>
+                      </div>
+                   </div><br>
+                   <div class="ui selection dropdown">
+                      <input type="hidden" name="anything">
+                      <i class="dropdown icon"></i>
+                      <div class="Default Text">Default Text</div>
+                      <div class="ui menu">
+                          <div class="item" data-value="test">Test</div>
+                      </div>
+                   </div>
+              </td>
+              <td data-title="Monday">
+                   <div class="ui selection dropdown">
+                      <input type="hidden" name="anything">
+                      <i class="dropdown icon"></i>
+                      <div class="Default Text">Default Text</div>
+                      <div class="ui menu">
+                          <div class="item" data-value="test">Test</div>
+                      </div>
+                   </div><br>
+                   <div class="ui selection dropdown">
+                      <input type="hidden" name="anything">
+                      <i class="dropdown icon"></i>
+                      <div class="Default Text">Default Text</div>
+                      <div class="ui menu">
+                          <div class="item" data-value="test">Test</div>
+                      </div>
+                   </div>
+              </td>
+        </div>
+    </tr>
+
+    <tr>
+        <th>12:00 - 01:00</td>
+        
+            <td>Hindi</td>
+            <td>English</td>
+            <td>Math-1</td>
+            <td>Chemistry</td>
+            <td>Physics</td>
+            <td>Chem.Lab</td>
+
+        </div>
+    </tr>
+
+    <tr>
+        <th>01:00 - 02:00</td>
+        
+            <td>Cumm. Skill</td>
+            <td>Sports</td>
+            <td>English</td>
+            <td>Computer Lab</td>
+            <td>Header</td>
+            <td>Header</td>
+
+        </div>
+    </tr>
+
+    <tr>
+        <th>02:00 - 03:00</td>
+        
+            <td>Header</td>
+            <td>Header</td>
+            <td>Header</td>
+            <td>Header</td>
+            <td>Header</td>
+            <td>Header</td>
+        </div>
+    </tr>
+</table>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="six wide column">
+          <h2 class="subpage-heading">Device List</h2>
+          <div class="content">
+          	 <div class="device-list device-in-error">
+              
+              <ul>
+              	<li>
+                 <div class="ui form">
+                 	
+                  <div class="ui container">
+  <div class="inline field">
+    <label>Period Name</label>
+    <input placeholder="Full Name" type="text" style="float:right">
+  </div>
+  <div class="inline field">
+    <label>Start Time</label>
+    <input placeholder="Full Name" type="text" style="float:right">
+  </div>
+  <div class="inline field">
+    <label>End Time</label>
+    <input placeholder="Full Name" type="text" style="float:right">
+  </div>
+  <div class="ui middle aligned teal button ">
+    submit
+  </div>
+  </div>
+</div></li>
+              </ul>
+            </div>
+            <div class="device-list device-in-error">
+              <h3>In Error</h3>
+              <ul>
+                <li>
+                  <a href="javascript:">
+                    <div class="device-status-icon"></div>
+                    <div class="device-details">
+                      <div class="device-location">Creative Dept</div>
+                      <div class="device-model">HP Colour LaserJet</div>
+                      <div class="device-make ui label">HP</div>
+                    </div>
+                    <div class="device-updated">
+                      <time>25m ago</time>
+                    </div>
+                  </a>
+
+                </li>
+              </ul>
+            </div>
+
+            <div class="device-list device-warnings">
+              <h3>Warning</h3>
+              <ul>
+                <li>
+                  <a href="javascript:">
+                    <div class="device-status-icon"></div>
+                    <div class="device-details">
+                      <div class="device-location">Marketing (B/W)</div>
+                      <div class="device-model">HP OfficeJet C224</div>
+                      <div class="device-make ui label">HP</div>
+                    </div>
+                    <div class="device-updated">
+                      <time>3h ago</time>
+                    </div>
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            <div class="device-list device-recently">
+              <h3>Recently Used</h3>
+              <ul>
+                <li>
+                  <a href="javascript:">
+                    <div class="device-status-icon"></div>
+                    <div class="device-details">
+                      <div class="device-location">Finance Team</div>
+                      <div class="device-model">OfficeCenter 800a</div>
+                      <div class="device-make ui label">Canon</div>
+                    </div>
+                    <div class="device-updated">
+                      <time>2m ago</time>
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a href="javascript:">
+                    <div class="device-status-icon"></div>
+                    <div class="device-details">
+                      <div class="device-location">Front Desk</div>
+                      <div class="device-model">Copywave 8003</div>
+                      <div class="device-make ui label">Ricoh</div>
+                    </div>
+                    <div class="device-updated">
+                      <time>4m ago</time>
+                    </div>
+                  </a>
+                </li>
+
+                <li>
+                  <a href="javascript:">
+                    <div class="device-status-icon"></div>
+                    <div class="device-details">
+                      <div class="device-location">168.1.2.34</div>
+                      <div class="device-model">DeskJet 4500</div>
+                      <div class="device-make ui label">Konica Minolta</div>
+                    </div>
+                    <div class="device-updated">
+                      <time>6m ago</time>
+                    </div>
+                  </a>
+                </li>
+
+                <li>
+                  <a href="javascript:">
+                    <div class="device-status-icon"></div>
+                    <div class="device-details">
+                      <div class="device-location">168.2.3.68</div>
+                      <div class="device-model">Colourwave Plotter</div>
+                      <div class="device-make ui label">Ricoh</div>
+                    </div>
+                    <div class="device-updated">
+                      <time>20m ago</time>
+                    </div>
+                  </a>
+                </li>
+
+                <li>
+                  <a href="javascript:">
+                    <div class="device-status-icon"></div>
+                    <div class="device-details">
+                      <div class="device-location">Reception (B/W)</div>
+                      <div class="device-model">CommandCopy Terminal</div>
+                      <div class="device-make ui label">Canon</div>
+                    </div>
+                    <div class="device-updated">
+                      <time>42m ago</time>
+                    </div>
+                  </a>
+                </li>
+
+                <li>
+                  <a href="javascript:">
+                    <div class="device-status-icon"></div>
+                    <div class="device-details">
+                      <div class="device-location">Testing Lab</div>
+                      <div class="device-model">HP CM45440</div>
+                      <div class="device-make ui label">Kyocera</div>
+                    </div>
+                    <div class="device-updated">
+                      <time>2h ago</time>
+                    </div>
+                  </a>
+                </li>
+              </ul>
+
+            </div>
+            <button class="ui teal button view-all-btn" style="width: 100%">View All</button>
+          </div>
+        </div>
+        <div class="ten wide column">
+          <div class="forecasts ui basic segment">
+            <h2 class="subpage-heading">Supply Forecast <small>Over the next 30 days</small></h2>
+            <div class="ui grid">
+              <div class="seven wide column">
+                <h4>Paper</h4>
+                <div class="forecast">
+                  <h5>Your projected paper usage is:</h5>
+                  <span class="stats">100</span>
+                  <span class="stats-description">boxes or reams of paper</span>
+                </div>
+                <div class="button-group">
+                  <button class="mini ui button teal-text">More information</button>
+                </div>
+
+              </div>
+              <div class="nine wide column">
+                <h4>Toner</h4>
+
+                <div class="forecast">
+                  <h5>Your projected toner usage is:</h5>
+                  <div class="ui stackable two column grid">
+                    <div class="column">
+                      <span class="stats">88</span>
+                      <span class="stats-description">cartridges of toner</span>
+                    </div>
+                    <div class="toner-breakdown column">
+                      <table>
+                        <thead>
+                          <tr>
+                            <th class="ink-c">C</th>
+                            <th class="ink-m">M</th>
+                            <th class="ink-y">Y</th>
+                            <th class="ink-k">K</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>2</td>
+                            <td>1</td>
+                            <td>3</td>
+                            <td>1</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+                <div class="button-group">
+                  <button class="mini ui button teal-text ">More information</button>
+                  <button class="mini ui blue button">Order HP</button>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <div class="ui basic segment">
+            <h2 class="subpage-heading">This Month</h2>
+            <div class="content">
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam nulla quam, molestie id scelerisque ac, volutpat ac nulla. Donec rutrum hendrerit nulla, vitae pharetra magna faucibus vel. Fusce dapibus volutpat leo eget vulputate. Quisque sed
+                massa viverra, aliquam neque ac, aliquet leo. Aliquam erat volutpat. Aliquam rutrum, tortor sed convallis euismod, odio lectus pharetra turpis, nec lacinia purus arcu non velit. Praesent a purus magna. Vestibulum luctus ex in maximus ullamcorper.</p>
+            </div>
+          </div>
+
+          <div class="ui basic segment">
+            <h2 class="subpage-heading" style="margin-bottom: 0">Recent Jobs</h2>
+            <div class="content" style="">
+              <table class="ui basic table history" style="border: none;">
+                <tbody>
+                  <tr>
+                    <td class="completed-when">1 min ago</td>
+                    <td class="completed-status"><i class="circle icon teal"></i></td>
+                    <td class="completed-who">Chris Dance</td>
+                    <td class="completed-copies">
+                      <span>2 copies</span>
+                    </td>
+                    <td class="completed-pages">
+                      <span>289 pages</span>
+                    </td>
+                    <td class="completed-location-device">
+                      <span>Library</span> |
+                      <span>HP Laser 5690M</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="completed-when">1 min ago</td>
+                    <td class="completed-status"><i class="circle icon teal"></i></td>
+                    <td class="completed-who">Chris Dance</td>
+                    <td class="completed-copies">
+                      <span>2 copies</span>
+                    </td>
+                    <td class="completed-pages">
+                      <span>289 pages</span>
+                    </td>
+                    <td class="completed-location-device">
+                      <span>Library</span> |
+                      <span>HP Laser 5690M</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="completed-when">1 min ago</td>
+                    <td class="completed-status"><i class="circle icon teal"></i></td>
+                    <td class="completed-who">Chris Dance</td>
+                    <td class="completed-copies">
+                      <span>2 copies</span>
+                    </td>
+                    <td class="completed-pages">
+                      <span>289 pages</span>
+                    </td>
+                    <td class="completed-location-device">
+                      <span>Library</span> |
+                      <span>HP Laser 5690M</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="completed-when">1 min ago</td>
+                    <td class="completed-status"><i class="circle icon teal"></i></td>
+                    <td class="completed-who">Chris Dance</td>
+                    <td class="completed-copies">
+                      <span>2 copies</span>
+                    </td>
+                    <td class="completed-pages">
+                      <span>289 pages</span>
+                    </td>
+                    <td class="completed-location-device">
+                      <span>Library</span> |
+                      <span>HP Laser 5690M</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="completed-when">1 min ago</td>
+                    <td class="completed-status"><i class="circle icon teal"></i></td>
+                    <td class="completed-who">Chris Dance</td>
+                    <td class="completed-copies">
+                      <span>2 copies</span>
+                    </td>
+                    <td class="completed-pages">
+                      <span>289 pages</span>
+                    </td>
+                    <td class="completed-location-device">
+                      <span>Library</span> |
+                      <span>HP Laser 5690M</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="completed-when">1 min ago</td>
+                    <td class="completed-status"><i class="circle icon teal"></i></td>
+                    <td class="completed-who">Chris Dance</td>
+                    <td class="completed-copies">
+                      <span>2 copies</span>
+                    </td>
+                    <td class="completed-pages">
+                      <span>289 pages</span>
+                    </td>
+                    <td class="completed-location-device">
+                      <span>Library</span> |
+                      <span>HP Laser 5690M</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="completed-when">1 min ago</td>
+                    <td class="completed-status"><i class="circle icon teal"></i></td>
+                    <td class="completed-who">Chris Dance</td>
+                    <td class="completed-copies">
+                      <span>2 copies</span>
+                    </td>
+                    <td class="completed-pages">
+                      <span>289 pages</span>
+                    </td>
+                    <td class="completed-location-device">
+                      <span>Library</span> |
+                      <span>HP Laser 5690M</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="completed-when">1 min ago</td>
+                    <td class="completed-status"><i class="circle icon teal"></i></td>
+                    <td class="completed-who">Chris Dance</td>
+                    <td class="completed-copies">
+                      <span>2 copies</span>
+                    </td>
+                    <td class="completed-pages">
+                      <span>289 pages</span>
+                    </td>
+                    <td class="completed-location-device">
+                      <span>Library</span> |
+                      <span>HP Laser 5690M</span>
+                    </td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+<script type="text/javascript">
+$(function(){
+
+$('.ui.modal.step-1').modal('show');
+$('button.button').on("click", function() {
+  $('.ui.modal.step-1').modal('show');
+})
+$('button.button.show-step-2').on("click", function() {
+  $('.ui.modal.step-2').modal('show');
+});
+
+
+});
+</script>
+}
