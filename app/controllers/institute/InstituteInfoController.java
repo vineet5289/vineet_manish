@@ -215,8 +215,12 @@ public class InstituteInfoController extends ClassController {
 			schoolBoards.put("icse", "ICSE");
 			schoolBoards.put("ib", "International Baccalaureate");
 			String affiliatedTo = instituteFormData.getInstituteState();
+			System.out.println("affiliatedTo below ="+affiliatedTo);
 			String boardDisplayName = instituteBoardDAO.getDisplayNameGivenAffiliatedTo(affiliatedTo);
+
+			System.out.println("boardDisplayName ="+boardDisplayName);
 			String boradCode = instituteBoardDAO.getBoardCodeGivenDisplayName(boardDisplayName);
+			System.out.println("boradcode below ="+boradCode);
 			schoolBoards.put(boradCode, boardDisplayName);
 			session(SessionKey.numerofinstituteingroup.name(), instituteFormData.getNoOfInstitute() + "");
 			return ok(schoolMandataryInfo.render(firstTimeUpdateForm, dayToWeekMap, classList, attendenceType, schoolBoards, SchoolType.schoolTypeToValue));
@@ -229,6 +233,8 @@ public class InstituteInfoController extends ClassController {
 	//session validation
 	public Result updateInstituteMandInfo() {
 		Form<FirstTimeInstituteUpdateForm> firstTimeSchoolUpdateForm = formFactory.form(FirstTimeInstituteUpdateForm.class).bindFromRequest();
+		System.out.println("mand info "+firstTimeSchoolUpdateForm);
+
 		if (firstTimeSchoolUpdateForm == null || firstTimeSchoolUpdateForm.hasErrors()) {
 			flash("error", "Some parameters are missing.");
 			return redirect(controllers.institute.routes.InstituteInfoController.getInstituteMandInfo());
