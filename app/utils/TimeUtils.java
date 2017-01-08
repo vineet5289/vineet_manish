@@ -50,6 +50,17 @@ public class TimeUtils {
 	  return false;
 	}
 
+	public static boolean isTimeRangeIntersect(String startTime1, String endTime1, String startTime2, String endTime2) {
+		if(StringUtils.isBlank(startTime1) || StringUtils.isBlank(endTime1)
+				|| StringUtils.isBlank(startTime2) || StringUtils.isBlank(endTime2)) {
+			return false;
+		}
+		// ((st2 < st1 && et2 <= st1) || (st2 >= et1 && et2 > et1))
+		boolean isValid = ((isValidTimeRange(startTime2, startTime1) && (endTime2.equalsIgnoreCase(startTime1) || isValidTimeRange(endTime2, startTime1)))
+				|| ((startTime2.equalsIgnoreCase(endTime1) || isValidTimeRange(endTime1, startTime2)) && isValidTimeRange(endTime1, endTime2)));
+		return isValid;
+	}
+
 	public static String validDate(String date) {
 	  if(StringUtils.isBlank(date)) {
 	    return "";

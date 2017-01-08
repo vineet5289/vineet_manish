@@ -1,23 +1,21 @@
-package views.forms.institute;
-
-import enum_package.WeekDayEnum;
-import lombok.Data;
-import play.data.validation.ValidationError;
+package views.forms.institute.timetable;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.Data;
+import play.data.validation.ValidationError;
+
 @Data
 public class TimeTableForm {
+  public long id;
   public long classId;
   public long sectionId;
-  public long id;
   public long instituteId;
-  public long timeTableEditedBy;
-  public String classStartTime;
-  public String classEndTime;
-  public long duration;
+  public String timeTableEditedBy;
+  public int duration;
   public List<Periods> periods;
+  public int numberOfDays = 6;
 
   @Data
   public static class Periods {
@@ -31,7 +29,7 @@ public class TimeTableForm {
     @Data
     public static class DayWise {
       public String day;
-      private WeekDayEnum dayEnum;
+      private int dayNumber;
       public long professorId;
       public String professorName;
       public long subjectId;

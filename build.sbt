@@ -22,6 +22,7 @@ libraryDependencies ++= Seq(
    "com.rabbitmq" % "amqp-client" % "3.5.3",
    "com.typesafe.play.modules" % "play-modules-redis_2.11" % "2.4.1",
    "be.objectify" %% "deadbolt-java" % "2.5.1",
+  "com.fasterxml.jackson.datatype" % "jackson-datatype-json-org" % "2.4.0",
    evolutions
 )
 

@@ -1,5 +1,7 @@
 package views.forms.institute;
 
+import java.util.List;
+
 import lombok.Data;
 
 @Data
@@ -8,9 +10,18 @@ public class AttendanceForm {
   public long instituteId;
   public long classId;
   public long sectionId;
-  public String period;
-  public String noOfPresentStudents;
-  public String noOfAbsentStudents;
-  public String userName;
-  public String isActive;
+  public int periodId;
+  public long subjectId;
+  public String attendanceTakenBy;
+  public String attendanceUpdatedBy;
+
+  public int periodNumber;
+  public String periodName;
+  public List<StudentsAttendance> studentsAttendance;
+
+  @Data
+  public static class StudentsAttendance {
+    public String rollNumber;
+    public String present = "A";
+  }
 }

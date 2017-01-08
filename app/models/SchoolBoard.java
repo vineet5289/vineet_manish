@@ -22,10 +22,8 @@ public class SchoolBoard implements InstituteBoardDAO {
 
   @Inject
 	public SchoolBoard(@NamedDatabase("srp") Database db) {
-		System.out.println("***** SchoolBoard*****1");
 		this.db = db;
     fetchBoardList();
-		System.out.println("***** SchoolBoard*****2");
 	}
 
   private List<String> schoolBoardList = new ArrayList<String>();
@@ -285,7 +283,6 @@ public class SchoolBoard implements InstituteBoardDAO {
       System.out.println("againg fetching displayName");
       fetchBoardList();
     }
-    System.out.println("********* " + displayNameToBoardCode.get(displayName.trim()));
     return displayNameToBoardCode.get(displayName.trim());
   }
 
