@@ -13,11 +13,11 @@ public class ClassCurriculumController extends CustomController {
   @Inject
   private ClassCurriculumDao classCurriculumDao;
 
-  public Result checkSlotAvailable(long profId, long instituteId, String startTime, String endTime) {
+  public Result checkSlotAvailable(long profId, long instituteId, String startTime, String endTime, String day, String startDate, String endDate) {
     boolean isValid = false;
     try {
       System.out.println("profId:" + profId + ", instituteId:" + instituteId + ", startTime:" + startTime + ", endTime:" + endTime);
-      isValid = classCurriculumDao.isProfessorFreeGivenTimeRange(profId, startTime, endTime, instituteId);
+      isValid = classCurriculumDao.isProfessorFreeGivenTimeRange(profId, startTime, endTime, day, startDate, endDate, instituteId);
     } catch (Exception e) {
       e.printStackTrace();
     }

@@ -291,21 +291,45 @@ public class Tables {
     public static String updatedAt = "updated_at";
   }
 
-  public static class ClassCurriculum {
-    public static String table = "class_curriculum";
+  public static class TempTimetable {
+    public static String table = "temp_timetable";
+    public static String id = "id";
+    public static String timetableId = "timetable_id";
+    public static String timeTableUpdatedBy = "time_table_updated_by";
+    public static String startDate = "start_date";
+    public static String endDate = "end_date";
+    public static String isActive = "is_active";
+    public static String createdAt = "created_at";
+    public static String updatedAt = "updated_at";
+  }
+
+  public static class ClassProfessor {
+    public static String table = "class_professor";
     public static String id = "id";
     public static String instituteId = "institute_id";
     public static String classId = "class_id";
     public static String sectionId = "section_id";
     public static String professorId = "professor_id";
+    public static String professorCategory = "professor_category";
+    public static String addedBy = "added_by";
+    public static String isActive = "is_active";
+    public static String createdAt = "created_at";
+    public static String updatedAt = "updated_at";
+  }
+
+  public static class ClassCurriculum {
+    public static String table = "class_curriculum";
+    public static String id = "id";
+    public static String classProfessorId = "class_professor_id";
     public static String subjectId = "subject_id";
     public static String timetableId = "timetable_id";
-    public static String professorCategory = "professor_category";
-    public static String subjectAllocated = "subject_allocated";
-    public static String professorAllocated = "professor_allocated";
+    public static String professorSlotCategory = "professor_slot_category";
     public static String slotAllocated = "slot_allocated";
+    public static String day = "day";
     public static String startTime = "start_time";
     public static String endTime = "end_time";
+    public static String startDate = "start_date";
+    public static String endDate = "end_date";
     public static String updatedBy = "updated_by";
     public static String isActive = "is_active";
     public static String createdAt = "created_at";

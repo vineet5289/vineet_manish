@@ -139,7 +139,7 @@ POST		/timetabel/create							controllers.institute.TimeTableController.postCrea
 GET         /timetable/:classId/view                    controllers.institute.TimeTableController.viewTimeTable(classId: Long, secId: Long ?=0,sec: String ?="NO")
 
 #prof slot routes
-GET			/verify/slot							    controllers.institute.ClassCurriculumController.checkSlotAvailable(pId: Long ?=0, iId: Long ?=0, st: String ?="", et: String ?="")
+GET			/verify/slot							    controllers.institute.ClassCurriculumController.checkSlotAvailable(pId: Long ?=0, iId: Long ?=0, st: String ?="", et: String ?="", d: String ?="", sd: String ?="", ed: String ?="")
 
 #role
 #GET			/attendance/add							controllers.institute.TimeTableController.preCreateTimeTable()
