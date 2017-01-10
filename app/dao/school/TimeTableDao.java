@@ -2,7 +2,9 @@ package dao.school;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import javax.inject.Inject;
 
@@ -16,6 +18,12 @@ public class TimeTableDao {
   @Inject
   @NamedDatabase("srp")
   private Database db;
+
+  @Inject
+  private ClassProfessorDao classProfessorDao;
+
+  @Inject
+  private ClassCurriculumDao classCurriculumDao;
 
   public boolean add(TimeTableForm timetableDetails, String section) throws SQLException {
     if (StringUtils.isBlank(section) || section.equalsIgnoreCase("no")) {
@@ -101,32 +109,43 @@ public class TimeTableDao {
 //  }
 
   private boolean addTimeTableClass(TimeTableForm timetableDetails) throws SQLException {
+
     String periodQuery = String.format("INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) SELECT * FROM (SELECT ? AS day, " +
             "? AS dseq, ? AS pNo, ? AS pname, ? AS stime, ? AS etime, ? AS dura, ? AS noOfDays, ? AS instid, ? AS classId, " +
             "? AS ttableupdatedby, ? AS same) AS tmp WHERE NOT EXISTS (SELECT %s FROM %s WHERE %s=? AND %s=? AND %s=? AND %s=? AND %s=? " +
             ") LIMIT 1;", Tables.Timetable.table, Tables.Timetable.day, Tables.Timetable.daySeq, Tables.Timetable.periodNo, Tables.Timetable.periodName,
         Tables.Timetable.startTime, Tables.Timetable.endTime, Tables.Timetable.duration, Tables.Timetable.numberOfDays, Tables.Timetable.instituteId,
-        Tables.Timetable.classId, Tables.Timetable.timeTableUpdatedBy,
-        Tables.Timetable.sameAsPreviousPeriod, Tables.Timetable.periodNo, Tables.Timetable.table, Tables.Timetable.isActive, Tables.Timetable.instituteId,
-        Tables.Timetable.classId, Tables.Timetable.periodNo, Tables.Timetable.day);
+        Tables.Timetable.classId, Tables.Timetable.timeTableUpdatedBy, Tables.Timetable.sameAsPreviousPeriod, Tables.Timetable.periodNo,
+        Tables.Timetable.table, Tables.Timetable.isActive, Tables.Timetable.instituteId, Tables.Timetable.classId, Tables.Timetable.periodNo, Tables.Timetable.day);
 
-    String lunchQuery = String.format("INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s) SELECT * FROM (SELECT ? AS day, ? AS dseq, " +
-            "? AS pNo, ? AS pname, ? AS stime, ? AS etime, ? AS instid, ? AS dura, ? AS noOfDays, ? AS classId, ? AS ttableupdatedby) AS tmp " +
+    String lunchQuery = String.format("INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) SELECT * FROM (SELECT ? AS day, ? AS dseq, " +
+            "? AS pNo, ? AS pname, ? AS stime, ? AS etime, ? AS dura, ? AS noOfDays, ? AS instid, ? AS classId, ? AS ttableupdatedby) AS tmp " +
             "WHERE NOT EXISTS (SELECT %s FROM %s WHERE %s=? AND %s=? AND %s=? AND %s=? AND %s=?) LIMIT 1;", Tables.Timetable.table, Tables.Timetable.day,
         Tables.Timetable.daySeq, Tables.Timetable.periodNo, Tables.Timetable.periodName, Tables.Timetable.startTime, Tables.Timetable.endTime, Tables.Timetable.duration,
-        Tables.Timetable.numberOfDays, Tables.Timetable.instituteId, Tables.Timetable.classId, Tables.Timetable.timeTableUpdatedBy,
-        Tables.Timetable.periodNo, Tables.Timetable.table, Tables.Timetable.isActive, Tables.Timetable.instituteId, Tables.Timetable.classId,
-        Tables.Timetable.periodNo, Tables.Timetable.day);
+        Tables.Timetable.numberOfDays, Tables.Timetable.instituteId, Tables.Timetable.classId, Tables.Timetable.timeTableUpdatedBy, Tables.Timetable.periodNo,
+        Tables.Timetable.table, Tables.Timetable.isActive, Tables.Timetable.instituteId, Tables.Timetable.classId, Tables.Timetable.periodNo, Tables.Timetable.day);
     Connection connection = null;
     PreparedStatement insertPeriodPs = null;
     PreparedStatement insertLunchPs = null;
+    ResultSet insertRs = null;
     try {
       connection = db.getConnection();
       connection.setAutoCommit(false);
-      insertPeriodPs = connection.prepareStatement(periodQuery);
+      insertPeriodPs = connection.prepareStatement(periodQuery, Statement.RETURN_GENERATED_KEYS);
       insertLunchPs = connection.prepareStatement(lunchQuery);
+      boolean isInsertSuc = true;
       for (TimeTableForm.Periods period : timetableDetails.getPeriods()) {
         for (TimeTableForm.Periods.DayWise dayWise : period.getDayWiseSchd()) {
+          long profClassId = classProfessorDao.getId(connection, timetableDetails.getInstituteId(),
+              dayWise.getProfessorId(), timetableDetails.getClassId(), timetableDetails.getTimeTableEditedBy(), dayWise.getProfCat());
+          if(profClassId <= 0) {
+            throw new Exception("ProfId is null");
+          }
+          if(!classCurriculumDao.isProfessorFreeGivenTimeRange(connection, dayWise.getProfessorId(), period.getPeriodStartTime(),
+              period.getPeriodEndTime(), dayWise.getDay(), "", "", timetableDetails.getInstituteId())) {
+            throw new Exception("Prof is not free");
+          }
+
           if (period.getPeriodNo() == -1 && period.getPeriodName().equalsIgnoreCase("lunch")) {
             insertLunchPs.setString(1, dayWise.getDay());
             insertLunchPs.setInt(2, dayWise.getDayNumber());
@@ -144,7 +163,9 @@ public class TimeTableDao {
             insertLunchPs.setLong(14, timetableDetails.getClassId());
             insertLunchPs.setInt(15, period.getPeriodNo());
             insertLunchPs.setString(16, dayWise.getDay());
-            insertLunchPs.addBatch();
+            if(insertLunchPs.executeUpdate() <= 0) {
+              throw new Exception("Some error occur during lunch insert");
+            }
           } else {
             insertPeriodPs.setString(1, dayWise.getDay());
             insertPeriodPs.setInt(2, dayWise.getDayNumber());
@@ -163,19 +184,22 @@ public class TimeTableDao {
             insertPeriodPs.setLong(15, timetableDetails.getClassId());
             insertPeriodPs.setInt(16, period.getPeriodNo());
             insertPeriodPs.setString(17, dayWise.getDay());
-            insertPeriodPs.addBatch();
+            insertPeriodPs.executeUpdate();
+            insertRs = insertPeriodPs.getGeneratedKeys();
+            if(insertRs.next()) {
+              long timetableId = insertRs.getLong(1);
+              isInsertSuc = classCurriculumDao.createCurriculumForClass(connection, profClassId, dayWise.getSubjectId(), timetableId, dayWise.getProfCat(),
+                  dayWise.getDay(), period.getPeriodStartTime(), period.getPeriodEndTime(), "", "", timetableDetails.getTimeTableEditedBy());
+              if(!isInsertSuc) {
+                throw new Exception("Some error occur during class Curriculum insert");
+              }
+            } else {
+              throw new Exception("Some error occur during period insert");
+            }
           }
         }
       }
-
-      int[] insertPeriodRs = insertPeriodPs.executeBatch();
-      int[] insertLunchRs = insertLunchPs.executeBatch();
-      if (!isBatchInserted(insertPeriodRs) || !isBatchInserted(insertLunchRs)) {
-        connection.rollback();
-        return false;
-      }
       connection.commit();
-      return true;
     } catch (Exception exception) {
       connection.rollback();
       exception.printStackTrace();
@@ -191,6 +215,7 @@ public class TimeTableDao {
         connection.close();
       }
     }
+    return true;
   }
 
 //  private boolean addTimeTableSection(TimeTableForm timetableDetails) throws SQLException {

@@ -35,6 +35,7 @@ public class TimeTableForm {
       public long subjectId;
       public String subjectName;
       public String sameAsPreviousPeriod;
+      public String profCat;
       public boolean isPreviousPeriod = false;
     }
   }

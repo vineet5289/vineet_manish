@@ -72,14 +72,15 @@ public class TimeUtils {
 	* */
 	public static boolean isTimeRangeIntersect(String startTime1, String endTime1, String startDate1, String endDate1,
                                              String startTime2, String endTime2, String startDate2, String endDate2) {
+    System.out.println("===========1.1" + startDate1 + ", " + endDate1 + ", " + startDate2 + ", " + ", " +endDate2);
     Date stDate1 = getDate(startDate1);
     Date edDate1 = getDate(endDate1);
     Date stDate2 = getDate(startDate2);
     Date edDate2 = getDate(endDate2);
-    if(startDate1 == null && startDate2 == null && endDate1 == null && endDate2 == null) {
+    if(stDate1 == null && edDate1 == null && stDate2 == null && edDate2 == null) {
       return isTimeRangeIntersect(startTime1, endTime1, startTime2, endTime2);
     }
-
+    System.out.println("===========1.2");
     try {
       edDate1 = (edDate1 != null) ? edDate1 : incrementDate(startDate1, 365);
       edDate2 = (edDate2 != null) ? edDate2 : incrementDate(startDate2, 365);
@@ -87,16 +88,16 @@ public class TimeUtils {
       exception.printStackTrace();
       return true;
     }
-
+    System.out.println("===========1.3");
     Date today = new Date();
     if(stDate2 == null) {
       return  !(stDate1.equals(today) || (stDate1.before(today)) && edDate1.after(today)) || isTimeRangeIntersect(startTime1, endTime1, startTime2, endTime2);
     }
-
+    System.out.println("===========1.4");
     if(stDate1 == null) {
       return isTimeRangeIntersect(startTime1, endTime1, startTime2, endTime2);
     }
-
+    System.out.println("===========1.5");
     return !isDateIntersect(stDate1, edDate1, stDate2, edDate2) || isTimeRangeIntersect(startTime1, endTime1, startTime2, endTime2);
 	}
 
