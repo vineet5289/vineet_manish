@@ -1,13 +1,12 @@
 package controllers.user;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import controllers.CustomController;
-import models.UserInfo;
+import models.EmployeeModels;
 import dao.UserFetchDAO;
 import enum_package.InstituteUserRole;
 import play.mvc.Result;
@@ -23,7 +22,7 @@ public class UserController extends CustomController {
 			// redirect to error page
 		}
 		UserFetchDAO userFetchDAO = new UserFetchDAO();
-		Map<String, List<UserInfo>> userInfos = new HashMap<String, List<UserInfo>>();
+		Map<String, List<EmployeeModels>> userInfos = new HashMap<String, List<EmployeeModels>>();
 		try {
 			userInfos = userFetchDAO.getAllUser(schoolId);
 //			if(category == null || category.isEmpty())
@@ -53,7 +52,7 @@ public class UserController extends CustomController {
 		}
 
 		UserFetchDAO userFetchDAO = new UserFetchDAO();
-		UserInfo userInfos = null;
+		EmployeeModels userInfos = null;
 		try {
 			if(category.equals(InstituteUserRole.guardian.name())) {
 //				userInfos = userFetchDAO.getAllGuardian(instituteId);

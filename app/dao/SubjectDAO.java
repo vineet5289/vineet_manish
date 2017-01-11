@@ -13,6 +13,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import dao.dao_operation_status.SubjectDaoActionStatus;
+import models.SubjectModels;
 import play.db.Database;
 import play.db.NamedDatabase;
 import views.forms.institute.SubjectForm;
@@ -23,6 +24,57 @@ public class SubjectDAO {
   @Inject
   @NamedDatabase("srp")
   private Database db;
+
+  public List<SubjectModels> getSubject(long instituteId, long classId, long sectionId, String sec) throws SQLException {
+    List<SubjectModels> subjects = new ArrayList<SubjectModels>();
+    Connection connection = null;
+    try {
+      connection = db.getConnection();
+      if(StringUtils.isBlank(sec) || sec.equalsIgnoreCase("no")) {
+        subjects = getSubjectClassSubject(instituteId, classId, connection);
+      } else {
+
+      }
+    } catch (Exception exception) {
+      exception.printStackTrace();
+    } finally {
+      if(connection != null) {
+        connection.close();
+      }
+    }
+    return subjects;
+  }
+
+  public List<SubjectModels> getSubjectClassSubject(long instituteId, long classId, Connection connection) throws SQLException {
+    String subQuery = String.format("SELECT %s, %s FROM %s WHERE %s=? AND %s=? AND %s=?;", Tables.Subject.id, Tables.Subject.subjectName,
+        Tables.Subject.table, Tables.Subject.isActive, Tables.Subject.classId, Tables.Subject.instituteId);
+    List<SubjectModels> subjects = new ArrayList<SubjectModels>();
+    PreparedStatement selectPS = null;
+    ResultSet selectRS = null;
+    try {
+      selectPS = connection.prepareStatement(subQuery, ResultSet.TYPE_FORWARD_ONLY);
+      selectPS.setBoolean(1, true);
+      selectPS.setLong(2, classId);
+      selectPS.setLong(3, instituteId);
+      selectRS = selectPS.executeQuery();
+      while (selectRS.next()) {
+        SubjectModels subject = new SubjectModels();
+        subject.setSId(selectRS.getLong(Tables.Subject.id));
+        subject.setSName(selectRS.getString(Tables.Subject.subjectName));
+        subjects.add(subject);
+      }
+    } catch (Exception exception) {
+      exception.printStackTrace();
+    } finally {
+      if(selectRS != null) {
+        selectRS.close();
+      }
+      if(selectPS != null) {
+        selectPS.close();
+      }
+    }
+    return subjects;
+  }
 
   public SubjectDaoActionStatus add(SubjectForm subjectDetails, long classId, long sectionId,
                                     long instituteId, String userName, String sec) throws SQLException {

@@ -133,7 +133,7 @@ POST		/add_group									controllers.institute.GroupController.postAddGroup()
 POST		/disable_group								controllers.institute.GroupController.disableGroup()
 
 #role
-GET			/timetabel/create							controllers.institute.TimeTableController.preCreateTimeTable()
+GET			/timetabel/create							controllers.institute.TimeTableController.preCreateTimeTable(insid: Long ?= 0, cid: Long ?=0, sid: Long ?=0, sec: String ?= "No")
 POST		/timetabel/create							controllers.institute.TimeTableController.postCreateTimeTable(sec: String ?="NO")
 #POST		/timetabel/update							controllers.institute.TimeTableController.updateTimeTable(sec: String ?="NO")
 GET         /timetable/:classId/view                    controllers.institute.TimeTableController.viewTimeTable(classId: Long, secId: Long ?=0,sec: String ?="NO")

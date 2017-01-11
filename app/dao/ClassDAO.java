@@ -15,6 +15,7 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import dao.dao_operation_status.ClassDaoActionStatus;
+import models.ClassModels;
 import play.db.Database;
 import play.db.NamedDatabase;
 import views.forms.institute.ClassForm;
@@ -25,6 +26,59 @@ public class ClassDAO {
   @Inject
   @NamedDatabase("srp")
   private Database db;
+
+  public ClassModels getActiveClassDetails(long instituteId, long classId, long sectionId, String sec) throws SQLException {
+    ClassModels classData = new ClassModels();
+    Connection connection = null;
+    try {
+      connection = db.getConnection();
+      if (StringUtils.isBlank(sec) || sec.equalsIgnoreCase("no")) {
+        classData = getActiveClassDetails(instituteId, classId, connection);
+      }
+    } catch (Exception exception) {
+      exception.printStackTrace();
+    } finally {
+      if (connection != null) {
+        connection.close();
+      }
+    }
+    return classData;
+  }
+
+  public ClassModels getActiveClassDetails(long instituteId, long classId, Connection connection) throws SQLException {
+    ClassModels classData = new ClassModels();
+    String selectQ = String.format("SELECT %s, %s, %s, %s FROM %s WHERE %s=? AND %s=?;", Tables.Class.id, Tables.Class.className, Tables.Class.classStartTime,
+        Tables.Class.classEndTime, Tables.Class.table, Tables.Class.isActive, Tables.Class.instituteId);
+    PreparedStatement selectPS = null;
+    ResultSet resultSet = null;
+    try {
+      connection = db.getConnection();
+      selectPS = connection.prepareStatement(selectQ, ResultSet.TYPE_FORWARD_ONLY);
+      selectPS.setBoolean(1, true);
+      selectPS.setLong(2, instituteId);
+      resultSet = selectPS.executeQuery();
+      if (resultSet.next()) {
+        classData.setId(resultSet.getLong(Tables.Class.id));
+        classData.setInsId(instituteId);
+        classData.setClassStartTime(resultSet.getString(Tables.Class.classStartTime));
+        classData.setClassEndTime(resultSet.getString(Tables.Class.classEndTime));
+      }
+    } catch (Exception exception) {
+      exception.printStackTrace();
+    } finally {
+      if (resultSet != null) {
+        resultSet.close();
+      }
+      if (selectPS != null) {
+        selectPS.close();
+      }
+    }
+    return classData;
+  }
+
+//  public ClassModels getActiveSectionDetails() {
+//
+//  }
 
   public ClassDaoActionStatus add(ClassForm classe, long instituteId, String userName, String section, long classId)
       throws SQLException {
@@ -294,8 +348,8 @@ public class ClassDAO {
   }
 
   /**
-   * need to deactivate all other informationrelated to this section like attendence, subject, students, role.. etc
-   *
+   * need to deactivate all other informationrelated to this section like attendence, subject,
+   * students, role.. etc
    */
   private ClassDaoActionStatus deleteSection(long instituteId, long sectionId, long parentClassId, String username)
       throws SQLException {

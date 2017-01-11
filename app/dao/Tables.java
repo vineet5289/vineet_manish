@@ -151,6 +151,7 @@ public class Tables {
     public static String requestedUserName = "requested_user_name";
     public static String empCode = "emp_code";
 
+
     // optional field
     public static String empPreferedName = "emp_prefered_name";
     public static String empAlternativeEmail = "emp_alternative_email";

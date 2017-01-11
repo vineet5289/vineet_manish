@@ -1,14 +1,22 @@
 package controllers.institute;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.inject.Inject;
 
 import controllers.CustomController;
+import dao.ClassDAO;
+import dao.SubjectDAO;
+import dao.employee.EmployesDAO;
 import dao.school.TimeTableDao;
+import models.ClassModels;
+import models.EmployeeModels;
+import models.SubjectModels;
 import play.data.Form;
 import play.data.FormFactory;
 import play.mvc.Result;
+import views.forms.institute.timetable.TimeTableCreateForm;
 import views.forms.institute.timetable.TimeTableForm;
 
 public class TimeTableController extends CustomController {
@@ -17,15 +25,26 @@ public class TimeTableController extends CustomController {
 
   @Inject
   private TimeTableDao timeTableDao;
+  @Inject
+  private EmployesDAO employesDAO;
+  @Inject
+  private ClassDAO classDAO;
+  @Inject
+  private SubjectDAO subjectDAO;
 
-  public Result preCreateTimeTable() {
-    long instituteId = 1l;
-    long classId = 1l;
-    long sectionId = 1l;
-    String classStartTime = "9:20 AM";
-    String classEndTime = "03:00 PM";
-    int duration = 40;
-    return ok("");
+  public Result preCreateTimeTable(long instituteId, long classId, long secId, String sec) {
+    Form<TimeTableForm> timeTableFormForm = formFactory.form(TimeTableForm.class);
+    String data = "";
+    try {
+      List<EmployeeModels> employees = employesDAO.getAllTeachers(instituteId, "");
+      List<SubjectModels> subject = subjectDAO.getSubject(instituteId, classId, secId, sec);
+      ClassModels classDetails = classDAO.getActiveClassDetails(instituteId, classId, secId, sec);
+      data = TimeTableCreateForm.bindData(employees, subject, classDetails);
+    } catch (Exception exception) {
+      exception.printStackTrace();
+    }
+
+    return ok(data);
   }
 
   public Result postCreateTimeTable(String section) {
