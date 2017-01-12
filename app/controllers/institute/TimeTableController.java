@@ -1,6 +1,10 @@
 package controllers.institute;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -13,6 +17,7 @@ import dao.school.TimeTableDao;
 import models.ClassModels;
 import models.EmployeeModels;
 import models.SubjectModels;
+import models.TimetableModel;
 import play.data.Form;
 import play.data.FormFactory;
 import play.mvc.Result;
@@ -49,8 +54,10 @@ public class TimeTableController extends CustomController {
 
   public Result postCreateTimeTable(String section) {
     Form<TimeTableForm> timeTableFormForm = formFactory.form(TimeTableForm.class).bindFromRequest();
+
     boolean isCreated = false;
     try {
+      System.out.println("====> " + timeTableFormForm.get());
       isCreated = timeTableDao.add(timeTableFormForm.get(), section);
     } catch (SQLException e) {
       e.printStackTrace();
@@ -62,8 +69,20 @@ public class TimeTableController extends CustomController {
     return ok("");
   }
 
-  public Result viewTimeTable(long classId, long secId, String sec) {
-//    TimeTableForm timeTableData = timeTableDao.view(classId, secId, sec);
-    return ok("");
+  public Result viewTimeTable(long classId, long instituteId, long secId, String sec) {
+    List<TimetableModel> timetableModel = new ArrayList<TimetableModel>();
+    try {
+      timetableModel = timeTableDao.get(instituteId, classId, secId, sec);
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    ObjectMapper mapper = new ObjectMapper();
+    String output = "";
+    try {
+      output = mapper.writeValueAsString(timetableModel);
+    } catch (JsonProcessingException e) {
+      e.printStackTrace();
+    }
+    return ok(output);
   }
 }

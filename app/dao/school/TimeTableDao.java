@@ -5,10 +5,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
 import dao.Tables;
+import models.TimetableModel;
 import play.db.Database;
 import play.db.NamedDatabase;
 import utils.StringUtils;
@@ -51,62 +54,77 @@ public class TimeTableDao {
     }
   }
 
-//  private TimeTableForm viewBySection(long instituteId, long classId, long secId) throws SQLException {
-//    String query = String.format("SELECT %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s FROM %s WHERE %s=? AND %s=? AND %s=? AND %s=? " +
-//            "ORDER BY %s ASC, %s ASC;", Tables.Timetable.id, Tables.Timetable.day, Tables.Timetable.daySeq, Tables.Timetable.periodNo, Tables.Timetable.periodName,
-//        Tables.Timetable.startTime, Tables.Timetable.endTime, Tables.Timetable.duration, Tables.Timetable.numberOfDays, Tables.Timetable.instituteId,
-//        Tables.Timetable.classId, Tables.Timetable.sectionId, Tables.Timetable.professorId, Tables.Timetable.subjectId, Tables.Timetable.sameAsPreviousPeriod,
-//        Tables.Timetable.table, Tables.Timetable.isActive, Tables.Timetable.instituteId, Tables.Timetable.classId, Tables.Timetable.sectionId, Tables.Timetable.periodNo,
-//        Tables.Timetable.daySeq);
-//    Connection connection = null;
-//    ResultSet resultSet = null;
-//    PreparedStatement selectPS = null;
-//    try {
-//      connection = db.getConnection();
-//      selectPS = connection.prepareStatement(query, ResultSet.TYPE_FORWARD_ONLY);
-//      selectPS.setBoolean(1, true);
-//      selectPS.setLong(2, instituteId);
-//      selectPS.setLong(3, classId);
-//      selectPS.setLong(4, secId);
-//      resultSet = selectPS.executeQuery();
-//      Map<Integer, TimeTableForm.Periods> periodData = new TreeMap<Integer, TimeTableForm.Periods>();
-//      while (resultSet.next()) {
-//        int periodNo = resultSet.getInt(Tables.Timetable.periodNo);
-//        TimeTableForm.Periods.DayWise dayWise = new TimeTableForm.Periods.DayWise();
-//        dayWise.setDay(resultSet.getString(Tables.Timetable.day));
-//        dayWise.setDayNumber(resultSet.getInt(Tables.Timetable.daySeq));
-//        dayWise.setProfessorId(resultSet.getLong(Tables.Timetable.professorId));
-//        dayWise.setProfessorName(resultSet.getString(Tables.Timetable.));
-//        dayWise.setPreviousPeriod(resultSet.getBoolean(Tables.Timetable.sameAsPreviousPeriod));
-//        dayWise.setSubjectId(resultSet.getLong(Tables.Timetable.subjectId));
-//        dayWise.setSubjectName(resultSet.getString());
-//
-//        if (!periodData.containsKey(periodNo)) {
-//          TimeTableForm.Periods period = new TimeTableForm.Periods();
-//          period.setPeriodNo(resultSet.getInt(Tables.Timetable.periodNo));
-//          period.setPeriodName(resultSet.getString(Tables.Timetable.periodName));
-//          period.setPeriodStartTime(resultSet.getString(Tables.Timetable.startTime));
-//          period.setPeriodEndTime(resultSet.getString(Tables.Timetable.endTime));
-//          period.setDayWiseSchd(new ArrayList<TimeTableForm.Periods.DayWise>());
-//          periodData.put(periodNo, period);
-//        }
-//        periodData.get(periodNo).getDayWiseSchd().add(dayWise);
-//      }
-//    } catch (Exception exception) {
-//      exception.printStackTrace();
-//    } finally {
-//      if (resultSet != null) {
-//        resultSet.close();
-//      }
-//      if (selectPS != null) {
-//        selectPS.close();
-//      }
-//      if (connection != null) {
-//        connection.close();
-//      }
-//    }
-//
-//  }
+  public List<TimetableModel> get(long instituteId, long classId, long secId, String sec) throws SQLException {
+    List<TimetableModel> timetableModel = new ArrayList<TimetableModel>();
+    if (StringUtils.isBlank(sec) || sec.equalsIgnoreCase("no")) {
+      timetableModel = viewByClass(instituteId, classId);
+    } else {
+
+    }
+    return timetableModel;
+  }
+
+  private List<TimetableModel> viewByClass(long instituteId, long classId) throws SQLException {
+    List<TimetableModel> timetableModel = new ArrayList<TimetableModel>();
+    String query = String.format("SELECT tt.%s, tt.%s, tt.%s, tt.%s, tt.%s, tt.%s, tt.%s, tt.%s, tt.%s, tt.%s, cp.%s, cc.%s, emp.%s, sub.%s " +
+            "FROM %s tt, %s emp, %s sub, %s cc, %s cp WHERE tt.%s=? AND tt.%s=? AND tt.%s=? AND cc.%s=? AND cp.%s=? AND sub.%s=? AND emp.%s=? " +
+            "AND tt.%s=cc.%s AND cc.%s=sub.%s AND cc.%s=cp.%s AND cp.%s=emp.%s ORDER BY %s ASC, %s ASC;", Tables.Timetable.id, Tables.Timetable.day,
+        Tables.Timetable.daySeq, Tables.Timetable.periodNo, Tables.Timetable.periodName, Tables.Timetable.startTime, Tables.Timetable.endTime,
+        Tables.Timetable.duration, Tables.Timetable.sameAsPreviousPeriod, Tables.Timetable.timeTableUpdatedBy, Tables.ClassProfessor.professorId,
+        Tables.ClassCurriculum.subjectId, Tables.Employee.name, Tables.Subject.subjectName, Tables.Timetable.table, Tables.Employee.table,
+        Tables.Subject.table, Tables.ClassCurriculum.table, Tables.ClassProfessor.table, Tables.Timetable.isActive, Tables.Timetable.instituteId,
+        Tables.Timetable.classId, Tables.ClassCurriculum.isActive, Tables.ClassProfessor.isActive, Tables.Subject.isActive, Tables.Employee.isActive,
+        Tables.Timetable.id, Tables.ClassCurriculum.timetableId, Tables.ClassCurriculum.subjectId, Tables.Subject.id, Tables.ClassCurriculum.classProfessorId,
+        Tables.ClassProfessor.id, Tables.ClassProfessor.professorId, Tables.Employee.id, Tables.Timetable.periodNo, Tables.Timetable.daySeq);
+    Connection connection = null;
+    ResultSet resultSet = null;
+    PreparedStatement selectPS = null;
+    try {
+      connection = db.getConnection();
+      selectPS = connection.prepareStatement(query, ResultSet.TYPE_FORWARD_ONLY);
+      selectPS.setBoolean(1, true);
+      selectPS.setLong(2, instituteId);
+      selectPS.setLong(3, classId);
+      selectPS.setBoolean(4, true);
+      selectPS.setBoolean(5, true);
+      selectPS.setBoolean(6, true);
+      selectPS.setBoolean(7, true);
+      resultSet = selectPS.executeQuery();
+      while (resultSet.next()) {
+        TimetableModel timetable = new TimetableModel();
+        timetable.setTId(resultSet.getLong(Tables.Timetable.id));
+        timetable.setDay(resultSet.getString(Tables.Timetable.day));
+        timetable.setDaySeq(resultSet.getInt(Tables.Timetable.daySeq));
+        timetable.setPeriodNo(resultSet.getInt(Tables.Timetable.periodNo));
+        timetable.setPeriodName(resultSet.getString(Tables.Timetable.periodName));
+        timetable.setStartTime(resultSet.getString(Tables.Timetable.startTime));
+        timetable.setEndTime(resultSet.getString(Tables.Timetable.endTime));
+        timetable.setDuration(resultSet.getInt(Tables.Timetable.duration));
+        timetable.setSameAsPreviousPeriod(resultSet.getBoolean(Tables.Timetable.sameAsPreviousPeriod));
+        timetable.setTimeTableUpdatedBy(resultSet.getString(Tables.Timetable.timeTableUpdatedBy));
+        timetable.setProfId(resultSet.getLong(Tables.ClassProfessor.professorId));
+        timetable.setProfName(resultSet.getString(Tables.Employee.name));
+        timetable.setSubId(resultSet.getLong(Tables.ClassCurriculum.subjectId));
+        timetable.setSubName(resultSet.getString(Tables.Subject.subjectName));
+        timetable.setInsId(instituteId);
+        timetable.setCId(classId);
+        timetableModel.add(timetable);
+      }
+    } catch (Exception exception) {
+      exception.printStackTrace();
+    } finally {
+      if (resultSet != null) {
+        resultSet.close();
+      }
+      if (selectPS != null) {
+        selectPS.close();
+      }
+      if (connection != null) {
+        connection.close();
+      }
+    }
+    return timetableModel;
+  }
 
   private boolean addTimeTableClass(TimeTableForm timetableDetails) throws SQLException {
 
@@ -136,17 +154,8 @@ public class TimeTableDao {
       boolean isInsertSuc = true;
       for (TimeTableForm.Periods period : timetableDetails.getPeriods()) {
         for (TimeTableForm.Periods.DayWise dayWise : period.getDayWiseSchd()) {
-          long profClassId = classProfessorDao.getId(connection, timetableDetails.getInstituteId(),
-              dayWise.getProfessorId(), timetableDetails.getClassId(), timetableDetails.getTimeTableEditedBy(), dayWise.getProfCat());
-          if(profClassId <= 0) {
-            throw new Exception("ProfId is null");
-          }
-          if(!classCurriculumDao.isProfessorFreeGivenTimeRange(connection, dayWise.getProfessorId(), period.getPeriodStartTime(),
-              period.getPeriodEndTime(), dayWise.getDay(), "", "", timetableDetails.getInstituteId())) {
-            throw new Exception("Prof is not free");
-          }
-
           if (period.getPeriodNo() == -1 && period.getPeriodName().equalsIgnoreCase("lunch")) {
+            System.out.println("*******************************************");
             insertLunchPs.setString(1, dayWise.getDay());
             insertLunchPs.setInt(2, dayWise.getDayNumber());
             insertLunchPs.setInt(3, period.getPeriodNo());
@@ -167,6 +176,16 @@ public class TimeTableDao {
               throw new Exception("Some error occur during lunch insert");
             }
           } else {
+            long profClassId = classProfessorDao.getId(connection, timetableDetails.getInstituteId(),
+                dayWise.getProfessorId(), timetableDetails.getClassId(), timetableDetails.getTimeTableEditedBy(), dayWise.getProfCat());
+            if(profClassId <= 0) {
+              throw new Exception("ProfId is null");
+            }
+            if(!classCurriculumDao.isProfessorFreeGivenTimeRange(connection, dayWise.getProfessorId(), period.getPeriodStartTime(),
+                period.getPeriodEndTime(), dayWise.getDay(), "", "", timetableDetails.getInstituteId())) {
+              throw new Exception("Prof is not free.. reverting all transaction " + dayWise.getProfessorId() + ", " + period.getPeriodStartTime() +
+              ", " + period.getPeriodEndTime() + ", " + dayWise.getDay() + ", " + period.getPeriodNo() + ", " + dayWise.getDay());
+            }
             insertPeriodPs.setString(1, dayWise.getDay());
             insertPeriodPs.setInt(2, dayWise.getDayNumber());
             insertPeriodPs.setInt(3, period.getPeriodNo());

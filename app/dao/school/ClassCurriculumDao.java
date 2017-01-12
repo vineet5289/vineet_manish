@@ -193,7 +193,6 @@ public class ClassCurriculumDao {
       System.out.println(selectClassCurriculumPs.toString());
       classCurriculumRs = selectClassCurriculumPs.executeQuery();
       if(!classCurriculumRs.isBeforeFirst()) {
-        System.out.println("===========1");
         return true;
       }
 
@@ -202,7 +201,6 @@ public class ClassCurriculumDao {
         String slotEndTime = classCurriculumRs.getString(Tables.ClassCurriculum.endTime);
         String slotStartDate = classCurriculumRs.getString(Tables.ClassCurriculum.startDate);
         String slotEndDate = classCurriculumRs.getString(Tables.ClassCurriculum.endDate);
-        System.out.println("===========2");
         //TODO: currentily if suppose today is monday and any daterange fall after mondday is not working correctly. update
         if(!TimeUtils.isTimeRangeIntersect(slotStartTime, slotEndTime, slotStartDate, slotEndDate, startTime, endTime, startDate, endDate)) {
           return false;
@@ -218,7 +216,6 @@ public class ClassCurriculumDao {
         classCurriculumRs.close();
       }
     }
-    System.out.println("===========3");
     return true;
   }
 }
