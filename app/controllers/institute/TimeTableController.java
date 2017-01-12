@@ -1,8 +1,5 @@
 package controllers.institute;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +18,6 @@ import models.TimetableModel;
 import play.data.Form;
 import play.data.FormFactory;
 import play.mvc.Result;
-import views.forms.institute.timetable.TimeTableCreateForm;
 import views.forms.institute.timetable.TimeTableForm;
 
 public class TimeTableController extends CustomController {
@@ -39,17 +35,17 @@ public class TimeTableController extends CustomController {
 
   public Result preCreateTimeTable(long instituteId, long classId, long secId, String sec) {
     Form<TimeTableForm> timeTableFormForm = formFactory.form(TimeTableForm.class);
-    String data = "";
+    ClassModels classDetails = new ClassModels();
     try {
       List<EmployeeModels> employees = employesDAO.getAllTeachers(instituteId, "");
       List<SubjectModels> subject = subjectDAO.getSubject(instituteId, classId, secId, sec);
-      ClassModels classDetails = classDAO.getActiveClassDetails(instituteId, classId, secId, sec);
-      data = TimeTableCreateForm.bindData(employees, subject, classDetails);
+      classDetails = classDAO.getActiveClassDetails(instituteId, classId, secId, sec);
+//      data = TimeTableCreateForm.bindData(employees, subject, classDetails);
     } catch (Exception exception) {
       exception.printStackTrace();
     }
 
-    return ok(data);
+    return ok(classDetails.toString());
   }
 
   public Result postCreateTimeTable(String section) {
@@ -76,13 +72,6 @@ public class TimeTableController extends CustomController {
     } catch (SQLException e) {
       e.printStackTrace();
     }
-    ObjectMapper mapper = new ObjectMapper();
-    String output = "";
-    try {
-      output = mapper.writeValueAsString(timetableModel);
-    } catch (JsonProcessingException e) {
-      e.printStackTrace();
-    }
-    return ok(output);
+    return ok(timetableModel.toString());
   }
 }

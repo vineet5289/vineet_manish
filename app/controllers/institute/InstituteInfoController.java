@@ -240,8 +240,8 @@ public class InstituteInfoController extends ClassController {
 			return redirect(controllers.institute.routes.InstituteInfoController.getInstituteMandInfo());
 		}
 
-		String instituteId = "1";//session().get(SessionKey.instituteid.name());
-		String userName = "niet.vineet@gmail.com";//session().get(SessionKey.username.name());
+		String instituteId = "2";//session().get(SessionKey.instituteid.name());
+		String userName = "vineet5289@gmail.com";//session().get(SessionKey.username.name());
 		FirstTimeInstituteUpdateForm firstTimeSchoolUpdate = firstTimeSchoolUpdateForm.get();
 		InstituteDaoProcessStatus instituteDaoProcessStatus = InstituteDaoProcessStatus.invalidschool;
 		try {
