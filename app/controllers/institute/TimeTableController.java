@@ -18,6 +18,7 @@ import models.TimetableModel;
 import play.data.Form;
 import play.data.FormFactory;
 import play.mvc.Result;
+import views.forms.institute.timetable.TimeTableCreateForm;
 import views.forms.institute.timetable.TimeTableForm;
 
 public class TimeTableController extends CustomController {
@@ -35,17 +36,17 @@ public class TimeTableController extends CustomController {
 
   public Result preCreateTimeTable(long instituteId, long classId, long secId, String sec) {
     Form<TimeTableForm> timeTableFormForm = formFactory.form(TimeTableForm.class);
-    ClassModels classDetails = new ClassModels();
+    TimeTableCreateForm timeTableCreateForm = new TimeTableCreateForm();
     try {
       List<EmployeeModels> employees = employesDAO.getAllTeachers(instituteId, "");
       List<SubjectModels> subject = subjectDAO.getSubject(instituteId, classId, secId, sec);
-      classDetails = classDAO.getActiveClassDetails(instituteId, classId, secId, sec);
-//      data = TimeTableCreateForm.bindData(employees, subject, classDetails);
+      ClassModels classDetails = classDAO.getActiveClassDetails(instituteId, classId, secId, sec);
+      timeTableCreateForm = TimeTableCreateForm.bindData(employees, subject, classDetails);
     } catch (Exception exception) {
       exception.printStackTrace();
     }
 
-    return ok(classDetails.toString());
+    return ok(timeTableCreateForm.toString());
   }
 
   public Result postCreateTimeTable(String section) {

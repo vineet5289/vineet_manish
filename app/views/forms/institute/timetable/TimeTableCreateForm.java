@@ -1,7 +1,6 @@
 package views.forms.institute.timetable;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +30,7 @@ public class TimeTableCreateForm {
     private String pName;
   }
 
-  public static String bindData(List<EmployeeModels> employeeList, List<SubjectModels> subjectList, ClassModels classDetails) throws JsonProcessingException {
+  public static TimeTableCreateForm bindData(List<EmployeeModels> employeeList, List<SubjectModels> subjectList, ClassModels classDetails) throws JsonProcessingException {
     List<TimeTableCreateForm.Subject> subjects = new ArrayList<TimeTableCreateForm.Subject>();
     for(SubjectModels sub : subjectList) {
       TimeTableCreateForm.Subject subject = new TimeTableCreateForm.Subject();
@@ -52,8 +51,6 @@ public class TimeTableCreateForm {
     timeTableCreateForm.setClassId(classDetails.getId());
     timeTableCreateForm.setSubjects(subjects);
     timeTableCreateForm.setProfessors(professors);
-    ObjectMapper mapper = new ObjectMapper();
-    String output = mapper.writeValueAsString(timeTableCreateForm);
-    return output;
+    return timeTableCreateForm;
   }
 }
