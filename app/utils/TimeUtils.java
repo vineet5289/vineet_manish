@@ -25,9 +25,34 @@ public class TimeUtils {
 		return matcher.matches();
 	}
 
-	public static boolean isValidTimeRange(String startTime, String endTime) {
-	  if(StringUtils.isBlank(startTime) || StringUtils.isBlank(endTime))
-        return false;
+	/*
+	* return positive duration when startTime is valid, endTime is Valid, timeRange is valid
+	* */
+
+	public static int calculateDuration(String startTime, String endTime) {
+	  int duration1 = -1;
+    if(isValidTimeRange(startTime, endTime)) {
+      String[] startParam = startTime.trim().split(" ");
+      String[] endParam = endTime.trim().split(" ");
+      String[] startHHMM = startParam[0].split(":");
+      String[] endHHMM = endParam[0].split(":");
+      int startHour = Integer.parseInt(startHHMM[0]);
+      int startMin = Integer.parseInt(startHHMM[1]);
+      int endHour = Integer.parseInt(endHHMM[0]);
+      int endMin = Integer.parseInt(endHHMM[1]);
+      int addToHour = (startParam[1].equalsIgnoreCase(endParam[1]) || endHour == 12) ? 0 : 12;
+      endHour += addToHour;
+      duration1 = ((endHour * 60 + endMin) - (startHour * 60 + startMin));
+    }
+    return duration1;
+  }
+
+  public static boolean isValidTimeRange(String startTime, String endTime) {
+	  if(StringUtils.isBlank(startTime) || StringUtils.isBlank(endTime)
+        || !isValidTime(startTime) || !isValidTime(endTime)) {
+      return false;
+    }
+
 	  String[] startParam = startTime.trim().split(" ");
 	  String[] endParam = endTime.trim().split(" ");
 	  if(startParam.length != 2 || endParam.length != 2)

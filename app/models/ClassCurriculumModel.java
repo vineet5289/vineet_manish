@@ -1,6 +1,6 @@
 package models;
 
-import enum_package.TeacherAppointment;
+import enum_package.TeacherAppointmentCategories;
 import lombok.Data;
 
 @Data
@@ -12,7 +12,7 @@ public class ClassCurriculumModel {
   private long professorId;
   private long subjectId;
   private long timetableId;
-  private TeacherAppointment appointmentCat;
+  private TeacherAppointmentCategories appointmentCat;
   private boolean subjectAllocated;
   private boolean slotAllocated;
   private boolean professorAllocated;

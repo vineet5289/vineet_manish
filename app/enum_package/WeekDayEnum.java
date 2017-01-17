@@ -6,24 +6,21 @@ import java.util.List;
 import java.util.Map;
 
 public enum WeekDayEnum {
-	sunday("Sunday"),
 	monday("Monday"),
 	tuesday("Tuesday"),
 	wednesday("Wednesday"),
 	thursday("Thursday"),
 	friday("Friday"),
-	saturday("Saturday");
+	saturday("Saturday"),
+	sunday("Sunday");
 
-	private static final Map<String, WeekDayEnum> valueToEnumMap = new HashMap<String, WeekDayEnum>(WeekDayEnum.values().length);
-  private static final Map<Integer, String> dayOfWeek = new HashMap<Integer, String>(WeekDayEnum.values().length);
-	private static final Map<WeekDayEnum, String> enumTOValueMap = new HashMap<WeekDayEnum, String>(WeekDayEnum.values().length);
+  private static final Map<String, Integer> dayOfWeek = new HashMap<String, Integer>(WeekDayEnum.values().length);
+  private static final Map<Integer, String> intValueToString = new HashMap<Integer, String>(WeekDayEnum.values().length);
 	private static final List<String> displayName = new ArrayList<String>(WeekDayEnum.values().length);
 	static {
 	  int seq = 1;
 		for(WeekDayEnum wd : WeekDayEnum.values()) {
-			valueToEnumMap.put(wd.value.toLowerCase(), wd);
-      dayOfWeek.put(seq, wd.value);
-			enumTOValueMap.put(wd, wd.value);
+      dayOfWeek.put(wd.value.toLowerCase(), seq);
 			displayName.add(wd.name());
       seq++;
 		}
@@ -35,16 +32,16 @@ public enum WeekDayEnum {
 		this.value = value;
 	}
 
-	public static WeekDayEnum of(String value) {
-    return valueToEnumMap.get(value.trim().toLowerCase());
-	}
-
   public static String of(int value) {
-    return dayOfWeek.containsKey(value) ? dayOfWeek.get(value) : "";
+    return intValueToString.containsKey(value) ? intValueToString.get(value) : "";
+  }
+
+  public static int of(String value) {
+    return dayOfWeek.containsKey(value) ? dayOfWeek.get(value) : -1;
   }
 
 	public static boolean contains(String value) {
-    return valueToEnumMap.get(value.trim().toLowerCase()) == null ? false : true;
+    return value == null || dayOfWeek.get(value.trim().toLowerCase()) == null ? false : true;
 	}
 
 	public static List<String> getWeekDisplayName() {
@@ -52,6 +49,6 @@ public enum WeekDayEnum {
 	}
 
   public static Map<Integer, String> getDayToWeekMap() {
-    return dayOfWeek;
+    return intValueToString;
   }
 }
