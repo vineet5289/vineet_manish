@@ -1,0 +1,548 @@
+@(title:String)(design:String)(content:Html)
+<!DOCTYPE html>
+<html>
+<head>
+<!-- Standard Meta -->
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  
+
+  <!-- Site Properities -->
+  
+  <title>@title</title>
+
+ 
+
+  <link href='//fonts.googleapis.com/css0c08.css?family=Source+Sans+Pro:400,700|Open+Sans:300italic,400,300,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" type="text/css" class="ui" href="@routes.Assets.versioned("stylesheets/semantic.min.css")">
+ 
+
+
+<style type="text/css">
+
+ h1.page-heading {
+  font-size: 1.8em;
+  font-weight: 500;
+  border-bottom: 1px solid #ddd;
+  padding: 20px 0;
+  margin-bottom: 15px;
+}
+
+h2.subpage-heading {
+  font-size: 1.3em;
+  font-weight: 500;
+  color: #474747;
+  margin-top: 15px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 15px
+}
+h2.subpage-heading small {
+  color: #999;
+  font-size: 0.7em;
+  line-height: 1em;
+  float: right;
+  margin-top: 7px;
+}
+
+h2.subpage-heading.no-border {
+  border-bottom: none;
+  padding-bottom: 0px;
+}
+h4 {
+  margin-bottom: 5px;;
+}
+
+.real-time-printing {
+  height: 200px;
+}
+
+
+/* device list */
+.device-list {
+  
+}
+
+.button.view-all-btn {
+  border-radius: 0;
+}
+
+.device-list h3 {
+  font-size: 1em;
+  font-weight: normal;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 5px;
+  margin-bottom: 0;
+}
+
+.device-list ul {
+  list-style-type: none;
+  padding: 0;
+  margin-top: 0;
+}
+
+.device-list ul:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.device-list ul li a {
+  display: block;
+  padding: 10px;
+  cursor: pointer;
+  color: #474747;
+}
+
+.device-list ul li a:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.device-list ul li a:hover {
+  background-color: #f7f7f7;
+}
+
+.device-list .device-details {
+  float: left;
+  margin-right: 10px;
+  line-height: 1.2em;
+}
+
+.device-details .device-location {}
+
+.device-details .device-model {
+  font-size: 0.9em;
+}
+
+.device-details .device-make {
+  font-size: 0.7em;
+  padding: 4px 6px;
+  margin: 0;
+}
+
+.device-list .device-updated {
+  float: right;
+  font-size: 0.8em;
+}
+
+.device-list .device-status-icon {
+  width: 50px;
+  height: 50px;
+  opacity: 0.3;
+  max-width: 50px;
+  float: left;
+  margin-right: 10px;
+}
+
+.device-in-error .device-status-icon {
+  background-color: #fa5e3f;
+}
+
+.device-warnings .device-status-icon {
+  background-color: #fecc41;
+}
+
+.device-recently .device-status-icon {
+  background-color: #40e9bf;
+}
+
+.device-in-error .device-updated {
+  color: #fa5e3f;
+}
+
+.device-warnings .device-updated {
+  color: #fecc41;
+}
+
+.device-recently .device-updated {
+  color: #2abb9d;
+}
+
+/* Supply forecast */
+.forecasts.ui.segment.basic {
+  margin-bottom: 60px;
+}
+.forecast {
+  padding-bottom: 30px;
+}
+.forecast:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.forecast h5 {
+  font-size: 0.9em;
+  font-weight: normal;
+  color: #999;
+  margin-bottom: 15px;
+}
+.forecast .stats {
+  font-size: 4em;
+  font-weight: 600;
+  float: left;
+  margin-right: 5px;
+  vertical-align: text-top;
+  line-height: 1em;
+  color: #009c95;
+}
+.forecast .stats-description {
+  font-size: 0.9em;
+  font-weight: bold;
+  line-height: 1.2em;
+  display: block;
+  padding-top: 6px;
+}
+
+.toner-breakdown .ink-c {
+  background-color: #2d90cd;
+}
+.toner-breakdown .ink-m {
+  background-color: #eb1465;
+}
+.toner-breakdown .ink-y {
+  background-color: #f3cf3d;
+  color: #333;
+}
+.toner-breakdown .ink-k {
+  background-color: #23323f;
+}
+.toner-breakdown td,
+.toner-breakdown th {
+  text-align: center;
+  border: 3px solid #fff;
+  padding: 3px 6px;
+}
+.toner-breakdown th {
+  background-color: #eee;
+  color: #fff;
+}
+.toner-breakdown td {
+  color: #666;
+}
+.button-group {
+  text-align: left;
+  margin-top: 10px;
+  position: absolute;
+  bottom: 0;
+}
+.button-group .ui.button {
+  border-radius: 0;
+}
+.button-group .ui.button.teal-text {
+  color: #009c95;
+}
+.ui.segment.basic {
+  margin-bottom: 40px;
+}
+
+.ui.attached.menu:not(.tabular) {
+  border: none;
+}
+
+.ui.content {
+  padding-top: 30px;
+}
+
+.ui.segment {
+  padding: 0;
+  box-shadow: 2px 2px 6px #eee;
+}
+
+.ui.block.header {
+  border: 0;
+  background-color: #f3f3f3;
+  margin: 0;
+  padding: 15px 20px;
+}
+
+.ui.block.header h5 {
+  color: #000;
+  font-weight: 400;
+}
+
+.ui.table.history {
+  font-size: 0.9em;
+}
+
+.history tr > td:first-child {
+  text-align: right;
+}
+
+.history .completed-when {}
+
+.history .completed-status {
+  font-size: 2em;
+}
+
+.history .completed-who {}
+
+.history .completed-paper {}
+
+.history .completed-location-device {}
+
+.c3 svg {
+  font-family: 'Open Sans', sans-serif;
+}
+
+.c3 path,
+.c3 line {
+  stroke: #ccc;
+}
+
+.c3 .c3-axis text {
+  fill: #999;
+}
+
+.c3 .c3-axis-y .tick line {
+  display: none;
+}
+
+.c3-grid line {
+  stroke: #eee;
+}
+
+.c3-xgrid,
+.c3-ygrid {
+  stroke-dasharray: 0;
+}
+
+.vis {
+  background-color: #fff;
+  padding: 30px;
+  min-width: 250px;
+}
+
+.vis h3 {
+  color: #474747;
+  font-weight: 500;
+}
+
+.c3-tooltip {
+  background-color: #f6f6f6;
+  font-size: 0.8em;
+  border-collapse: collapse;
+  border-spacing: 0;
+  empty-cells: show;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  opacity: 0.9;
+  border: 1px solid #ccc;
+}
+
+.c3-tooltip table {}
+
+.c3-tooltip tr {
+  border: none;
+  border-top: 1px solid #ccc;
+}
+
+.c3-tooltip th {
+  display: none;
+}
+
+.c3-tooltip td {
+  padding: 6px 12px;
+  border: none;
+}
+
+.c3-tooltip td > span {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 6px;
+}
+
+.c3-tooltip td.value {
+  text-align: right;
+}
+
+@@media screen and (min-width: 640px) {
+  .ui.content {
+    padding: 0 20px;
+  }
+}
+
+
+/* MODAL BOX */
+/* update basic colours in global styles */
+a {
+  color: #4abe7a;
+  text-decoration: underline;
+}
+a:hover {
+  color: darkgreen;
+}
+.ui.green.basic.button {
+  color: #09ae5a !important;
+  border-color: #09ae5a !important; 
+}
+.ui.green.basic.button:hover {
+  color: #fff !important;
+  background-color: #09ae5a !important;
+  border-color: #fff !important; 
+}
+.ui.pc-modal {
+  border-radius: 0;
+}
+/* end of global styles */
+
+
+.ui.pc-modal > h3 {
+  position: absolute;
+  top: -60px; 
+  left: 0;
+  color: #eee;
+  font-weight: normal;
+  margin: 0 0 10px;
+  font-size: 1.1em;
+}
+.ui.pc-modal.on-screen {
+  top: 20%;
+  box-shadow: 0 0 1px #999;
+}
+.ui.pc-modal.on-screen > h3 {
+  color: #444;
+}
+.ui.pc-modal > h3 img {
+  height: 40px;
+  position: relative;
+  top: 5px
+}
+.ui.pc-modal > .close {
+  right: 0;
+  top: -40px;
+}
+.ui.small.pc-modal > .header:not(.ui) {
+  font-size: 1.1em;
+  line-height: 1.6em;
+  border-bottom: none;
+  font-weight: normal;
+  border-radius: 0;
+}
+.ui.pc-modal > .header,
+.ui.pc-modal > .content {
+  position: relative;
+}
+.ui.pc-modal > .content {
+  padding: 30px 40px;
+  background-color: #f9fafb;
+  min-height: 150px;
+}
+.ui.pc-modal > .header {
+  background-color: #09ae5a;
+  color: #fff;
+  padding: 20px 40px;
+}
+.ui.pc-modal > .header .profile-image {
+  float: right;
+}
+.ui.pc-modal > .header .profile-image img {
+  border: 5px solid #24ba6e;
+  width: 3.5em;
+  height: 3.5em;
+}
+
+.pc-modal .ui.form label {
+  font-size: 1.1em;
+  margin-bottom: 6px;
+}
+.pc-modal .content h3 {
+  margin-top: 0;
+}
+
+.ui.pc-modal > .actions {
+  border-top: none;
+  text-align: center;
+  padding: 10px 20px 30px;
+}
+a.sso {
+  display: inline-block;
+  padding: 15px 30px;
+  background-color: #ddd;
+  border-radius: 3px;
+  font-size: 2.5em;
+  line-height: 1em;
+  text-decoration: none;
+  color: #fff;
+  margin: 5px;
+  opacity: 1;
+}
+a.sso:hover {
+  opacity: 0.75;
+}
+
+a.facebook.sso {
+  background-color: #3c5a98;
+}
+a.linkedin.sso {
+  background-color: #1077b5;
+}
+a.google.sso {
+  background-color: #db433c;
+}
+a.google.sso i {
+  position: relative;
+  top: 3px;
+}
+
+.triangle-top-right {
+  width: 0;
+  height: 0;
+  border-top: 20px solid #09ae5a;
+  border-left: 15px solid transparent;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.actions.buttons button:first-child {
+  margin-right: 10px;
+}
+
+/* Welcome */
+.welcome.on-screen > h3 {
+  top: -30px;
+}
+.welcome .content,
+.welcome .header {
+  text-align: center;
+}
+.welcome .header img {
+  height: 60px;
+  vertical-align: text-bottom;
+  position: relative;
+  top: 4px;
+}
+
+
+  </style>
+
+
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','../www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-44039803-1', 'semantic-ui.com');
+  ga('send', 'pageview');
+
+  </script>
+
+</head>
+<body>
+
+  @content
+ 
+
+   <script type="text/javascript" src="@routes.Assets.versioned("javascripts/js/jquery.min.js")"></script>
+   <script  type="text/javascript" src="@routes.Assets.versioned("javascripts/semantic.min.js")"></script>
+</body>
+</html>
+

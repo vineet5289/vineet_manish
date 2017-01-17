@@ -27,8 +27,8 @@ public class Tables {
     public static String state = "state";
     public static String country = "country";
     public static String pinCode = "pin_code";
-    public static String groupOfInstitute = "group_of_institute";
     public static String noOfInstitute = "no_of_institute";
+    public static String groupOfInstitute = "group_of_institute";
     public static String query = "query";
     public static String authToken = "auth_token";
     public static String authTokenGenereatedAt = "auth_token_genereated_at";
@@ -105,9 +105,10 @@ public class Tables {
     public static String financialStartYear = "financial_start_year";
     public static String financialEndYear = "financial_end_year";
     public static String currentFinancialYear = "current_financial_year";
+    public static String financialStartDate = "financial_start_date";
+    public static String financialEndDate = "financial_end_date";
     public static String officeWeekStartDay = "office_week_start_day";
     public static String officeWeekEndDay = "office_week_end_day";
-    public static String dateFormat = "date_format";
     public static String websiteUrl = "website_url";
     public static String logoUrl = "logo_url";
     public static String isActive = "is_active";
@@ -150,6 +151,7 @@ public class Tables {
     public static String requestedUserName = "requested_user_name";
     public static String empCode = "emp_code";
 
+
     // optional field
     public static String empPreferedName = "emp_prefered_name";
     public static String empAlternativeEmail = "emp_alternative_email";
@@ -170,8 +172,8 @@ public class Tables {
     public static String isActive = "is_active";
   }
 
-  public static class SchoolShiftInfo {
-    public static String table = "school_shift_info";
+  public static class InstituteShiftInfo {
+    public static String table = "institute_shift_info";
     public static String id = "id";
     public static String shiftName = "shift_name";
     public static String shiftClassStartTime = "shift_class_start_time";
@@ -181,7 +183,7 @@ public class Tables {
     public static String shiftStartClassFrom = "shift_start_class_from";
     public static String shiftEndClassTo = "shift_end_class_To";
     public static String shiftAttendenceType = "shift_attendence_type";
-    public static String schoolId = "school_id";
+    public static String instituteId = "institute_id";
     public static String createdAt = "created_at";
     public static String updatedAt = "updated_at";
     public static String isActive = "is_active";
@@ -273,15 +275,63 @@ public class Tables {
     public static String table = "timetable";
     public static String id = "id";
     public static String day = "day";
+    public static String daySeq = "day_seq";
     public static String periodNo = "period_no";
+    public static String periodName = "period_name";
     public static String startTime = "start_time";
     public static String endTime = "end_time";
+    public static String duration = "duration";
+    public static String numberOfDays = "number_of_days";
+    public static String instituteId = "institute_id";
+    public static String classId = "class_id";
+    public static String sectionId = "section_id";
+    public static String sameAsPreviousPeriod = "same_as_previous_period";
+    public static String timeTableUpdatedBy = "time_table_updated_by";
+    public static String isActive = "is_active";
+    public static String createdAt = "created_at";
+    public static String updatedAt = "updated_at";
+  }
+
+  public static class TempTimetable {
+    public static String table = "temp_timetable";
+    public static String id = "id";
+    public static String timetableId = "timetable_id";
+    public static String timeTableUpdatedBy = "time_table_updated_by";
+    public static String startDate = "start_date";
+    public static String endDate = "end_date";
+    public static String isActive = "is_active";
+    public static String createdAt = "created_at";
+    public static String updatedAt = "updated_at";
+  }
+
+  public static class ClassProfessor {
+    public static String table = "class_professor";
+    public static String id = "id";
     public static String instituteId = "institute_id";
     public static String classId = "class_id";
     public static String sectionId = "section_id";
     public static String professorId = "professor_id";
+    public static String professorCategory = "professor_category";
+    public static String addedBy = "added_by";
+    public static String isActive = "is_active";
+    public static String createdAt = "created_at";
+    public static String updatedAt = "updated_at";
+  }
+
+  public static class ClassCurriculum {
+    public static String table = "class_curriculum";
+    public static String id = "id";
+    public static String classProfessorId = "class_professor_id";
     public static String subjectId = "subject_id";
-    public static String timeTableUpdatedBy = "time_table_updated_by";
+    public static String timetableId = "timetable_id";
+    public static String professorSlotCategory = "professor_slot_category";
+    public static String slotAllocated = "slot_allocated";
+    public static String day = "day";
+    public static String startTime = "start_time";
+    public static String endTime = "end_time";
+    public static String startDate = "start_date";
+    public static String endDate = "end_date";
+    public static String updatedBy = "updated_by";
     public static String isActive = "is_active";
     public static String createdAt = "created_at";
     public static String updatedAt = "updated_at";
@@ -294,13 +344,14 @@ public class Tables {
     public static String instituteId = "institute_id";
     public static String classId = "class_id";
     public static String sectionId = "section_id";
-    public static String attendanceValue = "attendance_value";
-    public static String attendanceType = "attendance_type";
+    public static String subjectId = "subject_id";
     public static String periodId = "period_id";
+    public static String studentsAttendance = "students_attendance";
+    public static String attendanceTakenBy = "attendance_taken_by";
+    public static String attendanceUpdatedBy = "attendance_updated_by";
     public static String noOfPresentStudents = "no_of_present_students";
     public static String noOfAbsentStudents = "no_of_absent_students";
     public static String totalNoOfStudents = "total_no_of_students";
-    public static String attendanceTakenBy = "attendance_taken_by";
     public static String isActive = "is_active";
     public static String createdAt = "created_at";
     public static String updatedAt = "updated_at";

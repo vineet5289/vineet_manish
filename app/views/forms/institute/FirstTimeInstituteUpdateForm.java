@@ -3,147 +3,174 @@ package views.forms.institute;
 import java.util.ArrayList;
 import java.util.List;
 
-import enum_package.AttendenceTypeEnum;
+import enum_package.AttendanceTypeEnum;
 import enum_package.SchoolClassEnum;
 import enum_package.WeekDayEnum;
 import lombok.Data;
-import models.SchoolBoard;
 import models.SchoolType;
 import play.data.validation.ValidationError;
-import utils.TimeUtiles;
-import utils.ValidateFields;
+import utils.StringUtils;
+import utils.TimeUtils;
 
 @Data
 public class FirstTimeInstituteUpdateForm {
-	private int numberOfShift;
-	private String hostelFacilitiesIsAvailable;
-	private String hostelIsCompulsory;
-	private String instituteOfficeWeekStartDay;
-	private String instituteOfficeWeekEndDay;
-	private String instituteClassFrom;
-	private String instituteClassTo;
-	private String instituteOfficeStartTime;
-	private String instituteOfficeEndTime;
-	private String instituteFinancialStartDate;
-	private String instituteFinancialEndDate;
-	private boolean isHostelFacilitiesAvailable;
-	private boolean isHostelCompulsory;
-	private String instituteDateFormat;
-	private String instituteBoard;
-	private String instituteType;
-	private List<InstituteShiftAndClassTimingInfoForm.Shift> shifts;
+  private int numberOfShift = 1;
+  private String hostelFacilitiesIsAvailable;
+  private String hostelIsCompulsory;
+  private int instituteOfficeWeekStartIndex;
+  private String instituteOfficeWeekStartDay;
+  private int instituteOfficeWeekEndIndex;
+  private String instituteOfficeWeekEndDay;
+  private int startClassIndex;
+  private String instituteClassFrom;
+  private int endClassIndex;
+  private String instituteClassTo;
+  private String instituteOfficeStartTime;
+  private String instituteOfficeEndTime;
+  private String instituteFinancialStartDate;
+  private String instituteFinancialEndDate;
+  private boolean isHostelFacilitiesAvailable = false;
+  private boolean isHostelCompulsory = false;
+  private String instituteBoard;
+  private String instituteType;
+  private List<InstituteShiftAndClassTimingInfoForm.Shift> shifts;
 
-	public List<ValidationError> validate() {
-		List<ValidationError> errors = new ArrayList<>();
+  public List<ValidationError> validate() {
+    List<ValidationError> errors = new ArrayList<>();
 
-		if(numberOfShift < 0) {
-			errors.add(new ValidationError("numberOfShift", "Number Of Shift should be greater then one."));
-		}
+    if (numberOfShift < 1) {
+      errors.add(new ValidationError("numberOfShift", "Number Of Shift should be greater then one."));
+    }
 
-		if(shifts == null || shifts.size() != numberOfShift) {
-			errors.add(new ValidationError("shifts", "Please enter shif or class info."));
-		}
+    if (hostelFacilitiesIsAvailable == null || !(hostelFacilitiesIsAvailable.trim().equalsIgnoreCase("true")
+        || hostelFacilitiesIsAvailable.trim().equalsIgnoreCase("false"))) {
+      errors.add(new ValidationError("hostelFacilitiesAvailable", "Please select hostel facilities is available or not."));
+    } else {
+      isHostelFacilitiesAvailable = hostelFacilitiesIsAvailable.trim().equalsIgnoreCase("true");
+    }
 
-		if(hostelFacilitiesIsAvailable == null || !(hostelFacilitiesIsAvailable.trim().equalsIgnoreCase("true")
-				|| hostelFacilitiesIsAvailable.trim().equalsIgnoreCase("false"))) {
-			errors.add(new ValidationError("hostelFacilitiesAvailable", "Please select hostel facilities is available or not."));
-		}
+    if (isHostelFacilitiesAvailable && (hostelIsCompulsory == null || !(hostelIsCompulsory.trim().equalsIgnoreCase("true")
+        || hostelIsCompulsory.trim().equalsIgnoreCase("false")))) {
+      errors.add(new ValidationError("isHostelCompulsory", "Please select hostel is compulsory or optional."));
+    } else {
+      isHostelCompulsory = (isHostelFacilitiesAvailable && hostelIsCompulsory.trim().equalsIgnoreCase("true"));
+    }
 
-		isHostelFacilitiesAvailable = (hostelFacilitiesIsAvailable != null && hostelFacilitiesIsAvailable.trim().equalsIgnoreCase("true"));
+    System.out.println("instituteOfficeWeekStartIndex:" + instituteOfficeWeekStartIndex);
+    System.out.println("instituteOfficeWeekEndIndex:" + instituteOfficeWeekEndIndex);
+    if (instituteOfficeWeekStartIndex < 1  || instituteOfficeWeekStartIndex > 7 || WeekDayEnum.of(instituteOfficeWeekStartIndex).isEmpty()) {
+      errors.add(new ValidationError("instituteOfficeWeekStartDay", "Please select one of the week day from drop down"));
+    } else {
+      instituteOfficeWeekStartDay = WeekDayEnum.of(instituteOfficeWeekStartIndex);
+    }
 
-		if( isHostelFacilitiesAvailable && (hostelIsCompulsory == null || !(hostelIsCompulsory.trim().equalsIgnoreCase("true")
-				|| hostelIsCompulsory.trim().equalsIgnoreCase("false")))) {
-			errors.add(new ValidationError("isHostelCompulsory", "Please select hostel is compulsory or optional."));
-		}
+    if (instituteOfficeWeekEndIndex < 1 || instituteOfficeWeekEndIndex > 7 || WeekDayEnum.of(instituteOfficeWeekEndIndex).isEmpty()) {
+      errors.add(new ValidationError("instituteOfficeWeekEndDay", "Please select one of the week day from drop down"));
+    } else {
+      instituteOfficeWeekEndDay = WeekDayEnum.of(instituteOfficeWeekEndIndex);
+    }
 
-		isHostelCompulsory = (isHostelFacilitiesAvailable && hostelIsCompulsory != null && hostelIsCompulsory.trim().equalsIgnoreCase("true"));
+    if (startClassIndex < 1 || endClassIndex < 1 || startClassIndex > endClassIndex
+        || !SchoolClassEnum.contains(startClassIndex) || !SchoolClassEnum.contains(endClassIndex)) {
+      errors.add(new ValidationError("instituteClass", "Please select class from drop down"));
+    } else {
+      instituteClassFrom = SchoolClassEnum.of(startClassIndex);
+      instituteClassTo = SchoolClassEnum.of(endClassIndex);
+    }
 
-		if(instituteOfficeWeekStartDay == null || !WeekDayEnum.contains(instituteOfficeWeekStartDay)) {
-			errors.add(new ValidationError("schoolOfficeWeekStartDay", "Please select one of the week day from drop down"));
-		}
+    boolean isOfficeTimingValid = true;
+    if (!(TimeUtils.isValidTime(instituteOfficeStartTime))) {
+      errors.add(new ValidationError("instituteOfficeStartTime", "Please select office open time."));
+      isOfficeTimingValid = false;
+    }
 
-		if(instituteOfficeWeekEndDay == null || !WeekDayEnum.contains(instituteOfficeWeekEndDay)) {
-			errors.add(new ValidationError("schoolOfficeWeekEndDay", "Please select one of the week day from drop down"));
-		}
+    if (!(TimeUtils.isValidTime(instituteOfficeEndTime))) {
+      errors.add(new ValidationError("instituteOfficeEndTime", "Please select closing time."));
+      isOfficeTimingValid = false;
+    }
 
-		if(instituteClassFrom == null || !SchoolClassEnum.contains(instituteClassFrom)) {
-			errors.add(new ValidationError("schoolClassFrom", "Please select start class from drop down"));
-		}
+    if (isOfficeTimingValid && !TimeUtils.isValidTimeRange(instituteOfficeStartTime, instituteOfficeEndTime)) {
+      errors.add(new ValidationError("instituteTimeRange", "Please Select valid office start and end time."));
+    } else {
+      instituteOfficeStartTime = instituteOfficeStartTime.trim();
+      instituteOfficeEndTime = instituteOfficeEndTime.trim();
+    }
 
-		if(instituteClassTo == null || !SchoolClassEnum.contains(instituteClassTo)) {
-			errors.add(new ValidationError("schoolClassTo", "Please select end class from drop down"));
-		}
+    instituteFinancialStartDate = TimeUtils.validDate(instituteFinancialStartDate);
+    instituteFinancialEndDate = TimeUtils.validDate(instituteFinancialEndDate);
+    if (instituteFinancialStartDate.isEmpty()) {
+      errors.add(new ValidationError("instituteFinancialStartDate", "Please select financial year start date."));
+    }
 
-		if(!(TimeUtiles.isValidTime(instituteOfficeStartTime))) {
-			errors.add(new ValidationError("schoolOfficeStartTime", "Please select office open time."));
-		}
+    if (instituteFinancialEndDate.isEmpty()) {
+      errors.add(new ValidationError("instituteFinancialEndDate", "Please select financial year end date."));
+    }
 
-		if(!(TimeUtiles.isValidTime(instituteOfficeEndTime))) {
-			errors.add(new ValidationError("schoolOfficeEndTime", "Please select closing time."));
-		}
+    if(!TimeUtils.validDateRange(instituteFinancialStartDate, instituteFinancialEndDate)) {
+      errors.add(new ValidationError("instituteFinancialDateError", "Please select financial year."));
+    }
 
-		if(instituteFinancialStartDate == null || instituteFinancialStartDate.trim().isEmpty()) {
-			errors.add(new ValidationError("schoolFinancialStartDate", "Please select financial year start date."));
-		}
+    if (StringUtils.isBlank(instituteBoard)) {
+      errors.add(new ValidationError("instituteBoard", "Please select valid institute board."));
+    } else {
+      instituteBoard = instituteBoard.trim();
+    }
 
-		if(instituteFinancialEndDate == null || instituteFinancialEndDate.trim().isEmpty()) {
-			errors.add(new ValidationError("schoolFinancialEndDate", "Please select financial year end date."));
-		}
+    if (instituteType == null || SchoolType.schoolTypeToValue.get(instituteType.trim().toLowerCase()) == null) {
+      errors.add(new ValidationError("instituteType", "Please enter valid school type without any special characters like @;$."));
+    } else {
+      instituteType = instituteType.trim().toLowerCase();
+    }
 
-		if(!ValidateFields.isValidDateFormat(instituteDateFormat)) {
-			errors.add(new ValidationError("schoolDateFormat", "Please select correct date format."));
-		}
+    if (numberOfShift >= 1 && (shifts == null || shifts.size() != numberOfShift || !isValidShiftInfo())) {
+      errors.add(new ValidationError("shifts", "Please enter shift info."));
+    }
 
-		if(instituteBoard == null || SchoolBoard.getDisplayNameGivenAffiliatedTo(instituteBoard.trim().toUpperCase()) == null) {
-			errors.add(new ValidationError("schoolBoard", "Please enter valid school board without any special characters like @;$."));
-		}
+    if (errors.size() > 0)
+      return errors;
+    return null;
+  }
 
-		if(instituteType == null || SchoolType.schoolTypeToValue.get(instituteType.trim().toLowerCase())  == null) {
-			errors.add(new ValidationError("schoolType", "Please enter valid school type without any special characters like @;$."));
-		}
+  private boolean isValidShiftInfo() {
+    for (InstituteShiftAndClassTimingInfoForm.Shift shiftInfo : shifts) {
+      if (!TimeUtils.isValidTime(shiftInfo.getShiftClassStartTime()) || !TimeUtils.isValidTime(shiftInfo.getShiftClassEndTime())
+          || !TimeUtils.isValidTimeRange(shiftInfo.getShiftClassStartTime(), shiftInfo.getShiftClassEndTime())) {
+        return false;
+      } else {
+        shiftInfo.setShiftClassStartTime(shiftInfo.getShiftClassStartTime().trim());
+        shiftInfo.setShiftClassEndTime(shiftInfo.getShiftClassEndTime().trim());
+      }
 
-		System.out.println("=====> shgift");
-		System.out.println(shifts);
-		System.out.println("=======================================>");
+      if (shiftInfo.getShiftWeekStartIndex() < 1 || shiftInfo.getShiftWeekStartIndex() > 7
+          || shiftInfo.getShiftWeekEndIndex() < 1 || shiftInfo.getShiftWeekEndIndex() > 7
+          || WeekDayEnum.of(shiftInfo.getShiftWeekStartIndex()).isEmpty() || WeekDayEnum.of(shiftInfo.getShiftWeekEndIndex()).isEmpty()) {
+        return false;
+      } else {
+        shiftInfo.setShiftWeekStartDay(WeekDayEnum.of(shiftInfo.getShiftWeekStartIndex()));
+        shiftInfo.setShiftWeekEndDay(WeekDayEnum.of(shiftInfo.getShiftWeekEndIndex()));
+      }
 
-		if(shifts == null || shifts.size() != numberOfShift || !isValidShiftInfo()) {
-			errors.add(new ValidationError("shifts", "Please enter all class/shift information."));
-		}
+      if (shiftInfo.getShiftStartClassIndex() < 1 || shiftInfo.getShiftEndClassIndex() < 1
+          || shiftInfo.getShiftStartClassIndex() > shiftInfo.getShiftEndClassIndex()
+          || !SchoolClassEnum.contains(shiftInfo.getShiftStartClassIndex()) || !SchoolClassEnum.contains( shiftInfo.getShiftEndClassIndex())) {
+        return false;
+      } else {
+        shiftInfo.setShiftStartClassFrom(SchoolClassEnum.of(shiftInfo.getShiftStartClassIndex()));
+        shiftInfo.setShiftEndClassTo(SchoolClassEnum.of(shiftInfo.getShiftEndClassIndex()));
+      }
 
-		if(errors.size() > 0)
-			return errors;
-		return null;
-	}
+      if (shiftInfo.getShiftAttendenceType() == null || !AttendanceTypeEnum.contain(shiftInfo.getShiftAttendenceType())) {
+        return false;
+      } else {
+        shiftInfo.setShiftAttendenceType(shiftInfo.getShiftAttendenceType().trim());
+      }
 
-	private boolean isValidShiftInfo() {
-		for(InstituteShiftAndClassTimingInfoForm.Shift shiftInfo : shifts) {
-			if(!TimeUtiles.isValidTime(shiftInfo.getShiftClassStartTime()) || !TimeUtiles.isValidTime(shiftInfo.getShiftClassEndTime())) {
-				System.out.println("Shift class start or end time is invalid");
-				return false;
-			}
-
-			if(shiftInfo.getShiftWeekStartDay() == null || !WeekDayEnum.contains(shiftInfo.getShiftWeekStartDay())
-					|| shiftInfo.getShiftWeekEndDay() == null || !WeekDayEnum.contains(shiftInfo.getShiftWeekEndDay())) {
-				System.out.println("Shift week start or end day is invalid");
-				return false;
-			}
-
-			if(shiftInfo.getShiftStartClassFrom() == null || shiftInfo.getShiftEndClassTo() == null
-					|| !SchoolClassEnum.contains(shiftInfo.getShiftStartClassFrom()) || !SchoolClassEnum.contains(shiftInfo.getShiftEndClassTo())) {
-				System.out.println("Shift class from or to is invalid");
-				return false;
-			}
-
-			if(shiftInfo.getShiftAttendenceType() == null || !AttendenceTypeEnum.contain(shiftInfo.getShiftAttendenceType())) {
-				System.out.println("Shift attendence type is invalid");
-				return false;
-			}
-
-			if(shiftInfo.getShiftName() == null || shiftInfo.getShiftName().isEmpty()) {
-				System.out.println("Shift name should not be empty");
-				return false;
-			}
-		}
-		return true;
-	}
+      if (StringUtils.isBlank(shiftInfo.getShiftName())) {
+        return false;
+      } else {
+        shiftInfo.setShiftName(shiftInfo.getShiftName().trim());
+      }
+    }
+    return true;
+  }
 }

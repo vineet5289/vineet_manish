@@ -1,13 +1,19 @@
 package controllers.institute;
 
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import javax.inject.Inject;
 
-import models.SchoolBoard;
+import controllers.routes;
+import dao.InstituteBoardDAO;
+import dao.school.SchoolProfileInfoDAO;
+import enum_package.AttendanceTypeEnum;
+import enum_package.InstituteDaoProcessStatus;
+import enum_package.SchoolClassEnum;
+import enum_package.SessionKey;
+import enum_package.WeekDayEnum;
 import models.SchoolType;
 import play.data.Form;
 import play.data.FormFactory;
@@ -20,13 +26,6 @@ import views.forms.institute.InstituteShiftAndClassTimingInfoForm;
 import views.html.viewClass.School.SchoolProfile;
 import views.html.viewClass.School.editSchoolInfo;
 import views.html.viewClass.School.schoolMandataryInfo;
-import controllers.routes;
-import dao.school.SchoolProfileInfoDAO;
-import enum_package.AttendenceTypeEnum;
-import enum_package.InstituteDaoProcessStatus;
-import enum_package.SchoolClassEnum;
-import enum_package.SessionKey;
-import enum_package.WeekDayEnum;
 
 public class InstituteInfoController extends ClassController {
 
@@ -34,7 +33,7 @@ public class InstituteInfoController extends ClassController {
 	private FormFactory formFactory;
 
 	@Inject private SchoolProfileInfoDAO schoolProfileInfoDAO;
-
+  @Inject private InstituteBoardDAO instituteBoardDAO;
 	/*
 	 * check usernaem and auth key validation
 	 * current shift
@@ -65,7 +64,7 @@ public class InstituteInfoController extends ClassController {
 		return ok(SchoolProfile.render(schoolGeneralInfoForm, schoolHeaderInfoForm, schoolShiftAndClassTimingInfoForm));
 	}
 
-	//auth + only superadmin, schoolId must present
+	//auth + only superadmin, instituteId must present
 	public Result getGeneralInfo() {
 		InstituteGeneralInfoForm schoolGeneralInfo = null;
 		try{
@@ -83,7 +82,7 @@ public class InstituteInfoController extends ClassController {
 		return ok(editSchoolInfo.render(schoolGeneralInfoFrom));
 	}
 
-	//auth + only superadmin, schoolId must present
+	//auth + only superadmin, instituteId must present
 	public Result updateGeneralInfo() {
 		Form<InstituteGeneralInfoForm> schoolGeneralInfoFrom = formFactory.form(InstituteGeneralInfoForm.class).bindFromRequest();
 		System.out.println("inside update => " + schoolGeneralInfoFrom);
@@ -196,15 +195,14 @@ public class InstituteInfoController extends ClassController {
 
 	//session validation
 	public Result getInstituteMandInfo() {
-		System.out.println("inside mand info");
 		String schoolId = session().get(SessionKey.instituteid.name());
 		Form<FirstTimeInstituteUpdateForm> firstTimeUpdateForm = formFactory.form(FirstTimeInstituteUpdateForm.class);
-		List<String> weekList = WeekDayEnum.getWeekDisplayName();
-		List<String> classList = SchoolClassEnum.getClassDisplayName();
-		List<String> attendenceType = AttendenceTypeEnum.getAttendenceTypeDisplayName();
+		Map<Integer, String> dayToWeekMap = WeekDayEnum.getDayToWeekMap();
+		Map<Integer, String> classList = SchoolClassEnum.seqToClassNameMapping();
+		Map<String, String> attendenceType = AttendanceTypeEnum.getEnumToDisplayNameMap();
 		InstituteFormData instituteFormData = null;
 		try {
-			instituteFormData = schoolProfileInfoDAO.getNumberOfInstituteInGivenGroup(Long.valueOf(schoolId));
+			instituteFormData = schoolProfileInfoDAO.getNumberOfInstituteInGivenGroup(Long.valueOf("1"));
 		} catch (NumberFormatException | SQLException exception) {
 			exception.printStackTrace();
 			instituteFormData = null;
@@ -212,15 +210,20 @@ public class InstituteInfoController extends ClassController {
 
 		if(instituteFormData != null && instituteFormData.getGroupOfInstitute().equalsIgnoreCase("single")
 				&& instituteFormData.getNoOfInstitute() == 1) {
-			Map<String, String> schoolBoards = new HashMap<String, String>();
+			Map<String, String> schoolBoards = new TreeMap<String, String>();
 			schoolBoards.put("cbse", "CBSE");
 			schoolBoards.put("icse", "ICSE");
 			schoolBoards.put("ib", "International Baccalaureate");
 			String affiliatedTo = instituteFormData.getInstituteState();
-			String otherBoard = SchoolBoard.getDisplayNameGivenAffiliatedTo(affiliatedTo);
-			schoolBoards.put(affiliatedTo.trim().toLowerCase(), otherBoard);
+			System.out.println("affiliatedTo below ="+affiliatedTo);
+			String boardDisplayName = instituteBoardDAO.getDisplayNameGivenAffiliatedTo(affiliatedTo);
+
+			System.out.println("boardDisplayName ="+boardDisplayName);
+			String boradCode = instituteBoardDAO.getBoardCodeGivenDisplayName(boardDisplayName);
+			System.out.println("boradcode below ="+boradCode);
+			schoolBoards.put(boradCode, boardDisplayName);
 			session(SessionKey.numerofinstituteingroup.name(), instituteFormData.getNoOfInstitute() + "");
-			return ok(schoolMandataryInfo.render(firstTimeUpdateForm, weekList, classList, attendenceType, schoolBoards, SchoolType.schoolTypeToValue));
+			return ok(schoolMandataryInfo.render(firstTimeUpdateForm, dayToWeekMap, classList, attendenceType, schoolBoards, SchoolType.schoolTypeToValue));
 		}
 
 		flash("error", "Some service problem occur during request process. Please login again.");
@@ -229,20 +232,20 @@ public class InstituteInfoController extends ClassController {
 
 	//session validation
 	public Result updateInstituteMandInfo() {
-		System.out.println("======>");
 		Form<FirstTimeInstituteUpdateForm> firstTimeSchoolUpdateForm = formFactory.form(FirstTimeInstituteUpdateForm.class).bindFromRequest();
-		System.out.println("************firstTimeSchoolUpdateForm$$$$$$$$" + firstTimeSchoolUpdateForm);
+		System.out.println("mand info "+firstTimeSchoolUpdateForm);
+
 		if (firstTimeSchoolUpdateForm == null || firstTimeSchoolUpdateForm.hasErrors()) {
 			flash("error", "Some parameters are missing.");
 			return redirect(controllers.institute.routes.InstituteInfoController.getInstituteMandInfo());
 		}
 
-		String schoolId = session().get(SessionKey.instituteid.name());
-		String userName = session().get(SessionKey.username.name());
+		String instituteId = "2";//session().get(SessionKey.instituteid.name());
+		String userName = "vineet5289@gmail.com";//session().get(SessionKey.username.name());
 		FirstTimeInstituteUpdateForm firstTimeSchoolUpdate = firstTimeSchoolUpdateForm.get();
 		InstituteDaoProcessStatus instituteDaoProcessStatus = InstituteDaoProcessStatus.invalidschool;
 		try {
-			instituteDaoProcessStatus = schoolProfileInfoDAO.updateSchoolMandInfo(firstTimeSchoolUpdate, Long.valueOf(schoolId), userName);
+			instituteDaoProcessStatus = schoolProfileInfoDAO.updateSchoolMandInfo(firstTimeSchoolUpdate, Long.valueOf(instituteId), userName);
 		} catch(Exception exception) {
 			flash("error", "Some problem occur during update.");
 			exception.printStackTrace();
@@ -252,7 +255,8 @@ public class InstituteInfoController extends ClassController {
 			flash("error", instituteDaoProcessStatus.name());
 			return redirect(controllers.institute.routes.InstituteInfoController.getInstituteMandInfo());
 		} else {
-			flash("success", "School informations updated successfully.");
+      System.out.println("-----------------------------------");
+      flash("success", "School informations updated successfully.");
 			return redirect(routes.SRPController.index());
 		}
 	}

@@ -1,13 +1,12 @@
 package controllers.user;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import controllers.CustomController;
-import models.UserInfo;
+import models.EmployeeModels;
 import dao.UserFetchDAO;
 import enum_package.InstituteUserRole;
 import play.mvc.Result;
@@ -23,19 +22,19 @@ public class UserController extends CustomController {
 			// redirect to error page
 		}
 		UserFetchDAO userFetchDAO = new UserFetchDAO();
-		Map<String, List<UserInfo>> userInfos = new HashMap<String, List<UserInfo>>();
+		Map<String, List<EmployeeModels>> userInfos = new HashMap<String, List<EmployeeModels>>();
 		try {
 			userInfos = userFetchDAO.getAllUser(schoolId);
 //			if(category == null || category.isEmpty())
-//				userInfos = userFetchDAO.getAllUser(schoolId);
+//				userInfos = userFetchDAO.getAllUser(instituteId);
 //			else if(category.equalsIgnoreCase(Role.TEACHER.name())) {
-//				userInfos = userFetchDAO.getAllTeachers(schoolId);
+//				userInfos = userFetchDAO.getAllTeachers(instituteId);
 //			} else if(category.equals(Role.GUARDIAN.name())) {
-//				userInfos = userFetchDAO.getAllGuardian(schoolId);
+//				userInfos = userFetchDAO.getAllGuardian(instituteId);
 //			} else if(category.equalsIgnoreCase(Role.STUDENT.name())) {
-//				userInfos = userFetchDAO.getAllStudents(schoolId);
+//				userInfos = userFetchDAO.getAllStudents(instituteId);
 //			} else {
-//				userInfos = userFetchDAO.getAllOtherUser(schoolId);
+//				userInfos = userFetchDAO.getAllOtherUser(instituteId);
 //			}
 
 		} catch (SQLException exception) {
@@ -53,12 +52,12 @@ public class UserController extends CustomController {
 		}
 
 		UserFetchDAO userFetchDAO = new UserFetchDAO();
-		UserInfo userInfos = null;
+		EmployeeModels userInfos = null;
 		try {
 			if(category.equals(InstituteUserRole.guardian.name())) {
-//				userInfos = userFetchDAO.getAllGuardian(schoolId);
+//				userInfos = userFetchDAO.getAllGuardian(instituteId);
 			} else if(category.equalsIgnoreCase(InstituteUserRole.student.name())) {
-//				userInfos = userFetchDAO.getAllStudents(schoolId);
+//				userInfos = userFetchDAO.getAllStudents(instituteId);
 			} else {
 				System.out.println("===========> 1");
 				userInfos = userFetchDAO.getEmployeeInfo(userName, schoolId);

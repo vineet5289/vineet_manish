@@ -1,5 +1,7 @@
 package dao.employee;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,25 +11,71 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.apache.commons.lang3.StringUtils;
-
+import dao.Tables;
+import dao.dao_operation_status.EmployeeDaoActionStatus;
+import enum_package.InstituteUserRole;
+import enum_package.LoginState;
+import enum_package.LoginType;
+import models.EmployeeModels;
 import play.db.Database;
 import play.db.NamedDatabase;
 import utils.EmployeeUtil;
 import utils.RandomGenerator;
 import views.forms.employee.AddEmployeeForm;
 import views.forms.employee.EmployeeDetailsForm;
-import dao.Tables;
-import dao.dao_operation_status.EmployeeDaoActionStatus;
-import enum_package.InstituteUserRole;
-import enum_package.LoginState;
-import enum_package.LoginType;
 
 public class EmployesDAO {
 
   @Inject
   @NamedDatabase("srp")
   private Database db;
+
+  public List<EmployeeModels> getAllTeachers(long instituteId, String cat) throws SQLException {
+    Connection connection = null;
+    List<EmployeeModels> teacherInfos = new ArrayList<EmployeeModels>();
+    try {
+      connection = db.getConnection();
+      teacherInfos = getAllTeachers(instituteId, connection);
+    } catch (Exception exception) {
+      exception.printStackTrace();
+    } finally {
+      if(connection != null) {
+        connection.close();
+      }
+    }
+    return teacherInfos;
+  }
+
+  public List<EmployeeModels> getAllTeachers(long instituteId, Connection connection) throws SQLException {
+    List<EmployeeModels> teacherInfos = new ArrayList<EmployeeModels>();
+    PreparedStatement preparedStatement = null;
+    ResultSet resultSet = null;
+    String selectQuery = String.format("SELECT %s, %s FROM %s WHERE %s=? AND %s=?;", Tables.Employee.id, Tables.Employee.name,
+        Tables.Employee.table, Tables.Employee.isActive, Tables.Employee.instituteId);
+    try {
+      preparedStatement = connection.prepareStatement(selectQuery, ResultSet.TYPE_FORWARD_ONLY);
+      preparedStatement.setBoolean(1, true);
+      preparedStatement.setLong(2, instituteId);
+      resultSet = preparedStatement.executeQuery();
+      while (resultSet.next()) {
+        EmployeeModels employeeModels = new EmployeeModels();
+        employeeModels.setId(resultSet.getLong(Tables.Employee.id));
+        employeeModels.setName(resultSet.getString(Tables.Employee.name));
+        teacherInfos.add(employeeModels);
+      }
+
+    } catch(Exception exception) {
+      System.out.println("Problem during user fetch. Please Try again");
+      exception.printStackTrace();
+    } finally {
+      if(resultSet != null)
+        resultSet.close();
+      if(preparedStatement != null)
+        preparedStatement.close();
+
+    }
+    return teacherInfos;
+  }
 
   public EmployeeDaoActionStatus addNewEmpRequest(AddEmployeeForm addEmployeeDetails,
       String userName, long instituteId) throws SQLException {

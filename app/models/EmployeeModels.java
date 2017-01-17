@@ -5,7 +5,8 @@ import java.util.Date;
 import lombok.Data;
 
 @Data
-public class UserInfo {
+public class EmployeeModels {
+	private long id;
 	public String name;
 	public String userName;
 	public String emailId;

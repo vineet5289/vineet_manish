@@ -8,3 +8,5 @@ target/.*
 .DS_Store
 app/.DS_Store
 logs/application.log
+.idea/
+.idea_modules/

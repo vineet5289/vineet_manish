@@ -45,4 +45,12 @@ public class StringUtils {
 		}
 		return password;
 	}
+
+	public static boolean isBlank(String value) {
+	  return org.apache.commons.lang3.StringUtils.isBlank(value);
+  }
+
+  public static boolean isNotBlank(String value) {
+    return org.apache.commons.lang3.StringUtils.isNotBlank(value);
+  }
 }

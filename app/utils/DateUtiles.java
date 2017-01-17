@@ -24,7 +24,7 @@ public class DateUtiles {
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(date);
 		int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
-		return WeekDayEnum.of(dayOfWeek).toString();
+		return WeekDayEnum.of(dayOfWeek);
 	}
 
 	public static int getYear(Date date) {

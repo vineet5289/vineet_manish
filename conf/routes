@@ -37,7 +37,7 @@ POST     	/newinstituterequest                       controllers.institute.NewIn
 
 
 # school registration request
-POST      	/submitopt                            	   controllers.institute.InstituteRegistrationController.submitOTP()
+POST      	/submitotp                            	   controllers.institute.InstituteRegistrationController.submitOTP()
 POST     	/registerinstitute            	           controllers.institute.InstituteRegistrationController.postInstituteRegistrationRequest()
 
 #school info and edit
@@ -132,9 +132,18 @@ GET			/group										controllers.institute.GroupController.preAddGroup()
 POST		/add_group									controllers.institute.GroupController.postAddGroup()
 POST		/disable_group								controllers.institute.GroupController.disableGroup()
 
+#timetable
+GET			/timetabel/create							controllers.institute.TimeTableController.preCreateTimeTable(insid: Long ?= 0, cid: Long ?=0, sid: Long ?=0, sec: String ?= "No")
+POST		/timetabel/create							controllers.institute.TimeTableController.postCreateTimeTable(sec: String ?="NO")
+#POST		/timetabel/update							controllers.institute.TimeTableController.updateTimeTable(sec: String ?="NO")
+GET         /timetable/:classId/view                    controllers.institute.TimeTableController.viewTimeTable(classId: Long, insid: Long ?= 0, secId: Long ?=0, sec: String ?="NO")
+
+#prof slot routes
+GET			/verify/slot							    controllers.institute.ClassCurriculumController.checkSlotAvailable(pId: Long ?=0, iId: Long ?=0, st: String ?="", et: String ?="", d: String ?="", sd: String ?="", ed: String ?="")
+
 #role
-GET			/timetabel/create							controllers.institute.TimeTableController.preCreateTimeTable()
-POST		/timetabel/create							controllers.institute.TimeTableController.postCreateTimeTable()
+#GET			/attendance/add							controllers.institute.TimeTableController.preCreateTimeTable()
+POST		/attendance/:classId/add					controllers.institute.AttendanceController.addAttendance(classId: Long, secId: Long ?=0, sec: String ?= "no")
 
 # permission
 POST		/edit_permission							controllers.institute.RoleController.editPermission()

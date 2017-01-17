@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import play.data.validation.ValidationError;
-import utils.SchoolSpecificFiledValidation;
+import utils.InstituteSpecificFiledValidation;
 import utils.ValidateFields;
 import lombok.Data;
 
@@ -25,7 +25,7 @@ public class InstituteHeaderInfoForm {
 			errors.add(new ValidationError("schoolUserName", "Enter valid school user name."));
 		}
 		
-		if (!SchoolSpecificFiledValidation.isValidSchoolName(schoolName)) {
+		if (!InstituteSpecificFiledValidation.isValidInstituteName(schoolName)) {
 			errors.add(new ValidationError("schoolName", "School name should not be empty. And should not contains special characters like ;@[]"));
 		}
 
@@ -37,7 +37,7 @@ public class InstituteHeaderInfoForm {
 			errors.add(new ValidationError("schoolMobileNumber", "Enter valid contract number."));
 		}
 
-		if (schoolPreferedName != null && !SchoolSpecificFiledValidation.isValidSchoolName(schoolPreferedName)) {
+		if (schoolPreferedName != null && !InstituteSpecificFiledValidation.isValidInstituteName(schoolPreferedName)) {
 			errors.add(new ValidationError("schoolPreferedName", "School name either empty or should not contains special characters like ;@[]"));
 		}
 

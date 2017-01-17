@@ -5,6 +5,11 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import actors.MessageActor;
+import akka.actor.ActorRef;
+import akka.actor.ActorSystem;
+import controllers.CustomController;
+import dao.school.AddNewSchoolRequestDAO;
 import models.Country;
 import models.State;
 import play.data.Form;
@@ -13,12 +18,6 @@ import play.mvc.Result;
 import views.forms.institute.AddNewInstituteRequest;
 import views.html.viewClass.newSchoolRequest;
 import views.html.viewClass.thanku;
-import actors.MessageActor;
-import actors.SchoolRequestActorProtocol.NewSchoolRequest;
-import akka.actor.ActorRef;
-import akka.actor.ActorSystem;
-import controllers.CustomController;
-import dao.school.AddNewSchoolRequestDAO;
 
 
 public class NewInstituteRequestController extends CustomController {
@@ -42,7 +41,6 @@ public class NewInstituteRequestController extends CustomController {
 
 	public Result postAddNewInstituteRequest() {
 		Form<AddNewInstituteRequest> addNewSchoolRequestFrom = formFactory.form(AddNewInstituteRequest.class).bindFromRequest();
-		System.out.println(addNewSchoolRequestFrom);
 		if(addNewSchoolRequestFrom == null || addNewSchoolRequestFrom.hasErrors()) {
 			flash("error", "Something parameter is missing or invalid in your registration request.");
 			return redirect(controllers.institute.routes.NewInstituteRequestController.preAddNewInstituteRequest());
@@ -71,13 +69,13 @@ public class NewInstituteRequestController extends CustomController {
 		String receiverPhoneNumber = addNewSchoolRequest.getInstitutePhoneNumber();
 		String receiverName = addNewSchoolRequest.getInstituteName();
 
-		NewSchoolRequest newSchoolRequest = new NewSchoolRequest();
-		newSchoolRequest.setSchoolEmailId(schoolEmailId);
-		newSchoolRequest.setSchoolName(receiverName);
-		newSchoolRequest.setSchoolPhoneNumber(receiverPhoneNumber);
-		newSchoolRequest.setReferenceNumber(requestRefNumber);
-		mailerActor.tell(newSchoolRequest, mailerActor);
-		messageActor.tell(newSchoolRequest, messageActor);
+//		NewSchoolRequest newSchoolRequest = new NewSchoolRequest();
+//		newSchoolRequest.setSchoolEmailId(schoolEmailId);
+//		newSchoolRequest.setSchoolName(receiverName);
+//		newSchoolRequest.setSchoolPhoneNumber(receiverPhoneNumber);
+//		newSchoolRequest.setReferenceNumber(requestRefNumber);
+//		mailerActor.tell(newSchoolRequest, mailerActor);
+//		messageActor.tell(newSchoolRequest, messageActor);
 		return ok(thanku.render(requestRefNumber)); // generate proper html page and show reference number and message
 	}
 
@@ -118,7 +116,7 @@ public class NewInstituteRequestController extends CustomController {
 //			exception.printStackTrace();
 //			return redirect(routes.RegistrationRequest.preApprovedNewSchoolRequest());
 //		}
-//		
+//
 //		return ok("approved");
 //	}
 }

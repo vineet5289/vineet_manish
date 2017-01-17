@@ -3,11 +3,10 @@ package utils;
 import java.util.ArrayList;
 import java.util.List;
 
-import enum_package.AttendenceTypeEnum;
 import views.forms.institute.FirstTimeInstituteUpdateForm;
 import views.forms.institute.InstituteShiftAndClassTimingInfoForm;
 
-public class ShiftGenerator {
+public class ShiftUtil {
 	private static final List<String> shiftName = new ArrayList<String>()
 	{{
 	    add("Class Details");
@@ -36,7 +35,7 @@ public class ShiftGenerator {
 //			shift.setShiftWeekEndDay(firstTimeSchoolUpdate.getSchoolOfficeWeekEndDay());
 //			shift.setShiftStartClassFrom(firstTimeSchoolUpdate.getSchoolClassFrom());
 //			shift.setShiftEndClassTo(firstTimeSchoolUpdate.getSchoolClassTo());
-////			shift.setShiftAttendenceType(AttendenceTypeEnum.of(firstTimeSchoolUpdate.getAttendenceType()).name());
+////			shift.setShiftAttendenceType(AttendanceTypeEnum.of(firstTimeSchoolUpdate.getAttendenceType()).name());
 //			schoolShiftAndClassTimingInfoForm.getShifts().add(shift);
 //		} else {
 //			for(int i = 0; i < numberOfShift; i++) {
@@ -48,7 +47,7 @@ public class ShiftGenerator {
 //				shift.setShiftWeekEndDay(firstTimeSchoolUpdate.getSchoolOfficeWeekEndDay());
 //				shift.setShiftStartClassFrom(firstTimeSchoolUpdate.getSchoolClassFrom());
 //				shift.setShiftEndClassTo(firstTimeSchoolUpdate.getSchoolClassTo());
-////				shift.setShiftAttendenceType(AttendenceTypeEnum.of(firstTimeSchoolUpdate.getAttendenceType()).name());
+////				shift.setShiftAttendenceType(AttendanceTypeEnum.of(firstTimeSchoolUpdate.getAttendenceType()).name());
 //				schoolShiftAndClassTimingInfoForm.getShifts().add(shift);
 //			}
 //		}

@@ -6,7 +6,7 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
 import play.data.validation.ValidationError;
-import utils.TimeUtiles;
+import utils.TimeUtils;
 import lombok.Data;
 
 @Data
@@ -43,17 +43,17 @@ public class ClassForm {
     }
 
     boolean isValidTimeFormat = true;
-    if (!TimeUtiles.isValidTime(classStartTime)) {
+    if (!TimeUtils.isValidTime(classStartTime)) {
       isValidTimeFormat = false;
       errors.add(new ValidationError("classStartTime", "Class start time is mandatory and should be valid."));
     }
 
-    if (!TimeUtiles.isValidTime(classEndTime)) {
+    if (!TimeUtils.isValidTime(classEndTime)) {
       isValidTimeFormat = false;
       errors.add(new ValidationError("classEndTime", "Class end time is mandatory and should be valid."));
     }
 
-    if(isValidTimeFormat && !TimeUtiles.isValidTimeRange(classStartTime, classEndTime)) {
+    if(isValidTimeFormat && !TimeUtils.isValidTimeRange(classStartTime, classEndTime)) {
       errors.add(new ValidationError("error", "You have entered wrong class time information."));
     }
 

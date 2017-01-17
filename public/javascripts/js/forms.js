@@ -563,13 +563,17 @@ $('.message .close').on('click', function() {
 
 
   // this is for selkecting number nu,ber of shift of institute runs in more than 1 shift toggle transition
-
-  $(".ui.checkbox.shift").checkbox({
+  
+    $(".ui.checkbox.shiftAdd").checkbox({
     "onChecked": function() {
+        $('#shiftSingle').attr('checked', false); 
         document.getElementById("toggleShift").style.display = "";
+         shiftfunction(0);
+        
+       
     },
     "onUnchecked": function() {
-
+      document.getElementById("toggleShift").style.display = "none";
       var container = document.getElementById("shiftContainer");
       while (container.hasChildNodes()) {
              container.removeChild(container.lastChild);
@@ -581,12 +585,53 @@ $('.message .close').on('click', function() {
     }
   });
 
+   $(".ui.checkbox.shiftSingle").checkbox({
+    "onChecked": function() {
+        $('#shiftAdd').attr('checked', false); 
+        document.getElementById("toggleShift").style.display = "none";
+       shiftfunction(1);
+      
+        
+    },
+    "onUnchecked": function() {
+      $('#shiftAdd').attr('checked', false);
+    }
+  }); 
+
+ 
+  
+   /* $(".ui.shiftdecide.checkbox").checkbox({
+    "onChecked": function() {  
+       if(label[for="shiftAdd"]){
+        document.getElementById("toggleShift").style.display = "";
+      }else if(label[for="shiftSingle"]){
+        document.getElementById("toggleShift").style.display = "";     
+      }else{
+        document.getElementById("toggleShift").style.display = "none";
+      var container = document.getElementById("shiftContainer");
+      while (container.hasChildNodes()) {
+             container.removeChild(container.lastChild);
+           }
+
+           $('.ui.dropdown.shift').dropdown('refresh'); 
+      
+      document.getElementById("toggleShift").style.display = "none";
+      }
+    }
+  }); */
+
+
+
 
 // stepwise form on institute mandatory Info
 
+  $('#shiftNumber').on('selected', function() {
+    shiftfunction();
 
+   });
+   
 
-    // for validation in step form new approach
+   // for validation in step form new approach
   $('#next').on('click',function(e){
     e.preventDefault();
   
@@ -607,29 +652,29 @@ $('.message .close').on('click', function() {
         }]
       },
 
-                     "instituteOfficeWeekStartDay": {
-        "identifier": "instituteOfficeWeekStartDay",
+                     "instituteOfficeWeekStartIndex": {
+        "identifier": "instituteOfficeWeekStartIndex",
         "rules": [{
           "type": "empty",
           "prompt": "Please Select start day of week"
         }]
       },
-      "instituteOfficeWeekEndDay": {
-        "identifier": "instituteOfficeWeekEndDay",
+      "instituteOfficeWeekEndIndex": {
+        "identifier": "instituteOfficeWeekEndIndex",
         "rules": [{
           "type": "empty",
           "prompt": "Please selet end day of week"
         }]
       },
-      "instituteClassFrom": {
-        "identifier": "instituteClassFrom",
+      "startClassIndex": {
+        "identifier": "startClassIndex",
         "rules": [{
           "type": "empty",
           "prompt": "Please selet start class"
         }]
       },
-       "instituteClassTo": {
-        "identifier": "instituteClassTo",
+       "endClassIndex": {
+        "identifier": "endClassIndex",
         "rules": [{
           "type": "empty",
           "prompt": "Please selet end class"
@@ -687,79 +732,95 @@ $('.message .close').on('click', function() {
       e.preventDefault();
     $('.ui.form.two').form({
         fields : {
-           "shiftAdd": {
-        "identifier": "shiftAdd",
-        "rules": [{
-          "type": "checked",
-          "prompt": "You must agree to the terms and conditions"
+           shiftdecide: {
+        identifier: "shiftdecide",
+        rules: [{
+          type: "checked",
+          prompt: "You must select one"
         }]
       },
-       "shiftName": {
-        "identifier": "shiftName",
-        "rules": [{
-          "type": "empty",
-          "prompt": "Please Enter Shift Name"
+      shiftNumber: {
+        identifier: "shiftNumber",
+        depends: 'shifAdd',
+        rules: [{
+          type: "empty",
+          prompt: "Please Enter Shift Name"
         }]
       },
-      "shiftAttendenceType": {
-        "identifier": "shiftAttendenceType",
-        "rules": [{
-          "type": "empty",
-          "prompt": "Please select attendance type"
+      shiftName: {
+        identifier: 'shiftName',
+        rules: [{
+          type: 'empty',
+          'prompt': 'Please Enter Shift Name'
         }]
       },
-      "shiftClassStartTime": {
-        "identifier": "shiftClassStartTime",
-        "rules": [{
-          "type": "empty",
-          "prompt": "Please selet start time"
+      shiftAttendenceType: {
+        identifier: 'shiftAttendenceType',
+        rules: [{
+          type: 'empty',
+          prompt: 'Please select attendance type'
         }]
       },
-       "shiftClassEndTime": {
-        "identifier": "shiftClassEndTime",
-        "rules": [{
-          "type": "empty",
-          "prompt": "Please selet end class"
+      shiftClassStartTime: {
+        identifier: 'shiftClassStartTime',
+        rules: [{
+          type: 'empty',
+          prompt: 'Please selet start time'
         }]
       },
-       "shiftStartClassFrom": {
-        "identifier": "shiftStartClassFrom",
-        "rules": [{
-          "type": "empty",
-          "prompt": "Please select class from"
+       shiftClassEndTime: {
+        identifier: "shiftClassEndTime",
+        rules: [{
+          type: 'empty',
+          prompt: 'Please selet end class'
         }]
       },
-       "shiftEndClassTo": {
-        "identifier": "shiftEndClassTo",
-        "rules": [{
-          "type": "empty",
-          "prompt": "Please select class to"
+       shiftStartClassIndex: {
+        identifier: "shiftStartClassIndex",
+        rules: [{
+          type: "empty",
+          prompt: "Please select class from"
         }]
       },
-      "shiftWeekStartDay": {
-        "identifier": "shiftWeekStartDay",
-        "rules": [{
-          "type": "empty",
-          "prompt": "Please select start week"
+       shiftEndClassIndex: {
+        identifier: "shiftEndClassIndex",
+        rules: [{
+          type: "empty",
+          prompt: "Please select class to"
         }]
       },
-      "shiftWeekEndDay": {
-        "identifier": "shiftWeekEndDay",
-        "rules": [{
-          "type": "empty",
-          "prompt": "Please select end week"
+      shiftWeekStartIndex: {
+        identifier: "shiftWeekStartIndex",
+        rules: [{
+          type: "empty",
+          prompt: "Please select start week"
+        }]
+      },
+      shiftWeekEndIndex: {
+        identifier: "shiftWeekEndIndex",
+        rules: [{
+          type: "empty",
+          prompt: "Please select end week"
         }]
       }
+       
         },
         inline:true,
         onSuccess:function(e){
-           e.preventDefault();
-          $('#MandatoryUpdateForm').submit();
-          return false;
+             e.preventDefault();
+         $('#MandatoryUpdateForm').submit();
+          
         }
       });
-    });
+    }); 
 
+
+
+
+
+
+    // for validation in step form new approach
+  
     // this is the code for dynamically adding shifts 
 
      
